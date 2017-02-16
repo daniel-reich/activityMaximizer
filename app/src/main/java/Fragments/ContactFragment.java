@@ -28,7 +28,7 @@ import u.activitymanager.R;
 public class ContactFragment extends Fragment implements View.OnClickListener {
     View view;
     TextView AllContacts;
-    Dialog helpdialog;
+    Dialog helpdialog,AddContactDialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.fragment_contact,container,false);
@@ -64,11 +64,24 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.menu:
-               // showFloatingMenus();
+                showAddContactDialog();
                 break;
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showAddContactDialog() {
+        AddContactDialog=new Dialog(getActivity());
+        AddContactDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        AddContactDialog.setContentView(R.layout.addcontactdialog);
+        Window window = AddContactDialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.gravity = Gravity.BOTTOM;
+        wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(wlp);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        AddContactDialog.show();
     }
 
     private void showHelpDialog() {
