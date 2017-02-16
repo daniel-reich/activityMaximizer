@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="Kitchen Tables Set"
+        android:background="@drawable/background"
+        android:textColor="#fff"
+        android:padding="5dp"
+        android:layout_weight="1"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:background="@drawable/background"
+        android:text="2"
+        android:textColor="#fff"
+        android:gravity="center"
+        android:padding="5dp"
+        android:layout_weight="1.5"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:background="@drawable/background"
+        android:text="9"
+        android:textColor="#fff"
+        android:padding="5dp"
+        android:layout_weight="1.5"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:background="@drawable/background"
+        android:text="16"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:padding="5dp"
+        android:layout_weight="1.5"/>
+</LinearLayout>
+</LinearLayout>

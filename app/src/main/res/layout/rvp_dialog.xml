@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_bgnd"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RVP Request"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="#606060"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You have been promoted and would like to send a request to your RVP?"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif"
+                android:textColor="#949494"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#d3d3d3"
+                android:layout_marginTop="20dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:textSize="20sp"
+                    android:textColor="@color/blue"
+                    android:gravity="center"
+                    android:layout_toLeftOf="@+id/view"
+
+                    android:id="@+id/cancel"
+                    />
+
+                <View
+                    android:layout_width="0.7dp"
+                    android:layout_alignTop="@+id/cancel"
+                    android:background="#949494"
+                    android:id="@+id/view"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignBottom="@+id/cancel"
+                    android:layout_height="match_parent"></View>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="Save"
+                    android:textSize="20sp"
+                    android:textColor="#007AFF"
+                    android:layout_toRightOf="@+id/view"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    />
+
+            </RelativeLayout>
+            </LinearLayout>
