@@ -13,6 +13,7 @@
         android:orientation="vertical">
 
         <TextView
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/bbn_fixed_item_ripple_color"
@@ -23,6 +24,7 @@
 
 
         <TextView
+            android:id="@+id/tv_all_contacts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"

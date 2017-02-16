@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,9 +25,9 @@ import u.activitymanager.R;
 /**
  * Created by Surbhi on 16-02-2017.
  */
-public class ContactFragment extends Fragment
-{
+public class ContactFragment extends Fragment implements View.OnClickListener {
     View view;
+    TextView AllContacts;
     Dialog helpdialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,7 +39,8 @@ public class ContactFragment extends Fragment
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         HomeActivity.title.setText("Contacts");
-
+        AllContacts=(TextView)view.findViewById(R.id.tv_all_contacts);
+        AllContacts.setOnClickListener(this);
         return view;
     }
 
@@ -85,4 +87,14 @@ public class ContactFragment extends Fragment
 
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId())
+        {
+            case R.id.tv_all_contacts:
+                Log.e("check","check");
+             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new AllContacts()).addToBackStack(null).commit();
+                break;
+        }
+    }
 }
