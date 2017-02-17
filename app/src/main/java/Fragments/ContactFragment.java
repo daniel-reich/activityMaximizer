@@ -27,8 +27,8 @@ import u.activitymanager.R;
  */
 public class ContactFragment extends Fragment implements View.OnClickListener {
     View view;
-    TextView AllContacts;
-    Dialog helpdialog,AddContactDialog;
+    TextView AllContacts,tv_list;
+    Dialog helpdialog,AddContactDialog,AddNewContact;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.fragment_contact,container,false);
@@ -40,7 +40,16 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         HomeActivity.title.setText("Contacts");
         AllContacts=(TextView)view.findViewById(R.id.tv_all_contacts);
+        tv_list=(TextView)view.findViewById(R.id.list_txt);
         AllContacts.setOnClickListener(this);
+
+        tv_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addContactDialog();
+            }
+        });
+
         return view;
     }
 
@@ -69,6 +78,21 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void addContactDialog() {
+        AddNewContact=new Dialog(getActivity());
+        AddNewContact.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        AddNewContact.setContentView(R.layout.add_contact_dialog);
+        Window window = AddNewContact.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.gravity = Gravity.CENTER;
+        wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(wlp);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        AddNewContact.show();
     }
 
     private void showAddContactDialog() {

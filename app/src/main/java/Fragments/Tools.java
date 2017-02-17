@@ -21,7 +21,7 @@ import u.activitymanager.R;
 public class Tools extends Fragment
 {
     View view;
-    LinearLayout lay_calculator;
+    LinearLayout lay_calculator,lay_goaltracker;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -33,15 +33,26 @@ public class Tools extends Fragment
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         lay_calculator=(LinearLayout)view.findViewById(R.id.ly_calculator);
+        lay_goaltracker=(LinearLayout)view.findViewById(R.id.lay_goaltracker);
+
         setHasOptionsMenu(true);
         HomeActivity.title.setText("Tools");
 
         lay_calculator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 getActivity().getSupportFragmentManager().beginTransaction().
                         replace(R.id.frame_layout,new SavingCalculator()).addToBackStack(null).commit();
+            }
+        });
 
+        lay_goaltracker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.frame_layout,new Goals_Tracker()).addToBackStack(null).commit();
             }
         });
 
