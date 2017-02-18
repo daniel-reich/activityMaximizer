@@ -36,9 +36,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
     Toolbar toolbar;
     TextView menu;
     BottomNavigation navigation_bar;
-
     public static   TextView title,tv_back;
-Dialog helpdialog;
+    Dialog helpdialog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +45,6 @@ Dialog helpdialog;
         toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         title=(TextView)findViewById(R.id.headertextid);
-        tv_back=(TextView)findViewById(R.id.tv_back);
-//        menu=(TextView)findViewById(R.id.menu);
-//        menu.setOnClickListener(this);
-        //toolbar.setNavigationIcon(null);
         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

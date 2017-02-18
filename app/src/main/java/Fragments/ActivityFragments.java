@@ -56,7 +56,7 @@ public class ActivityFragments  extends Fragment
         menu.findItem(R.id.menu).setIcon(R.mipmap.activity_detail);
        // menu.findItem(R.id.menu).setTitle("Add List");
         menu.findItem(R.id.list).setVisible(true);
-        menu.findItem(R.id.list).setIcon(R.mipmap.sort);
+        menu.findItem(R.id.list).setIcon(R.mipmap.filter);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -70,6 +70,7 @@ public class ActivityFragments  extends Fragment
 
             case R.id.menu:
                 // showFloatingMenus();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ActivityDetails()).addToBackStack(null).commit();
                 break;
 
         }

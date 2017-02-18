@@ -30,7 +30,8 @@
             android:text="Top Speed"
             android:gravity="center"
             android:textColor="#fff"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:fontFamily="sans-serif"
+            android:textSize="20sp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -42,7 +43,7 @@
             android:textColor="#fff"
             android:text="Earned on Thursday, January 01, 1990"
             android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:textSize="21sp"/>
 
     </LinearLayout>
 

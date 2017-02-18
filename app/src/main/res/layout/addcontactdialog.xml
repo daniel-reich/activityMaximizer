@@ -42,7 +42,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/blue"
                 android:gravity="center"
-                android:id="@+id/tv_edit_profile"
+                android:id="@+id/tv_custom"
                 android:paddingBottom="11dp"
                 android:paddingTop="11dp"
                 android:paddingRight="8dp"

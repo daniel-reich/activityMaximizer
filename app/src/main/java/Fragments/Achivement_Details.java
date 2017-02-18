@@ -38,7 +38,7 @@ public class Achivement_Details extends Fragment
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        HomeActivity.tv_back.setVisibility(View.VISIBLE);
+//        HomeActivity.tv_back.setVisibility(View.VISIBLE);
 //        HomeActivity.tv_back.setText("Back");
 //        HomeActivity.title.setText("");
 
@@ -78,7 +78,7 @@ public class Achivement_Details extends Fragment
         TextView tv_cancel=(TextView)dialog.findViewById(R.id.cancel);
         TextView tv_title=(TextView)dialog.findViewById(R.id.tv_title);
         TextView tv_text=(TextView)dialog.findViewById(R.id.tv_text);
-        tv_title.setText("Show Achievement On\nProfile?");
+        tv_title.setText("Show Achievement On Profile?");
         tv_text.setVisibility(View.GONE);
         tv_cancel.setText("No");
         tv_send.setText("Yes");

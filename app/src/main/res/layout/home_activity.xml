@@ -26,17 +26,17 @@
                 android:layout_height="match_parent"
                 >
 
-                <TextView
-                    android:id="@+id/tv_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="20sp"
-                    android:text="Back"
-                    android:visibility="gone"
-                    android:textColor="#fff"
-                    android:gravity="center"
-                    android:layout_alignParentLeft="true"/>
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_back"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:fontFamily="sans-serif-light"-->
+                    <!--android:textSize="20sp"-->
+                    <!--android:text="Back"-->
+                    <!--android:visibility="gone"-->
+                    <!--android:textColor="#fff"-->
+                    <!--android:gravity="center"-->
+                    <!--android:layout_alignParentLeft="true"/>-->
                 <TextView
                     android:id="@+id/headertextid"
                     android:layout_width="wrap_content"

@@ -75,6 +75,9 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
             case R.id.menu:
                 showAddContactDialog();
                 break;
+            case R.id.list:
+                addContactDialog();
+                break;
 
         }
         return super.onOptionsItemSelected(item);
@@ -106,6 +109,14 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         window.setAttributes(wlp);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         AddContactDialog.show();
+        TextView Custom=(TextView)AddContactDialog.findViewById(R.id.tv_custom);
+        Custom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddContactDialog.dismiss();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new CustomContactFragment()).addToBackStack(null).commit();
+            }
+        });
     }
 
     private void showHelpDialog() {
