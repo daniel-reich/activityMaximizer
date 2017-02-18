@@ -64,6 +64,8 @@ public class FloatingMenusDialog extends DialogFragment implements View.OnClickL
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new Challenges()).addToBackStack(null).commit();
                 break;
             case R.id.menu_item2:
+                this.dismiss();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new Achievements()).addToBackStack(null).commit();
                 break;
             case R.id.menu_item3:
                 this.dismiss();

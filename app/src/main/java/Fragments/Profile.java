@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import u.activitymanager.HomeActivity;
@@ -30,6 +31,7 @@ public class Profile extends Fragment implements View.OnClickListener {
     MenuItem menu;
     Toolbar toolbar;
     Dialog settingsdialog,helpdialog;
+    RelativeLayout lay_branch_tran;
     View view;
     TextView RVP;
     Dialog RvpDialog;
@@ -43,7 +45,10 @@ public class Profile extends Fragment implements View.OnClickListener {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         RVP=(TextView)view.findViewById(R.id.tv_rvp);
+        lay_branch_tran=(RelativeLayout)view.findViewById(R.id.lay_branchtransfer);
+
         RVP.setOnClickListener(this);
+        lay_branch_tran.setOnClickListener(this);
 
         return view;
     }
@@ -97,7 +102,35 @@ public class Profile extends Fragment implements View.OnClickListener {
             case R.id.tv_rvp:
                 showDialog();
                 break;
+            case R.id.lay_branchtransfer:
+                showBranch();
         }
+    }
+
+    private void showBranch() {
+        RvpDialog=new Dialog(getActivity());
+        RvpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        RvpDialog.setContentView(R.layout.branch_transfer_dialog);
+        Window window = RvpDialog.getWindow();
+        TextView tv_send=(TextView)RvpDialog.findViewById(R.id.tv_send);
+        TextView tv_cancel=(TextView)RvpDialog.findViewById(R.id.cancel);
+        tv_send.setText("Send");
+
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RvpDialog.dismiss();
+            }
+        });
+        tv_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RvpDialog.dismiss();
+            }
+        });
+
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        RvpDialog.show();
     }
 
     private void showDialog() {
@@ -105,11 +138,24 @@ public class Profile extends Fragment implements View.OnClickListener {
         RvpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         RvpDialog.setContentView(R.layout.rvp_dialog);
         Window window = RvpDialog.getWindow();
-//        WindowManager.LayoutParams wlp = window.getAttributes();
-//
-//        wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-       // window.setAttributes(wlp);
+        TextView tv_send=(TextView)RvpDialog.findViewById(R.id.tv_save);
+        TextView tv_cancel=(TextView)RvpDialog.findViewById(R.id.cancel);
+        tv_send.setText("Send");
+
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RvpDialog.dismiss();
+            }
+        });
+        tv_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RvpDialog.dismiss();
+            }
+        });
+
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-     //   RvpDialog.show();
+        RvpDialog.show();
     }
 }

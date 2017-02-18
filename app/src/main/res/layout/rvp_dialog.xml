@@ -6,17 +6,33 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:orientation="vertical">
+
             <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="RVP Request"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
                 android:textSize="18sp"
+                android:gravity="center"
                 android:fontFamily="sans-serif-medium"
                 android:textColor="#606060"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 />
             <TextView
+                android:id="@+id/tv_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="You have been promoted and would like to send a request to your RVP?"
@@ -36,8 +52,7 @@
                 android:layout_marginTop="20dp"/>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="45dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -49,7 +64,6 @@
                     android:textColor="@color/blue"
                     android:gravity="center"
                     android:layout_toLeftOf="@+id/view"
-
                     android:id="@+id/cancel"
                     />
 
@@ -61,7 +75,9 @@
                     android:layout_centerHorizontal="true"
                     android:layout_alignBottom="@+id/cancel"
                     android:layout_height="match_parent"></View>
+
                 <TextView
+                    android:id="@+id/tv_save"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
@@ -73,6 +89,9 @@
                     android:layout_alignParentRight="true"
                     android:gravity="center"
                     />
-
             </RelativeLayout>
-            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
