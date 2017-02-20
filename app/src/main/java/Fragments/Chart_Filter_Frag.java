@@ -43,7 +43,7 @@ public class Chart_Filter_Frag extends Fragment
         view=inflater.inflate(R.layout.chart_filter,container,false);
         setHasOptionsMenu(true);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         HomeActivity.title.setText("Chart Filters");
@@ -67,7 +67,8 @@ public class Chart_Filter_Frag extends Fragment
         super.onCreateOptionsMenu(menu, inflater);
         menu.findItem(R.id.menu).setIcon(R.mipmap.activity_detail);
        // menu.findItem(R.id.menu).setTitle("Add List");
-        menu.findItem(R.id.list).setVisible(true);
+        menu.findItem(R.id.list).setVisible(false);
+        menu.findItem(R.id.menu).setVisible(false);
         menu.findItem(R.id.list).setIcon(R.mipmap.filter);
     }
     @Override
@@ -76,19 +77,11 @@ public class Chart_Filter_Frag extends Fragment
         {
 
             case android.R.id.home:
-                // getActivity().getSupportFragmentManager().popBackStack();
-                showHelpDialog();
+                getActivity().getSupportFragmentManager().popBackStack();
+               // showHelpDialog();
                 break;
 
-            case R.id.menu:
-                // showFloatingMenus();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ActivityDetails()).addToBackStack(null).commit();
-                break;
 
-            case R.id.list:
-                // showFloatingMenus();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new Filter_Frag()).addToBackStack(null).commit();
-                break;
 
         }
         return super.onOptionsItemSelected(item);

@@ -42,6 +42,7 @@ public class ActivityDetails extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.findItem(R.id.menu).setIcon(R.drawable.calendar);
-
+        menu.findItem(R.id.list).setVisible(true);
+        menu.findItem(R.id.list).setIcon(R.mipmap.filter);
     }
 }
