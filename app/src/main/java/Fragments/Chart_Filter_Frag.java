@@ -81,8 +81,6 @@ public class Chart_Filter_Frag extends Fragment
                // showHelpDialog();
                 break;
 
-
-
         }
         return super.onOptionsItemSelected(item);
     }
