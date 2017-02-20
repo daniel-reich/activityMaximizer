@@ -18,36 +18,48 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 
 import Adapter.ActivitiesAdapter;
-import Adapter.PostsAdapter;
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
  * Created by Surbhi on 16-02-2017.
  */
-public class ActivityFragments  extends Fragment
+public class Chart_Filter_Frag extends Fragment
 {
     RecyclerView activities;
     LinearLayoutManager linearLayoutManager;
     ActivitiesAdapter adapter;
     Dialog helpdialog;
     View view;
+    LinearLayout lay_team;
+    CheckBox cb_team;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.posts,container,false);
+        view=inflater.inflate(R.layout.chart_filter,container,false);
         setHasOptionsMenu(true);
-        activities=(RecyclerView)view.findViewById(R.id.rview);
-        linearLayoutManager=new LinearLayoutManager(getActivity());
-        activities.setLayoutManager(linearLayoutManager);
-        adapter=new ActivitiesAdapter(getActivity());
-        activities.setAdapter(adapter);
+
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        HomeActivity.title.setText("Activity");
+        HomeActivity.title.setText("Chart Filters");
+
+        cb_team=(CheckBox)view.findViewById(R.id.cb_team);
+        lay_team=(LinearLayout)view.findViewById(R.id.lay_team);
+
+//        lay_team.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                getActivity().getSupportFragmentManager().beginTransaction().
+//                        replace(R.id.frame_layout,new Filter_Frag()).addToBackStack(null).commit();
+//            }
+//        });
+
+
         return view;
     }
     @Override
@@ -75,10 +87,8 @@ public class ActivityFragments  extends Fragment
 
             case R.id.list:
                 // showFloatingMenus();
-                getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.frame_layout,new Chart_Filter_Frag()).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new Filter_Frag()).addToBackStack(null).commit();
                 break;
-
 
         }
         return super.onOptionsItemSelected(item);
