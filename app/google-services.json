@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "858180431803",
+    "firebase_url": "https://activitymaximizer.firebaseio.com",
+    "project_id": "activitymaximizer",
+    "storage_bucket": "activitymaximizer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858180431803:android:56147f7b140025d4",
+        "android_client_info": {
+          "package_name": "com.activity.maximizer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "858180431803-4ia7ruqso22udr5dkip4bp2nnq71nto7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFeiCgMpc6_ry7IPHiC1Kkugp6xtL4ftw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

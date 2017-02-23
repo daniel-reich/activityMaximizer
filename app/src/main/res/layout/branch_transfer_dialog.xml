@@ -43,7 +43,6 @@
             android:fontFamily="sans-serif-medium"
             android:text="Send a request to transfer one or your branches to another user? Only one transfer request can be active at a time"/>
 
-
         <EditText
             android:id="@+id/et_captain"
         android:layout_width="wrap_content"

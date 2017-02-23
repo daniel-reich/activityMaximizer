@@ -23,9 +23,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                >
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/headertextid"
@@ -33,18 +31,13 @@
                     android:layout_height="wrap_content"
                     android:text="REGISTER"
 
-
                     android:layout_centerInParent="true"
                     android:fontFamily="sans-serif-medium"
                     android:textSize="20sp"
-
-
                     android:textColor="#fff"/>
 
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
-
-
 
     </android.support.design.widget.AppBarLayout>
 
@@ -55,25 +48,22 @@
         android:layout_marginTop="25dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        app:cardCornerRadius="7dp"
+        app:cardCornerRadius="7dp">
 
-
-        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:gravity="center"
             android:orientation="vertical">
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/et_fname"
                 android:fontFamily="sans-serif"
                 android:textSize="15sp"
-                android:hint="First Name"
-
-                />
+                android:hint="First Name"/>
 
             <EditText
                 android:layout_width="match_parent"
@@ -82,9 +72,8 @@
                 android:fontFamily="sans-serif"
                 android:textSize="15sp"
                 android:hint="Last Name"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="6dp"/>
 
-                />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -92,9 +81,9 @@
                 android:fontFamily="sans-serif"
                 android:textSize="15sp"
                 android:hint="Phone Number"
-                android:inputType="phone"
-                />
-            <EditText
+                android:inputType="phone"/>
+
+                <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/et_email"

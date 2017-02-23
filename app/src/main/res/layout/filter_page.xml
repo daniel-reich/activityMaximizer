@@ -26,11 +26,13 @@
         android:padding="12dp"
         android:textColor="@color/colorPrimary"
         android:text="Filter By Date"/>
-    <View
+
+        <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#d3d3d3"
         android:layout_marginTop="0dp"/>
+
     <LinearLayout
         android:id="@+id/lay_startdate"
         android:layout_width="match_parent"
