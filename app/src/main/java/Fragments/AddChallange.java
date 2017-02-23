@@ -36,7 +36,7 @@ View view;
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        HomeActivity.tv_back.setVisibility(View.VISIBLE);
+//        HomeActivity.tv_back.setVisibility(View.VISIBLE);
 
 //        HomeActivity.tv_back.setText("Back");
 //        HomeActivity.title.setText("");
