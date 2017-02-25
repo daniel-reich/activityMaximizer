@@ -8,6 +8,7 @@
     <color name="graylight">#ABB2B9</color>
     <color name="yellow">#F5B041</color>
     <color name="blue">#007AFF</color>
+    <color name="bluedark">#4B85AF</color>
     <color name="red">#FF3B30</color>
     <color name="green">#0a9a72</color>
 </resources>

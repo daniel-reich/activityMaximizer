@@ -25,7 +25,6 @@
 
         <View
             android:layout_width="0.7dp"
-
             android:layout_height="match_parent"></View>
         <TextView
             android:id="@+id/team_button"

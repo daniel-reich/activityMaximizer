@@ -19,7 +19,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold"
         android:text="Challange Name"/>
-
     <TextView
         android:id="@+id/tv_settitle"
         android:layout_width="match_parent"
@@ -64,7 +63,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="normal"
         android:text="None"/>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
