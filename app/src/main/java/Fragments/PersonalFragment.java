@@ -34,10 +34,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.github.siyamed.shapeimageview.DiamondImageView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -101,7 +104,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         rview.setAdapter(adapter);
         Profile_pic.setOnClickListener(this);
         meter.setOnClickListener(this);
-
         pref=getActivity().getSharedPreferences("userpref",0);
 
         Firebase.setAndroidContext(getActivity());
@@ -110,6 +112,8 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
 
         storageRef= FirebaseStorage.getInstance().getReference();
+
+        getdatafromfirebase();
 
         options = new DisplayImageOptions.Builder()
                 .cacheInMemory(false)
@@ -120,14 +124,26 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
         imageLoader.getInstance().displayImage(pref.getString("profile_pic",""), Profile_pic, options, animateFirstListener);
 
-        String fname=pref.getString("firstname","");
-        String lname=pref.getString("lastname","");
-
-        tv_username.setText(fname);
-
+        tv_username.setText(pref.getString("firstname","")+" "+pref.getString("lastname",""));
         tv_phone.setText(pref.getString("phone",""));
 
         return view;
+    }
+
+    public void getdatafromfirebase()
+    {
+        mref.child("users").child(pref.getString("uid","")).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+            }
+
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
     }
 
     @Override
