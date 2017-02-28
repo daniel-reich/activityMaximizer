@@ -1,5 +1,6 @@
 package register_frag;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -27,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import model.UserInfo;
+import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 import u.activitymanager.SplashActivity;
 
@@ -72,7 +75,7 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
 
         pref=getActivity().getSharedPreferences("userpref",0);
 
-        tv_name.setText(pref.getString("firstname",""));
+        tv_name.setText(pref.getString("givenName",""));
         tv_email.setText(pref.getString("email",""));
         tv_phone.setText(pref.getString("phone",""));
         tv_state.setText(pref.getString("state",""));
@@ -114,7 +117,7 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
 
         final String uid = user.getUid();
         Log.e("writeuserid",uid);
-        UserInfo userinfo = new UserInfo(pref.getString("firstname"," "), pref.getString("lastname"," "),
+        UserInfo userinfo = new UserInfo(pref.getString("givenName"," "), pref.getString("familyName"," "),
                 pref.getString("phone"," "),pref.getString("email"," "), uid,
                 " "," "," "," "," "," "," "," "," "," ", pref.getString("rvpsolutionnumber",""),
                 pref.getString("solutionnumber",""),pref.getString("state",""),pref.getString("trainersolutionnumber",""),
@@ -145,6 +148,7 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
                             Toast.makeText(getActivity(),"Successfully registered",Toast.LENGTH_LONG).show();
                             FragmentManager fm = getActivity().getSupportFragmentManager();
                             fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
                             getActivity().getSupportFragmentManager().beginTransaction().
                             replace(R.id.splash_layout,new Login()).commit();
 

@@ -275,10 +275,10 @@ public class Register extends Fragment
 
                     edit=pref.edit();
                     edit.putString("email",st_email);
-                    edit.putString("firstname",st_name);
+                    edit.putString("givenName",st_name);
                     edit.putString("password",st_pass);
-                    edit.putString("lastname",st_lname);
-                    edit.putString("phone",st_phone);
+                    edit.putString("familyName",st_lname);
+                    edit.putString("phoneNumber",st_phone);
                     edit.commit();
                     Toast.makeText(getActivity(),"Successfully registered",Toast.LENGTH_LONG).show();
 

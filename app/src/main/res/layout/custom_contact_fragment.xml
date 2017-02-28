@@ -37,7 +37,7 @@
                     android:id="@+id/et_lname"
                     android:fontFamily="sans-serif"
                     android:textSize="15sp"
-                    android:hint="Last Name"
+                    android:hint="Last Name (optional)"
                     android:layout_marginTop="6dp"
 
                     />
@@ -74,7 +74,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/et_note"
-
                 android:fontFamily="sans-serif"
                 android:textSize="15sp"
                 android:hint="Note (Optional)"
@@ -85,10 +84,9 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
     <TextView
-        android:id="@+id/tv_login"
+        android:id="@+id/tv_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:background="@drawable/register_button_bgnd"
         android:gravity="center"
         android:paddingBottom="8dp"

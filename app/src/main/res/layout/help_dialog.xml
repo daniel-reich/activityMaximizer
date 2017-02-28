@@ -88,6 +88,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:text="Cancel"
+            android:id="@+id/tv_cancel"
             android:textSize="18sp"
             android:textColor="@color/blue"
             android:gravity="center"

@@ -38,6 +38,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
     BottomNavigation navigation_bar;
     public static   TextView title,tv_back;
     Dialog helpdialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +55,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
         navigation_bar=(BottomNavigation)findViewById(R.id.BottomNavigation);
         navigation_bar.setOnMenuItemClickListener(this);
     }
-
-
 
     @Override
     public void onLowMemory() {

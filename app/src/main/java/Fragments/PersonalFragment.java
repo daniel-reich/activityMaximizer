@@ -104,6 +104,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         rview.setAdapter(adapter);
         Profile_pic.setOnClickListener(this);
         meter.setOnClickListener(this);
+
         pref=getActivity().getSharedPreferences("userpref",0);
 
         Firebase.setAndroidContext(getActivity());
@@ -113,7 +114,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
         storageRef= FirebaseStorage.getInstance().getReference();
 
-        getdatafromfirebase();
+//        getdatafromfirebase();
 
         options = new DisplayImageOptions.Builder()
                 .cacheInMemory(false)
@@ -122,28 +123,12 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
-        imageLoader.getInstance().displayImage(pref.getString("profile_pic",""), Profile_pic, options, animateFirstListener);
+        imageLoader.getInstance().displayImage(pref.getString("profilePictureURL",""), Profile_pic, options, animateFirstListener);
 
-        tv_username.setText(pref.getString("firstname","")+" "+pref.getString("lastname",""));
-        tv_phone.setText(pref.getString("phone",""));
+        tv_username.setText(pref.getString("givenName","")+" "+pref.getString("familyName",""));
+        tv_phone.setText(pref.getString("phoneNumber",""));
 
         return view;
-    }
-
-    public void getdatafromfirebase()
-    {
-        mref.child("users").child(pref.getString("uid","")).addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                Log.e("get data from server",dataSnapshot.getValue()+" data");
-            }
-
-            @Override
-            public void onCancelled(FirebaseError error) {
-                Log.e("get data error",error.getMessage()+" data");
-            }
-        });
     }
 
     @Override
@@ -177,61 +162,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
-    private void selectPicDialog() {
-        selectPicdialog=new Dialog(getActivity());
-        selectPicdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        selectPicdialog.setContentView(R.layout.pick_image_dialog);
-        Window window = selectPicdialog.getWindow();
-        WindowManager.LayoutParams wlp = window.getAttributes();
-        wlp.gravity = Gravity.BOTTOM;
-        wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        window.setAttributes(wlp);
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        TextView tv_camera=(TextView)selectPicdialog.findViewById(R.id.tv_camera);
-        TextView tv_gallary=(TextView)selectPicdialog.findViewById(R.id.tv_gallery);
-        TextView tv_cancel=(TextView)selectPicdialog.findViewById(R.id.tv_cancel);
-
-        tv_gallary.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Crop.pickImage(getActivity());
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLAY_IMAGE);
-            }
-        });
-
-        tv_camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/picture.jpg";
-                    File imageFile = new File(imageFilePath);
-                    picUri = Uri.fromFile(imageFile); // convert path to Uri
-                    takePictureIntent.putExtra( MediaStore.EXTRA_OUTPUT,  picUri );
-                    startActivityForResult(takePictureIntent, CAMERA_CAPTURE);
-
-                } catch(ActivityNotFoundException anfe){
-                    //display an error message
-                    String errorMessage = "Whoops - your device doesn't support capturing images!";
-                    Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        tv_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        selectPicdialog.show();
-    }
 
     private void selectViewDialog() {
         selectViewdialog=new Dialog(getActivity());
@@ -266,7 +197,61 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     }
 
   //  Select Image  statrt
+  private void selectPicDialog() {
+      selectPicdialog=new Dialog(getActivity());
+      selectPicdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+      selectPicdialog.setContentView(R.layout.pick_image_dialog);
+      Window window = selectPicdialog.getWindow();
+      WindowManager.LayoutParams wlp = window.getAttributes();
+      wlp.gravity = Gravity.BOTTOM;
+      wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+      window.setAttributes(wlp);
+      window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+      TextView tv_camera=(TextView)selectPicdialog.findViewById(R.id.tv_camera);
+      TextView tv_gallary=(TextView)selectPicdialog.findViewById(R.id.tv_gallery);
+      TextView tv_cancel=(TextView)selectPicdialog.findViewById(R.id.tv_cancel);
+
+      tv_gallary.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+//                Crop.pickImage(getActivity());
+              Intent intent = new Intent();
+              intent.setType("image/*");
+              intent.setAction(Intent.ACTION_GET_CONTENT);
+              startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLAY_IMAGE);
+          }
+      });
+
+      tv_camera.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              try {
+
+                  Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                  String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/picture.jpg";
+                  File imageFile = new File(imageFilePath);
+                  picUri = Uri.fromFile(imageFile); // convert path to Uri
+                  takePictureIntent.putExtra( MediaStore.EXTRA_OUTPUT,  picUri );
+                  startActivityForResult(takePictureIntent, CAMERA_CAPTURE);
+
+              } catch(ActivityNotFoundException anfe){
+                  //display an error message
+                  String errorMessage = "Whoops - your device doesn't support capturing images!";
+                  Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+              }
+          }
+      });
+
+      tv_cancel.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+
+          }
+      });
+
+      selectPicdialog.show();
+  }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent result) {
         if (requestCode == GALLAY_IMAGE && resultCode == getActivity().RESULT_OK) {
@@ -348,7 +333,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     public void updateimageurl(String url){
 
         edit=pref.edit();
-        edit.putString("profile_pic",url+"");
+        edit.putString("profilePictureURL",url+"");
         edit.commit();
 
         Log.e("Image load success","Image load success "+url);
@@ -359,7 +344,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         mref.child("users").child(pref.getString("uid","")).updateChildren(newUserData);
 
     }
-
 
     private void performCrop(){
         try {
@@ -435,9 +419,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-
     // select image end
-
-
 
 }

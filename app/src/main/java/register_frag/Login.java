@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -39,6 +41,7 @@ public class Login extends Fragment implements View.OnClickListener {
     EditText et_email,et_password;
     String st_email,st_pass;
     FirebaseUser user;
+    Firebase mref;
     FirebaseAuth firebaseAuth;
     SharedPreferences pref;
     SharedPreferences.Editor edit;
@@ -64,7 +67,7 @@ public class Login extends Fragment implements View.OnClickListener {
         Firebase.setAndroidContext(getActivity());
         firebaseAuth = FirebaseAuth.getInstance();
 
-        // mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
 
         pref=getActivity().getSharedPreferences("userpref",0);
 
@@ -76,6 +79,47 @@ public class Login extends Fragment implements View.OnClickListener {
 
         return v;
     }
+
+    public void getdatafromfirebase()
+    {
+        mref.child("users").child(pref.getString("uid","")).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+
+                edit=pref.edit();
+                edit.putString("email",dataSnapshot.child("email").getValue()+"");
+                edit.putString("givenName",dataSnapshot.child("givenName").getValue()+"");
+                edit.putString("familyName",dataSnapshot.child("familyName").getValue()+"");
+                edit.putString("upline_solution_number",dataSnapshot.child("upline_solution_number").getValue()+"");
+                edit.putString("partner_solution_number",dataSnapshot.child("partner_solution_number").getValue()+"");
+                edit.putString("trainer_solution_number",dataSnapshot.child("trainer_solution_number").getValue()+"");
+                edit.putString("rvp_solution_number",dataSnapshot.child("rvp_solution_number").getValue()+"");
+                edit.putString("state",dataSnapshot.child("state").getValue()+"");
+                edit.putString("solution_number",dataSnapshot.child("solution_number").getValue()+"");
+                edit.putString("phoneNumber",dataSnapshot.child("phoneNumber").getValue()+"");
+                edit.putString("fivePointClients",dataSnapshot.child("fivePointClients").getValue()+"");
+                edit.putString("contactsAdded",dataSnapshot.child("contactsAdded").getValue()+"");
+                edit.putString("partnerUID",dataSnapshot.child("partnerUID").getValue()+"");
+                edit.putString("fivePointRecruits",dataSnapshot.child("fivePointRecruits").getValue()+"");
+                edit.putString("ref",dataSnapshot.child("ref").getValue()+"");
+                edit.putString("achievements",dataSnapshot.child("achievements").getValue()+"");
+                edit.putString("profilePictureURL",dataSnapshot.child("profilePictureURL").getValue()+"");
+
+                edit.commit();
+
+                Intent i=new Intent(getActivity(),HomeActivity.class);
+                startActivity(i);
+                getActivity().finish();
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
 
 //    @Override
 //    protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -147,12 +191,8 @@ public class Login extends Fragment implements View.OnClickListener {
                             edit.putString("uid",user.getUid().toString());
                             edit.putBoolean("signup",true);
                             edit.commit();
-                            Toast.makeText(getActivity(), "Sign In Success",
-                                    Toast.LENGTH_SHORT).show();
-
-                            Intent i=new Intent(getActivity(),HomeActivity.class);
-                            startActivity(i);
-                            getActivity().finish();
+                            Toast.makeText(getActivity(), "Sign In Success",Toast.LENGTH_SHORT).show();
+                            getdatafromfirebase();
 
                         } else {
                             Toast.makeText(getActivity(), "Enter Valid Email or Password",

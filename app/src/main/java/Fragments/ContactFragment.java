@@ -29,6 +29,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     View view;
     TextView AllContacts,tv_list;
     Dialog helpdialog,AddContactDialog,AddNewContact;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.fragment_contact,container,false);
@@ -114,7 +115,8 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View view) {
                 AddContactDialog.dismiss();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new CustomContactFragment()).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.frame_layout,new CustomContactFragment()).addToBackStack(null).commit();
             }
         });
     }

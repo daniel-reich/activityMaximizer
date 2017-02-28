@@ -3,8 +3,10 @@ package Fragments;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.github.clans.fab.FloatingActionButton;
@@ -26,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import u.activitymanager.HomeActivity;
@@ -106,13 +110,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 personal.setSelected(false);
                 team.setSelected(true);
 
-
                 break;
             case R.id.personal_button:
                 team.setSelected(false);
                 personal.setSelected(true);
-
-
                 break;
         }
 
@@ -128,10 +129,46 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         window.setAttributes(wlp);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView tv_cancel=(TextView)helpdialog.findViewById(R.id.tv_cancel);
+        TextView tv_report=(TextView)helpdialog.findViewById(R.id.tv_report);
+        TextView tv_tutorial=(TextView)helpdialog.findViewById(R.id.tv_tutorial);
+
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                helpdialog.dismiss();
+            }
+        });
+
+        tv_report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String URI="mailto:surender9466073570@gmail.com";
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse(URI);
+                intent.setData(data);
+                startActivity(intent);
+//                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+//                intent.setType("text/html");
+//                intent.setData(Uri.parse("mailto:" + "recipient@example.com"));
+//                List<ResolveInfo> resInfo = getActivity().getPackageManager().queryIntentActivities(intent, 0);
+//
+//                if (!resInfo.isEmpty()) {
+//                    for (ResolveInfo info : resInfo) {
+//                        if (info.activityInfo.packageName.toLowerCase().contains("gmail") || info.activityInfo.name.toLowerCase().contains("gmail"))
+//                        {
+//                            intent.putExtra(android.content.Intent.EXTRA_TEXT, "extra text");
+//
+//                            intent.setPackage(info.activityInfo.packageName);
+//                            startActivity(Intent.createChooser(intent, "Send email.."));
+//                        }
+//                    }
+//                }
+            }
+        });
+
         helpdialog.show();
-
-
-
     }
 
 }
