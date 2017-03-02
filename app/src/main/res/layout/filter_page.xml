@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aigestudio="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:background="#fafafa"
@@ -38,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,6 +50,7 @@
         android:text="Start Date"/>
 
         <TextView
+            android:id="@+id/tv_startdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -64,6 +66,7 @@
         android:layout_height="1dp"
         android:background="#d3d3d3"
         android:layout_marginTop="0dp"/>
+
 
     <LinearLayout
         android:id="@+id/lay_enddate"
@@ -82,6 +85,7 @@
             android:text="End Date"/>
 
         <TextView
+            android:id="@+id/tv_enddate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -96,6 +100,7 @@
         android:layout_height="1dp"
         android:background="#d3d3d3"
         android:layout_marginTop="0dp"/>
+
     <LinearLayout
         android:id="@+id/lay_defauult"
         android:layout_width="match_parent"
@@ -120,7 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:src="@drawable/checkmark_bl24"/>
+            />
 
     </LinearLayout>
     </LinearLayout>
@@ -163,7 +168,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:src="@drawable/checkmark_bl24"/>
+            />
 
     </LinearLayout>
     <View
@@ -196,7 +201,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:src="@drawable/checkmark_bl24"/>
+            />
 
     </LinearLayout>
     <View
@@ -229,7 +234,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:src="@drawable/checkmark_bl24"/>
+            />
 
     </LinearLayout>
     <View
@@ -274,7 +279,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:src="@drawable/checkmark_bl24"/>
+            />
 
     </LinearLayout>
     <View
@@ -307,7 +312,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:src="@drawable/checkmark_bl24"/>
+            />
 
     </LinearLayout>
     <View
@@ -340,7 +345,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:src="@drawable/checkmark_bl24"/>
+            />
 
     </LinearLayout>
     <View
@@ -373,7 +378,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:src="@drawable/checkmark_bl24"/>
+            />
 
     </LinearLayout>
     <View
@@ -406,7 +411,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:src="@drawable/checkmark_bl24"/>
+            />
 
     </LinearLayout>
     <View
@@ -439,7 +444,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:src="@drawable/checkmark_bl24"/>
+           />
 
     </LinearLayout>
     <View
@@ -472,7 +477,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:src="@drawable/checkmark_bl24"/>
+           />
 
     </LinearLayout>
     <View
@@ -505,7 +510,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:src="@drawable/checkmark_bl24"/>
+            />
 
     </LinearLayout>
     <View
@@ -537,8 +542,7 @@
             android:id="@+id/iv_notinterested"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/checkmark_bl24"/>
+            android:layout_marginRight="10dp"/>
 
     </LinearLayout>
 

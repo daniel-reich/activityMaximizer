@@ -34,20 +34,17 @@ public class ClientAdapter  extends  RecyclerView.Adapter<RecyclerView.ViewHolde
         public ViewHolder(View itemView) {
             super(itemView);
             layout=(RelativeLayout)itemView.findViewById(R.id.layout);
-
         }
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = null;
-
         {
             c=parent.getContext();
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.clients_adapter, parent, false);
             return new ViewHolder(view);
 
         }
-
     }
 
     @Override

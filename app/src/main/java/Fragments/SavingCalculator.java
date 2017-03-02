@@ -29,6 +29,7 @@ import u.activitymanager.R;
 /**
  * Created by surender on 2/16/2017.
  */
+
 public class SavingCalculator extends Fragment implements WheelPicker.OnItemSelectedListener {
 
     Boolean b=false;
@@ -90,13 +91,10 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
             public boolean onTouch(View v, MotionEvent event) {
                 switch(event.getAction())
                 {
-
                     case MotionEvent.ACTION_DOWN:
                         initiall.setBackgroundColor(Color.GRAY);
                         break;
-
                     case MotionEvent.ACTION_UP:
-
                         //set color back to default
                         initiall.setBackgroundColor(Color.WHITE);
                         monthlyl.setBackgroundColor(Color.GRAY);

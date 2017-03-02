@@ -10,6 +10,6 @@
         android:id="@+id/imageview"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/top_speed"/>
+        />
 
 </LinearLayout>
