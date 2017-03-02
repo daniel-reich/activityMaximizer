@@ -45,7 +45,6 @@ public class ClientAdapter  extends  RecyclerView.Adapter<RecyclerView.ViewHolde
             layout=(RelativeLayout)itemView.findViewById(R.id.layout);
             username=(TextView)itemView.findViewById(R.id.tv_username);
             rating=(TextView)itemView.findViewById(R.id.tv_rating);
-
         }
     }
     @Override
