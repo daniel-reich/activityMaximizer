@@ -24,6 +24,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/initiall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.5"
@@ -47,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/yellow"
                 android:textSize="20sp"
+                android:maxLength="9"
                 android:text="123"
                 android:gravity="center"
                 android:background="@null"
@@ -59,7 +61,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
                 android:background="@color/gray"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:id="@+id/monthlyl">
 
                 <TextView
                     android:id="@+id/tv_text2"
@@ -74,6 +77,7 @@
 
                 <EditText
                     android:id="@+id/et_monthly"
+                    android:maxLength="9"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textColor="@color/yellow"
