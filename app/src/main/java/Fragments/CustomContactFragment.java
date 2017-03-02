@@ -28,6 +28,7 @@ public class CustomContactFragment extends Fragment
     TextView tv_save;
     String st_fname="",st_lname="",st_phone="",st_note="";
     NetworkConnection nwc;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
