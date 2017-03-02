@@ -1,12 +1,15 @@
 package Fragments;
 
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,24 +20,55 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import Adapter.ClientAdapter;
+import Adapter.ListAdapter;
+import model.AllContact;
+import model.AllList;
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
+import utils.Constants;
+import utils.NetworkConnection;
 
 /**
  * Created by Surbhi on 16-02-2017.
  */
 public class ContactFragment extends Fragment implements View.OnClickListener {
+    LinearLayoutManager layoutManager;
+    RecyclerView rView;
     View view;
     TextView AllContacts,tv_list;
     Dialog helpdialog,AddContactDialog,AddNewContact;
-
+    Firebase mref;
+    ListAdapter adapter;
+    SharedPreferences pref;
+    String uid,reflink="",st_name="";
+    ArrayList<AllList> data;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.fragment_contact,container,false);
         setHasOptionsMenu(true);
        // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame,new PersonalFragment()).addToBackStack(null).commit();
+        pref=getActivity().getSharedPreferences("userpref",0);
+        uid=pref.getString("uid","");
+
+        Firebase.setAndroidContext(getActivity());
+
+        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        rView=(RecyclerView)view.findViewById(R.id.list_recycler);
+        layoutManager=new LinearLayoutManager(getActivity());
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -44,12 +78,14 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         tv_list=(TextView)view.findViewById(R.id.list_txt);
         AllContacts.setOnClickListener(this);
 
-        tv_list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addContactDialog();
-            }
-        });
+//        tv_list.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                addContactDialog();
+//            }
+//        });
+
+        getdatafromfirebase();
 
         return view;
     }
@@ -95,6 +131,32 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         window.setAttributes(wlp);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        final EditText listname=(EditText)AddNewContact.findViewById(R.id.et_name);
+        TextView save=(TextView)AddNewContact.findViewById(R.id.tv_save);
+        TextView cancel=(TextView)AddNewContact.findViewById(R.id.cancel);
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                st_name=listname.getText().toString();
+                if(st_name.length()>0) {
+                    AddNewContact.dismiss();
+                    reflink = Constants.URL +"lists/"+ uid + "/" + st_name;
+                    addNewList();
+                }
+                else {
+                    Toast.makeText(getActivity(),"List name is Required",Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddNewContact.dismiss();
+            }
+        });
 
         AddNewContact.show();
     }
@@ -147,4 +209,53 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
+    private void addNewList() {
+        Map newlist = new HashMap();
+        newlist.put("name",st_name);
+        newlist.put("ref",reflink);
+        mref.child("lists")
+                .child(uid)
+                .child(st_name)
+                .setValue(newlist);
+
+        getdatafromfirebase();
+
+    }
+
+
+    public void getdatafromfirebase()
+    {
+        mref.child("lists").child(pref.getString("uid","")).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                data=new ArrayList<AllList>();
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.e("child",child+" abc");
+                    data.add(new AllList(child.child("name").getValue().toString(),child.child("ref").getValue().toString()));
+
+                    Log.e("child",child.child("name").getValue()+" abc");
+                }
+                adapter=new ListAdapter(getActivity(),data);
+                rView.setLayoutManager(layoutManager);
+                rView.setAdapter(adapter);
+
+
+
+
+
+
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+
 }

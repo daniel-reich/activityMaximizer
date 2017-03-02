@@ -37,11 +37,13 @@
                 android:layout_weight=".1"/>
 
             <ImageView
+                android:id="@+id/marriedcheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/checkgreen32"/>
+                android:src="@drawable/checkgray32"/>
 
             <ImageView
+                android:id="@+id/marriedcross"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -70,11 +72,13 @@
                 android:layout_weight=".1"/>
 
             <ImageView
+                android:id="@+id/haskidscheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/checkgreen32"/>
+                android:src="@drawable/checkgray32"/>
 
             <ImageView
+                android:id="@+id/haskidscross"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -103,11 +107,13 @@
                 android:layout_weight=".1"/>
 
             <ImageView
+                android:id="@+id/agecheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/checkgreen32"/>
+                android:src="@drawable/checkgray32"/>
 
             <ImageView
+                android:id="@+id/agecross"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -136,11 +142,13 @@
                 android:layout_weight=".1"/>
 
             <ImageView
+                android:id="@+id/homeownercheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/checkgreen32"/>
+                android:src="@drawable/checkgray32"/>
 
             <ImageView
+                android:id="@+id/homeownercross"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -169,11 +177,13 @@
                 android:layout_weight=".1"/>
 
             <ImageView
+                android:id="@+id/incomecheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/checkgreen32"/>
+                android:src="@drawable/checkgray32"/>
 
             <ImageView
+                android:id="@+id/incomecross"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"

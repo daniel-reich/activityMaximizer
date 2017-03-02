@@ -32,14 +32,14 @@
         android:layout_marginTop="15dp"/>
 
         <EditText
-            android:id="@+id/et_name"
+        android:id="@+id/et_name"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-            android:singleLine="true"
+        android:singleLine="true"
         android:textSize="14sp"
         android:padding="10dp"
-            android:hint="value"
+        android:hint="value"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:background="@drawable/et_strock_back"

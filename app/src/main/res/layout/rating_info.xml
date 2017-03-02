@@ -44,11 +44,18 @@
 
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/fram_rating"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal">
+        <FrameLayout
+            android:id="@+id/fram_rating"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </FrameLayout>
+        </FrameLayout>
+    </LinearLayout>
+
 
 </LinearLayout>

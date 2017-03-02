@@ -19,7 +19,7 @@
             android:background="@color/bbn_fixed_item_ripple_color"
             android:padding="10dp"
             android:text="@string/contacts"
-            android:textSize="@dimen/text_20"
+            android:textSize="18sp"
           android:fontFamily="sans-serif-medium"/>
 
 
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="@string/all_contacts"
-            android:textSize="@dimen/text_20"
+            android:textSize="16sp"
             android:fontFamily="sans-serif"
           />
 
@@ -39,7 +39,7 @@
             android:padding="10dp"
             android:text="@string/need_to_quality"
             android:fontFamily="sans-serif"
-            android:textSize="@dimen/text_20"
+            android:textSize="16sp"
              />
 
 
@@ -52,11 +52,11 @@
         android:background="@color/bbn_fixed_item_ripple_color"
         android:padding="10dp"
         android:text="@string/lists"
-        android:textSize="@dimen/text_20"
+        android:textSize="18sp"
        android:fontFamily="sans-serif-medium" />
 
     <android.support.v7.widget.RecyclerView
-
+        android:id="@+id/list_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
        >

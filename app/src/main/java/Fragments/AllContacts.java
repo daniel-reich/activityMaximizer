@@ -1,6 +1,8 @@
 package Fragments;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,7 +19,16 @@ import android.view.ViewGroup;
 import android.webkit.ClientCertRequest;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+
 import Adapter.ClientAdapter;
+import model.AllContact;
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
@@ -30,8 +41,12 @@ public class AllContacts extends Fragment implements View.OnClickListener {
     RecyclerView rView;
     TextView Clients,Recruits;
     View view;
+    Firebase mref;
+    SharedPreferences pref;
     LinearLayoutManager layoutManager;
     ClientAdapter adapter;
+    ArrayList<AllContact> data;
+    String role="client";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,9 +61,13 @@ public class AllContacts extends Fragment implements View.OnClickListener {
         rView=(RecyclerView)view.findViewById(R.id.rview);
        // rView.setLayoutManager(layoutManager);
         layoutManager=new LinearLayoutManager(getActivity());
-        adapter=new ClientAdapter(getActivity());
-        rView.setLayoutManager(layoutManager);
-        rView.setAdapter(adapter);
+
+        pref=getActivity().getSharedPreferences("userpref",0);
+        Firebase.setAndroidContext(getActivity());
+
+        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+
+        getdatafromfirebase("client");
 
         Log.e("AllContacts","Allcontacts");
 
@@ -86,11 +105,51 @@ public class AllContacts extends Fragment implements View.OnClickListener {
             case R.id.tv_clients:
                 Recruits.setSelected(false);
                 Clients.setSelected(true);
+                getdatafromfirebase("client");
                 break;
             case R.id.tv_recruits:
                 Clients.setSelected(false);
                 Recruits.setSelected(true);
+                getdatafromfirebase("recruits");
                 break;
         }
     }
+
+
+    public void getdatafromfirebase(final String role)
+    {
+        mref.child("contacts").child(pref.getString("uid","")).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                data=new ArrayList<AllContact>();
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                   Log.e("child",child+" abc");
+                    data.add(new AllContact(child.child("competitive").getValue().toString(),child.child("created").getValue().toString(),child.child("credible").getValue().toString(),child.child("familyName").getValue().toString(),child.child("givenName").getValue().toString(),child.child("hasKids").getValue().toString(),
+                            child.child("homeowner").getValue().toString(),child.child("hungry").getValue().toString(),child.child("incomeOver40k").getValue().toString(),child.child("married").getValue().toString(),child.child("motivated").getValue().toString(),child.child("ofProperAge").getValue().toString(),child.child("peopleSkills").getValue().toString(),
+                            child.child("phoneNumber").getValue().toString(),child.child("rating").getValue().toString(),child.child("recruitRating").getValue().toString(),child.child("ref").getValue().toString()));
+
+                    Log.e("child",child.child("familyName").getValue()+" abc");
+                }
+                adapter=new ClientAdapter(getActivity(),data,role);
+                rView.setLayoutManager(layoutManager);
+                rView.setAdapter(adapter);
+
+
+
+
+
+
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+
 }
