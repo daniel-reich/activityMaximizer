@@ -1,7 +1,6 @@
 package Fragments;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,14 +15,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.ClientCertRequest;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -33,11 +30,10 @@ import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
- * Created by Surbhi on 16-02-2017.
+ * Created by Rohan on 3/3/2017.
  */
-public class AllContacts extends Fragment implements View.OnClickListener {
+public class ListContact extends Fragment implements View.OnClickListener {
 
-    Dialog helpdialog;
     RecyclerView rView;
     TextView Clients,Recruits;
     View view;
@@ -45,8 +41,10 @@ public class AllContacts extends Fragment implements View.OnClickListener {
     SharedPreferences pref;
     LinearLayoutManager layoutManager;
     ClientAdapter adapter;
-    ArrayList<AllContact> data;
-    String role="client";
+    ArrayList<AllContact> allContactArrayList;
+    ArrayList<AllContact> NoClientsArrayList;
+    ArrayList<AllContact> allClientsArrayList;
+    String name="";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,22 +57,27 @@ public class AllContacts extends Fragment implements View.OnClickListener {
         Clients.setSelected(true);
         Recruits.setSelected(false);
         rView=(RecyclerView)view.findViewById(R.id.rview);
-       // rView.setLayoutManager(layoutManager);
+        // rView.setLayoutManager(layoutManager);
         layoutManager=new LinearLayoutManager(getActivity());
+
+        name= getArguments().getString("givenName");
 
         pref=getActivity().getSharedPreferences("userpref",0);
         Firebase.setAndroidContext(getActivity());
 
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
 
-        getdatafromfirebase("client");
+        getallcontactsfromfirebase();
 
-        Log.e("AllContacts","Allcontacts");
 
-                ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
+
+
+        Log.e("name",name+"");
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        HomeActivity.title.setText("All Contacts");
+        HomeActivity.title.setText(name);
 
 
         return view;
@@ -82,10 +85,10 @@ public class AllContacts extends Fragment implements View.OnClickListener {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.findItem(R.id.menu).setVisible(true);
-        menu.findItem(R.id.menu).setIcon(R.mipmap.sort);
-        menu.findItem(R.id.list).setVisible(false);
-        //   menu.findItem(R.id.list).setIcon(R.mipmap.addlist);
+        menu.findItem(R.id.menu).setIcon(R.mipmap.addlist);
+        // menu.findItem(R.id.menu).setTitle("Add List");
+//        menu.findItem(R.id.list).setVisible(true);
+//        menu.findItem(R.id.list).setIcon(R.mipmap.addlist);
     }
 
     @Override
@@ -93,9 +96,16 @@ public class AllContacts extends Fragment implements View.OnClickListener {
         switch (item.getItemId())
         {
             case R.id.menu:
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new SortByFragment()).addToBackStack(null).commit();
-                break;
+                LisiAllContact basic_frag = new LisiAllContact();
+                Bundle args = new Bundle();
+                args.putString("givenName", name);
+                args.putSerializable("NoClientsArrayList",NoClientsArrayList);
+                basic_frag.setArguments(args);
 
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout,basic_frag).addToBackStack(null).commit();
+
+                break;
             case android.R.id.home:
                 getActivity().getSupportFragmentManager().popBackStack();
                 break;
@@ -122,24 +132,58 @@ public class AllContacts extends Fragment implements View.OnClickListener {
 
     public void getdatafromfirebase(final String role)
     {
+        mref.child("lists").child(pref.getString("uid","")).child(name).child("contacts").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                allClientsArrayList=new ArrayList<AllContact>();
+                NoClientsArrayList = new ArrayList<AllContact>();
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.e("child",child+" abc");
+                    for (AllContact allContact:allContactArrayList) {
+
+                        if(allContact.getRef().equalsIgnoreCase( child.child("ref").getValue().toString())){
+                            allClientsArrayList.add(allContact);
+                        }else
+                            NoClientsArrayList.add(allContact);
+
+
+                    }
+
+                }
+                Log.e("Exception","::"+allClientsArrayList.size());
+                adapter=new ClientAdapter(getActivity(),allClientsArrayList,role);
+                rView.setLayoutManager(layoutManager);
+                rView.setAdapter(adapter);
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+
+
+    public void getallcontactsfromfirebase()
+    {
         mref.child("contacts").child(pref.getString("uid","")).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
                 Log.e("get data from server",dataSnapshot.getValue()+" data");
-                data=new ArrayList<AllContact>();
+                allContactArrayList=new ArrayList<AllContact>();
 
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                   Log.e("child",child+" abc");
-                    data.add(new AllContact(child.child("competitive").getValue().toString(),child.child("created").getValue().toString(),child.child("credible").getValue().toString(),child.child("familyName").getValue().toString(),child.child("givenName").getValue().toString(),child.child("hasKids").getValue().toString(),
+                    Log.e("child",child+" abc");
+                    allContactArrayList.add(new AllContact(child.child("competitive").getValue().toString(),child.child("created").getValue().toString(),child.child("credible").getValue().toString(),child.child("familyName").getValue().toString(),child.child("givenName").getValue().toString(),child.child("hasKids").getValue().toString(),
                             child.child("homeowner").getValue().toString(),child.child("hungry").getValue().toString(),child.child("incomeOver40k").getValue().toString(),child.child("married").getValue().toString(),child.child("motivated").getValue().toString(),child.child("ofProperAge").getValue().toString(),child.child("peopleSkills").getValue().toString(),
                             child.child("phoneNumber").getValue().toString(),child.child("rating").getValue().toString(),child.child("recruitRating").getValue().toString(),child.child("ref").getValue().toString()));
 
                     Log.e("child",child.child("familyName").getValue()+" abc");
                 }
-                adapter=new ClientAdapter(getActivity(),data,role);
-                rView.setLayoutManager(layoutManager);
-                rView.setAdapter(adapter);
+                getdatafromfirebase("client");
             }
             @Override
             public void onCancelled(FirebaseError error) {

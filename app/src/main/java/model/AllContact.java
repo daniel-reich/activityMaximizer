@@ -2,11 +2,13 @@ package model;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
+
 /**
  * Created by Rohan on 3/2/2017.
  */
 @IgnoreExtraProperties
-public class AllContact
+public class AllContact implements Serializable
 {
     String competitive,created,credible,familyName,givenName,hasKids,homeowner,hungry,incomeOver40k,
         married,motivated,ofProperAge,peopleSkills,phoneNumber,ref;

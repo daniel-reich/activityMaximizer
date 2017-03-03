@@ -100,7 +100,7 @@ public class CustomContactFragment extends Fragment
                     {
                         st_fname=st_fname+" "+st_lname;
                     }
-                    reflink= Constants.URL+uid+"/"+st_fname;
+                    reflink= Constants.URL+"contacts/"+uid+"/"+st_fname;
                     addNewContact();
 
                 }

@@ -12,7 +12,7 @@
         android:layout_centerVertical="true"
         android:src="@drawable/next"
         android:id="@+id/next"
-        android:visibility="gone"
+
         />
 
     <TextView

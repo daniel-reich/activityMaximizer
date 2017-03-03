@@ -1,6 +1,7 @@
 package Adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
@@ -10,24 +11,31 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import Fragments.ListContact;
-import Fragments.Need_to_Quality;
-import Fragments.Rating_info_fram;
 import model.AllContact;
 import model.AllList;
 import u.activitymanager.R;
+import utils.Constants;
 
 /**
- * Created by Rohan on 3/2/2017.
+ * Created by Rohan on 3/3/2017.
  */
-public class ListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ListAllContactAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context c;
-    ArrayList<AllList> data;
-    public ListAdapter(Context c, ArrayList<AllList> data) {
+    Firebase mref;
+    SharedPreferences pref;
+    ArrayList<AllContact> data;
+    String uid="",name="";
+    public ListAllContactAdapter(Context c, ArrayList<AllContact> data, String name) {
         this.c = c;
         this.data=data;
+        this.name=name;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -48,6 +56,10 @@ public class ListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> 
         {
             c=parent.getContext();
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listadapter, parent, false);
+            pref=c.getSharedPreferences("userpref",0);
+            Firebase.setAndroidContext(c);
+            mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+            uid=pref.getString("uid","");
             return new ViewHolder(view);
 
         }
@@ -57,20 +69,17 @@ public class ListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final ViewHolder holder1= (ViewHolder) holder;
-        holder1.username.setText(data.get(position).getName());
+        holder1.username.setText(data.get(position).getGivenName());
 
         holder1.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-                ListContact basic_frag = new ListContact();
-                Bundle args = new Bundle();
-                args.putString("givenName", data.get(position).getName());
-                basic_frag.setArguments(args);
-
-                ((FragmentActivity) c).getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, basic_frag).
-                        addToBackStack(null).commit();
+                String reflink= Constants.URL+"contacts/"+uid+"/"+data.get(position).getGivenName();
+                Map newlist = new HashMap();
+                newlist.put("ref",reflink);
+                mref.child("lists").child(uid).child(name).child("contacts")
+                        .child(data.get(position).getGivenName())
+                        .setValue(newlist);
             }
         });
 

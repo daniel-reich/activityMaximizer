@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -99,7 +100,7 @@ public class Need_to_Quality extends Fragment {
             public void onClick(View view) {
                 Rating_info_fram basic_frag = new Rating_info_fram();
                 Bundle args = new Bundle();
-                args.putString("givanname", givenName);
+                args.putString("givenName", givenName);
                 args.putString("phoneNumber", phoneNumber);
                 args.putString("competitive", competitive);
                 args.putString("created", created);
@@ -149,5 +150,17 @@ public class Need_to_Quality extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.findItem(R.id.menu).setVisible(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                getActivity().getSupportFragmentManager().popBackStack();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+
     }
 }
