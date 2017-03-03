@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+
+import Adapter.ContactActivityListAdapter;
 import Adapter.SelectNewActivityListAdapter;
 import u.activitymanager.R;
 
@@ -26,13 +29,27 @@ public class Activity_list_frag extends Fragment {
    public static Dialog dialog;
     RecyclerView rview;
     SelectNewActivityListAdapter adapter;
+
+  public static   ContactActivityListAdapter listadapter;
     LinearLayoutManager lManager;
+    public static JSONArray js;
     @Nullable
     @Override
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         v=inflater.inflate(R.layout.activity_list_frag,container,false);
+
+        lManager=new LinearLayoutManager(getActivity());
+
+        rview=(RecyclerView)v.findViewById(R.id.rview);
+
+        js=new JSONArray();
+
+        rview.setLayoutManager(lManager);
+        listadapter=new ContactActivityListAdapter(getActivity(),js);
+        rview.setAdapter(listadapter);
         tv_newactivity=(TextView)v.findViewById(R.id.tv_newactivity);
         tv_newactivity.setOnClickListener(new View.OnClickListener() {
             @Override

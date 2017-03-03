@@ -28,7 +28,7 @@ public class Need_to_Quality extends Fragment {
     TextView tv_name,tv_phone;
     ImageView tv_ratinginfo,tv_activitylist,tv_contactnotes;
     FrameLayout frameLayout;
-    String competitive,created,credible,familyName,givenName,hasKids,homeowner,hungry,incomeOver40k,married,motivated,ofProperAge,peopleSkills,phoneNumber,ref,rating,recruitRating;
+ public static    String competitive,created,credible,familyName,givenName,hasKids,homeowner,hungry,incomeOver40k,married,motivated,ofProperAge,peopleSkills,phoneNumber,ref,rating,recruitRating;
 
     @Nullable
     @Override
