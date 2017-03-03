@@ -49,7 +49,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     LinearLayoutManager layoutManager;
     RecyclerView rView;
     View view;
-    TextView AllContacts,tv_list;
+    TextView AllContacts,tv_list,tv_need_to_qualify;
     Dialog helpdialog,AddContactDialog,AddNewContact;
     Firebase mref;
     ListAdapter adapter;
@@ -75,7 +75,9 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         HomeActivity.title.setText("Contacts");
         AllContacts=(TextView)view.findViewById(R.id.tv_all_contacts);
+        tv_need_to_qualify=(TextView)view.findViewById(R.id.tv_need_to_qualify);
         tv_list=(TextView)view.findViewById(R.id.list_txt);
+        tv_need_to_qualify.setOnClickListener(this);
         AllContacts.setOnClickListener(this);
 
 //        tv_list.setOnClickListener(new View.OnClickListener() {
@@ -206,6 +208,10 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
             case R.id.tv_all_contacts:
                 Log.e("check","check");
              getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new AllContacts()).addToBackStack(null).commit();
+                break;
+            case R.id.tv_need_to_qualify:
+                Log.e("check","check");
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new NeedToQualify()).addToBackStack(null).commit();
                 break;
         }
     }

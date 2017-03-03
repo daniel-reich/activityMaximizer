@@ -31,11 +31,14 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import model.UserInfo;
+import model.*;
+import model.AllContacts;
 import register_frag.Login;
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
@@ -129,6 +132,27 @@ public class CustomContactFragment extends Fragment
     }
 
     private void addNewContact() {
+        java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
+        Log.e("Today is ", timeStampDate.getTime()+"");
+        String timestamp=String.valueOf(timeStampDate.getTime());
+        String noteref=Constants.URL+"contacts/"+uid+"/"+st_fname+"/notes/"+timestamp;
+
+
+
+        Map newnote = new HashMap();
+        newnote.put("content",et_note.getText().toString());
+        newnote.put("created",timestamp);
+        newnote.put("ref",noteref);
+
+        Map tms = new HashMap();
+        tms.put(timestamp,newnote);
+
+//        mref.child("contacts").child(uid)
+//                .child(st_fname).child("notes").child(timestamp)
+//                .setValue(newnote);
+
+
+
         Map newcontact = new HashMap();
         newcontact.put("competitive","false");
         newcontact.put("created","");
@@ -141,6 +165,7 @@ public class CustomContactFragment extends Fragment
         newcontact.put("incomeOver40k","false");
         newcontact.put("married","false");
         newcontact.put("motivated","false");
+        newcontact.put("notes",tms);
         newcontact.put("ofProperAge","true");
         newcontact.put("peopleSkills","true");
         newcontact.put("phoneNumber",st_phone);
@@ -151,6 +176,8 @@ public class CustomContactFragment extends Fragment
                 .child(uid)
                 .child(st_fname)
                 .setValue(newcontact);
+
+
 
         Alert();
     }
