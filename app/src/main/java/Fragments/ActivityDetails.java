@@ -66,7 +66,7 @@ public class ActivityDetails extends Fragment
             case R.id.menu:
                 // showFloatingMenus();
                 getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.frame_layout,new ActivityDetails()).addToBackStack(null).commit();
+                        replace(R.id.frame_layout,new ActivityFragments()).addToBackStack(null).commit();
                 break;
 
             case R.id.list:

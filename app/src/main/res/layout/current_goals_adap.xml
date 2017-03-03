@@ -13,6 +13,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_value"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="bottom"
@@ -26,17 +27,22 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_username"
+                android:id="@+id/tv_goalname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="abcc"/>
 
-            <LinearLayout
+            <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="10dp"
+                android:id="@+id/progressbar"
                 android:layout_marginTop="10dp"
-                android:background="#ccc"></LinearLayout>
+                android:progress="0"
+                android:progressDrawable="@drawable/progressbar_custom1"
+                android:layout_gravity="center_vertical"/>
+
 
         </LinearLayout>
 

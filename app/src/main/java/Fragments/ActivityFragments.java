@@ -66,14 +66,20 @@ public class ActivityFragments  extends Fragment
 
         pref=getActivity().getSharedPreferences("userpref",0);
 
-        list=getDates(pref.getString("filter_startdate",""),pref.getString("filter_enddate",""));
+        String e_date=pref.getString("filter_enddate","null");
+        String s_date=pref.getString("filter_startdate","null");
 
-        adapter=new ActivitiesAdapter(getActivity(),list);
-        activities.setAdapter(adapter);
+        if(e_date.equals("null")|s_date.equals("null")) {
+        }
+        else {
+            list = getDates(s_date, e_date);
+
+            adapter = new ActivitiesAdapter(getActivity(), list);
+            activities.setAdapter(adapter);
+        }
 
         return view;
     }
-
 
     private static List<String> getDates(String dateString1, String dateString2)
     {
@@ -84,8 +90,8 @@ public class ActivityFragments  extends Fragment
         Date date2 = null;
 
         try {
-            date1 = df1 .parse("Mar 03,2017");//
-            date2 = df1 .parse("Mar 15,2017");//dateString2
+            date1 = df1 .parse(dateString1);//
+            date2 = df1 .parse(dateString2);//dateString2
         } catch (ParseException e) {
             e.printStackTrace();
             Log.e("dateparse","e",e);
@@ -93,7 +99,6 @@ public class ActivityFragments  extends Fragment
 
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(date1);
-
 
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(date2);

@@ -98,10 +98,6 @@ public class ClientAdapter  extends  RecyclerView.Adapter<RecyclerView.ViewHolde
                 args.putString("ref", data.get(position).getRef().toString());
                 basic_frag.setArguments(args);
 
-;
-
-
-
                 ((FragmentActivity) c).getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, basic_frag).
                         addToBackStack(null).commit();
             }

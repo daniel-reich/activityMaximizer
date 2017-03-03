@@ -117,15 +117,86 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
 
         final String uid = user.getUid();
         Log.e("writeuserid",uid);
-        UserInfo userinfo = new UserInfo(pref.getString("givenName"," "), pref.getString("familyName"," "),
-                pref.getString("phone"," "),pref.getString("email"," "), uid,
-                " "," "," "," "," "," "," "," "," "," ", pref.getString("rvpsolutionnumber",""),
-                pref.getString("solutionnumber",""),pref.getString("state",""),pref.getString("trainersolutionnumber",""),
-                pref.getString("uplinesolutionnumber",""));
+
+        Map m1 = new HashMap();
+        m1.put("Closed_three_IBAs",false);
+        m1.put("Closed_three_IBAs_date", 0);
+        m1.put("Closed_three_life",false);
+        m1.put("Closed_three_life_date", 0);
+        m1.put("Fifty_KTs", false);
+        m1.put("Fifty_KTs_date", 0);
+        m1.put("First_call_from_app", false);
+        m1.put("First_call_from_app_date",0);
+        m1.put("First_contact_added", false);
+        m1.put("First_contact_added_date", 0);
+        m1.put("First_downline", false);
+        m1.put("First_downline_date",0);
+        m1.put("One_hundred_KTs", false);
+        m1.put("One_hundred_KTs_date", 0);
+        m1.put("One_week_eight_five_three_one",false);
+        m1.put("One_week_eight_five_three_one_date",0);
+        m1.put("Perfect_month", false);
+        m1.put("Perfect_month_date", 0);
+        m1.put("Perfect_week", false);
+        m1.put("Perfect_week_date", 0);
+        m1.put("Ten_five_point_clients", false);
+        m1.put("Ten_five_point_clients_date",0);
+        m1.put("Ten_five_point_recruits", false);
+        m1.put("Ten_five_point_recruits_date",0);
+        m1.put("Ten_new_contacts_added", false);
+        m1.put("Ten_new_contacts_added_date", 0);
+        m1.put("Thirty_New_contacts_added_date", 0);
+        m1.put("Thirty_new_contacts_added", false);
+        m1.put("Three_appointments_set",false);
+        m1.put("Three_appointments_set_date", 0);
+        m1.put("Top_speed", false);
+        m1.put("Top_speed_date", 0);
+        m1.put("Twenty_new_contacts_added", false);
+        m1.put("Twenty_new_contacts_added_date", 0);
+        m1.put("Two_hundred_KTs", false);
+        m1.put("Two_hundred_KTs_date",0);
+        m1.put("Two_week_eight_five_three_one", false);
+        m1.put("Two_week_eight_five_three_one_date", 0);
+        m1.put("Went_on_three_KTs",false);
+        m1.put("Went_on_three_KTs_date", 0);
+
+//        public String givenName,familyName,phoneNumber,email,uid;
+//        public String contactsAdded,  created, dailyPointAverages,fivePointClients,fivePointRecruits,
+//                partner_solution_number, partnerUID,profilePictureURL,ref,rvp_solution_number,solution_number,
+//                state,trainer_solution_number,upline_solution_number;
+
+        Map m2=new HashMap();
+
+        m2.put("givename",pref.getString("givenName"," "));
+        m2.put("familyName",pref.getString("familyName"," "));
+        m2.put("phoneNumber",pref.getString("phoneNumber"," "));
+        m2.put("email",pref.getString("email"," "));
+        m2.put("uid",uid);
+        m2.put("achievements",m1);
+        m2.put("contactsAdded","");
+        m2.put("created","");
+        m2.put("dailyPointAverages","");
+        m2.put("fivePointClients","");
+        m2.put("fivePointRecruits","");
+        m2.put("partner_solution_number","");
+        m2.put("partnerUID","");
+        m2.put("profilePictureURL","");
+        m2.put("ref","");
+        m2.put("rvp_solution_number","");
+        m2.put("solution_number",pref.getString("solutionnumber",""));
+        m2.put("state",pref.getString("state",""));
+        m2.put("trainer_solution_number",pref.getString("trainersolutionnumber",""));
+        m2.put("upline_solution_number",pref.getString("uplinesolutionnumber",""));
+
+//        UserInfo userinfo = new UserInfo(pref.getString("givenName"," "), pref.getString("familyName"," "),
+//                pref.getString("phone"," "),pref.getString("email"," "), uid,
+//                m1," "," "," "," "," "," "," "," "," ", pref.getString("rvpsolutionnumber",""),
+//                pref.getString("solutionnumber",""),pref.getString("state",""),pref.getString("trainersolutionnumber",""),
+//                pref.getString("uplinesolutionnumber",""));
 
         mref.child("users")
                 .child(uid)
-                .setValue(userinfo, new Firebase.CompletionListener() {
+                .setValue(m2, new Firebase.CompletionListener() {
                     @Override
                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                         if(firebaseError != null) {
@@ -134,7 +205,6 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
                             Log.e("Data saved successfull",firebase.getRef()+" ");
                             edit=pref.edit();
                             edit.putString("uid",uid);
-                            edit.putBoolean("signup",true);
                             edit.commit();
 
                             String uid=pref.getString("uid","");

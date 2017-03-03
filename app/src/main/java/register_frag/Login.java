@@ -62,8 +62,6 @@ public class Login extends Fragment implements View.OnClickListener {
         SplashActivity.title.setText("Login");
         setHasOptionsMenu(true);
 //
-
-
         Firebase.setAndroidContext(getActivity());
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -106,7 +104,7 @@ public class Login extends Fragment implements View.OnClickListener {
                 edit.putString("ref",dataSnapshot.child("ref").getValue()+"");
                 edit.putString("achievements",dataSnapshot.child("achievements").getValue()+"");
                 edit.putString("profilePictureURL",dataSnapshot.child("profilePictureURL").getValue()+"");
-
+                edit.putBoolean("signup",true);
                 edit.commit();
 
                 Intent i=new Intent(getActivity(),HomeActivity.class);

@@ -72,9 +72,8 @@ public class Filter_Frag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.filter_page,container,false);
-        setHasOptionsMenu(true);
-
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
+        setHasOptionsMenu(false);
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         HomeActivity.title.setText("Filters");
@@ -779,24 +778,22 @@ public class Filter_Frag extends Fragment {
         });
     }
 
-
-
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.findItem(R.id.menu).setIcon(R.mipmap.activity_detail);
+        menu.findItem(R.id.menu).setVisible(false);
         // menu.findItem(R.id.menu).setTitle("Add List");
-        menu.findItem(R.id.list).setVisible(true);
-        menu.findItem(R.id.list).setIcon(R.mipmap.filter);
+        menu.findItem(R.id.list).setVisible(false);
+//        menu.findItem(R.id.list).setIcon(R.mipmap.filter);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
 
             case android.R.id.home:
-                // getActivity().getSupportFragmentManager().popBackStack();
+                 getActivity().getSupportFragmentManager().popBackStack();
                 break;
 
             case R.id.menu:

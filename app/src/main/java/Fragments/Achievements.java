@@ -71,8 +71,8 @@ public class Achievements extends Fragment
 
     public void getdatafromfirebase()
     {
-        mref.child("users").child(pref.getString("uid","")).child("achievements").addValueEventListener(new ValueEventListener() {
-
+        mref.child("users").child(pref.getString("uid","")).child("achievements").
+                addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
                 Log.e("get data from server",dataSnapshot.getValue()+" data");
