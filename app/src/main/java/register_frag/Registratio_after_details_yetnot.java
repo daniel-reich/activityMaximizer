@@ -54,6 +54,10 @@ public class Registratio_after_details_yetnot extends Fragment implements View.O
         switch (view.getId())
         {
             case R.id.tv_dontknow:
+                edit=pref.edit();
+                edit.putString("rvpsolutionnumber",et_rvpnumber.getText().toString());
+                edit.commit();
+
                 getActivity().getSupportFragmentManager().beginTransaction().
                         replace(R.id.splash_layout,new Registratio_after_details_yetnot_dontknow()).addToBackStack(null).commit();
                 break;

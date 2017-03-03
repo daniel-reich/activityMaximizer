@@ -11,7 +11,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +38,8 @@ public class RegisterationDetail extends Fragment
     Toolbar toolbar;
     String st_sol_num,st__sol_num_conf,st_state;
     TextView Next;
-    EditText et_solutionnumber,et_solutionnumber_conf,et_state;
+    EditText et_solutionnumber,et_solutionnumber_conf;
+    Spinner sp_state;
     Firebase mref;
     FirebaseAuth firebaseAuth;
     DatabaseReference mDatabase;
@@ -59,7 +63,14 @@ public class RegisterationDetail extends Fragment
         Next=(TextView)v.findViewById(R.id.tv_register);
         et_solutionnumber=(EditText)v.findViewById(R.id.et_solution_number);
         et_solutionnumber_conf=(EditText)v.findViewById(R.id.et_solution_number_conf);
-        et_state=(EditText)v.findViewById(R.id.et_state);
+        sp_state=(Spinner)v.findViewById(R.id.sp_state);
+
+        String[] state = {"AL - Alabama", "AK - Alaska", "AZ - Arizona", "AR - Arkansas", "CA - California", "CO - Colorado", "CT - Connecticut", "DE - Delaware", "FL - Florida", "GA - Georgia", "HI - Hawaii", "ID - Idaho", "IL - Illinois", "IN - Indiana", "IA - Iowa", "KS - Kansas", "KY - Kentucky", "LA - Louisiana", "ME - Maine", "MD - Maryland", "MA - Massachusetts", "MI - Michigan", "MN - Minnesota", "MS - Mississippi", "MO - Missouri", "MT - Montana", "NE - Nebraska", "NV - Nevada", "NH - New Hampshire", "NJ - New Jersey", "NM - New Mexico", "NY - New York", "NC - North Carolina", "ND - North Dakota", "OH - Ohio", "OK - Oklahoma", "OR - Oregon", "PA - Pennsylvania", "RI - Rhode Island", "SC - South Caroina", "SD - South Dakota", "TN - Tennessee", "TX - Texas", "UT - Utah", "VT - Vermont", "VA - Virginia", "WA - Washington", "WV - West Virginia", "WI - Wisconson", "WY - Wyoming", "-", "AB - Alberta", "BC - British Columbia", "MB - Manitoba", "NB - New Brunswick", "NL - Newfoundland", "NS - Nova Scotia", "NT - Northwest Territories", "NU - Nunavut", "ON - Ontaria", "Prince Edward Island", "QC - Quebec", "SK - Saskatchewan", "YT - Yukon Territories"};
+
+
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, state); //selected item will look like a spinner set from XML
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp_state.setAdapter(spinnerArrayAdapter);
 
         Firebase.setAndroidContext(getActivity());
         pref=getActivity().getSharedPreferences("userpref",0);
@@ -68,23 +79,31 @@ public class RegisterationDetail extends Fragment
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
         firebaseAuth = FirebaseAuth.getInstance();
 
+        sp_state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                st_state=sp_state.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         Next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 st_sol_num=et_solutionnumber.getText().toString();
                 st__sol_num_conf=et_solutionnumber_conf.getText().toString();
-                st_state=et_state.getText().toString();
+
                 if(st_sol_num.length()<1){
                     Toast.makeText(getActivity(),"Pleaes enter Solution Number",Toast.LENGTH_LONG).show();
                     return;
                 }
                 if(!st_sol_num.equals(st__sol_num_conf)){
                     Toast.makeText(getActivity(),"Confirmation Solution Number Does't match",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if(st_state.length()<1){
-                    Toast.makeText(getActivity(),"Pleaes Enter State",Toast.LENGTH_LONG).show();
                     return;
                 }
 

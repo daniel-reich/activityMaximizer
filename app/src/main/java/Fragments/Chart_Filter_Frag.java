@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import Adapter.ActivitiesAdapter;
@@ -36,7 +38,8 @@ public class Chart_Filter_Frag extends Fragment
     Dialog helpdialog;
     View view;
     LinearLayout lay_team;
-    CheckBox cb_team;
+    CheckBox cb_team,cb_trainees,cb_personal;
+    ImageView iv_team,iv_trainees,iv_personal;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,16 +52,48 @@ public class Chart_Filter_Frag extends Fragment
         HomeActivity.title.setText("Chart Filters");
 
         cb_team=(CheckBox)view.findViewById(R.id.cb_team);
+        cb_trainees=(CheckBox)view.findViewById(R.id.cb_trainees);
+        cb_personal=(CheckBox)view.findViewById(R.id.cb_personal);
+
+        iv_team=(ImageView)view.findViewById(R.id.iv_team);
+        iv_trainees=(ImageView)view.findViewById(R.id.iv_trainees);
+        iv_personal=(ImageView)view.findViewById(R.id.iv_personal);
+
         lay_team=(LinearLayout)view.findViewById(R.id.lay_team);
 
-//        lay_team.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                getActivity().getSupportFragmentManager().beginTransaction().
-//                        replace(R.id.frame_layout,new Filter_Frag()).addToBackStack(null).commit();
-//            }
-//        });
-
+        cb_team.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b) {
+                    iv_team.setImageResource(R.drawable.checkmark_bl24);
+                }
+                else{
+                    iv_team.setImageBitmap(null);
+                }
+            }
+        });
+        cb_trainees.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b) {
+                    iv_trainees.setImageResource(R.drawable.checkmark_bl24);
+                }
+                else{
+                    iv_trainees.setImageBitmap(null);
+                }
+            }
+        });
+        cb_personal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b) {
+                    iv_personal.setImageResource(R.drawable.checkmark_bl24);
+                }
+                else{
+                    iv_personal.setImageBitmap(null);
+                }
+            }
+        });
 
         return view;
     }

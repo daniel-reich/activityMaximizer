@@ -45,15 +45,11 @@
                 android:layout_marginTop="6dp"
 
                 />
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/et_state"
-                android:fontFamily="sans-serif"
-                android:textSize="15sp"
-                android:hint="State"
-
-                />
+           <Spinner
+               android:id="@+id/sp_state"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+           </Spinner>
 
 
         </LinearLayout>

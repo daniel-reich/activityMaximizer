@@ -77,7 +77,7 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
 
         tv_name.setText(pref.getString("givenName",""));
         tv_email.setText(pref.getString("email",""));
-        tv_phone.setText(pref.getString("phone",""));
+        tv_phone.setText(pref.getString("phoneNumber",""));
         tv_state.setText(pref.getString("state",""));
         tv_rvpnumber.setText(pref.getString("rvpsolutionnumber",""));
         tv_solutionnumber.setText(pref.getString("solutionnumber",""));
