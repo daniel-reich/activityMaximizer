@@ -35,7 +35,6 @@ public class ActivitiesAdapter  extends  RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = null;
-
         {
             final Context c=parent.getContext();
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_adapter, parent, false);

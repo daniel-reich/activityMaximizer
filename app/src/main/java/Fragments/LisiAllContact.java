@@ -65,7 +65,7 @@ public class LisiAllContact extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         HomeActivity.title.setText(name);
-        adapter=new ListAllContactAdapter(getActivity(),NoClientsArrayList,name);
+        adapter=new ListAllContactAdapter(getActivity(),NoClientsArrayList,name,getActivity().getSupportFragmentManager());
         rView.setLayoutManager(layoutManager);
         rView.setAdapter(adapter);
         return view;
