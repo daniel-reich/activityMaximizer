@@ -117,9 +117,14 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 //        getdatafromfirebase();
 
         options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.userprofile)
+                .showImageOnFail(R.drawable.userprofile)
+                .showImageForEmptyUri(R.drawable.userprofile)
                 .cacheInMemory(false)
                 .cacheOnDisk(true)
                 .build();
+
+        Log.e("profilepic",pref.getString("profilePictureURL","null image path"));
 
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));

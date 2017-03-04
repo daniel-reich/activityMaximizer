@@ -20,6 +20,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,6 +79,8 @@ public class Goals_Tracker extends Fragment {
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
         pref=getActivity().getSharedPreferences("userpref",0);
 
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
 //        obj=new JSONObject();
 
 //        try {
@@ -122,9 +125,11 @@ public class Goals_Tracker extends Fragment {
                         obj.put("startDate",messageSnapshot.child("startDate").getValue());
                         obj.put("endDate",messageSnapshot.child("endDate").getValue());
                         obj.put("finished",messageSnapshot.child("finished").getValue());
+
 //                        DataSnapshot activitycount= (DataSnapshot) messageSnapshot.child("activityCount").getValue();
 
 //                        Object activity=messageSnapshot.child("activityCount").getValue();
+
                         Map<String, Object> activitycount = (Map<String, Object>) messageSnapshot.child("activityCount").getValue();
                         obj1.put("Appointment Set",activitycount.get("Appointments Set").toString());
                         obj1.put("Closed Life",activitycount.get("Closed Life").toString());

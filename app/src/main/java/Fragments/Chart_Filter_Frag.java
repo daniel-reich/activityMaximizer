@@ -1,6 +1,7 @@
 package Fragments;
 
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +24,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import Adapter.ActivitiesAdapter;
 import u.activitymanager.HomeActivity;
@@ -40,6 +45,9 @@ public class Chart_Filter_Frag extends Fragment
     LinearLayout lay_team;
     CheckBox cb_team,cb_trainees,cb_personal;
     ImageView iv_team,iv_trainees,iv_personal;
+    JSONObject obj;
+    SharedPreferences pref;
+    SharedPreferences.Editor edit;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,6 +59,8 @@ public class Chart_Filter_Frag extends Fragment
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         HomeActivity.title.setText("Chart Filters");
 
+        pref=getActivity().getSharedPreferences("userpref",0);
+
         cb_team=(CheckBox)view.findViewById(R.id.cb_team);
         cb_trainees=(CheckBox)view.findViewById(R.id.cb_trainees);
         cb_personal=(CheckBox)view.findViewById(R.id.cb_personal);
@@ -61,15 +71,37 @@ public class Chart_Filter_Frag extends Fragment
 
         lay_team=(LinearLayout)view.findViewById(R.id.lay_team);
 
+        obj=new JSONObject();
+
+        try {
+            obj=new JSONObject(pref.getString("chart_filter",""));
+            setdata(obj);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         cb_team.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b) {
                     iv_team.setImageResource(R.drawable.checkmark_bl24);
+                    try {
+                        obj.put("team",true);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else{
                     iv_team.setImageBitmap(null);
+                    try {
+                        obj.put("team",false);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+                edit=pref.edit();
+                edit.putString("chart_filter",obj+"");
+                edit.commit();
             }
         });
         cb_trainees.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -77,10 +109,23 @@ public class Chart_Filter_Frag extends Fragment
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b) {
                     iv_trainees.setImageResource(R.drawable.checkmark_bl24);
+                    try {
+                        obj.put("trainees",true);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else{
                     iv_trainees.setImageBitmap(null);
+                    try {
+                        obj.put("trainees",false);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+                edit=pref.edit();
+                edit.putString("chart_filter",obj+"");
+                edit.commit();
             }
         });
         cb_personal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -88,15 +133,70 @@ public class Chart_Filter_Frag extends Fragment
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b) {
                     iv_personal.setImageResource(R.drawable.checkmark_bl24);
+                    try {
+                        obj.put("personal",true);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else{
                     iv_personal.setImageBitmap(null);
+                    try {
+                        obj.put("personal",false);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+                edit=pref.edit();
+                edit.putString("chart_filter",obj+"");
+                edit.commit();
             }
         });
 
         return view;
     }
+
+    public void setdata(JSONObject object) {
+
+        try {
+            Log.e("value", object + "");
+
+            if (object.has("team")) {
+                if (object.getBoolean("team")) {
+                    cb_team.setChecked(true);
+                    iv_team.setImageResource(R.drawable.checkmark_bl24);
+                } else {
+                    cb_team.setChecked(false);
+                    iv_team.setImageBitmap(null);
+                }
+            }
+            if (object.has("trainees")) {
+                if (object.getBoolean("trainees")) {
+                    cb_trainees.setChecked(true);
+                    iv_trainees.setImageResource(R.drawable.checkmark_bl24);
+                } else {
+                    cb_trainees.setChecked(false);
+                    iv_trainees.setImageBitmap(null);
+                }
+            }
+            if (object.has("personal")) {
+                if (object.getBoolean("personal")) {
+                    cb_personal.setChecked(true);
+                    iv_personal.setImageResource(R.drawable.checkmark_bl24);
+                } else {
+                    cb_personal.setChecked(false);
+                    iv_personal.setImageBitmap(null);
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);

@@ -72,11 +72,12 @@ public class Filter_Frag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.filter_page,container,false);
-        setHasOptionsMenu(false);
+        setHasOptionsMenu(true);
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        HomeActivity.title.setText("Filters");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.backarrow);
+        HomeActivity.title.setText("Filters1");
 
         pref=getActivity().getSharedPreferences("userpref",0);
 
@@ -782,6 +783,7 @@ public class Filter_Frag extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.findItem(R.id.menu).setVisible(false);
+
         // menu.findItem(R.id.menu).setTitle("Add List");
         menu.findItem(R.id.list).setVisible(false);
 //        menu.findItem(R.id.list).setIcon(R.mipmap.filter);
@@ -793,18 +795,19 @@ public class Filter_Frag extends Fragment {
         {
 
             case android.R.id.home:
+                Log.e("back","back pressed");
                  getActivity().getSupportFragmentManager().popBackStack();
                 break;
 
-            case R.id.menu:
-                // showFloatingMenus();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ActivityDetails()).addToBackStack(null).commit();
-                break;
-
-            case R.id.list:
-                // showFloatingMenus();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ActivityDetails()).commit();
-                break;
+//            case R.id.menu:
+//                // showFloatingMenus();
+//                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ActivityDetails()).addToBackStack(null).commit();
+//                break;
+//
+//            case R.id.list:
+//                // showFloatingMenus();
+//                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ActivityDetails()).commit();
+//                break;
         }
         return super.onOptionsItemSelected(item);
     }

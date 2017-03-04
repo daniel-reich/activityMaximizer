@@ -27,7 +27,7 @@ import u.activitymanager.R;
 public class DownlineFragment extends Fragment implements View.OnClickListener {
     View view;
     Dialog helpdialog;
-    TextView team,trainees;
+    TextView team,trainees,tv_direct;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,8 +44,19 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         HomeActivity.title.setText("Downline");
-        return view;
 
+        tv_direct=(TextView)view.findViewById(R.id.tv_direct);
+
+        tv_direct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.frame_layout,new Downline_details_frag()).addToBackStack(null).commit();
+            }
+        });
+
+
+        return view;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

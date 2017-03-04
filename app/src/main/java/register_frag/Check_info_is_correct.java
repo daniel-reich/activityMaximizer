@@ -74,7 +74,7 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
 
         pref=getActivity().getSharedPreferences("userpref",0);
-
+        
         tv_name.setText(pref.getString("givenName",""));
         tv_email.setText(pref.getString("email",""));
         tv_phone.setText(pref.getString("phoneNumber",""));

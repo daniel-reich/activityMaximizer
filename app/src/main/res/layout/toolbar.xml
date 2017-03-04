@@ -21,21 +21,19 @@
                 android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-medium"
                 android:textSize="20sp"
-
                 android:textColor="#fff"/>
+
         <TextView
             android:id="@+id/menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="MENU"
             android:layout_centerVertical="true"
-           android:layout_alignParentRight="true"
+            android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:fontFamily="sans-serif"
             android:textSize="17sp"
-
-
             android:textColor="#fff"/>
+
     </RelativeLayout>
     </android.support.v7.widget.Toolbar>
-

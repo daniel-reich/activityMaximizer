@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -41,6 +42,7 @@ import java.util.Map;
 
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
+import utils.Constants;
 import utils.NetworkConnection;
 
 /**
@@ -194,6 +196,30 @@ public class Add_New_Goal extends Fragment implements View.OnClickListener {
             return;
         }
 
+        Map m3 = new HashMap();
+
+        if(Integer.parseInt(tv_appoint_set.getText().toString())>0)
+            m3.put("Appointments Set",0);
+
+        if(Integer.parseInt(tv_close_iba.getText().toString())>0)
+            m3.put("Closed IBA",0);
+
+        if(Integer.parseInt(tv_close_life.getText().toString())>0)
+            m3.put("Closed Life",0);
+
+        if(Integer.parseInt(tv_close_other_bus.getText().toString())>0)
+            m3.put("Closed Other Business",0);
+
+        if(Integer.parseInt(tv_contactsadded.getText().toString())>0)
+            m3.put("Contacts Added",0);
+
+        if(Integer.parseInt(tv_totalprem.getText().toString())>0)
+            m3.put("Total Premium",0);
+
+        if(Integer.parseInt(tv_went_on_kt.getText().toString())>0)
+            m3.put("Went on KT",0);
+
+
         String tms= String.valueOf(System.currentTimeMillis());
         Log.e("update success","update success");
 
@@ -212,8 +238,9 @@ public class Add_New_Goal extends Fragment implements View.OnClickListener {
         newUserData.put("endDate",tv_enddate.getText().toString()+" "+tv_endtime.getText().toString());
         newUserData.put("startDate",tv_startdate.getText().toString()+" "+tv_starttime.getText().toString());
         newUserData.put("activityCount",m1);
+        newUserData.put("currentCount",m3);
         newUserData.put("title",tv_goalname.getText().toString());
-        newUserData.put("ref","https://activitymaximizer.firebaseio.com/users/WHLfPP6Wv2TlKIfBU48ITnpwJ0C2/Goals/"+tms);
+        newUserData.put("ref", Constants.URL+"users/"+pref.getString("uid","")+"Goals/"+tms);
         mref.child("users").child(pref.getString("uid","")).child("Goals").child(tms).updateChildren(newUserData);
     }
 
@@ -263,6 +290,14 @@ public class Add_New_Goal extends Fragment implements View.OnClickListener {
         final EditText et_text=(EditText)dialog.findViewById(R.id.et_name);
 
         tv_title.setText(v);
+
+        if(v.equalsIgnoreCase("New Name")){
+            et_text.setInputType(InputType.TYPE_CLASS_TEXT);
+        }
+        else {
+            et_text.setInputType(InputType.TYPE_CLASS_NUMBER);
+        }
+
 
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
