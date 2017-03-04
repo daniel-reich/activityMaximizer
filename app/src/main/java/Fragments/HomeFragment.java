@@ -1,12 +1,15 @@
 package Fragments;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,6 +37,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -60,6 +64,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     String start_date,end_date;
     SharedPreferences.Editor edit;
     private Handler handler;
+    int  REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS=124;
     private Runnable runnable;
     @Nullable
     @Override
@@ -86,6 +91,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         pref=getActivity().getSharedPreferences("userpref",0);
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
         firebaseAuth = FirebaseAuth.getInstance();
+        AskMarshMallowPermissions();
         getTime();
         lay_day.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,33 +121,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     date = new Date();
                     date.setTime(dbl.longValue() * 1000);
                     Log.e("date_time", date + "");
-//                    DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-//                    date= df.parse(date+"");
-//                    end_date=date+"";
-//                    Calendar calobj = Calendar.getInstance();
-//                    start_date=df.format(calobj.getTime());
 
-//                    Date now = new Date();
-//                    now.setTime(System.currentTimeMillis()/1000);
-//                    Log.e("now",now+"");
 
                  countDownStart();
-//                    try{
-//                      //  SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:sss");
-//
-//
-//                        if (d.compareTo(date)<0)
-//                        {
-//                            Log.e("greater","date is Greater");
-//                            calculateDifference(d,date);
-//
-//                        }
-//                        else
-//                        {
-//                            Log.e("greater","d is Greater");
-//
-//
-//                        }
+
 
                     }catch (Exception e1){
                         e1.printStackTrace();
@@ -163,7 +146,57 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
 
 
+    private void AskMarshMallowPermissions() {
+        List<String> permissionsNeeded = new ArrayList<String>();
 
+        final List<String> permissionsList = new ArrayList<String>();
+        if (!addPermission(permissionsList, Manifest.permission.READ_CONTACTS))
+            permissionsNeeded.add("READ_CONTACTS");
+        if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            permissionsNeeded.add("WRITE_EXTERNAL_STORAGE");
+        if (!addPermission(permissionsList, Manifest.permission.INTERNET))
+            permissionsNeeded.add("INTERNET");
+        if (!addPermission(permissionsList, Manifest.permission.CAMERA))
+            permissionsNeeded.add("CAMERA");
+
+
+        if (permissionsList.size() > 0) {
+//            if (permissionsNeeded.size() > 0) {
+//                // Need Rationale
+//                String message = "You need to grant access to " + permissionsNeeded.get(0);
+//                for (int i = 1; i < permissionsNeeded.size(); i++)
+//                    message = message + ", " + permissionsNeeded.get(i);
+//                showMessageOKCancel(message,
+//                        new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
+                        REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+//                                }
+//                            }
+//                        });
+//                return;
+//            }
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
+//                            REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+            }
+            return;
+        }
+    }
+
+    private boolean addPermission(List<String> permissionsList, String permission) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getActivity().checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                permissionsList.add(permission);
+                // Check for Rationale Option
+                if (!shouldShowRequestPermissionRationale(permission))
+                    return false;
+            }
+        }
+        return true;
+    }
 
 
     public void countDownStart() {
