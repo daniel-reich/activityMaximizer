@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,6 +47,7 @@ public class LisiAllContact extends Fragment {
     ArrayList<AllContact> NoClientsArrayList;
     String uid;
     String name;
+    FragmentManager fm;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class LisiAllContact extends Fragment {
         rView=(RecyclerView)view.findViewById(R.id.rview);
         // rView.setLayoutManager(layoutManager);
         layoutManager=new LinearLayoutManager(getActivity());
+        fm=getActivity().getSupportFragmentManager();
 
         pref=getActivity().getSharedPreferences("userpref",0);
         Firebase.setAndroidContext(getActivity());
@@ -71,7 +74,7 @@ public class LisiAllContact extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         HomeActivity.title.setText(name);
-        adapter=new ListAllContactAdapter(getActivity(),NoClientsArrayList,name);
+        adapter=new ListAllContactAdapter(getActivity(),NoClientsArrayList,name,fm);
         rView.setLayoutManager(layoutManager);
         rView.setAdapter(adapter);
 
@@ -81,7 +84,7 @@ public class LisiAllContact extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 //        menu.findItem(R.id.menu).setVisible(true);
-//        menu.findItem(R.id.menu).setIcon(R.mipmap.sort);
+//        menu.findItem(R.id.menu).setTitle("Save");
 //        menu.findItem(R.id.list).setVisible(false);
         //   menu.findItem(R.id.list).setIcon(R.mipmap.addlist);
     }
@@ -91,7 +94,7 @@ public class LisiAllContact extends Fragment {
         switch (item.getItemId())
         {
 //            case R.id.menu:
-//                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new SortByFragment()).addToBackStack(null).commit();
+//                getActivity().getSupportFragmentManager().popBackStack();
 //                break;
 
             case android.R.id.home:

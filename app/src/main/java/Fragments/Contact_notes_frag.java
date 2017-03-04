@@ -20,7 +20,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -28,7 +31,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import Adapter.ListAdapter;
 import Adapter.Note_Adapter;
+import model.AllList;
 import model.AllNote;
 import u.activitymanager.R;
 import utils.Constants;
@@ -81,7 +86,7 @@ public class Contact_notes_frag extends Fragment {
             }
         });
 
-
+        getnotefromfirebase();
         return v;
     }
 
@@ -135,8 +140,8 @@ public class Contact_notes_frag extends Fragment {
         newnote.put("created",timestamp);
         newnote.put("ref",reflink);
 
-        Map tms = new HashMap();
-        tms.put(timestamp,newnote);
+//        Map tms = new HashMap();
+//        tms.put(timestamp,newnote);
 
 //        mref.child("contacts").child(uid)
 //                .child(st_fname).child("notes").child(timestamp)
@@ -144,13 +149,46 @@ public class Contact_notes_frag extends Fragment {
 
 
 
-        Map newcontact = new HashMap();
-        newcontact.put("notes",tms);
+//        Map newcontact = new HashMap();
+//        newcontact.put("notes",newnote);
+
         mref.child("contacts")
                 .child(uid)
-                .child(name)
-                .updateChildren(newcontact);
+                .child(name).child("notes").child(timestamp)
+                .updateChildren(newnote);
+        getnotefromfirebase();
     }
 
+    public void getnotefromfirebase()
+    {
+        mref.child("contacts").child(pref.getString("uid","")).child(name).child("notes").addValueEventListener(new ValueEventListener() {
 
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                data=new ArrayList<AllNote>();
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.e("child",child.getKey()+" abc");
+                    data.add(new AllNote(child.child("content").getValue().toString(),child.child("created").getValue().toString(),child.child("ref").getValue().toString()));
+
+                    Log.e("child",child.child("content").getValue()+" abc");
+                }
+                adapter=new Note_Adapter(getActivity(),data);
+                rView.setLayoutManager(layoutManager);
+                rView.setAdapter(adapter);
+
+
+
+
+
+
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
 }

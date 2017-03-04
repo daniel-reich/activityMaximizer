@@ -175,12 +175,30 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         AddContactDialog.show();
         TextView Custom=(TextView)AddContactDialog.findViewById(R.id.tv_custom);
+        TextView tv_import=(TextView)AddContactDialog.findViewById(R.id.tv_import);
+        TextView tv_cancel=(TextView)AddContactDialog.findViewById(R.id.tv_cancel);
         Custom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AddContactDialog.dismiss();
                 getActivity().getSupportFragmentManager().beginTransaction().
                         replace(R.id.frame_layout,new CustomContactFragment()).addToBackStack(null).commit();
+            }
+        });
+
+        tv_import.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddContactDialog.dismiss();
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.frame_layout,new Import_Contact_Frag()).addToBackStack(null).commit();
+            }
+        });
+
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddContactDialog.dismiss();
             }
         });
     }

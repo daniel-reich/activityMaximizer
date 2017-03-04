@@ -59,12 +59,11 @@
                 android:text="Import"
                 android:textSize="18sp"
                 android:textColor="@color/blue"
-                android:id="@+id/tv_admin"
+                android:id="@+id/tv_import"
                 android:gravity="center"
                 android:paddingBottom="11dp"
                 android:paddingTop="11dp"
                 android:paddingRight="8dp"
-
                 android:paddingLeft="8dp"/>
 
         </LinearLayout>
@@ -83,6 +82,7 @@
         android:layout_marginTop="6dp"
         app:cardCornerRadius="5dp">
         <TextView
+            android:id="@+id/tv_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"

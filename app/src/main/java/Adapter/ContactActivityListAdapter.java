@@ -37,11 +37,12 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
     private Firebase mref;
 
     JSONArray array;
+    String str="";
 
-    public ContactActivityListAdapter(Context context, JSONArray array) {
+    public ContactActivityListAdapter(Context context, JSONArray array,String str) {
         this.context = context;
         this.array=array;
-
+        this.str=str;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -59,16 +60,33 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
         viewHolder.current_leader.setText(android.get(i).getCurrent_leader());*/
         try {
-            viewHolder.tv_activity_list.setText(array.getJSONObject(i).getString("name"));
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy' 'HH:mm:ss");
+            if(str.equalsIgnoreCase("simple")) {
 
-           long time=Long.parseLong(array.getJSONObject(i).getString("time"));
+                viewHolder.tv_activity_list.setText(array.getJSONObject(i).getString("name"));
 
-            viewHolder.timestamp.setText(simpleDateFormat.format(time));
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy' 'hh:mm a");
+
+                long time = Long.parseLong(array.getJSONObject(i).getString("time"));
+
+                viewHolder.timestamp.setText(simpleDateFormat.format(time));
 
 
-            Log.e("inside","oo");
+                Log.e("inside", "oo");
+            }
+            else if(str.equalsIgnoreCase("all"))
+            {
+                viewHolder.tv_activity_list.setText(array.getJSONObject(i).getString("type"));
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy' 'hh:mm a");
+
+                long time = Long.parseLong(array.getJSONObject(i).getString("date"));
+
+                viewHolder.timestamp.setText(simpleDateFormat.format(time));
+
+
+                Log.e("inside", "oo");
+            }
 
         } catch (Exception e) {
 

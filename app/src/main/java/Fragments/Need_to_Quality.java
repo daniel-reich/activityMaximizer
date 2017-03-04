@@ -130,8 +130,14 @@ public class Need_to_Quality extends Fragment {
         tv_activitylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Activity_list_frag basic_frag = new Activity_list_frag();
+                Bundle args = new Bundle();
+                args.putString("givenName", givenName);
+                basic_frag.setArguments(args);
+
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout1,new Activity_list_frag()).addToBackStack(null).commit();
+                        .replace(R.id.frame_layout1,basic_frag).addToBackStack(null).commit();
             }
         });
 
