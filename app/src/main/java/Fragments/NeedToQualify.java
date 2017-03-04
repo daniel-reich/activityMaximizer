@@ -122,7 +122,7 @@ public class NeedToQualify extends Fragment implements View.OnClickListener {
         mref.child("contacts").child(pref.getString("uid","")).addValueEventListener(new ValueEventListener() {
 
             @Override
-            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("get data from server",dataSnapshot.getValue()+" data");
                 data=new ArrayList<AllContact>();
 

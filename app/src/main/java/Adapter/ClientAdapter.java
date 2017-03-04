@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ public class ClientAdapter  extends  RecyclerView.Adapter<RecyclerView.ViewHolde
         View view = null;
 
         {
+            Log.e("enter","enter");
             c=parent.getContext();
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.clients_adapter, parent, false);
             return new ViewHolder(view);
