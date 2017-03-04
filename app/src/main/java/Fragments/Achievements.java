@@ -54,14 +54,18 @@ public class Achievements extends Fragment
 //        HomeActivity.tv_back.setText("Back");
        // setHasOptionsMenu(false);
 
+
         gridView=(GridView)v.findViewById(R.id.gridview);
 
         Firebase.setAndroidContext(getActivity());
+
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
         firebaseAuth = FirebaseAuth.getInstance();
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
         pref=getActivity().getSharedPreferences("userpref",0);
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
 
         Log.e("uid",pref.getString("uid",""));
 //        try {
