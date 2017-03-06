@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,11 +36,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
 import Adapter.ActivitiesAdapter;
 import Adapter.PostsAdapter;
+import model.Activities;
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
@@ -53,7 +56,7 @@ public class ActivityFragments  extends Fragment
     ActivitiesAdapter adapter;
     Dialog helpdialog;
     View view;
-    List<String> list;
+    List<Activities> list;
 
     SharedPreferences pref;
     SharedPreferences.Editor edit;
@@ -73,19 +76,21 @@ public class ActivityFragments  extends Fragment
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         HomeActivity.title.setText("Activity");
 
+
+
         pref=getActivity().getSharedPreferences("userpref",0);
+        DateFormat targetFormat = new SimpleDateFormat("MMM dd,yyyy");
 
-        String e_date=pref.getString("filter_enddate","null");
-        String s_date=pref.getString("filter_startdate","null");
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DATE, 15);
+        Date  date1 = calendar.getTime();
 
-        if(e_date.equals("null")|s_date.equals("null")) {
-        }
-        else {
-            list = getDates(s_date, e_date);
+        String e_date=pref.getString("filter_enddate",targetFormat.format(date1));
+        String s_date=pref.getString("filter_startdate",targetFormat.format(new Date()));
 
-            adapter = new ActivitiesAdapter(getActivity(), list);
-            activities.setAdapter(adapter);
-        }
+
+
 
 
         getdatafromfirebase();
@@ -108,11 +113,19 @@ public class ActivityFragments  extends Fragment
                 try {
 
 
-                    String e_date=pref.getString("filter_enddate","null");
-                    String s_date=pref.getString("filter_startdate","null");
-
 
                     DateFormat targetFormat = new SimpleDateFormat("MMM dd,yyyy");
+
+                    Calendar calendar = new GregorianCalendar();
+                    calendar.setTime(new Date());
+                    calendar.add(Calendar.DATE, 15);
+                  Date  date1 = calendar.getTime();
+
+                    String e_date=pref.getString("filter_enddate",targetFormat.format(date1));
+                    String s_date=pref.getString("filter_startdate",targetFormat.format(new Date()));
+
+
+
 
 
 
@@ -123,6 +136,8 @@ public class ActivityFragments  extends Fragment
 
 
                     Log.e("filter",e_date+","+s_date);
+
+                    list = getDates(s_date, e_date);
 
                     for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
                         JSONObject json=new JSONObject();
@@ -136,11 +151,185 @@ public class ActivityFragments  extends Fragment
 
                         Date date=new Date(Long.parseLong(key));
 
+                        boolean result;
+
+                       switch(messageSnapshot.child("type").getValue().toString())
+
+                       {
 
 
 
 
-                        array.put(json);
+                           case "Set Appointment":
+
+
+                              result=
+
+
+
+
+
+
+                               break;
+
+                           case "Went on KT":
+
+
+                               dosomething(date,2);
+
+                               break;
+
+                           case "Closed Life":
+
+
+                               dosomething(date,3);
+
+                               break;
+
+
+                           case "Closed IBA":
+
+
+                               dosomething(date,4);
+
+                               break;
+
+
+                           case "Closed Other Business":
+
+                               dosomething(date,5);
+                               break;
+
+                           case "Appt Set To Closed Life":
+
+                               dosomething(date,6);
+
+                               break;
+
+
+                           case "Appt Set To Closed IBA":
+
+                               dosomething(date,7);
+
+                               break;
+
+                           case "Call Back":
+
+                               dosomething(date,8);
+
+                               break;
+
+
+                           case "Invited to Opportunity Meeting":
+
+                               dosomething(date,9);
+                               break;
+
+                           case "Went To Opportunity Meeting":
+
+                               dosomething(date,10);
+                               break;
+
+
+                           case "Dark House":
+
+                               dosomething(date,11);
+
+
+                               break;
+
+
+                           case "Not Intrested":
+
+                               dosomething(date,12);
+
+
+                               break;
+
+
+
+
+
+
+                       }
+
+
+
+
+                        for(int i=0;i<list.size();i++)
+
+                        {
+
+
+
+
+                            if(isSameDay(date,new Date(list.get(i).getTime())))
+
+                            {
+                                if(list.get(i).getJson().length()<=0)
+                                {
+
+                                    JSONArray json_data=new JSONArray();
+
+                                    JSONObject json_obj=new JSONObject();
+
+                                    json_obj.put("userName",messageSnapshot.child("userName").getValue().toString());
+                                    json_obj.put("contactName",messageSnapshot.child("contactName").getValue().toString());
+                                    json_obj.put("type",messageSnapshot.child("type").getValue().toString());
+                                    json_obj.put("date",messageSnapshot.child("date").getValue().toString());
+
+
+
+
+
+
+                                    Log.e("json",json_obj+"");
+                                    json_data.put(json_obj);
+
+
+
+                                    list.get(i).setJson(json_data.toString());
+
+                                }
+
+                                else
+
+                                {
+                                    JSONArray json_data=new JSONArray(list.get(i).getJson());
+
+                                    JSONObject json_obj=new JSONObject();
+
+
+                                    json_obj.put("userName",messageSnapshot.child("userName").getValue().toString());
+                                    json_obj.put("contactName",messageSnapshot.child("contactName").getValue().toString());
+                                    json_obj.put("type",messageSnapshot.child("type").getValue().toString());
+                                    json_obj.put("date",messageSnapshot.child("date").getValue().toString());
+
+                                    json_data.put(json_obj);
+
+                                    Log.e("json",json_obj+"");
+
+                                    list.get(i).setJson(json_data.toString());
+                                }
+
+                            }
+
+
+
+
+
+
+
+
+                        }
+
+
+
+
+
+
+
+                        //array.put(json);
 
                     }
 
@@ -148,7 +337,18 @@ public class ActivityFragments  extends Fragment
 
 
 
-                    Log.e("json",array.toString());
+
+
+
+
+
+
+
+                    adapter = new ActivitiesAdapter(getActivity(), list);
+                    activities.setAdapter(adapter);
+
+
+
 
 
                 } catch (Exception e) {
@@ -168,12 +368,24 @@ public class ActivityFragments  extends Fragment
     }
 
 
+    private boolean isSameDay(Date date1, Date date2) {
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.setTime(date1);
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTime(date2);
+        boolean sameYear = calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR);
+        boolean sameMonth = calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH);
+        boolean sameDay = calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH);
+        return (sameDay && sameMonth && sameYear);
+    }
 
 
 
-    private static List<String> getDates(String dateString1, String dateString2)
+
+
+    private static List<Activities> getDates(String dateString1, String dateString2)
     {
-        ArrayList<String> dates = new ArrayList<String>();
+        ArrayList<Activities> dates = new ArrayList<Activities>();
         DateFormat df1 = new SimpleDateFormat("MMM dd,yyyy");
 
         Date date1 = null;
@@ -217,9 +429,11 @@ public class ActivityFragments  extends Fragment
 
             try {
                 date = originalFormat.parse(org_dt);
+
+
                 String formattedDate = targetFormat.format(date);
                 Log.e("formatted date", formattedDate);
-                dates.add(formattedDate);
+                dates.add(new Activities(date.getTime(),""));
 
             }catch (Exception e){
 
@@ -228,8 +442,7 @@ public class ActivityFragments  extends Fragment
             cal1.add(Calendar.DATE, 1);
         }
 
-        for(int i=0;i<dates.size();i++)
-            Log.e("dates",dates.get(i));
+
 
         return dates;
     }

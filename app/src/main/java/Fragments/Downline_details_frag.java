@@ -97,7 +97,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
 
         linearLayoutManager=new LinearLayoutManager(getActivity());
         rview.setLayoutManager(linearLayoutManager);
-        adapter=new personal_list_adapter(getActivity());
+       // adapter=new personal_list_adapter(getActivity());
         rview.setAdapter(adapter);
         Profile_pic.setOnClickListener(this);
         meter.setOnClickListener(this);

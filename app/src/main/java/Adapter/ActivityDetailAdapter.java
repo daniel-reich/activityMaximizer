@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
+import model.Table;
 import u.activitymanager.R;
 
 /**
@@ -17,7 +20,18 @@ import u.activitymanager.R;
 public class ActivityDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
-    String activity_list[]={"Contact Added","Appointments Set","Went to KT","Closed Life","closed IBA","Closed Other Business","Appt Set To Closed Life",
+    Context c;
+    ArrayList<Table> table;
+
+    public ActivityDetailAdapter(Context c, ArrayList<Table> table)
+    {
+
+        this.c=c;
+        this.table=table;
+    }
+
+
+    String activity_list[]={"Contact Added","Appointments Set","Went to KT","Closed Life","Closed IBA","Closed Other Business","Appt Set To Closed Life",
             "Appt Set To Closed IBA","Call Back","Confirmed Invites","New Shows","Dark House","Not Interested"};
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -30,6 +44,9 @@ public class ActivityDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             act_name=(TextView)itemView.findViewById(R.id.actname);
             today=(TextView)itemView.findViewById(R.id.today);
+
+
+
             tw=(TextView)itemView.findViewById(R.id.tw);
             tm=(TextView)itemView.findViewById(R.id.tm);
             tq=(TextView)itemView.findViewById(R.id.tq);
@@ -56,6 +73,12 @@ public class ActivityDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         final ViewHolder holder1 = (ViewHolder) holder;
 
         holder1.act_name.setText(activity_list[position]);
+        holder1.today.setText(table.get(position).getToday()+"");
+        holder1.tw.setText(table.get(position).getTw()+"");
+        holder1.tm.setText(table.get(position).getTm()+"");
+        holder1.tq.setText(table.get(position).getTq()+"");
+        holder1.ty.setText(table.get(position).getTy()+"");
+
 
     }
 

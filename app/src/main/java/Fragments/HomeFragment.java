@@ -212,7 +212,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     d.setTime(lng*1000);
                    // Log.e("now",d+"");
                     if (!d.after(date)) {
-                        Log.e("start","start");
+
                         long diff = date.getTime()
                                 - d.getTime();
                         long days = diff / (24 * 60 * 60 * 1000);
@@ -222,7 +222,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         long minutes = diff / (60 * 1000);
                         diff -= minutes * (60 * 1000);
                         long seconds = diff / 1000;
-                        Log.e("timer",seconds+"");
+
                         tvDay.setText(days+"");
                         tvHour.setText(hours+"");
                         tvMinute.setText(minutes+"");

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,6 +57,8 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
     private SharedPreferences pref;
 
     Bundle bundle;
+    java.sql.Timestamp selectedtimeStampDate;
+
 
     @Nullable
     @Override
@@ -174,13 +178,25 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
                             AM_PM = "PM";
 
                         }
-                        time = hourString + ":" + minuteString+" "+AM_PM;
+                        time = hourString + ":" + minuteString;
 
                         date=date+" "+time;
 
 
 
                             tv_date.setText(date);
+                        Log.e("date",date+"");
+                        String myFormat = "dd/MM/yyyy hh:mm";
+                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
+                        Date selecteddate= null;
+                        try {
+                            selecteddate = sdf.parse(tv_date.getText().toString());
+                            selectedtimeStampDate = new Timestamp(selecteddate.getTime());
+                            Log.e("selectedtime",selectedtimeStampDate.getTime()+"");
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
                     }
 
 
@@ -252,10 +268,13 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
 
         mref.child("events")
                 .child(uid)
-                .child(timestamp)
+                .child(String.valueOf(selectedtimeStampDate.getTime()))
                 .setValue(newcontact);
 
 
+        FragmentManager fm = getActivity()
+                .getSupportFragmentManager();
+        fm.popBackStack();
 
 
     }

@@ -43,8 +43,8 @@ import utils.Constants;
 public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNewActivityListAdapter.ViewHolder> {
 
     private Context context;
-  String activity_list[]={"Set Appointment","Went on KT","Closed Life","closed IBA","Closed Other Business","Appt Set To Closed Life",
-          "Appt Set To Closed IBA","Invite to Opportunity Meeting","Went To Opportunity Meeting","Call Back","Dark House","Not Interested"};
+  String activity_list[]={"Set Appointment","Went on KT","Closed Life","Closed IBA","Closed Other Business","Appt Set To Closed Life",
+          "Appt Set To Closed IBA","Invited to Opportunity Meeting","Went To Opportunity Meeting","Call Back","Dark House","Not Interested"};
     private SharedPreferences pref;
     private Firebase mref;
     private Dialog AddNewContact;

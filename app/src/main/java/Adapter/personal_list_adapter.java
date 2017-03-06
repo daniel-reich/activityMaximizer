@@ -19,11 +19,14 @@ public class personal_list_adapter extends RecyclerView.Adapter<personal_list_ad
   //  private ArrayList<AndroidVersion> android;
     private Context context;
 
+    int count[];
+
     String activity_list[]={"Kitchen Table Set","Kitchen Tables Done","Apps Closed","Recruits","Total Premium","Upcoming Appointments",
             "Confirmed Invites","New Shows"};
 
-    public personal_list_adapter(Context context) {
+    public personal_list_adapter(Context context,int count[]) {
         this.context = context;
+        this.count=count;
     }
 
     @Override
@@ -37,7 +40,8 @@ public class personal_list_adapter extends RecyclerView.Adapter<personal_list_ad
     public void onBindViewHolder(personal_list_adapter.ViewHolder viewHolder, int position) {
 //
        viewHolder.reward.setText(activity_list[position]);
-//        viewHolder.current_leader.setText(android.get(i).getCurrent_leader());*/
+
+        viewHolder.current_leader.setText(count[position]+"");
 
     }
 
