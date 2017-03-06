@@ -36,6 +36,7 @@ public class ListAllContactAdapter extends  RecyclerView.Adapter<RecyclerView.Vi
     ArrayList<AllContact> data;
     String uid="",name="";
     FragmentManager fm;
+
     public ListAllContactAdapter(Activity c, ArrayList<AllContact> data, String name, FragmentManager fm) {
         this.c = c;
         this.data=data;

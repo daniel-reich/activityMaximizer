@@ -55,8 +55,10 @@ public class Filter_Frag extends Fragment {
     LinearLayout lay_team,lay_startdate,lay_enddate;
     CheckBox cb_team,cb_default,cb_trainees,cb_personal,cb_went_kt,cb_closelife,cb_closeiba,cb_closeotherbus;
     CheckBox cb_appt_closelife,cb_appt_closeiba,cb_callback,cb_darkhouse,cb_notinterested;
+    CheckBox cb_invite_opp_meeting,cb_opp_meeting,cb_appointmentset;
     ImageView iv_team,iv_default,iv_trainees,iv_personal,iv_went_kt,iv_closelife,iv_closeiba,iv_closeotherbus;
     ImageView iv_appt_closelife,iv_appt_closeiba,iv_callback,iv_darkhouse,iv_notinterested;
+    ImageView iv_oppt_meeting,iv_invite_oppt_meeting,iv_appointmentset;
     IWheelPicker wheel_day,wheel_month,wheel_year;
     ArrayList<String> datelist,monthlist,yearlist;
     long millsec;
@@ -95,6 +97,10 @@ public class Filter_Frag extends Fragment {
         cb_darkhouse=(CheckBox)view.findViewById(R.id.cb_darkhouse);
         cb_notinterested=(CheckBox)view.findViewById(R.id.cb_notinterested);
 
+        cb_opp_meeting=(CheckBox)view.findViewById(R.id.cb_opportunitymeetng);
+        cb_invite_opp_meeting=(CheckBox)view.findViewById(R.id.cb_invite_opportunitymeeting);
+        cb_appointmentset=(CheckBox)view.findViewById(R.id.cb_appointmentset);
+
         iv_default=(ImageView) view.findViewById(R.id.iv_default);
         iv_team=(ImageView) view.findViewById(R.id.iv_team);
         iv_trainees=(ImageView) view.findViewById(R.id.iv_trainees);
@@ -108,6 +114,11 @@ public class Filter_Frag extends Fragment {
         iv_callback=(ImageView)view.findViewById(R.id.iv_callback);
         iv_darkhouse=(ImageView)view.findViewById(R.id.iv_darkhouse);
         iv_notinterested=(ImageView)view.findViewById(R.id.iv_notinterested);
+
+        iv_oppt_meeting=(ImageView)view.findViewById(R.id.iv_opportunitymeet);
+        iv_invite_oppt_meeting=(ImageView)view.findViewById(R.id.iv_invite_opportunitymeet);
+        iv_appointmentset=(ImageView)view.findViewById(R.id.iv_appointmentset);
+
 
         lay_startdate=(LinearLayout)view.findViewById(R.id.lay_startdate);
         lay_enddate=(LinearLayout)view.findViewById(R.id.lay_enddate);
@@ -478,6 +489,7 @@ public class Filter_Frag extends Fragment {
                 edit.commit();
             }
         });
+
         cb_callback.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -544,6 +556,79 @@ public class Filter_Frag extends Fragment {
                         e.printStackTrace();
                     }
                     iv_notinterested.setImageBitmap(null);
+                }
+                edit=pref.edit();
+                edit.putString("filter",obj+"");
+                edit.commit();
+            }
+        });
+
+        cb_appointmentset.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b) {
+                    iv_appointmentset.setImageResource(R.drawable.checkmark_bl24);
+                    try {
+                        obj.put("appointmentset",true);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    try {
+                        obj.put("appointmentset",false);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    iv_appointmentset.setImageBitmap(null);
+                }
+                edit=pref.edit();
+                edit.putString("filter",obj+"");
+                edit.commit();
+            }
+        });
+        cb_opp_meeting.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b) {
+                    iv_oppt_meeting.setImageResource(R.drawable.checkmark_bl24);
+                    try {
+                        obj.put("oppt_meeting",true);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    try {
+                        obj.put("oppt_meeting",false);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    iv_oppt_meeting.setImageBitmap(null);
+                }
+                edit=pref.edit();
+                edit.putString("filter",obj+"");
+                edit.commit();
+            }
+        });
+        cb_invite_opp_meeting.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b) {
+                    iv_invite_oppt_meeting.setImageResource(R.drawable.checkmark_bl24);
+                    try {
+                        obj.put("invite_oppt_meeting",true);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    try {
+                        obj.put("invite_oppt_meeting",false);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    iv_invite_oppt_meeting.setImageBitmap(null);
                 }
                 edit=pref.edit();
                 edit.putString("filter",obj+"");
@@ -679,6 +764,39 @@ public class Filter_Frag extends Fragment {
                 } else {
                     cb_darkhouse.setChecked(false);
                     iv_darkhouse.setImageBitmap(null);
+                }
+            }
+
+            if(object.has("invite_oppt_meeting")) {
+                if (object.getBoolean("invite_oppt_meeting")) {
+                    cb_invite_opp_meeting.setChecked(true);
+                    iv_invite_oppt_meeting.setImageResource(R.drawable.checkmark_bl24);
+                } else {
+                    cb_invite_opp_meeting.setChecked(false);
+                    iv_invite_oppt_meeting.setImageBitmap(null);
+                }
+            }
+
+
+
+            if(object.has("appointmentset")) {
+                if (object.getBoolean("appointmentset")) {
+                    cb_appointmentset.setChecked(true);
+                    iv_appointmentset.setImageResource(R.drawable.checkmark_bl24);
+                } else {
+                    cb_appointmentset.setChecked(false);
+                    iv_appointmentset.setImageBitmap(null);
+                }
+            }
+
+
+            if(object.has("oppt_meeting")) {
+                if (object.getBoolean("oppt_meeting")) {
+                    cb_opp_meeting.setChecked(true);
+                    iv_oppt_meeting.setImageResource(R.drawable.checkmark_bl24);
+                } else {
+                    cb_opp_meeting.setChecked(false);
+                    iv_oppt_meeting.setImageBitmap(null);
                 }
             }
 

@@ -28,6 +28,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
@@ -61,6 +62,7 @@ public class ActivityFragments  extends Fragment
     SharedPreferences pref;
     SharedPreferences.Editor edit;
     private Firebase mref;
+    JSONObject obj;
 
     @Nullable
     @Override
@@ -89,10 +91,6 @@ public class ActivityFragments  extends Fragment
         String e_date=pref.getString("filter_enddate",targetFormat.format(date1));
         String s_date=pref.getString("filter_startdate",targetFormat.format(new Date()));
 
-
-
-
-
         getdatafromfirebase();
         return view;
     }
@@ -100,6 +98,16 @@ public class ActivityFragments  extends Fragment
 
     public JSONArray getdatafromfirebase()
     {
+
+        pref.getString("filter","");
+        obj=new JSONObject();
+
+        try {
+            obj=new JSONObject(pref.getString("filter",""));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
         final JSONArray array=new JSONArray();
@@ -151,118 +159,137 @@ public class ActivityFragments  extends Fragment
 
                         Date date=new Date(Long.parseLong(key));
 
-                        boolean result;
+                        boolean result = false;
 
                        switch(messageSnapshot.child("type").getValue().toString())
 
                        {
 
-
-
-
                            case "Set Appointment":
 
-
-                              result=
-
-
-
-
-
+                               if(obj.has("appointmentset")) {
+                                   result = obj.getBoolean("appointmentset");
+                               }
+                               else
+                               result=true;
 
                                break;
 
                            case "Went on KT":
 
-
-                               dosomething(date,2);
+                               if(obj.has("went_on_kt")) {
+                                   result = obj.getBoolean("went_on_kt");
+                               }
+                               else
+                                   result=true;
 
                                break;
 
                            case "Closed Life":
 
-
-                               dosomething(date,3);
-
+                               if(obj.has("closelife")) {
+                                   result = obj.getBoolean("closelife");
+                               }
+                               else
+                                   result=true;
                                break;
 
 
                            case "Closed IBA":
 
 
-                               dosomething(date,4);
-
+                               if(obj.has("closeiba")) {
+                                   result = obj.getBoolean("closeiba");
+                               }
+                               else
+                                   result=true;
                                break;
 
 
                            case "Closed Other Business":
 
-                               dosomething(date,5);
+                               if(obj.has("closeotherbusiness")) {
+                                   result = obj.getBoolean("closeotherbusiness");
+                               }
+                               else
+                                   result=true;
                                break;
 
                            case "Appt Set To Closed Life":
 
-                               dosomething(date,6);
-
+                               if(obj.has("appt_closelife")) {
+                                   result = obj.getBoolean("appt_closelife");
+                               }
+                               else
+                                   result=true;
                                break;
 
 
                            case "Appt Set To Closed IBA":
 
-                               dosomething(date,7);
-
+                               if(obj.has("appt_closeiba")) {
+                                   result = obj.getBoolean("appt_closeiba");
+                               }
+                               else
+                                   result=true;
                                break;
 
                            case "Call Back":
 
-                               dosomething(date,8);
-
+                               if(obj.has("callback")) {
+                                   result = obj.getBoolean("callback");
+                               }
+                               else
+                                   result=true;
                                break;
 
 
                            case "Invited to Opportunity Meeting":
 
-                               dosomething(date,9);
+                               if(obj.has("invite_oppt_meeting")) {
+                                   result = obj.getBoolean("invite_oppt_meeting");
+                               }
+                               else
+                                   result=true;
                                break;
 
                            case "Went To Opportunity Meeting":
 
-                               dosomething(date,10);
+                               if(obj.has("oppt_meeting")) {
+                                   result = obj.getBoolean("oppt_meeting");
+                               }
+                               else
+                                   result=true;
                                break;
 
 
                            case "Dark House":
 
-                               dosomething(date,11);
-
-
+                               if(obj.has("darkhouse")) {
+                                   result = obj.getBoolean("darkhouse");
+                               }
+                               else
+                                   result=true;
                                break;
-
 
                            case "Not Intrested":
 
-                               dosomething(date,12);
-
-
+                               if(obj.has("notinterested")) {
+                                   result = obj.getBoolean("notinterested");
+                               }
+                               else
+                                   result=true;
                                break;
-
-
-
-
-
 
                        }
 
 
 
 
+                        if(result)
                         for(int i=0;i<list.size();i++)
 
                         {
-
-
-
-
                             if(isSameDay(date,new Date(list.get(i).getTime())))
 
                             {
@@ -277,11 +304,6 @@ public class ActivityFragments  extends Fragment
                                     json_obj.put("contactName",messageSnapshot.child("contactName").getValue().toString());
                                     json_obj.put("type",messageSnapshot.child("type").getValue().toString());
                                     json_obj.put("date",messageSnapshot.child("date").getValue().toString());
-
-
-
-
-
 
                                     Log.e("json",json_obj+"");
                                     json_data.put(json_obj);
@@ -314,19 +336,7 @@ public class ActivityFragments  extends Fragment
 
                             }
 
-
-
-
-
-
-
-
                         }
-
-
-
-
-
 
 
                         //array.put(json);

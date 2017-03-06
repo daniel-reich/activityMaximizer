@@ -262,6 +262,43 @@
         android:textColor="@color/colorPrimary"
         android:text="Filter Activity"/>
 
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ddd" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/cb_appointmentset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set Appointment"
+            android:layout_weight=".1"
+            android:padding="12dp"
+            android:button="@null"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/colorPrimary"
+            android:layout_centerVertical="true" />
+
+        <ImageView
+            android:id="@+id/iv_appointmentset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/checkmark_bl24" />
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ddd" />
+
     <LinearLayout
         android:id="@+id/lay_wenton"
         android:layout_width="match_parent"
@@ -383,8 +420,8 @@
             android:fontFamily="sans-serif-medium"
             android:padding="12dp"
             android:button="@null"
-            android:layout_weight=".1"
             android:checked="true"
+            android:layout_weight=".1"
             android:textColor="@color/colorPrimary"
             android:text="Closed Other Business"/>
 
@@ -392,8 +429,8 @@
             android:id="@+id/iv_closeotherbusiness"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/checkmark_bl24"
             android:layout_marginRight="10dp"
+            android:src="@drawable/checkmark_bl24"
             />
 
     </LinearLayout>
@@ -462,8 +499,8 @@
             android:id="@+id/iv_apptsettocloseiba"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/checkmark_bl24"
             android:layout_marginRight="10dp"
+            android:src="@drawable/checkmark_bl24"
            />
 
     </LinearLayout>
@@ -488,8 +525,8 @@
             android:fontFamily="sans-serif-medium"
             android:padding="12dp"
             android:button="@null"
-            android:layout_weight=".1"
             android:checked="true"
+            android:layout_weight=".1"
             android:textColor="@color/colorPrimary"
             android:text="Call Back"/>
 
@@ -532,8 +569,8 @@
             android:id="@+id/iv_darkhouse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/checkmark_bl24"
             android:layout_marginRight="10dp"
+            android:src="@drawable/checkmark_bl24"
             />
 
     </LinearLayout>
@@ -571,6 +608,74 @@
             android:layout_marginRight="10dp"/>
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ddd"
+
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/cb_invite_opportunitymeeting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Invited to Opportunity Meeting"
+            android:layout_weight=".1"
+            android:padding="12dp"
+            android:button="@null"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/colorPrimary"
+            android:layout_centerVertical="true" />
+
+        <ImageView
+            android:id="@+id/iv_invite_opportunitymeet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/checkmark_bl24" />
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ddd"
+
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/cb_opportunitymeetng"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Went To Opportunity Meeting"
+            android:layout_weight=".1"
+            android:padding="12dp"
+            android:button="@null"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/colorPrimary"
+            android:layout_centerVertical="true" />
+
+        <ImageView
+            android:id="@+id/iv_opportunitymeet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/checkmark_bl24" />
+
+    </LinearLayout>
+
 
 </LinearLayout>
     </ScrollView>

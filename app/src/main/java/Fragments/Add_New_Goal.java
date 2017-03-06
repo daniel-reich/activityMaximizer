@@ -243,7 +243,6 @@ public class Add_New_Goal extends Fragment implements View.OnClickListener {
         newUserData.put("ref", Constants.URL+"users/"+pref.getString("uid","")+"Goals/"+tms);
         mref.child("users").child(pref.getString("uid","")).child("Goals").child(tms).updateChildren(newUserData);
     }
-
     public void Alert(String val) {
         final Dialog dialog=new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

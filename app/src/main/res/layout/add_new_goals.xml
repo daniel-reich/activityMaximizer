@@ -231,14 +231,10 @@
                     android:layout_alignParentRight="true" />
 
             </RelativeLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#ddd"
-
-                />
-
+                android:background="#ddd" />
             <RelativeLayout
                 android:id="@+id/lay_contactadded"
                 android:layout_width="match_parent"
@@ -277,14 +273,12 @@
                     android:layout_alignParentRight="true" />
 
             </RelativeLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#ddd"
 
                 />
-
             <RelativeLayout
                 android:id="@+id/lay_appoint_set"
                 android:layout_width="match_parent"
@@ -319,12 +313,10 @@
                     android:layout_alignParentRight="true" />
 
             </RelativeLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#ddd"/>
-
             <RelativeLayout
                 android:id="@+id/lay_went_kt"
                 android:layout_width="match_parent"
@@ -368,7 +360,6 @@
                 android:layout_height="1dp"
                 android:background="#ddd"
                 />
-
             <RelativeLayout
                 android:id="@+id/lay_closedlife"
                 android:layout_width="match_parent"
@@ -410,7 +401,6 @@
                 android:layout_height="1dp"
                 android:background="#ddd"
                 />
-
             <RelativeLayout
                 android:id="@+id/lay_closediba"
                 android:layout_width="match_parent"
@@ -454,7 +444,6 @@
                 android:layout_height="1dp"
                 android:background="#ddd"
                 />
-
             <RelativeLayout
                 android:id="@+id/lay_closedbuisness"
                 android:layout_width="match_parent"
@@ -494,7 +483,6 @@
                 android:layout_height="1dp"
                 android:background="#ddd"
                 />
-
 
         </LinearLayout>
 
