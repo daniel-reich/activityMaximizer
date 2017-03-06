@@ -124,6 +124,9 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 .cacheOnDisk(true)
                 .build();
 
+
+
+
         Log.e("profilepic",pref.getString("profilePictureURL","null image path"));
 
         ImageLoader imageLoader = ImageLoader.getInstance();

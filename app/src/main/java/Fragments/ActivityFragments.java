@@ -21,6 +21,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,6 +57,7 @@ public class ActivityFragments  extends Fragment
 
     SharedPreferences pref;
     SharedPreferences.Editor edit;
+    private Firebase mref;
 
     @Nullable
     @Override
@@ -78,8 +87,89 @@ public class ActivityFragments  extends Fragment
             activities.setAdapter(adapter);
         }
 
+
+        getdatafromfirebase();
         return view;
     }
+
+
+    public JSONArray getdatafromfirebase()
+    {
+
+        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        final JSONArray array=new JSONArray();
+        pref=getActivity().getSharedPreferences("userpref",0);
+
+        mref.child("events").child(pref.getString("uid","")).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                try {
+
+
+                    String e_date=pref.getString("filter_enddate","null");
+                    String s_date=pref.getString("filter_startdate","null");
+
+
+                    DateFormat targetFormat = new SimpleDateFormat("MMM dd,yyyy");
+
+
+
+                    Date start_date;
+
+
+
+
+
+                    Log.e("filter",e_date+","+s_date);
+
+                    for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                        JSONObject json=new JSONObject();
+
+                         String key=messageSnapshot.getKey();
+
+                        Log.e("key",key);
+
+                        Log.e("message",messageSnapshot.toString());
+
+
+                        Date date=new Date(Long.parseLong(key));
+
+
+
+
+
+                        array.put(json);
+
+                    }
+
+
+
+
+
+                    Log.e("json",array.toString());
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("array_exception","e",e);
+                }
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+
+        return array;
+
+    }
+
+
+
+
 
     private static List<String> getDates(String dateString1, String dateString2)
     {

@@ -1,13 +1,23 @@
 package Adapter;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
@@ -21,6 +31,9 @@ import java.util.Map;
 
 import Fragments.Activity_list_frag;
 import Fragments.Need_to_Quality;
+import Fragments.NewActivityFrag;
+import register_frag.Register;
+import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 import utils.Constants;
 
@@ -31,9 +44,10 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
 
     private Context context;
   String activity_list[]={"Set Appointment","Went on KT","Closed Life","closed IBA","Closed Other Business","Appt Set To Closed Life",
-          "Appt Set To Closed Life","Invite to Opportunity Meeting","Went To Opportunity Meeting","Call Back","Dark House","Not Interested"};
+          "Appt Set To Closed IBA","Invite to Opportunity Meeting","Went To Opportunity Meeting","Call Back","Dark House","Not Interested"};
     private SharedPreferences pref;
     private Firebase mref;
+    private Dialog AddNewContact;
 
     public SelectNewActivityListAdapter(Context context) {
         this.context = context;
@@ -81,16 +95,115 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
 
 
 
+                    if(position==0 || position==5 || position==6 || position==9)
+
+                    {
+
+
+                        Activity_list_frag.dialog.dismiss();
+                        HomeActivity activity = (HomeActivity) context;
+
+                        Bundle bundle=new Bundle();
+                        bundle.putString("name",activity_list[position]);
+                        switch (position)
+
+                        {
+                            case 0:
+
+                                bundle.putString("title","Appointment with "+ Need_to_Quality.givenName);
+                                break;
+
+
+                            case 5:
+
+                                bundle.putString("title","Appointment set to Close Life with "+ Need_to_Quality.givenName);
+                                break;
+
+                            case 6:
+
+                                bundle.putString("title","Appointment set to Close IBA with "+ Need_to_Quality.givenName);
+                                break;
+
+
+                            case 9:
+
+                                bundle.putString("title","CallBack  with "+ Need_to_Quality.givenName);
+                                break;
+
+
+                        }
+
+                       NewActivityFrag act= new NewActivityFrag();
+                        act.setArguments(bundle);
+
+                        activity.getSupportFragmentManager().beginTransaction().
+                                replace(R.id.frame_layout,act).addToBackStack(null).commit();
+                    }
+
+
+                    else
+                    if(position==2)
+                    {
+
+
+                        Activity_list_frag.dialog.dismiss();
+
+                        addContactDialog(position);
+                    }
 
 
 
-                    Activity_list_frag.dialog.dismiss();
-                    addNewContact(position);
+
+                    else {
+
+                        Activity_list_frag.dialog.dismiss();
+                        addNewContact(position);
+                    }
                 }
             });
 
         }
     }
+
+
+
+
+    private void addContactDialog(int position) {
+
+        Activity activity = (Activity) context;
+        AddNewContact=new Dialog(activity);
+        AddNewContact.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        AddNewContact.setContentView(R.layout.add_contact_dialog);
+        Window window = AddNewContact.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.gravity = Gravity.CENTER;
+        wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(wlp);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        final EditText listname=(EditText)AddNewContact.findViewById(R.id.et_name);
+        TextView save=(TextView)AddNewContact.findViewById(R.id.tv_save);
+        TextView cancel=(TextView)AddNewContact.findViewById(R.id.cancel);
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddNewContact.dismiss();
+            }
+        });
+
+        AddNewContact.show();
+    }
+
+
+
+
 
 
 
@@ -136,6 +249,7 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
         newcontact.put("date",timestamp);
         newcontact.put("eventKitID","");
         newcontact.put("ref",noteref);
+        newcontact.put("amount",0);
         newcontact.put("type",activity_list[position]);
         newcontact.put("userName",pref.getString("givenName","")+" "+pref.getString("familyName",""));
         newcontact.put("userRef",pref.getString("ref",""));

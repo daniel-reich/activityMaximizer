@@ -19,6 +19,9 @@ public class personal_list_adapter extends RecyclerView.Adapter<personal_list_ad
   //  private ArrayList<AndroidVersion> android;
     private Context context;
 
+    String activity_list[]={"Kitchen Table Set","Kitchen Tables Done","Apps Closed","Recruits","Total Premium","Upcoming Appointments",
+            "Confirmed Invites","New Shows"};
+
     public personal_list_adapter(Context context) {
         this.context = context;
     }
@@ -32,9 +35,9 @@ public class personal_list_adapter extends RecyclerView.Adapter<personal_list_ad
 
     @Override
     public void onBindViewHolder(personal_list_adapter.ViewHolder viewHolder, int position) {
-
-       /* viewHolder.reward.setText(android.get(i).getCurrent_reward());
-        viewHolder.current_leader.setText(android.get(i).getCurrent_leader());*/
+//
+       viewHolder.reward.setText(activity_list[position]);
+//        viewHolder.current_leader.setText(android.get(i).getCurrent_leader());*/
 
     }
 
@@ -42,7 +45,7 @@ public class personal_list_adapter extends RecyclerView.Adapter<personal_list_ad
     public int getItemCount()
     {
         Log.e("count","count");
-        return 10;
+        return activity_list.length;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -51,8 +54,8 @@ public class personal_list_adapter extends RecyclerView.Adapter<personal_list_ad
         public ViewHolder(View view) {
             super(view);
 
-//            reward = (TextView)view.findViewById(R.id.textview_reward1);
-           // current_leader = (TextView) view.findViewById(R.id.textview_contestwinner);
+            reward = (TextView)view.findViewById(R.id.name);
+            current_leader = (TextView) view.findViewById(R.id.value);
         }
     }
 }

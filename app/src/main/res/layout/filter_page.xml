@@ -116,6 +116,7 @@
             android:fontFamily="sans-serif-medium"
             android:padding="12dp"
             android:button="@null"
+            android:checked="true"
             android:layout_weight=".1"
             android:textColor="@color/colorPrimary"
             android:text="Default"/>
@@ -125,6 +126,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:src="@drawable/checkmark_bl24"
             />
 
     </LinearLayout>
@@ -158,6 +160,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:fontFamily="sans-serif-medium"
             android:padding="12dp"
+            android:checked="true"
             android:button="@null"
             android:layout_weight=".1"
             android:textColor="@color/colorPrimary"
@@ -168,6 +171,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:src="@drawable/checkmark_bl24"
             />
 
     </LinearLayout>
@@ -192,6 +196,7 @@
             android:fontFamily="sans-serif-medium"
             android:padding="12dp"
             android:button="@null"
+            android:checked="true"
             android:layout_weight=".1"
             android:textColor="@color/colorPrimary"
             android:text="Trainees"/>
@@ -201,6 +206,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:src="@drawable/checkmark_bl24"
             />
 
     </LinearLayout>
@@ -225,6 +231,7 @@
             android:fontFamily="sans-serif-medium"
             android:padding="12dp"
             android:button="@null"
+            android:checked="true"
             android:layout_weight=".1"
             android:textColor="@color/colorPrimary"
             android:text="Personal"/>
@@ -234,6 +241,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:src="@drawable/checkmark_bl24"
             />
 
     </LinearLayout>
@@ -269,6 +277,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:fontFamily="sans-serif-medium"
             android:padding="12dp"
+            android:checked="true"
             android:button="@null"
             android:layout_weight=".1"
             android:textColor="@color/colorPrimary"
@@ -279,6 +288,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:src="@drawable/checkmark_bl24"
             />
 
     </LinearLayout>
@@ -304,6 +314,7 @@
             android:padding="12dp"
             android:button="@null"
             android:layout_weight=".1"
+            android:checked="true"
             android:textColor="@color/colorPrimary"
             android:text="Closed Life"/>
 
@@ -312,6 +323,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:src="@drawable/checkmark_bl24"
             />
 
     </LinearLayout>
@@ -337,6 +349,7 @@
             android:padding="12dp"
             android:button="@null"
             android:layout_weight=".1"
+            android:checked="true"
             android:textColor="@color/colorPrimary"
             android:text="Closed IBA"/>
 
@@ -345,6 +358,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:src="@drawable/checkmark_bl24"
             />
 
     </LinearLayout>
@@ -370,6 +384,7 @@
             android:padding="12dp"
             android:button="@null"
             android:layout_weight=".1"
+            android:checked="true"
             android:textColor="@color/colorPrimary"
             android:text="Closed Other Business"/>
 
@@ -377,6 +392,7 @@
             android:id="@+id/iv_closeotherbusiness"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/checkmark_bl24"
             android:layout_marginRight="10dp"
             />
 
@@ -403,6 +419,7 @@
             android:padding="12dp"
             android:button="@null"
             android:layout_weight=".1"
+            android:checked="true"
             android:textColor="@color/colorPrimary"
             android:text="Appt Set To Close Life"/>
 
@@ -411,6 +428,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:src="@drawable/checkmark_bl24"
             />
 
     </LinearLayout>
@@ -436,6 +454,7 @@
             android:padding="12dp"
             android:button="@null"
             android:layout_weight=".1"
+            android:checked="true"
             android:textColor="@color/colorPrimary"
             android:text="Appt Set To Close IBA"/>
 
@@ -443,6 +462,7 @@
             android:id="@+id/iv_apptsettocloseiba"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/checkmark_bl24"
             android:layout_marginRight="10dp"
            />
 
@@ -469,6 +489,7 @@
             android:padding="12dp"
             android:button="@null"
             android:layout_weight=".1"
+            android:checked="true"
             android:textColor="@color/colorPrimary"
             android:text="Call Back"/>
 
@@ -477,6 +498,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:src="@drawable/checkmark_bl24"
            />
 
     </LinearLayout>
@@ -501,6 +523,7 @@
             android:fontFamily="sans-serif-medium"
             android:padding="12dp"
             android:button="@null"
+            android:checked="true"
             android:layout_weight=".1"
             android:textColor="@color/colorPrimary"
             android:text="Dark House"/>
@@ -509,6 +532,7 @@
             android:id="@+id/iv_darkhouse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/checkmark_bl24"
             android:layout_marginRight="10dp"
             />
 
@@ -534,6 +558,7 @@
             android:fontFamily="sans-serif-medium"
             android:padding="12dp"
             android:button="@null"
+            android:checked="true"
             android:layout_weight=".1"
             android:textColor="@color/colorPrimary"
             android:text="Not Interested"/>
@@ -542,6 +567,7 @@
             android:id="@+id/iv_notinterested"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/checkmark_bl24"
             android:layout_marginRight="10dp"/>
 
     </LinearLayout>

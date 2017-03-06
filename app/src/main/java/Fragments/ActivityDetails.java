@@ -1,11 +1,13 @@
 package Fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,7 +15,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import Adapter.ActivityDetailAdapter;
+import Adapter.ContactActivityListAdapter;
+import model.AllActivity;
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
@@ -25,6 +39,12 @@ public class ActivityDetails extends Fragment
     ActivityDetailAdapter adapter;
     RecyclerView rview;
     View view;
+    private Firebase mref;
+    private SharedPreferences pref;
+
+    String uid;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -35,12 +55,20 @@ public class ActivityDetails extends Fragment
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setHasOptionsMenu(true);
 
+
+        pref=getActivity().getSharedPreferences("userpref",0);
+        Firebase.setAndroidContext(getActivity());
+        uid=pref.getString("uid","");
+        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+
         rview=(RecyclerView)view.findViewById(R.id.recyclerview);
         LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
         rview.setLayoutManager(layoutManager);
         adapter=new ActivityDetailAdapter();
         rview.setAdapter(adapter);
         HomeActivity.title.setText("Activity");
+
+        getnotefromfirebase();
         return view;
 
     }
@@ -81,4 +109,58 @@ public class ActivityDetails extends Fragment
     }
 
 
+    public void getnotefromfirebase()
+    {
+        mref.child("events")
+                .child(uid)
+                .addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                        Log.e("get data from server",dataSnapshot.getValue()+" data");
+
+                        JSONArray jsonArray =  new JSONArray();
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            JSONObject jGroup = new JSONObject();
+                            Log.e("childddd",child.child("contactName").getKey()+" abc");
+                            //alue().toString(),child.child("created").getValue().toString(),child.child("date").getValue().toString(),child.child("eventKitID").getValue().toString(),child.child("ref").getValue().toString(),child.child("type").getValue().toString(),child.child("userName").getValue().toString(),child.child("userRef").getValue().toString()));
+                            try {
+                                jGroup.put("contactName", child.child("contactName").getValue().toString());
+                                jGroup.put("contactRef", child.child("contactRef").getValue().toString());
+                                jGroup.put("created", child.child("created").getValue().toString());
+                                jGroup.put("date", child.child("date").getValue().toString());
+                                jGroup.put("eventKitID", child.child("eventKitID").getValue().toString());
+                                jGroup.put("ref", child.child("ref").getValue().toString());
+                                jGroup.put("type", child.child("type").getValue().toString());
+                                jGroup.put("userName", child.child("userName").getValue().toString());
+                                jGroup.put("userRef", child.child("userRef").getValue().toString());
+                                jsonArray.put(jGroup);
+                                Log.e("child", child.child("contactName").getValue() + " abc");
+                            }
+                            catch (Exception e)
+                            {
+                                Log.e("Exception",e+"");
+                            }
+                        }
+
+                        Log.e("jsonarray",jsonArray+" abc");
+
+
+
+
+
+
+
+
+                    }
+                    @Override
+                    public void onCancelled(FirebaseError error) {
+                        Log.e("get data error",error.getMessage()+" data");
+                    }
+                });
+    }
 }
+
+
+
+
