@@ -40,7 +40,7 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
     View v;
     FirebaseAuth firebaseAuth;
     Firebase mref;
-    String st_email,st_pass;
+    String st_email,st_pass,rvpsolutionnumber="",uplinesolutionnumber="";
     SharedPreferences pref;
     SharedPreferences.Editor edit;
     TextView tv_done,tv_name,tv_email,tv_state,tv_phone,tv_solutionnumber,tv_rvpnumber,tv_uplinenumber,tv_trainernumber;
@@ -74,7 +74,10 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
 
         pref=getActivity().getSharedPreferences("userpref",0);
-        
+
+        rvpsolutionnumber= pref.getString("rvpsolutionnumber","");
+        uplinesolutionnumber=pref.getString("uplinesolutionnumber","");
+
         tv_name.setText(pref.getString("givenName",""));
         tv_email.setText(pref.getString("email",""));
         tv_phone.setText(pref.getString("phoneNumber",""));
@@ -213,8 +216,27 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
                             Map newUserData = new HashMap();
 //                    newUserData.put("solution_number","qwe");
                             newUserData.put("users", uid);
+                            if(uplinesolutionnumber.length()>1) {
+                                newUserData.put("upline", uplinesolutionnumber);
+                            }
                             mref.child("Solution Numbers").child(pref.getString("solutionnumber","")).updateChildren(newUserData);
 
+
+                            if(rvpsolutionnumber.length()>1)
+                            {
+                                Map rv = new HashMap();
+                                rv.put(uid, pref.getString("solutionnumber",""));
+                                mref.child("Solution Numbers").child(rvpsolutionnumber).child("Base").updateChildren(rv);
+                            }
+
+                            if(uplinesolutionnumber.length()>1)
+                            {
+                                Map dv = new HashMap();
+                                dv.put("name", pref.getString("givenName",""));
+                                dv.put("solutionNumber", pref.getString("solutionnumber",""));
+                                dv.put("uid", uid);
+                                mref.child("Solution Numbers").child(uplinesolutionnumber).child("downlines").child(uid).updateChildren(dv);
+                            }
                             Toast.makeText(getActivity(),"Successfully registered",Toast.LENGTH_LONG).show();
                             FragmentManager fm = getActivity().getSupportFragmentManager();
                             fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);

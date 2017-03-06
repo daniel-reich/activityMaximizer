@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,11 +14,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import Adapter.ClientAdapter;
+import model.AllContact;
 import u.activitymanager.R;
 
 /**
@@ -29,7 +36,7 @@ public class Rating_info_clients_fram extends Fragment {
     View v;
     TextView tv_rating,tv_married,tv_haskids,tv_aged,tv_homeowner,tv_income;
     ImageView im_marriedcheck,im_marriedcross,im_haskidscheck,im_haskidscross,im_agecheck,im_agecross,im_homecheck,im_homecross,im_incomecheck,im_incomecross;
-    int a=0;
+    int a=0,rate=0,rr=0;
     boolean b,c,d,e,f;
     String competitive,created,credible,familyName,givenName,hasKids,homeowner,hungry,incomeOver40k,married,motivated,ofProperAge,peopleSkills,phoneNumber,ref;
     int rating,recruitRating;
@@ -91,6 +98,7 @@ public class Rating_info_clients_fram extends Fragment {
         if(rating>0)
         {
             a=rating;
+            rate=rating;
             tv_rating.setText("Rating: " + a);
             if(married.equalsIgnoreCase("false"))
             {
@@ -169,7 +177,19 @@ public class Rating_info_clients_fram extends Fragment {
                 else {
                     im_marriedcheck.setImageResource(R.drawable.checkgreen32);
                     im_marriedcross.setImageResource(R.drawable.closegray32);
+
+//                    getdatafromfirebase();
                     a = a + 1;
+//                    rate=rate+1;
+//                    if(rate>4)
+//                    {
+//                        rr=rr+1;
+//                        Map newrate = new HashMap();
+//                        newrate.put("fivePointClients",rr);
+//                        newrate.put("fivePointRecruits",rr);
+//                        mref.child("users").child(uid).updateChildren(newrate);
+//                    }
+
                     tv_rating.setText("Rating: " + a);
                     b=true;
 
@@ -191,7 +211,22 @@ public class Rating_info_clients_fram extends Fragment {
                 im_marriedcheck.setImageResource(R.drawable.checkgray32);
                 im_marriedcross.setImageResource(R.drawable.closered32);
                 if(a>0) {
+//                    getdatafromfirebase();
+//
+//                    if(a==5)
+//                    {
+//                        rr=rr-1;
+//                        Map newrate = new HashMap();
+//                        newrate.put("fivePointClients",rr);
+//                        newrate.put("fivePointRecruits",rr);
+//                        mref.child("users").child(uid).updateChildren(newrate);
+//                    }
                     a = a - 1;
+                    rate=rate-1;
+
+
+
+
                     tv_rating.setText("Rating: "+a);
                     b=false;
 
@@ -212,6 +247,18 @@ public class Rating_info_clients_fram extends Fragment {
                     im_haskidscheck.setImageResource(R.drawable.checkgreen32);
                     im_haskidscross.setImageResource(R.drawable.closegray32);
                     a = a + 1;
+
+//                    rate=rate+1;
+//                    if(rate>4)
+//                    {
+//                        rr=rr+1;
+//                        Map newrate = new HashMap();
+//                        newrate.put("fivePointClients",rr);
+//                        newrate.put("fivePointRecruits",rr);
+//                        mref.child("users").child(uid).updateChildren(newrate);
+//                    }
+
+
                     tv_rating.setText("Rating: " + a);
                     c=true;
 
@@ -230,7 +277,17 @@ public class Rating_info_clients_fram extends Fragment {
                     im_haskidscheck.setImageResource(R.drawable.checkgray32);
                     im_haskidscross.setImageResource(R.drawable.closered32);
                     if (a > 0) {
+//                        getdatafromfirebase();
+//                        if(a==5)
+//                        {
+//                            rr=rr-1;
+//                            Map newrate = new HashMap();
+//                            newrate.put("fivePointClients",rr);
+//                            newrate.put("fivePointRecruits",rr);
+//                            mref.child("users").child(uid).updateChildren(newrate);
+//                        }
                         a = a - 1;
+                        rate=rate-1;
                         tv_rating.setText("Rating: " + a);
                         c=false;
 
@@ -253,6 +310,17 @@ public class Rating_info_clients_fram extends Fragment {
                     im_agecheck.setImageResource(R.drawable.checkgreen32);
                     im_agecross.setImageResource(R.drawable.closegray32);
                     a = a + 1;
+
+                    rate=rate+1;
+                    if(rate>4)
+                    {
+                        rr=rr+1;
+                        Map newrate = new HashMap();
+                        newrate.put("fivePointClients",rr);
+                        newrate.put("fivePointRecruits",rr);
+                        mref.child("users").child(uid).updateChildren(newrate);
+                    }
+
                     tv_rating.setText("Rating: " + a);
                     d=true;
 
@@ -272,7 +340,17 @@ public class Rating_info_clients_fram extends Fragment {
                     im_agecheck.setImageResource(R.drawable.checkgray32);
                     im_agecross.setImageResource(R.drawable.closered32);
                     if (a > 0) {
+//                        getdatafromfirebase();
+//                        if(a==5)
+//                        {
+//                            rr=rr-1;
+//                            Map newrate = new HashMap();
+//                            newrate.put("fivePointClients",rr);
+//                            newrate.put("fivePointRecruits",rr);
+//                            mref.child("users").child(uid).updateChildren(newrate);
+//                        }
                         a = a - 1;
+                        rate=rate-1;
                         tv_rating.setText("Rating: " + a);
                         d=false;
 
@@ -294,6 +372,15 @@ public class Rating_info_clients_fram extends Fragment {
                     im_homecheck.setImageResource(R.drawable.checkgreen32);
                     im_homecross.setImageResource(R.drawable.closegray32);
                     a = a + 1;
+                    rate=rate+1;
+                    if(rate>4)
+                    {
+                        rr=rr+1;
+                        Map newrate = new HashMap();
+                        newrate.put("fivePointClients",rr);
+                        newrate.put("fivePointRecruits",rr);
+                        mref.child("users").child(uid).updateChildren(newrate);
+                    }
                     tv_rating.setText("Rating: " + a);
                     e=true;
 
@@ -313,7 +400,17 @@ public class Rating_info_clients_fram extends Fragment {
                     im_homecheck.setImageResource(R.drawable.checkgray32);
                     im_homecross.setImageResource(R.drawable.closered32);
                     if (a > 0) {
+//                        getdatafromfirebase();
+//                        if(a==5)
+//                        {
+//                            rr=rr-1;
+//                            Map newrate = new HashMap();
+//                            newrate.put("fivePointClients",rr);
+//                            newrate.put("fivePointRecruits",rr);
+//                            mref.child("users").child(uid).updateChildren(newrate);
+//                        }
                         a = a - 1;
+                        rate=rate-1;
                         tv_rating.setText("Rating: " + a);
                         e=false;
 
@@ -335,6 +432,15 @@ public class Rating_info_clients_fram extends Fragment {
                     im_incomecheck.setImageResource(R.drawable.checkgreen32);
                     im_incomecross.setImageResource(R.drawable.closegray32);
                     a = a + 1;
+                    rate=rate+1;
+                    if(rate>4)
+                    {
+                        rr=rr+1;
+                        Map newrate = new HashMap();
+                        newrate.put("fivePointClients",rr);
+                        newrate.put("fivePointRecruits",rr);
+                        mref.child("users").child(uid).updateChildren(newrate);
+                    }
                     tv_rating.setText("Rating: " + a);
                     f=true;
 
@@ -354,7 +460,17 @@ public class Rating_info_clients_fram extends Fragment {
                     im_incomecheck.setImageResource(R.drawable.checkgray32);
                     im_incomecross.setImageResource(R.drawable.closered32);
                     if (a > 0) {
+//                        getdatafromfirebase();
+//                        if(a==5)
+//                        {
+//                            rr=rr-1;
+//                            Map newrate = new HashMap();
+//                            newrate.put("fivePointClients",rr);
+//                            newrate.put("fivePointRecruits",rr);
+//                            mref.child("users").child(uid).updateChildren(newrate);
+//                        }
                         a = a - 1;
+                        rate=rate-1;
                         tv_rating.setText("Rating: " + a);
                         f=false;
 
@@ -384,4 +500,10 @@ public class Rating_info_clients_fram extends Fragment {
         return super.onOptionsItemSelected(item);
 
     }
+
+
+
+
+
+
 }
