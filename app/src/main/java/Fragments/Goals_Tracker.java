@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 import Adapter.Current_Goals_adap;
+import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
@@ -50,13 +51,13 @@ public class Goals_Tracker extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
+        setHasOptionsMenu(true);
         v=inflater.inflate(R.layout.goal_tracker,container,false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        HomeActivity.title.setText("Goals");
 
-        setHasOptionsMenu(true);
 
         rv_currentgoal=(RecyclerView)v.findViewById(R.id.rv_currentgoal);
         rv_metgoal=(RecyclerView)v.findViewById(R.id.rv_metgoals);

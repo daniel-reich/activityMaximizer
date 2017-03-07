@@ -48,7 +48,7 @@ public class Achievements extends Fragment
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        HomeActivity.title.setText("");
+        HomeActivity.title.setText("Achievements");
 
 //        HomeActivity.tv_back.setVisibility(View.VISIBLE);
 //        HomeActivity.tv_back.setText("Back");

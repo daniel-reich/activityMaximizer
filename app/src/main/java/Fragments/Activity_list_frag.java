@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,6 +31,7 @@ import Adapter.Note_Adapter;
 import Adapter.SelectNewActivityListAdapter;
 import model.AllActivity;
 import model.AllNote;
+import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
@@ -70,18 +72,10 @@ public class Activity_list_frag extends Fragment {
 
         pref=getActivity().getSharedPreferences("userpref",0);
         Firebase.setAndroidContext(getActivity());
-        try {
-            uidd = getArguments().getString("uid");
-            Log.e("uidd",uidd+" abv");
-            if (uidd.length() > 1) {
-                uid = uidd;
-            } else {
-                uid = pref.getString("uid", "");
-            }
-        }catch (Exception e)
-        {
-            Log.e("Exception",e.getMessage());
-        }
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        HomeActivity.title.setText("All Activity");
 
 
 
@@ -106,6 +100,19 @@ public class Activity_list_frag extends Fragment {
 
             }
         });
+        try {
+            uidd = getArguments().getString("uid");
+            Log.e("uidd",uidd+" abv");
+            if (uidd.length() > 1) {
+                uid = uidd;
+                tv_newactivity.setVisibility(View.INVISIBLE);
+            } else {
+                uid = pref.getString("uid", "");
+            }
+        }catch (Exception e)
+        {
+            Log.e("Exception",e.getMessage());
+        }
 
         getnotefromfirebase();
 
