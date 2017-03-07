@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -177,9 +178,9 @@ public class ListContact extends Fragment implements View.OnClickListener {
 
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Log.e("child",child+" abc");
-                    allContactArrayList.add(new AllContact(child.child("competitive").getValue().toString(),child.child("created").getValue().toString(),child.child("credible").getValue().toString(),child.child("familyName").getValue().toString(),child.child("givenName").getValue().toString(),child.child("hasKids").getValue().toString(),
-                            child.child("homeowner").getValue().toString(),child.child("hungry").getValue().toString(),child.child("incomeOver40k").getValue().toString(),child.child("married").getValue().toString(),child.child("motivated").getValue().toString(),child.child("ofProperAge").getValue().toString(),child.child("peopleSkills").getValue().toString(),
-                            child.child("phoneNumber").getValue().toString(),child.child("rating").getValue().toString(),child.child("recruitRating").getValue().toString(),child.child("ref").getValue().toString()));
+                    allContactArrayList.add(new AllContact(ConvertParseString(child.child("competitive").getValue()),ConvertParseString(child.child("created").getValue()),ConvertParseString(child.child("credible").getValue()),ConvertParseString(child.child("familyName").getValue()),ConvertParseString(child.child("givenName").getValue()),ConvertParseString(child.child("hasKids").getValue()),
+                            ConvertParseString(child.child("homeowner").getValue()),ConvertParseString(child.child("hungry").getValue()),ConvertParseString(child.child("incomeOver40k").getValue()),ConvertParseString(child.child("married").getValue()),ConvertParseString(child.child("motivated").getValue()),ConvertParseString(child.child("ofProperAge").getValue()),ConvertParseString(child.child("peopleSkills").getValue()),
+                            ConvertParseString(child.child("phoneNumber").getValue()),String.valueOf(ConvertParseInteger(child.child("rating").getValue())),String.valueOf(ConvertParseInteger(child.child("recruitRating").getValue())),ConvertParseString(child.child("ref").getValue())));
 
                     Log.e("child",child.child("familyName").getValue()+" abc");
                 }
@@ -191,6 +192,35 @@ public class ListContact extends Fragment implements View.OnClickListener {
             }
         });
     }
+    public static String ConvertParseString(Object obj ) {
+        if(obj==null)
+        {
+            return "";
+        }
+        else {
+            String lastSeen= (String) obj;
+            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
+                return lastSeen;
+            else
+                return "";
+        }
 
+    }
+
+    public static int ConvertParseInteger(Object obj) {
+        if(obj==null)
+        {
+            return 0;
+        }
+        else {
+            Long lastSeen = (Long) obj;
+            if (lastSeen != null | lastSeen != 0) {
+                String str=String.valueOf(lastSeen);
+                return Integer.valueOf(str);
+            }
+            else
+                return 0;
+        }
+    }
 
 }

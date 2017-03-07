@@ -50,6 +50,9 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.soundcloud.android.crop.Crop;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -88,6 +91,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
     TextView tv_phone,tv_username,tv_email,tv_solutionnumber;
     String uidd="";
     ArrayList<userinfoo> data;
+    int count[]={0,0,0,0,0,0,0,0};
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.downline_details_page,container,false);
@@ -144,7 +148,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
 
         getdatafromfirebase();
 
-
+        getnotefromfirebase();
 
         return view;
     }
@@ -167,6 +171,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
                 Activity_list_frag basic_frag1 = new Activity_list_frag();
                 Bundle args1 = new Bundle();
                 args1.putString("givenName", data.get(0).getGivenName());
+                args1.putString("uid", uidd);
                 basic_frag1.setArguments(args1);
 
                 getActivity().getSupportFragmentManager().beginTransaction()
@@ -245,7 +250,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
 
                 ImageLoader imageLoader = ImageLoader.getInstance();
                 imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
-                imageLoader.getInstance().displayImage(data.get(0).getProfilePictureURL(), Profile_pic, options, animateFirstListener);
+                imageLoader.getInstance().displayImage(ConvertParseString(data.get(0).getProfilePictureURL()), Profile_pic, options, animateFirstListener);
 
                 tv_username.setText(data.get(0).getGivenName());
                 tv_phone.setText(data.get(0).getPhoneNumber());
@@ -274,6 +279,91 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
         }
 
     }
+
+    public void getnotefromfirebase()
+    {
+        mref.child("events")
+                .child(uidd)
+                .addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                        Log.e("get data from server",dataSnapshot.getValue()+" data");
+
+                        JSONArray jsonArray =  new JSONArray();
+                        for (com.firebase.client.DataSnapshot child : dataSnapshot.getChildren()) {
+                            JSONObject jGroup = new JSONObject();
+                            Log.e("childddd",child.child("contactName").getKey()+" abc");
+                            //alue().toString(),child.child("created").getValue().toString(),child.child("date").getValue().toString(),child.child("eventKitID").getValue().toString(),child.child("ref").getValue().toString(),child.child("type").getValue().toString(),child.child("userName").getValue().toString(),child.child("userRef").getValue().toString()));
+                            try {
+
+                                Log.e ("oo",child.child("type").getValue().toString());
+
+                                String activity_list[]={"Set Appointment","Went on KT","Closed Life","closed IBA","Closed Other Business","Appt Set To Closed Life",
+                                        "Appt Set To Closed IBA","Invite to Opportunity Meeting","Went To Opportunity Meeting","Call Back","Dark House","Not Interested"};
+
+
+                                switch(child.child("type").getValue().toString())
+
+                                {
+                                    case "Invited to Opportunity Meeting":
+
+                                        count[7]++;
+
+                                        break;
+
+
+                                    case "Went to Opportunity Meeting":
+
+                                        count[8]++;
+
+                                        break;
+
+                                    case "Set Appointment":
+
+                                        count[0]++;
+                                        break;
+
+                                    case "Went on KT":
+
+                                        count[1]++;
+                                        break;
+
+                                    case "Closed IBA":
+
+                                        count[3]++;
+                                        break;
+
+                                }
+
+                            }
+                            catch (Exception e)
+                            {
+                                Log.e("Exception",e+"");
+                            }
+                        }
+
+
+
+                        adapter=new personal_list_adapter(getActivity(),count);
+                        rview.setAdapter(adapter);
+                        Log.e("jsonarray",jsonArray+" abc");
+
+
+
+
+
+
+
+
+                    }
+                    @Override
+                    public void onCancelled(FirebaseError error) {
+                        Log.e("get data error",error.getMessage()+" data");
+                    }
+                });
+    }
+
 
 }
 

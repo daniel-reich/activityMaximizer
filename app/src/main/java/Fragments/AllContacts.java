@@ -72,7 +72,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
         getdatafromfirebase("client");
         try {
             uidd = getArguments().getString("uid");
-            Log.e("uidd",uidd);
+            Log.e("uidd",uidd+" abv");
             if (uidd.length() > 1) {
                 uid = uidd;
             } else {
@@ -146,7 +146,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
                    Log.e("child",child+" abc");
                     data.add(new AllContact(ConvertParseString(child.child("competitive").getValue()),ConvertParseString(child.child("created").getValue()),ConvertParseString(child.child("credible").getValue()),ConvertParseString(child.child("familyName").getValue()),ConvertParseString(child.child("givenName").getValue()),ConvertParseString(child.child("hasKids").getValue()),
                                     ConvertParseString(child.child("homeowner").getValue()),ConvertParseString(child.child("hungry").getValue()),ConvertParseString(child.child("incomeOver40k").getValue()),ConvertParseString(child.child("married").getValue()),ConvertParseString(child.child("motivated").getValue()),ConvertParseString(child.child("ofProperAge").getValue()),ConvertParseString(child.child("peopleSkills").getValue()),
-                            ConvertParseString(child.child("phoneNumber").getValue()),ConvertParseString(child.child("rating").getValue()),ConvertParseString(child.child("recruitRating").getValue()),ConvertParseString(child.child("ref").getValue())));
+                            ConvertParseString(child.child("phoneNumber").getValue()),String.valueOf(ConvertParseInteger(child.child("rating").getValue())),String.valueOf(ConvertParseInteger(child.child("recruitRating").getValue())),ConvertParseString(child.child("ref").getValue())));
 
                     Log.e("child",child.child("familyName").getValue()+" abc");
                 }
@@ -174,5 +174,23 @@ public class AllContacts extends Fragment implements View.OnClickListener {
         }
 
     }
+
+
+    public static int ConvertParseInteger(Object obj) {
+        if(obj==null)
+        {
+            return 0;
+        }
+        else {
+            Long lastSeen = (Long) obj;
+            if (lastSeen != null | lastSeen != 0) {
+                String str=String.valueOf(lastSeen);
+                return Integer.valueOf(str);
+            }
+            else
+                return 0;
+        }
+    }
+
 
 }

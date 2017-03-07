@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,8 +29,8 @@ public class Rating_info_recruits_fram extends Fragment {
 
     View v;
     TextView tv_rating,tv_married,tv_haskids,tv_aged,tv_homeowner,tv_income;
-    ImageView im_marriedcheck,im_marriedcross,im_haskidscheck,im_haskidscross,im_agecheck,im_agecross,im_homecheck,im_homecross,im_incomecheck,im_incomecross;
-    int a=0;
+    ImageView im_hungrycheck,im_hungrycross,im_crediblecheck,im_crediblecross,im_skillscheck,im_skillscross,im_competitivecheck,im_competitvecross,im_motivatecheck,im_motivatecross;
+    int a=0,rate=0,rr=0;
     boolean b,c,d,e,f;
     String competitive,created,credible,familyName,givenName,hasKids,homeowner,hungry,incomeOver40k,married,motivated,ofProperAge,peopleSkills,phoneNumber,ref;
     int rating,recruitRating;
@@ -40,7 +42,7 @@ public class Rating_info_recruits_fram extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        v=inflater.inflate(R.layout.rating_clients_frag,container,false);
+        v=inflater.inflate(R.layout.rating_recurits_frag,container,false);
         setHasOptionsMenu(true);
 
         Firebase.setAndroidContext(getActivity());
@@ -56,16 +58,16 @@ public class Rating_info_recruits_fram extends Fragment {
         tv_homeowner=(TextView)v.findViewById(R.id.tv_homeowner);
         tv_income=(TextView)v.findViewById(R.id.tv_income);
 
-        im_marriedcheck=(ImageView)v.findViewById(R.id.marriedcheck);
-        im_marriedcross=(ImageView)v.findViewById(R.id.marriedcross);
-        im_haskidscheck=(ImageView)v.findViewById(R.id.haskidscheck);
-        im_haskidscross=(ImageView)v.findViewById(R.id.haskidscross);
-        im_agecheck=(ImageView)v.findViewById(R.id.agecheck);
-        im_agecross=(ImageView)v.findViewById(R.id.agecross);
-        im_homecheck=(ImageView)v.findViewById(R.id.homeownercheck);
-        im_homecross=(ImageView)v.findViewById(R.id.homeownercross);
-        im_incomecheck=(ImageView)v.findViewById(R.id.incomecheck);
-        im_incomecross=(ImageView)v.findViewById(R.id.incomecross);
+        im_hungrycheck=(ImageView)v.findViewById(R.id.hungrycheck);
+        im_hungrycross=(ImageView)v.findViewById(R.id.hungrycross);
+        im_crediblecheck=(ImageView)v.findViewById(R.id.crediblecheck);
+        im_crediblecross=(ImageView)v.findViewById(R.id.crediblecross);
+        im_skillscheck=(ImageView)v.findViewById(R.id.skillscheck);
+        im_skillscross=(ImageView)v.findViewById(R.id.skillscross);
+        im_competitivecheck=(ImageView)v.findViewById(R.id.competitivecheck);
+        im_competitvecross=(ImageView)v.findViewById(R.id.competitvecross);
+        im_motivatecheck=(ImageView)v.findViewById(R.id.motivatecheck);
+        im_motivatecross=(ImageView)v.findViewById(R.id.motivatecross);
 
 
 
@@ -91,65 +93,65 @@ public class Rating_info_recruits_fram extends Fragment {
         {
             a=recruitRating;
             tv_rating.setText("Recruit Rating: " + a);
-            if(married.equalsIgnoreCase("false"))
+            if(hungry.equalsIgnoreCase("false"))
             {
-                im_marriedcheck.setImageResource(R.drawable.checkgray32);
-                im_marriedcross.setImageResource(R.drawable.closered32);
+                im_hungrycheck.setImageResource(R.drawable.checkgray32);
+                im_hungrycross.setImageResource(R.drawable.closered32);
                 b=false;
 
             }
             else
             {
-                im_marriedcheck.setImageResource(R.drawable.checkgreen32);
-                im_marriedcross.setImageResource(R.drawable.closegray32);
+                im_hungrycheck.setImageResource(R.drawable.checkgreen32);
+                im_hungrycross.setImageResource(R.drawable.closegray32);
                 b=true;
             }
-            if(hasKids.equalsIgnoreCase("false"))
+            if(credible.equalsIgnoreCase("false"))
             {
-                im_haskidscheck.setImageResource(R.drawable.checkgray32);
-                im_haskidscross.setImageResource(R.drawable.closered32);
+                im_crediblecheck.setImageResource(R.drawable.checkgray32);
+                im_crediblecross.setImageResource(R.drawable.closered32);
                 c=false;
             }
             else
             {
-                im_haskidscheck.setImageResource(R.drawable.checkgreen32);
-                im_haskidscross.setImageResource(R.drawable.closegray32);
+                im_crediblecheck.setImageResource(R.drawable.checkgreen32);
+                im_crediblecross.setImageResource(R.drawable.closegray32);
                 c=true;
             }
-            if(ofProperAge.equalsIgnoreCase("false"))
+            if(peopleSkills.equalsIgnoreCase("false"))
             {
-                im_agecheck.setImageResource(R.drawable.checkgray32);
-                im_agecross.setImageResource(R.drawable.closered32);
+                im_skillscheck.setImageResource(R.drawable.checkgray32);
+                im_skillscross.setImageResource(R.drawable.closered32);
                 d=false;
             }
             else
             {
-                im_agecheck.setImageResource(R.drawable.checkgreen32);
-                im_agecross.setImageResource(R.drawable.closegray32);
+                im_skillscheck.setImageResource(R.drawable.checkgreen32);
+                im_skillscross.setImageResource(R.drawable.closegray32);
                 d=true;
             }
-            if(homeowner.equalsIgnoreCase("false"))
+            if(competitive.equalsIgnoreCase("false"))
             {
-                im_homecheck.setImageResource(R.drawable.checkgray32);
-                im_homecross.setImageResource(R.drawable.closered32);
+                im_competitivecheck.setImageResource(R.drawable.checkgray32);
+                im_competitvecross.setImageResource(R.drawable.closered32);
                 e=false;
             }
             else
             {
-                im_homecheck.setImageResource(R.drawable.checkgreen32);
-                im_homecross.setImageResource(R.drawable.closegray32);
+                im_competitivecheck.setImageResource(R.drawable.checkgreen32);
+                im_competitvecross.setImageResource(R.drawable.closegray32);
                 e=true;
             }
-            if(incomeOver40k.equalsIgnoreCase("false"))
+            if(motivated.equalsIgnoreCase("false"))
             {
-                im_incomecheck.setImageResource(R.drawable.checkgray32);
-                im_incomecross.setImageResource(R.drawable.closered32);
+                im_motivatecheck.setImageResource(R.drawable.checkgray32);
+                im_motivatecross.setImageResource(R.drawable.closered32);
                 f=false;
             }
             else
             {
-                im_incomecheck.setImageResource(R.drawable.checkgreen32);
-                im_incomecross.setImageResource(R.drawable.closegray32);
+                im_motivatecheck.setImageResource(R.drawable.checkgreen32);
+                im_motivatecross.setImageResource(R.drawable.closegray32);
                 f=true;
             }
         }
@@ -160,208 +162,309 @@ public class Rating_info_recruits_fram extends Fragment {
 
 
 
-        im_marriedcheck.setOnClickListener(new View.OnClickListener() {
+        im_hungrycheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(b)
                 {}
                 else {
-                    im_marriedcheck.setImageResource(R.drawable.checkgreen32);
-                    im_marriedcross.setImageResource(R.drawable.closegray32);
+                    im_hungrycheck.setImageResource(R.drawable.checkgreen32);
+                    im_hungrycross.setImageResource(R.drawable.closegray32);
+                    getdatafromfirebase();
                     a = a + 1;
+                    rate=rate+1;
+                    if(rate==5)
+                    {
+                        rr=rr+1;
+                        Map newrate = new HashMap();
+                        newrate.put("fivePointRecruits",rr);
+                        mref.child("users").child(uid).updateChildren(newrate);
+                    }
+
                     tv_rating.setText("Recruit Rating: " + a);
                     b=true;
 
                     Log.e("check",uid+" "+givenName+" abc");
-                    Map newData = new HashMap();
-                    newData.put("married","true");
-                    newData.put("rating",a);
-                    newData.put("recruitRating",a);
-                    mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
+                    if(a<6) {
+                        Map newData = new HashMap();
+                        newData.put("hungry", "true");
+                        newData.put("recruitRating", a);
+                        mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
+                    }
+
+
+
 
 
                 }
             }
         });
-        im_marriedcross.setOnClickListener(new View.OnClickListener() {
+        im_hungrycross.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(b)
-                    im_marriedcheck.setImageResource(R.drawable.checkgray32);
-                im_marriedcross.setImageResource(R.drawable.closered32);
-                if(a>0) {
-                    a = a - 1;
-                    tv_rating.setText("Recruit Rating: " + a);
-                    b=false;
+                if (b) {
+                    im_hungrycheck.setImageResource(R.drawable.checkgray32);
+                    im_hungrycross.setImageResource(R.drawable.closered32);
+                    if (a > 0) {
+                        getdatafromfirebase();
 
-                    Map newData = new HashMap();
-                    newData.put("married","false");
-                    newData.put("rating",a);
-                    newData.put("recruitRating",a);
-                    mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
+                        if (a == 5) {
+                            rr = rr - 1;
+                            Map newrate = new HashMap();
+                            newrate.put("fivePointRecruits", rr);
+                            mref.child("users").child(uid).updateChildren(newrate);
+                        }
+
+                        a = a - 1;
+                        rate = rate - 1;
+                        tv_rating.setText("Recruit Rating: " + a);
+                        b = false;
+
+                        if (a > 0) {
+                            Map newData = new HashMap();
+                            newData.put("hungry", "false");
+                            newData.put("recruitRating", a);
+                            mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
+                        }
+                    }
                 }
             }
         });
-        im_haskidscheck.setOnClickListener(new View.OnClickListener() {
+        im_crediblecheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(c)
                 {}
                 else {
-                    im_haskidscheck.setImageResource(R.drawable.checkgreen32);
-                    im_haskidscross.setImageResource(R.drawable.closegray32);
+                    im_crediblecheck.setImageResource(R.drawable.checkgreen32);
+                    im_crediblecross.setImageResource(R.drawable.closegray32);
+                    getdatafromfirebase();
                     a = a + 1;
+                    rate=rate+1;
+                    if(rate==5)
+                    {
+                        rr=rr+1;
+                        Map newrate = new HashMap();
+                        newrate.put("fivePointRecruits",rr);
+                        mref.child("users").child(uid).updateChildren(newrate);
+                    }
                     tv_rating.setText("Recruit Rating: " + a);
                     c=true;
-
-                    Map newData = new HashMap();
-                    newData.put("hasKids","true");
-                    newData.put("rating",a);
-                    newData.put("recruitRating",a);
-                    mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
-                }
-            }
-        });
-        im_haskidscross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(c) {
-                    im_haskidscheck.setImageResource(R.drawable.checkgray32);
-                    im_haskidscross.setImageResource(R.drawable.closered32);
-                    if (a > 0) {
-                        a = a - 1;
-                        tv_rating.setText("Recruit Rating: " + a);
-                        c=false;
-
+                    if(a<6) {
                         Map newData = new HashMap();
-                        newData.put("hasKids","false");
-                        newData.put("rating",a);
-                        newData.put("recruitRating",a);
+                        newData.put("credible", "true");
+                        newData.put("recruitRating", a);
                         mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
-
                     }
                 }
             }
         });
-        im_agecheck.setOnClickListener(new View.OnClickListener() {
+        im_crediblecross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (c) {
+                    im_crediblecheck.setImageResource(R.drawable.checkgray32);
+                    im_crediblecross.setImageResource(R.drawable.closered32);
+                    if (a > 0) {
+                        getdatafromfirebase();
+
+                        if (a == 5) {
+                            rr = rr - 1;
+                            Map newrate = new HashMap();
+                            newrate.put("fivePointRecruits", rr);
+                            mref.child("users").child(uid).updateChildren(newrate);
+                        }
+                        a = a - 1;
+                        tv_rating.setText("Recruit Rating: " + a);
+                        c = false;
+
+                        if (a > 0) {
+                            Map newData = new HashMap();
+                            newData.put("credible", "false");
+                            newData.put("recruitRating", a);
+                            mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
+
+                        }
+                    }
+                }
+            }
+        });
+        im_skillscheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(d)
                 {}
                 else {
-                    im_agecheck.setImageResource(R.drawable.checkgreen32);
-                    im_agecross.setImageResource(R.drawable.closegray32);
+                    im_skillscheck.setImageResource(R.drawable.checkgreen32);
+                    im_skillscross.setImageResource(R.drawable.closegray32);
+                    getdatafromfirebase();
                     a = a + 1;
+                    rate=rate+1;
+                    if(rate==5)
+                    {
+                        rr=rr+1;
+                        Map newrate = new HashMap();
+                        newrate.put("fivePointRecruits",rr);
+                        mref.child("users").child(uid).updateChildren(newrate);
+                    }
                     tv_rating.setText("Recruit Rating: " + a);
                     d=true;
 
 
-                    Map newData = new HashMap();
-                    newData.put("ofProperAge","true");
-                    newData.put("rating",a);
-                    newData.put("recruitRating",a);
-                    mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
+                    if(a<6) {
+                        Map newData = new HashMap();
+                        newData.put("peopleSkills", "true");
+                        newData.put("recruitRating", a);
+                        mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
+                    }
                 }
             }
         });
-        im_agecross.setOnClickListener(new View.OnClickListener() {
+        im_skillscross.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(d) {
-                    im_agecheck.setImageResource(R.drawable.checkgray32);
-                    im_agecross.setImageResource(R.drawable.closered32);
+                    im_skillscheck.setImageResource(R.drawable.checkgray32);
+                    im_skillscross.setImageResource(R.drawable.closered32);
                     if (a > 0) {
+                        getdatafromfirebase();
+
+                        if (a == 5) {
+                            rr = rr - 1;
+                            Map newrate = new HashMap();
+                            newrate.put("fivePointRecruits", rr);
+                            mref.child("users").child(uid).updateChildren(newrate);
+                        }
+
+
                         a = a - 1;
                         tv_rating.setText("Recruit Rating: " + a);
                         d=false;
-
-                        Map newData = new HashMap();
-                        newData.put("ofProperAge","false");
-                        newData.put("rating",a);
-                        newData.put("recruitRating",a);
-                        mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
+                        if (a > 0) {
+                            Map newData = new HashMap();
+                            newData.put("peopleSkills", "false");
+                            newData.put("recruitRating", a);
+                            mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
+                        }
 
                     }
                 }
             }
         });
-        im_homecheck.setOnClickListener(new View.OnClickListener() {
+        im_competitivecheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (e) {
                 } else {
-                    im_homecheck.setImageResource(R.drawable.checkgreen32);
-                    im_homecross.setImageResource(R.drawable.closegray32);
+                    im_competitivecheck.setImageResource(R.drawable.checkgreen32);
+                    im_competitvecross.setImageResource(R.drawable.closegray32);
+                    getdatafromfirebase();
                     a = a + 1;
+                    rate=rate+1;
+                    if(rate==5)
+                    {
+                        rr=rr+1;
+                        Map newrate = new HashMap();
+                        newrate.put("fivePointRecruits",rr);
+                        mref.child("users").child(uid).updateChildren(newrate);
+                    }
                     tv_rating.setText("Recruit Rating: " + a);
                     e=true;
 
-                    Map newData = new HashMap();
-                    newData.put("homeowner","true");
-                    newData.put("rating",a);
-                    newData.put("recruitRating",a);
-                    mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
-
-                }
-            }
-        });
-        im_homecross.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(e) {
-                    im_homecheck.setImageResource(R.drawable.checkgray32);
-                    im_homecross.setImageResource(R.drawable.closered32);
-                    if (a > 0) {
-                        a = a - 1;
-                        tv_rating.setText("Recruit Rating: " + a);
-                        e=false;
-
+                    if(a<6) {
                         Map newData = new HashMap();
-                        newData.put("homeowner","false");
-                        newData.put("rating",a);
-                        newData.put("recruitRating",a);
+                        newData.put("competitive", "true");
+                        newData.put("recruitRating", a);
                         mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
                     }
                 }
             }
         });
-        im_incomecheck.setOnClickListener(new View.OnClickListener() {
+        im_competitvecross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(e) {
+                    im_competitivecheck.setImageResource(R.drawable.checkgray32);
+                    im_competitvecross.setImageResource(R.drawable.closered32);
+                    if (a > 0) {
+                        getdatafromfirebase();
+
+                        if (a == 5) {
+                            rr = rr - 1;
+                            Map newrate = new HashMap();
+                            newrate.put("fivePointRecruits", rr);
+                            mref.child("users").child(uid).updateChildren(newrate);
+                        }
+                        a = a - 1;
+                        tv_rating.setText("Recruit Rating: " + a);
+                        e=false;
+
+                        if(a>0) {
+                            Map newData = new HashMap();
+                            newData.put("competitive", "false");
+                            newData.put("recruitRating", a);
+                            mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
+                        }
+                    }
+                }
+            }
+        });
+        im_motivatecheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(f)
                 {}
                 else {
-                    im_incomecheck.setImageResource(R.drawable.checkgreen32);
-                    im_incomecross.setImageResource(R.drawable.closegray32);
+                    im_motivatecheck.setImageResource(R.drawable.checkgreen32);
+                    im_motivatecross.setImageResource(R.drawable.closegray32);
+                    getdatafromfirebase();
                     a = a + 1;
+                    rate=rate+1;
+                    if(rate==5)
+                    {
+                        rr=rr+1;
+                        Map newrate = new HashMap();
+                        newrate.put("fivePointRecruits",rr);
+                        mref.child("users").child(uid).updateChildren(newrate);
+                    }
                     tv_rating.setText("Recruit Rating: " + a);
                     f=true;
 
 
-                    Map newData = new HashMap();
-                    newData.put("incomeOver40k","true");
-                    newData.put("rating",a);
-                    newData.put("recruitRating",a);
-                    mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
+                    if(a<6) {
+                        Map newData = new HashMap();
+                        newData.put("motivated", "true");
+                        newData.put("recruitRating", a);
+                        mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
+                    }
                 }
             }
         });
-        im_incomecross.setOnClickListener(new View.OnClickListener() {
+        im_motivatecross.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(f) {
-                    im_incomecheck.setImageResource(R.drawable.checkgray32);
-                    im_incomecross.setImageResource(R.drawable.closered32);
+                    im_motivatecheck.setImageResource(R.drawable.checkgray32);
+                    im_motivatecross.setImageResource(R.drawable.closered32);
                     if (a > 0) {
+                        getdatafromfirebase();
+
+                        if (a == 5) {
+                            rr = rr - 1;
+                            Map newrate = new HashMap();
+                            newrate.put("fivePointRecruits", rr);
+                            mref.child("users").child(uid).updateChildren(newrate);
+                        }
                         a = a - 1;
                         tv_rating.setText("Recruit Rating: " + a);
                         f=false;
 
-                        Map newData = new HashMap();
-                        newData.put("incomeOver40k","false");
-                        newData.put("rating",a);
-                        newData.put("recruitRating",a);
-                        mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
+                        if(a>0) {
+                            Map newData = new HashMap();
+                            newData.put("motivated", "false");
+                            newData.put("recruitRating", a);
+                            mref.child("contacts").child(uid).child(givenName).updateChildren(newData);
+                        }
                     }
                 }
             }
@@ -383,4 +486,42 @@ public class Rating_info_recruits_fram extends Fragment {
         return super.onOptionsItemSelected(item);
 
     }
+
+
+    public void getdatafromfirebase()
+    {
+        mref.child("users").child(uid).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                rr=ConvertParseInteger(dataSnapshot.child("fivePointClients").getValue());
+                Log.e("rrrrr",rr+" ann");
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+
+    public static int ConvertParseInteger(Object obj) {
+        if(obj==null)
+        {
+            return 0;
+        }
+        else {
+            Long lastSeen = (Long) obj;
+            if (lastSeen != null | lastSeen != 0) {
+                String str=String.valueOf(lastSeen);
+                return Integer.valueOf(str);
+            }
+            else
+                return 0;
+        }
+    }
+
+
+
 }

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -44,5 +45,16 @@ public class SortByFragment extends Fragment
          // menu.findItem(R.id.menu).setTitle("Add List");
          menu.findItem(R.id.list).setVisible(false);
       //   menu.findItem(R.id.list).setIcon(R.mipmap.addlist);
+     }
+
+     @Override
+     public boolean onOptionsItemSelected(MenuItem item) {
+         switch (item.getItemId())
+         {
+             case android.R.id.home:
+                 getActivity().getSupportFragmentManager().popBackStack();
+                 break;
+         }
+         return super.onOptionsItemSelected(item);
      }
  }

@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -48,7 +49,7 @@ public class Activity_list_frag extends Fragment {
 
   public static   ContactActivityListAdapter listadapter;
     LinearLayoutManager lManager;
-    String uid="",name="";
+    String uid="",name="",uidd="";
     public static JSONArray js;
     @Nullable
     @Override
@@ -57,7 +58,7 @@ public class Activity_list_frag extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         v=inflater.inflate(R.layout.activity_list_frag,container,false);
-
+        setHasOptionsMenu(true);
         lManager=new LinearLayoutManager(getActivity());
 
         rview=(RecyclerView)v.findViewById(R.id.rview);
@@ -69,7 +70,19 @@ public class Activity_list_frag extends Fragment {
 
         pref=getActivity().getSharedPreferences("userpref",0);
         Firebase.setAndroidContext(getActivity());
-        uid=pref.getString("uid","");
+        try {
+            uidd = getArguments().getString("uid");
+            Log.e("uidd",uidd+" abv");
+            if (uidd.length() > 1) {
+                uid = uidd;
+            } else {
+                uid = pref.getString("uid", "");
+            }
+        }catch (Exception e)
+        {
+            Log.e("Exception",e.getMessage());
+        }
+
 
 
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
@@ -152,4 +165,17 @@ public class Activity_list_frag extends Fragment {
             }
         });
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                getActivity().getSupportFragmentManager().popBackStack();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }
