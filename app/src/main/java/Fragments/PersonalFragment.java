@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.github.anastr.speedviewlib.SpeedView;
 import com.github.siyamed.shapeimageview.DiamondImageView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -90,6 +91,8 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     TextView tv_phone,tv_username;
     private String uid;
 
+
+    SpeedView speedview;
     int count[]={0,0,0,0,0,0,0,0};
 
     @Override
@@ -97,18 +100,26 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         view=inflater.inflate(R.layout.personal_frag,container,false);
         setHasOptionsMenu(true);
         Log.e("check","check");
-        meter=(ImageView)view.findViewById(R.id.meter);
+
         rview=(RecyclerView)view.findViewById(R.id.rview);
         Profile_pic=(DiamondImageView)view.findViewById(R.id.profile_pic);
 
         tv_username=(TextView) view.findViewById(R.id.tv_username);
         tv_phone=(TextView)view.findViewById(R.id.tv_phone);
 
+        speedview=(SpeedView)view.findViewById(R.id.meter);
+
+
+
+// change MAX speed to 320
+        speedview.setMaxSpeed(100);
+// change speed to 140 Km/h
+
         linearLayoutManager=new LinearLayoutManager(getActivity());
         rview.setLayoutManager(linearLayoutManager);
 
         Profile_pic.setOnClickListener(this);
-        meter.setOnClickListener(this);
+
 
         pref=getActivity().getSharedPreferences("userpref",0);
 

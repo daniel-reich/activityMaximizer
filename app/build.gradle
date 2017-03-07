@@ -43,8 +43,11 @@ dependencies {
     compile 'com.google.firebase:firebase-storage:10.2.0'
     compile 'com.firebase:firebase-client-android:2.3.1'
     compile 'com.wdullaer:materialdatetimepicker:3.1.3'
+    compile 'com.github.anastr:speedviewlib:1.1.4'
     compile 'com.soundcloud.android:android-crop:1.0.0@aar'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+
+    compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
 
 
 
