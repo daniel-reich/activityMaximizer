@@ -2,6 +2,7 @@ package Fragments;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -28,6 +29,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,13 +43,21 @@ import utils.Constants;
 public class AddChallange extends Fragment implements View.OnClickListener {
 
     TextView title,tv_setreward;
-    CheckBox cb_totalprem,cb_contactsadded,cb_appoint_set,cb_went_on_kt,cb_close_life,cb_close_iba;
-    CheckBox cb_close_other_bus;
+    TextView tv_totalprem,tv_contactsadded,tv_appoint_set,tv_went_on_kt,tv_close_life,tv_close_iba;
+    TextView tv_close_other_bus;
 
-    ImageView iv_totalprem,iv_contactsadded,iv_appoint_set,iv_went_on_kt,iv_close_life,iv_close_iba;
-    ImageView iv_close_other_bus;
-View view;
+    TextView tv_totalprem1,tv_contactsadded1,tv_appoint_set1,tv_went_on_kt1,tv_close_life1,tv_close_iba1;
+    TextView tv_close_other_bus1;
+
+
+    //    ImageView iv_totalprem,iv_contactsadded,iv_appoint_set,iv_went_on_kt,iv_close_life,iv_close_iba;
+//    ImageView iv_close_other_bus;
+    View view;
     Map map;
+    Firebase mref;
+
+    SharedPreferences pref;
+    SharedPreferences.Editor edit;
 
     @Nullable
     @Override
@@ -67,40 +79,37 @@ View view;
         title = (TextView)view.findViewById(R.id.tv_settitle);
         tv_setreward = (TextView)view.findViewById(R.id.tv_setreward);
 
-        cb_totalprem=(CheckBox) view.findViewById(R.id.cb_totalpremium);
-        cb_contactsadded=(CheckBox)view.findViewById(R.id.cb_contactadded);
-        cb_appoint_set=(CheckBox)view.findViewById(R.id.cb_appointmentset);
-        cb_went_on_kt=(CheckBox)view.findViewById(R.id.cb_wenton);
-        cb_close_life=(CheckBox)view.findViewById(R.id.cb_closelife);
-        cb_close_iba=(CheckBox)view.findViewById(R.id.cb_closeiba);
-        cb_close_other_bus=(CheckBox)view.findViewById(R.id.cb_closeotherbusiness);
+        tv_totalprem=(TextView) view.findViewById(R.id.tv_totalpremium);
+        tv_contactsadded=(TextView) view.findViewById(R.id.tv_contactadded);
+        tv_appoint_set=(TextView)view.findViewById(R.id.tv_appointmentset);
+        tv_went_on_kt=(TextView)view.findViewById(R.id.tv_wenton);
+        tv_close_life=(TextView)view.findViewById(R.id.tv_closelife);
+        tv_close_iba=(TextView)view.findViewById(R.id.tv_closeiba);
+        tv_close_other_bus=(TextView)view.findViewById(R.id.tv_closeotherbusiness);
 
-        iv_totalprem=(ImageView) view.findViewById(R.id.iv_totalpremium);
-        iv_contactsadded=(ImageView)view.findViewById(R.id.iv_contactadded);
-        iv_appoint_set=(ImageView)view.findViewById(R.id.iv_appointmentset);
-        iv_went_on_kt=(ImageView)view.findViewById(R.id.iv_wenton);
-        iv_close_life=(ImageView)view.findViewById(R.id.iv_closelife);
-        iv_close_iba=(ImageView)view.findViewById(R.id.iv_closeiba);
-        iv_close_other_bus=(ImageView)view.findViewById(R.id.iv_closeotherbusiness);
+        tv_totalprem1=(TextView) view.findViewById(R.id.tv_totalpremium1);
+        tv_contactsadded1=(TextView) view.findViewById(R.id.tv_contactadded1);
+        tv_appoint_set1=(TextView)view.findViewById(R.id.tv_appointmentset1);
+        tv_went_on_kt1=(TextView)view.findViewById(R.id.tv_wenton1);
+        tv_close_life1=(TextView)view.findViewById(R.id.tv_closelife1);
+        tv_close_iba1=(TextView)view.findViewById(R.id.tv_closeiba1);
+        tv_close_other_bus1=(TextView)view.findViewById(R.id.tv_closeotherbusiness1);
 
-
-        title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog("New Name",title);
-            }
-        });
-
-        tv_setreward.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog("Set Reward",tv_setreward);
-            }
-        });
-
+        pref=getActivity().getSharedPreferences("userpref",0);
+        Firebase.setAndroidContext(getActivity());
+        mref=new Firebase(Constants.URL);
 
         title.setOnClickListener(this);
         tv_setreward.setOnClickListener(this);
+
+        tv_totalprem.setOnClickListener(this);
+        tv_contactsadded.setOnClickListener(this);
+        tv_appoint_set.setOnClickListener(this);
+        tv_went_on_kt.setOnClickListener(this);
+        tv_close_life.setOnClickListener(this);
+        tv_close_iba.setOnClickListener(this);
+        tv_close_other_bus.setOnClickListener(this);
+
 
         map.put("Appointments Set",true);
         map.put("Closed IBA",true);
@@ -110,70 +119,71 @@ View view;
         map.put("Total Premium",true);
         map.put("Went on KT",true);
 
-        cb_totalprem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
-                    map.put("Appointments Set",true);
-                else
-                    map.put("Appointments Set",false);
-            }
-        });
-
-        cb_close_iba.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
-                    map.put("Closed IBA",true);
-                else
-                    map.put("Closed IBA",false);
-            }
-        });
-        cb_close_iba.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
-                    map.put("Closed Life",true);
-                else
-                    map.put("Closed Life",false);
-            }
-        });
-        cb_close_iba.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
-                    map.put("Closed Other Business",true);
-                else
-                    map.put("Closed Other Business",false);
-            }
-        });
-        cb_close_iba.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
-                    map.put("Contacts Added",true);
-                else
-                    map.put("Contacts Added",false);
-            }
-        });
-        cb_close_iba.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
-                    map.put("Total Premium",true);
-                else
-                    map.put("Total Premium",false);
-            }
-        });
-        cb_close_iba.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
-                    map.put("Went on KT",true);
-                else
-                    map.put("Went on KT",false);
-            }
-        });
+//
+//        cb_totalprem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if(b)
+//                    map.put("Appointments Set",true);
+//                else
+//                    map.put("Appointments Set",false);
+//            }
+//        });
+//
+//        cb_close_iba.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if(b)
+//                    map.put("Closed IBA",true);
+//                else
+//                    map.put("Closed IBA",false);
+//            }
+//        });
+//        cb_close_iba.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if(b)
+//                    map.put("Closed Life",true);
+//                else
+//                    map.put("Closed Life",false);
+//            }
+//        });
+//        cb_close_iba.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if(b)
+//                    map.put("Closed Other Business",true);
+//                else
+//                    map.put("Closed Other Business",false);
+//            }
+//        });
+//        cb_close_iba.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if(b)
+//                    map.put("Contacts Added",true);
+//                else
+//                    map.put("Contacts Added",false);
+//            }
+//        });
+//        cb_close_iba.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if(b)
+//                    map.put("Total Premium",true);
+//                else
+//                    map.put("Total Premium",false);
+//            }
+//        });
+//        cb_close_iba.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if(b)
+//                    map.put("Went on KT",true);
+//                else
+//                    map.put("Went on KT",false);
+//            }
+//        });
 
         return view;
     }
@@ -236,7 +246,7 @@ View view;
         switch (item.getItemId())
         {
             case R.id.menu:
-
+                updatefield();
             //    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new AddChallange()).addToBackStack(null).commit();
                 break;
             case android.R.id.home:
@@ -244,7 +254,6 @@ View view;
                 break;
         }
         return super.onOptionsItemSelected(item);
-
     }
 
     public void updatefield(){
@@ -253,33 +262,56 @@ View view;
             Alert("Challenge must have a title");
             return;
         }
+        if(tv_setreward.getText().toString().length()<1){
+            Alert("Challenge must have a reward");
+            return;
+        }
+
+        if(tv_totalprem1.getText().toString().equals("0")&tv_close_other_bus1.getText().toString().equals("0")&
+                tv_contactsadded1.getText().toString().equals("0")&tv_appoint_set1.getText().toString().equals("0")&
+                tv_went_on_kt1.getText().toString().equals("0")&tv_close_life1.getText().toString().equals("0")&
+                tv_close_iba1.getText().toString().equals("0")){
+            Alert("Challage must have at least one included activity type");
+            return;
+        }
 
         String tms= String.valueOf(System.currentTimeMillis());
         Log.e("update success","update success");
 
         Map m1 = new HashMap();
-        m1.put("Appointments Set",0);
-        m1.put("Closed IBA",0);
-        m1.put("Closed Life",0);
-        m1.put("Closed Other Business",0);
-        m1.put("Contacts Added",0);
-        m1.put("Total Premium",0);
-        m1.put("Went on KT",0);
+        m1.put("Appointments Set",tv_appoint_set1.getText().toString());
+        m1.put("Closed IBA", tv_close_iba1.getText().toString());
+        m1.put("Closed Life", tv_close_life1.getText().toString());
+        m1.put("Closed Other Business", tv_close_other_bus1.getText().toString());
+        m1.put("Contacts Added", tv_contactsadded1.getText().toString());
+        m1.put("Total Premium", tv_totalprem1.getText().toString());
+        m1.put("Went on KT", tv_went_on_kt1.getText().toString());
 
         Map newUserData = new HashMap();
-        newUserData.put("completed","false");
-        newUserData.put("finished:","false");
-        newUserData.put("endDate","1491079520");
-        newUserData.put("startDate","1491079520");
         newUserData.put("activityCount",m1);
-        newUserData.put("includedActivity",map);
-        newUserData.put("currentLeader","");
         newUserData.put("created","1488145580.1949");
+        newUserData.put("currentLeader","");
+        newUserData.put("endDate","1491079520");
+        newUserData.put("finished","false");
+        newUserData.put("finishedDate","1488145580.1949");
+        newUserData.put("hasTimeLimit",false);
+        newUserData.put("includedActivity",map);
+        newUserData.put("Participants","");
+        //newUserData.put("ref","1491079520");
+        newUserData.put("reward",tv_setreward.getText().toString());
+        newUserData.put("startDate","1491079522");
         newUserData.put("title",title.getText().toString());
+        newUserData.put("winner","");
 
-        //newUserData.put("ref", Constants.URL+"users/"+pref.getString("uid","")+"Goals/"+tms);
+        newUserData.put("ref", Constants.URL+"Solution Numbers/"+pref.getString("solution_number","")+"/contests/"+tms);
 
-        //mref.child("users").child(pref.getString("uid","")).child("Goals").child(tms).updateChildren(newUserData);
+        mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("contests").child(tms).updateChildren(newUserData, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                Log.e("Solution Update","Solution Update");
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
     }
     public void Alert(String val) {
         final Dialog dialog=new Dialog(getActivity());
@@ -317,27 +349,26 @@ View view;
         else if(v.getId()==R.id.tv_setreward){
             showDialog("SeT Reward",tv_setreward);
         }
-//        else if(v.getId()==R.id.lay_totalprem){
-//            showDialog("New Amount",tv_totalprem);
-//        }
-//        else if(v.getId()==R.id.lay_contactadded){
-//            showDialog("New Amount",tv_contactsadded);
-//        }
-//        else if(v.getId()==R.id.lay_appoint_set){
-//            showDialog("New Amount",tv_appoint_set);
-//        }
-//        else if(v.getId()==R.id.lay_went_kt){
-//            showDialog("New Amount",tv_went_on_kt);
-//        }
-//        else if(v.getId()==R.id.lay_closedlife){
-//            showDialog("New Amount",tv_close_life);
-//        }
-//        else if(v.getId()==R.id.lay_closediba){
-//            showDialog("New Amount",tv_close_iba);
-//        }
-//        else if(v.getId()==R.id.lay_closedbuisness){
-//            showDialog("New Amount",tv_close_other_bus);
-//        }
-
+        else if(v.getId()==R.id.tv_totalpremium){
+            showDialog("New Amount",tv_totalprem1);
+        }
+        else if(v.getId()==R.id.tv_contactadded){
+            showDialog("New Amount",tv_totalprem1);
+        }
+        else if(v.getId()==R.id.tv_appointmentset){
+            showDialog("New Amount",tv_appoint_set1);
+        }
+        else if(v.getId()==R.id.tv_wenton){
+            showDialog("New Amount",tv_went_on_kt1);
+        }
+        else if(v.getId()==R.id.tv_closelife){
+            showDialog("New Amount",tv_close_life1);
+        }
+        else if(v.getId()==R.id.tv_closeiba){
+            showDialog("New Amount",tv_close_iba1);
+        }
+        else if(v.getId()==R.id.tv_closeotherbusiness){
+            showDialog("New Amount",tv_close_other_bus1);
+        }
     }
 }

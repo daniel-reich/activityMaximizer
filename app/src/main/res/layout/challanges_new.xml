@@ -87,8 +87,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <CheckBox
-                    android:id="@+id/cb_totalpremium"
+                <TextView
+                    android:id="@+id/tv_totalpremium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Total Premium"
@@ -100,12 +100,12 @@
                     android:textColor="#606060"
                     android:layout_centerVertical="true" />
 
-                <ImageView
-                    android:id="@+id/iv_totalpremium"
+                <TextView
+                    android:id="@+id/tv_totalpremium1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/checkmark_bl24" />
+                    android:text="0" />
 
             </LinearLayout>
 
@@ -119,8 +119,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <CheckBox
-                    android:id="@+id/cb_contactadded"
+                <TextView
+                    android:id="@+id/tv_contactadded"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Contact Added"
@@ -132,12 +132,12 @@
                     android:textColor="#606060"
                     android:layout_centerVertical="true" />
 
-                <ImageView
-                    android:id="@+id/iv_contactadded"
+                <TextView
+                    android:id="@+id/tv_contactadded1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/checkmark_bl24" />
+                    android:text="0" />
 
             </LinearLayout>
             <View
@@ -152,8 +152,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <CheckBox
-                    android:id="@+id/cb_appointmentset"
+                <TextView
+                    android:id="@+id/tv_appointmentset"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Appointment Set"
@@ -165,12 +165,12 @@
                     android:textColor="#606060"
                     android:layout_centerVertical="true" />
 
-                <ImageView
-                    android:id="@+id/iv_appointmentset"
+                <TextView
+                    android:id="@+id/tv_appointmentset1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/checkmark_bl24" />
+                    android:text="0" />
 
             </LinearLayout>
             <View
@@ -183,8 +183,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <CheckBox
-                    android:id="@+id/cb_wenton"
+                <TextView
+                    android:id="@+id/tv_wenton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Went on KT"
@@ -196,12 +196,12 @@
                     android:textColor="#606060"
                     android:layout_centerVertical="true" />
 
-                <ImageView
-                    android:id="@+id/iv_wenton"
+                <TextView
+                    android:id="@+id/tv_wenton1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/checkmark_bl24" />
+                    android:text="0" />
 
             </LinearLayout>
             <View
@@ -215,8 +215,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <CheckBox
-                    android:id="@+id/cb_closelife"
+                <TextView
+                    android:id="@+id/tv_closelife"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Close Life"
@@ -228,12 +228,12 @@
                     android:textColor="#606060"
                     android:layout_centerVertical="true" />
 
-                <ImageView
-                    android:id="@+id/iv_closelife"
+                <TextView
+                    android:id="@+id/tv_closelife1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/checkmark_bl24" />
+                    android:text="0" />
 
             </LinearLayout>
             <View
@@ -247,8 +247,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <CheckBox
-                    android:id="@+id/cb_closeiba"
+                <TextView
+                    android:id="@+id/tv_closeiba"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Close IBA"
@@ -260,12 +260,12 @@
                     android:textColor="#606060"
                     android:layout_centerVertical="true" />
 
-                <ImageView
-                    android:id="@+id/iv_closeiba"
+                <TextView
+                    android:id="@+id/tv_closeiba1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/checkmark_bl24" />
+                    android:text="0" />
 
             </LinearLayout>
             <View
@@ -279,8 +279,8 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <CheckBox
-                    android:id="@+id/cb_closeotherbusiness"
+                <TextView
+                    android:id="@+id/tv_closeotherbusiness"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Close other Business"
@@ -292,12 +292,12 @@
                     android:textColor="#606060"
                     android:layout_centerVertical="true" />
 
-                <ImageView
-                    android:id="@+id/iv_closeotherbusiness"
+                <TextView
+                    android:id="@+id/tv_closeotherbusiness1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/checkmark_bl24" />
+                    android:text="0" />
 
             </LinearLayout>
             <View

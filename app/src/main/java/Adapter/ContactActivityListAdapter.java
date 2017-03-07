@@ -43,6 +43,7 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
         this.context = context;
         this.array=array;
         this.str=str;
+        Log.e("notifydatasetchanged","notifydatasetchanged");
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -90,11 +91,7 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
         } catch (Exception e) {
 
-
             Log.e("i","e",e);
-
-
-
 
         }
 
@@ -110,12 +107,6 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
         private TextView tv_activity_list;
 
         private TextView timestamp;
-
-
-
-
-
-
 
         public ViewHolder(View view) {
             super(view);

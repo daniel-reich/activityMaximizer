@@ -271,7 +271,6 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
                 .child(String.valueOf(selectedtimeStampDate.getTime()))
                 .setValue(newcontact);
 
-
         FragmentManager fm = getActivity()
                 .getSupportFragmentManager();
         fm.popBackStack();

@@ -42,6 +42,7 @@ import Adapter.Achivement_Adap;
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 import u.activitymanager.SplashActivity;
+import utils.Constants;
 import utils.NetworkConnection;
 
 /**
@@ -72,7 +73,7 @@ public class Edit_Profile extends Fragment implements View.OnClickListener {
 
         Firebase.setAndroidContext(getActivity());
 //        storageRef= FirebaseStorage.getInstance().getReference();
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase(Constants.URL);
 
         pref=getActivity().getSharedPreferences("userpref",0);
 

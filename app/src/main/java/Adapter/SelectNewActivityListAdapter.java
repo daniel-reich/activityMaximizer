@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,7 +20,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.MutableData;
+import com.firebase.client.Transaction;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +53,8 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
     private SharedPreferences pref;
     private Firebase mref;
     private Dialog AddNewContact;
+    int amount,increement;
+    String increement_value;
 
     public SelectNewActivityListAdapter(Context context) {
         this.context = context;
@@ -94,11 +101,9 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
                     Log.e("position",position+"");
 
 
-
                     if(position==0 || position==5 || position==6 || position==9)
 
                     {
-
 
                         Activity_list_frag.dialog.dismiss();
                         HomeActivity activity = (HomeActivity) context;
@@ -110,26 +115,24 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
                         {
                             case 0:
 
+                                increement_value="Set Appointment";
                                 bundle.putString("title","Appointment with "+ Need_to_Quality.givenName);
                                 break;
 
-
                             case 5:
-
+                                increement_value="Appointment set to Close Life";
                                 bundle.putString("title","Appointment set to Close Life with "+ Need_to_Quality.givenName);
                                 break;
 
                             case 6:
-
+                                increement_value="Appointment set to Close IBA";
                                 bundle.putString("title","Appointment set to Close IBA with "+ Need_to_Quality.givenName);
                                 break;
 
-
                             case 9:
-
+                                increement_value="Call Back";
                                 bundle.putString("title","CallBack  with "+ Need_to_Quality.givenName);
                                 break;
-
 
                         }
 
@@ -140,19 +143,12 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
                                 replace(R.id.frame_layout,act).addToBackStack(null).commit();
                     }
 
-
-                    else
-                    if(position==2)
+                    else if(position==2)
                     {
-
-
                         Activity_list_frag.dialog.dismiss();
 
                         addContactDialog(position);
                     }
-
-
-
 
                     else {
 
@@ -165,10 +161,7 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
         }
     }
 
-
-
-
-    private void addContactDialog(int position) {
+    private void addContactDialog(final int position) {
 
         Activity activity = (Activity) context;
         AddNewContact=new Dialog(activity);
@@ -184,10 +177,17 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
         TextView save=(TextView)AddNewContact.findViewById(R.id.tv_save);
         TextView cancel=(TextView)AddNewContact.findViewById(R.id.cancel);
 
+        listname.setInputType(InputType.TYPE_CLASS_NUMBER);
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                amount=Integer.valueOf(listname.getText().toString());
+                if(amount>0) {
+                    addNewContact(position);
+                }
+                else
+                    Toast.makeText(context,"Please Enter Amount",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -200,12 +200,6 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
 
         AddNewContact.show();
     }
-
-
-
-
-
-
 
     private void addNewContact(int position) {
         java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
@@ -226,19 +220,12 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
         }
 
         pref=context.getSharedPreferences("userpref",0);
-     String   uid=pref.getString("uid","");
+        String   uid=pref.getString("uid","");
         String noteref= Constants.URL+"events/"+uid+"/"+timestamp;
-
-
-
-
-
-
 
 //        mref.child("contacts").child(uid)
 //                .child(st_fname).child("notes").child(timestamp)
 //                .setValue(newnote);
-
 
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
 
@@ -249,7 +236,12 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
         newcontact.put("date",timestamp);
         newcontact.put("eventKitID","");
         newcontact.put("ref",noteref);
-        newcontact.put("amount",0);
+
+        if(amount>0)
+            newcontact.put("amount",amount);
+        else
+            newcontact.put("amount",0);
+
         newcontact.put("type",activity_list[position]);
         newcontact.put("userName",pref.getString("givenName","")+" "+pref.getString("familyName",""));
         newcontact.put("userRef",pref.getString("ref",""));
@@ -259,11 +251,40 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
         mref.child("events")
                 .child(uid)
                 .child(timestamp)
-                .setValue(newcontact);
+                .setValue(newcontact, new Firebase.CompletionListener() {
+                    @Override
+                    public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                       incrementCounter();
+                        Activity_list_frag.listadapter.notifyDataSetChanged();
 
+                    }
+                });
+    }
 
+    public void incrementCounter() {
+    Log.e("uid",pref.getString("uid",""));
+        mref.child("users").child(pref.getString("uid",""))
+                .child("dailyPointAverages").child("Mar 07").runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(final MutableData currentData) {
+                if (currentData.getValue() == null) {
+                    currentData.setValue(1);
+                } else {
+                    currentData.setValue((Long) currentData.getValue() + 1);
+                }
 
-        
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
+                if (firebaseError != null) {
+                    Log.e("Firebase counter","increement failed");
+                } else {
+                    Log.d("Firebase counter","increment succeeded.");
+                }
+            }
+        });
     }
 
 }

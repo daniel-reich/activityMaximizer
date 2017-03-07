@@ -96,8 +96,6 @@ public class Activity_list_frag extends Fragment {
                 adapter=new SelectNewActivityListAdapter(getActivity());
                 rview.setAdapter(adapter);
                 dialog.show();
-
-
             }
         });
         try {
@@ -158,12 +156,6 @@ public class Activity_list_frag extends Fragment {
                 listadapter=new ContactActivityListAdapter(getActivity(),jsonArray,"all");
                 rview.setLayoutManager(lManager);
                 rview.setAdapter(listadapter);
-
-
-
-
-
-
 
             }
             @Override

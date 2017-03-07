@@ -119,6 +119,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         rview.setLayoutManager(linearLayoutManager);
 
         Profile_pic.setOnClickListener(this);
+        speedview.setOnClickListener(this);
 
 
         pref=getActivity().getSharedPreferences("userpref",0);
@@ -140,9 +141,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 .cacheInMemory(false)
                 .cacheOnDisk(true)
                 .build();
-
-
-
 
         Log.e("profilepic",pref.getString("profilePictureURL","null image path"));
 
