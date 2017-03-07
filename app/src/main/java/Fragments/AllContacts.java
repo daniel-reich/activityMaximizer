@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,12 +47,13 @@ public class AllContacts extends Fragment implements View.OnClickListener {
     LinearLayoutManager layoutManager;
     ClientAdapter adapter;
     ArrayList<AllContact> data;
-    String role="client";
+    String role="client",uid="",uidd="";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.all_contacts,container,false);
         setHasOptionsMenu(true);
+
         Clients=(TextView)view.findViewById(R.id.tv_clients);
         Recruits=(TextView)view.findViewById(R.id.tv_recruits);
         Clients.setOnClickListener(this);
@@ -68,6 +70,18 @@ public class AllContacts extends Fragment implements View.OnClickListener {
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
 
         getdatafromfirebase("client");
+        try {
+            uidd = getArguments().getString("uid");
+            Log.e("uidd",uidd);
+            if (uidd.length() > 1) {
+                uid = uidd;
+            } else {
+                uid = pref.getString("uid", "");
+            }
+        }catch (Exception e)
+        {
+            Log.e("Exception",e.getMessage());
+        }
 
         Log.e("AllContacts","Allcontacts");
 
@@ -121,7 +135,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
 
     public void getdatafromfirebase(final String role)
     {
-        mref.child("contacts").child(pref.getString("uid","")).addValueEventListener(new ValueEventListener() {
+        mref.child("contacts").child(uid).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
@@ -130,9 +144,9 @@ public class AllContacts extends Fragment implements View.OnClickListener {
 
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                    Log.e("child",child+" abc");
-                    data.add(new AllContact(child.child("competitive").getValue().toString(),child.child("created").getValue().toString(),child.child("credible").getValue().toString(),child.child("familyName").getValue().toString(),child.child("givenName").getValue().toString(),child.child("hasKids").getValue().toString(),
-                            child.child("homeowner").getValue().toString(),child.child("hungry").getValue().toString(),child.child("incomeOver40k").getValue().toString(),child.child("married").getValue().toString(),child.child("motivated").getValue().toString(),child.child("ofProperAge").getValue().toString(),child.child("peopleSkills").getValue().toString(),
-                            child.child("phoneNumber").getValue().toString(),child.child("rating").getValue().toString(),child.child("recruitRating").getValue().toString(),child.child("ref").getValue().toString()));
+                    data.add(new AllContact(ConvertParseString(child.child("competitive").getValue()),ConvertParseString(child.child("created").getValue()),ConvertParseString(child.child("credible").getValue()),ConvertParseString(child.child("familyName").getValue()),ConvertParseString(child.child("givenName").getValue()),ConvertParseString(child.child("hasKids").getValue()),
+                                    ConvertParseString(child.child("homeowner").getValue()),ConvertParseString(child.child("hungry").getValue()),ConvertParseString(child.child("incomeOver40k").getValue()),ConvertParseString(child.child("married").getValue()),ConvertParseString(child.child("motivated").getValue()),ConvertParseString(child.child("ofProperAge").getValue()),ConvertParseString(child.child("peopleSkills").getValue()),
+                            ConvertParseString(child.child("phoneNumber").getValue()),ConvertParseString(child.child("rating").getValue()),ConvertParseString(child.child("recruitRating").getValue()),ConvertParseString(child.child("ref").getValue())));
 
                     Log.e("child",child.child("familyName").getValue()+" abc");
                 }
@@ -146,6 +160,19 @@ public class AllContacts extends Fragment implements View.OnClickListener {
             }
         });
     }
+    public static String ConvertParseString(Object obj ) {
+        if(obj==null)
+        {
+            return "";
+        }
+        else {
+            String lastSeen= (String) obj;
+            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
+                return lastSeen;
+            else
+                return "";
+        }
 
+    }
 
 }

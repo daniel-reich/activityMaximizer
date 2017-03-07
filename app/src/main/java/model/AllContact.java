@@ -29,8 +29,20 @@ public class AllContact implements Serializable
         this.ofProperAge = ofProperAge;
         this.peopleSkills = peopleSkills;
         this.phoneNumber = phoneNumber;
-        this.rating = Integer.parseInt(rating);
-        this.recruitRating = Integer.parseInt(recruitRating);
+        if(rating.equalsIgnoreCase("")|recruitRating.equalsIgnoreCase(null))
+        {
+            this.rating = Integer.parseInt("0");
+        }
+        else {
+            this.rating = Integer.parseInt(rating);
+        }
+        if(recruitRating.equalsIgnoreCase("")|recruitRating.equalsIgnoreCase(null))
+        {
+            this.recruitRating = Integer.parseInt("0");
+        }
+        else {
+            this.recruitRating = Integer.parseInt(recruitRating);
+        }
         this.ref = ref;
     }
 

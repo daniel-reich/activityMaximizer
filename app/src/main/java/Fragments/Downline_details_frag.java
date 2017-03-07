@@ -13,9 +13,11 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,11 +32,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.github.siyamed.shapeimageview.DiamondImageView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -47,11 +53,15 @@ import com.soundcloud.android.crop.Crop;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import Adapter.ClientAdapter;
 import Adapter.adapter;
 import Adapter.personal_list_adapter;
+import model.AllContact;
+import model.userinfoo;
 import u.activitymanager.R;
 import utils.AnimateFirstDisplayListener;
 import utils.Constants;
@@ -72,23 +82,40 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
     Firebase mref;
     SharedPreferences pref;
     SharedPreferences.Editor edit;
+    ImageView contactimg,activityimg,achivementsimg,goalsimg;
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
     private DisplayImageOptions options;
     TextView tv_phone,tv_username,tv_email,tv_solutionnumber;
-
+    String uidd="";
+    ArrayList<userinfoo> data;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.downline_details_page,container,false);
         setHasOptionsMenu(true);
+
+        try {
+            uidd = getArguments().getString("uid");
+            Log.e("uidd", uidd);
+        }catch (Exception e)
+        {
+            Log.e("Exception",e.getMessage());
+        }
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 //        Log.e("check","check");
+
+
         meter=(ImageView)view.findViewById(R.id.meter);
         rview=(RecyclerView)view.findViewById(R.id.rview);
         Profile_pic=(DiamondImageView)view.findViewById(R.id.profile_pic);
+
+        contactimg=(ImageView)view.findViewById(R.id.iv_contact);
+        activityimg=(ImageView)view.findViewById(R.id.iv_activity);
+        achivementsimg=(ImageView)view.findViewById(R.id.iv_achivement);
+        goalsimg=(ImageView)view.findViewById(R.id.iv_goals);
 
         tv_username=(TextView) view.findViewById(R.id.tv_username);
         tv_phone=(TextView)view.findViewById(R.id.tv_phone);
@@ -98,8 +125,12 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
         linearLayoutManager=new LinearLayoutManager(getActivity());
         rview.setLayoutManager(linearLayoutManager);
        // adapter=new personal_list_adapter(getActivity());
-        rview.setAdapter(adapter);
+//        rview.setAdapter(adapter);
         Profile_pic.setOnClickListener(this);
+        contactimg.setOnClickListener(this);
+        activityimg.setOnClickListener(this);
+        achivementsimg.setOnClickListener(this);
+        goalsimg.setOnClickListener(this);
         meter.setOnClickListener(this);
 
         pref=getActivity().getSharedPreferences("userpref",0);
@@ -111,26 +142,9 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
 
         storageRef= FirebaseStorage.getInstance().getReference();
 
-//        getdatafromfirebase();
+        getdatafromfirebase();
 
-        options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.userprofile)
-                .showImageOnFail(R.drawable.userprofile)
-                .showImageForEmptyUri(R.drawable.userprofile)
-                .cacheInMemory(false)
-                .cacheOnDisk(true)
-                .build();
 
-        Log.e("profilepic",pref.getString("profilePictureURL","null image path"));
-
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
-        imageLoader.getInstance().displayImage(pref.getString("profilePictureURL",""), Profile_pic, options, animateFirstListener);
-
-        tv_username.setText(pref.getString("givenName","")+" "+pref.getString("familyName",""));
-        tv_phone.setText(pref.getString("phoneNumber",""));
-        tv_email.setText(pref.getString("email",""));
-        tv_solutionnumber.setText(pref.getString("solution_number",""));
 
         return view;
     }
@@ -139,6 +153,45 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId())
         {
+            case R.id.iv_contact:
+                AllContacts basic_frag = new AllContacts();
+                Bundle args = new Bundle();
+                args.putString("uid", uidd);
+                basic_frag.setArguments(args);
+
+               getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, basic_frag).
+                        addToBackStack(null).commit();
+                break;
+
+            case R.id.iv_activity:
+                Activity_list_frag basic_frag1 = new Activity_list_frag();
+                Bundle args1 = new Bundle();
+                args1.putString("givenName", data.get(0).getGivenName());
+                basic_frag1.setArguments(args1);
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout,basic_frag1).addToBackStack(null).commit();
+                break;
+
+            case R.id.iv_achivement:
+                Achievements basic_frag2 = new Achievements();
+                Bundle args2 = new Bundle();
+                args2.putString("uid", uidd);
+                basic_frag2.setArguments(args2);
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout,basic_frag2).addToBackStack(null).commit();
+                break;
+
+            case R.id.iv_goals:
+                Goals_Tracker basic_frag3 = new Goals_Tracker();
+                Bundle args3 = new Bundle();
+                args3.putString("uid", uidd);
+                basic_frag3.setArguments(args3);
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout,basic_frag3).addToBackStack(null).commit();
+                break;
 
         }
     }
@@ -159,4 +212,71 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    public void getdatafromfirebase()
+    {
+        mref.child("users").child(uidd).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                data=new ArrayList<userinfoo>();
+
+//                for (DataSnapshot child : dataSnapshot.getChildren()) {
+//                    Log.e("child",child+" abc");
+                    data.add(new userinfoo(ConvertParseString(dataSnapshot.child("givenName").getValue()),ConvertParseString(dataSnapshot.child("familyName").getValue()),ConvertParseString(dataSnapshot.child("phoneNumber").getValue()),ConvertParseString(dataSnapshot.child("email").getValue()),ConvertParseString(dataSnapshot.child("uid").getValue()),ConvertParseString(dataSnapshot.child("contactsAdded").getValue()),
+                            ConvertParseString(dataSnapshot.child("created").getValue()),ConvertParseString(dataSnapshot.child("dailyPointAverages").getValue()),ConvertParseString(dataSnapshot.child("fivePointClients").getValue()),ConvertParseString(dataSnapshot.child("fivePointRecruits").getValue()),ConvertParseString(dataSnapshot.child("partner_solution_number").getValue()),ConvertParseString(dataSnapshot.child("partnerUID").getValue()),ConvertParseString(dataSnapshot.child("profilePictureURL").getValue()),
+                            ConvertParseString(dataSnapshot.child("ref").getValue()),ConvertParseString(dataSnapshot.child("rvp_solution_number").getValue()),ConvertParseString(dataSnapshot.child("solution_number").getValue()),ConvertParseString(dataSnapshot.child("state").getValue()),ConvertParseString(dataSnapshot.child("trainer_solution_number").getValue()),ConvertParseString(dataSnapshot.child("upline_solution_number").getValue())));
+
+                    Log.e("child",dataSnapshot.child("familyName").getValue()+" abc");
+//                }
+
+                options = new DisplayImageOptions.Builder()
+                        .showImageOnLoading(R.drawable.userprofile)
+                        .showImageOnFail(R.drawable.userprofile)
+                        .showImageForEmptyUri(R.drawable.userprofile)
+                        .cacheInMemory(false)
+                        .cacheOnDisk(true)
+                        .build();
+
+                Log.e("profilepic",pref.getString("profilePictureURL","null image path"));
+
+                ImageLoader imageLoader = ImageLoader.getInstance();
+                imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
+                imageLoader.getInstance().displayImage(data.get(0).getProfilePictureURL(), Profile_pic, options, animateFirstListener);
+
+                tv_username.setText(data.get(0).getGivenName());
+                tv_phone.setText(data.get(0).getPhoneNumber());
+                tv_email.setText(data.get(0).getEmail());
+                tv_solutionnumber.setText(data.get(0).getSolution_number());
+
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+    public static String ConvertParseString(Object obj ) {
+        if(obj==null)
+        {
+            return "";
+        }
+        else {
+            String lastSeen= (String) obj;
+            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
+                return lastSeen;
+            else
+                return "";
+        }
+
+    }
+
 }
+
+
+
+
+//String givenName, String familyName, String phoneNumber, String email, String uid, String contactsAdded, String created, String dailyPointAverages, String fivePointClients, String fivePointRecruits, String partner_solution_number, String partnerUID, String profilePictureURL, String ref, String rvp_solution_number, String solution_number, String state, String trainer_solution_number, String upline_solution_number

@@ -45,7 +45,7 @@ public class Goals_Tracker extends Fragment {
     SharedPreferences pref;
     SharedPreferences.Editor edit;
     JSONObject obj;
-
+    String uid="",uidd="";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -81,6 +81,20 @@ public class Goals_Tracker extends Fragment {
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
+
+        try {
+            uidd = getArguments().getString("uid");
+            Log.e("uidd",uidd);
+            if (uidd.length() > 1) {
+                uid = uidd;
+            } else {
+                uid = pref.getString("uid", "");
+            }
+        }catch (Exception e)
+        {
+            Log.e("Exception",e.getMessage());
+        }
+
 //        obj=new JSONObject();
 
 //        try {
@@ -107,7 +121,7 @@ public class Goals_Tracker extends Fragment {
 
         final JSONArray array=new JSONArray();
         Log.e("uid",pref.getString("uid",""));
-        mref.child("users").child(pref.getString("uid","")).child("Goals").addValueEventListener(new ValueEventListener() {
+        mref.child("users").child(uid).child("Goals").addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {

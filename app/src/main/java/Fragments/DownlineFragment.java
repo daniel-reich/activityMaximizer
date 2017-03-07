@@ -1,12 +1,17 @@
 package Fragments;
 
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +23,19 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import java.util.ArrayList;
+
+import Adapter.BaseDownlineAdapter;
+import Adapter.DownlineAdapter;
+import Adapter.ListAdapter;
+import model.AllBaseDownlines;
+import model.AllContact;
+import model.AllDownlines;
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
@@ -28,11 +46,22 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
     View view;
     Dialog helpdialog;
     TextView team,trainees,tv_direct;
+    RecyclerView directview,baseview;
+    LinearLayoutManager layoutManager;
+    LinearLayoutManager layoutManager1;
+    Firebase mref;
+    FragmentManager fm;
+    SharedPreferences pref;
+    ArrayList<AllDownlines> data;
+    ArrayList<AllBaseDownlines> basedata;
+    DownlineAdapter adapter;
+    BaseDownlineAdapter baseadapter;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.downline,container,false);
         setHasOptionsMenu(true);
+        fm=getActivity().getSupportFragmentManager();
         //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame,new PersonalFragment()).addToBackStack(null).commit();
         team=(TextView)view.findViewById(R.id.team_button);
         trainees=(TextView)view.findViewById(R.id.personal_button);
@@ -40,6 +69,20 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
         trainees.setOnClickListener(this);
         team.setSelected(false);
         trainees.setSelected(true);
+
+        directview=(RecyclerView)view.findViewById(R.id.directview);
+        baseview=(RecyclerView)view.findViewById(R.id.baseview);
+        // rView.setLayoutManager(layoutManager);
+        layoutManager=new LinearLayoutManager(getActivity());
+        layoutManager1=new LinearLayoutManager(getActivity());
+
+        pref=getActivity().getSharedPreferences("userpref",0);
+        Firebase.setAndroidContext(getActivity());
+
+        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        data=new ArrayList<AllDownlines>();
+        basedata=new ArrayList<AllBaseDownlines>();
+
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -47,14 +90,14 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
 
         tv_direct=(TextView)view.findViewById(R.id.tv_direct);
 
-        tv_direct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.frame_layout,new Downline_details_frag()).addToBackStack(null).commit();
-            }
-        });
-
+//        tv_direct.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//            }
+//        });
+        getalldownlinesuidfromfirebase();
+        getalldownlinesbaseuidfromfirebase();
 
         return view;
     }
@@ -112,4 +155,108 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
         menu.findItem(R.id.menu).setTitle("Done");
         menu.findItem(R.id.list).setVisible(false);
     }
+
+    public void getalldownlinesuidfromfirebase()
+    {
+        Log.e("testing1",pref.getString("solution_number","")+" abc");
+        mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("downlines").addValueEventListener(new ValueEventListener()
+        {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.e("testing",child.getKey()+" abc");
+//                    uiddata.add(child.getKey().toString());
+                    getalldownlinesfromfirebase(child.getKey());
+
+//                    allContactArrayList.add(new AllContact(child.child("competitive").getValue().toString(),child.child("created").getValue().toString(),child.child("credible").getValue().toString(),child.child("familyName").getValue().toString(),child.child("givenName").getValue().toString(),child.child("hasKids").getValue().toString(),
+//                            child.child("homeowner").getValue().toString(),child.child("hungry").getValue().toString(),child.child("incomeOver40k").getValue().toString(),child.child("married").getValue().toString(),child.child("motivated").getValue().toString(),child.child("ofProperAge").getValue().toString(),child.child("peopleSkills").getValue().toString(),
+//                            child.child("phoneNumber").getValue().toString(),child.child("rating").getValue().toString(),child.child("recruitRating").getValue().toString(),child.child("ref").getValue().toString()));
+//
+//                    Log.e("child",child.child("familyName").getValue()+" abc");
+                }
+
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+    public void getalldownlinesbaseuidfromfirebase()
+    {
+        Log.e("testing1",pref.getString("solution_number","")+" abc");
+        mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("Base").addValueEventListener(new ValueEventListener()
+        {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.e("testing",child.getKey()+" abc");
+//                    uiddata.add(child.getKey().toString());
+                    getallbasedownlinesfromfirebase(child.getKey());
+
+//                    allContactArrayList.add(new AllContact(child.child("competitive").getValue().toString(),child.child("created").getValue().toString(),child.child("credible").getValue().toString(),child.child("familyName").getValue().toString(),child.child("givenName").getValue().toString(),child.child("hasKids").getValue().toString(),
+//                            child.child("homeowner").getValue().toString(),child.child("hungry").getValue().toString(),child.child("incomeOver40k").getValue().toString(),child.child("married").getValue().toString(),child.child("motivated").getValue().toString(),child.child("ofProperAge").getValue().toString(),child.child("peopleSkills").getValue().toString(),
+//                            child.child("phoneNumber").getValue().toString(),child.child("rating").getValue().toString(),child.child("recruitRating").getValue().toString(),child.child("ref").getValue().toString()));
+//
+//                    Log.e("child",child.child("familyName").getValue()+" abc");
+                }
+
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+    public void getalldownlinesfromfirebase(final String uid)
+    {
+        mref.child("users").child(uid).addValueEventListener(new ValueEventListener()
+        {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                data.add(new AllDownlines(uid,dataSnapshot.child("givename").getValue().toString(),dataSnapshot.child("fivePointClients").getValue().toString(),dataSnapshot.child("fivePointRecruits").getValue().toString()));
+
+//
+                adapter=new DownlineAdapter(getActivity(),data,fm);
+                directview.setLayoutManager(layoutManager);
+                directview.setAdapter(adapter);
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+    public void getallbasedownlinesfromfirebase(final String uid)
+    {
+        mref.child("users").child(uid).addValueEventListener(new ValueEventListener()
+        {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                basedata.add(new AllBaseDownlines(uid,dataSnapshot.child("givename").getValue().toString(),dataSnapshot.child("fivePointClients").getValue().toString(),dataSnapshot.child("fivePointRecruits").getValue().toString()));
+
+//
+                baseadapter=new BaseDownlineAdapter(getActivity(),basedata,fm);
+                baseview.setLayoutManager(layoutManager1);
+                baseview.setAdapter(baseadapter);
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
 }

@@ -1,37 +1,21 @@
 package model;
 
-import com.google.firebase.database.IgnoreExtraProperties;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
- * Created by surender on 2/22/2017.
+ * Created by Rohan on 3/7/2017.
  */
-
-@IgnoreExtraProperties
-public class UserInfo {
-
+public class userinfoo
+{
     public String givenName,familyName,phoneNumber,email,uid;
     public String contactsAdded,  created, dailyPointAverages,fivePointClients,fivePointRecruits,
             partner_solution_number, partnerUID,profilePictureURL,ref,rvp_solution_number,solution_number,
             state,trainer_solution_number,upline_solution_number;
 
-    HashMap achievements;
-
-    public UserInfo(String givenName, String familyName, String phoneNumber, String email, String uid,
-                    HashMap achievements, String contactsAdded, String created, String dailyPointAverages,
-                    String fivePointClients, String fivePointRecruits, String partner_solution_number,
-                    String partnerUID, String profilePictureURL, String ref, String rvp_solution_number,
-                    String solution_number, String state, String trainer_solution_number,
-                    String upline_solution_number) {
-
+    public userinfoo(String givenName, String familyName, String phoneNumber, String email, String uid, String contactsAdded, String created, String dailyPointAverages, String fivePointClients, String fivePointRecruits, String partner_solution_number, String partnerUID, String profilePictureURL, String ref, String rvp_solution_number, String solution_number, String state, String trainer_solution_number, String upline_solution_number) {
         this.givenName = givenName;
         this.familyName = familyName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.uid = uid;
-        this.achievements = achievements;
         this.contactsAdded = contactsAdded;
         this.created = created;
         this.dailyPointAverages = dailyPointAverages;
@@ -46,7 +30,6 @@ public class UserInfo {
         this.state = state;
         this.trainer_solution_number = trainer_solution_number;
         this.upline_solution_number = upline_solution_number;
-
     }
 
     public String getGivenName() {
@@ -199,13 +182,5 @@ public class UserInfo {
 
     public void setUpline_solution_number(String upline_solution_number) {
         this.upline_solution_number = upline_solution_number;
-    }
-
-    public HashMap getAchievements() {
-        return achievements;
-    }
-
-    public void setAchievements(HashMap achievements) {
-        this.achievements = achievements;
     }
 }

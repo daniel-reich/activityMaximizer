@@ -39,7 +39,7 @@ public class Achievements extends Fragment
     FirebaseAuth firebaseAuth;
     SharedPreferences pref;
     SharedPreferences.Editor edit;
-
+    String uid="",uidd="";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,8 +66,21 @@ public class Achievements extends Fragment
         pref=getActivity().getSharedPreferences("userpref",0);
 
 
+        try {
+            uidd = getArguments().getString("uid");
+            Log.e("uidd",uidd);
+            if (uidd.length() > 1) {
+                uid = uidd;
+            } else {
+                uid = pref.getString("uid", "");
+            }
+        }catch (Exception e)
+        {
+            Log.e("Exception",e.getMessage());
+        }
 
-        Log.e("uid",pref.getString("uid",""));
+
+//        Log.e("uid",pref.getString("uid",""));
 //        try {
 //            adap=new Achivement_Adap(getActivity(),new JSONObject(pref.getString("achivement","")));
 //            gridView.setAdapter(adap);
@@ -83,7 +96,7 @@ public class Achievements extends Fragment
 
     public void getdatafromfirebase()
     {
-        mref.child("users").child(pref.getString("uid","")).child("achievements").
+        mref.child("users").child(uid).child("achievements").
                 addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
