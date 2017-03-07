@@ -242,6 +242,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
 
                 Log.e("profilepic",pref.getString("profilePictureURL","null image path"));
 
+
                 ImageLoader imageLoader = ImageLoader.getInstance();
                 imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
                 imageLoader.getInstance().displayImage(data.get(0).getProfilePictureURL(), Profile_pic, options, animateFirstListener);
