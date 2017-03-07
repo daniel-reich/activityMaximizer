@@ -170,7 +170,7 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
 
         Map m2=new HashMap();
 
-        m2.put("givename",pref.getString("givenName"," "));
+        m2.put("givenName",pref.getString("givenName"," "));
         m2.put("familyName",pref.getString("familyName"," "));
         m2.put("phoneNumber",pref.getString("phoneNumber"," "));
         m2.put("email",pref.getString("email"," "));
