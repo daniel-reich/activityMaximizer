@@ -209,6 +209,7 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
             public void onClick(View v) {
                 amount=Integer.valueOf(listname.getText().toString());
                 if(amount>0) {
+                    AddNewContact.dismiss();
                     addNewContact(position);
                 }
                 else

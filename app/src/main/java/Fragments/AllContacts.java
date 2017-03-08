@@ -163,6 +163,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
                     }
                 }
                 int size=data.size();
+                Log.e("sizee",size+" abcc");
                     if(size==10)
                     {
                         putcontactcountinfirebase("10",role);
@@ -243,6 +244,10 @@ public class AllContacts extends Fragment implements View.OnClickListener {
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
                         setAdapter(role);
                     }
+                    else
+                    {
+                        setAdapter(role);
+                    }
                 }
                 else if (str.equals("20"))
                 {
@@ -261,6 +266,10 @@ public class AllContacts extends Fragment implements View.OnClickListener {
 
                         setAdapter(role);
                     }
+                    else
+                    {
+                        setAdapter(role);
+                    }
                 }
                 else if (str.equals("30"))
                 {
@@ -277,6 +286,10 @@ public class AllContacts extends Fragment implements View.OnClickListener {
                         newcontact.put("Thirty_New_contacts_added_date", timestamp);
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
 
+                        setAdapter(role);
+                    }
+                    else
+                    {
                         setAdapter(role);
                     }
                 }

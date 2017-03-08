@@ -47,7 +47,7 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
     JSONArray array;
     String str="";
-    public static int count=0;
+    public static int Went_on_three_KTscount=0,Three_appointments_setcount=0,Closed_three_lifecount=0,Closed_three_IBAscount=0;
     public ContactActivityListAdapter(Context context, JSONArray array,String str) {
         this.context = context;
         this.array=array;
@@ -88,44 +88,44 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
                 if(array.getJSONObject(i).getString("name").equals("Went on KT"))
                 {
-                    count++;
-                    if(count==3)
+                    Went_on_three_KTscount++;
+                    if(Went_on_three_KTscount==3)
                     {
                         putthreewentonktinfirebase("3");
                     }
-                    else if(count==50)
+                    else if(Went_on_three_KTscount==50)
                     {
                         putthreewentonktinfirebase("50");
                     }
-                    else if(count==100)
+                    else if(Went_on_three_KTscount==100)
                     {
                         putthreewentonktinfirebase("100");
                     }
-                    else if(count==200)
+                    else if(Went_on_three_KTscount==200)
                     {
                         putthreewentonktinfirebase("200");
                     }
                 }
                 else if(array.getJSONObject(i).getString("name").equals("Set Appointment"))
                 {
-                    count++;
-                    if(count==3)
+                    Three_appointments_setcount++;
+                    if(Three_appointments_setcount==3)
                     {
                         putthreeappointmentinfirebase("3");
                     }
                 }
                 else if(array.getJSONObject(i).getString("name").equals("Closed Life"))
                 {
-                    count++;
-                    if(count==3)
+                    Closed_three_lifecount++;
+                    if(Closed_three_lifecount==3)
                     {
                         putthreeclosedlifeinfirebase("3");
                     }
                 }
                 else if(array.getJSONObject(i).getString("name").equals("Closed IBA"))
                 {
-                    count++;
-                    if(count==3)
+                    Closed_three_IBAscount++;
+                    if(Closed_three_IBAscount==3)
                     {
                         putthreeclosedibainfirebase("3");
                     }
@@ -143,44 +143,44 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                 viewHolder.timestamp.setText(simpleDateFormat.format(time));
                 if(array.getJSONObject(i).getString("type").equals("Went on KT"))
                 {
-                    count++;
-                    if(count==3)
+                    Went_on_three_KTscount++;
+                    if(Went_on_three_KTscount==3)
                     {
                         putthreewentonktinfirebase("3");
                     }
-                    else if(count==50)
+                    else if(Went_on_three_KTscount==50)
                     {
                         putthreewentonktinfirebase("50");
                     }
-                    else if(count==100)
+                    else if(Went_on_three_KTscount==100)
                     {
                         putthreewentonktinfirebase("100");
                     }
-                    else if(count==200)
+                    else if(Went_on_three_KTscount==200)
                     {
                         putthreewentonktinfirebase("200");
                     }
                 }
                 else if(array.getJSONObject(i).getString("type").equals("Set Appointment"))
                 {
-                    count++;
-                    if(count==3)
+                    Three_appointments_setcount++;
+                    if(Three_appointments_setcount==3)
                     {
                         putthreeappointmentinfirebase("3");
                     }
                 }
                 else if(array.getJSONObject(i).getString("type").equals("Closed Life"))
                 {
-                    count++;
-                    if(count==3)
+                    Closed_three_lifecount++;
+                    if(Closed_three_lifecount==3)
                     {
                         putthreeclosedlifeinfirebase("3");
                     }
                 }
                 else if(array.getJSONObject(i).getString("type").equals("Closed IBA"))
                 {
-                    count++;
-                    if(count==3)
+                    Closed_three_IBAscount++;
+                    if(Closed_three_IBAscount==3)
                     {
                         putthreeclosedibainfirebase("3");
                     }
