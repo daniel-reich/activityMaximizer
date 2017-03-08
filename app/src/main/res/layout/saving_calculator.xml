@@ -49,7 +49,9 @@
                 android:textColor="@color/yellow"
                 android:textSize="20sp"
                 android:maxLength="9"
-                android:text="123"
+
+                android:hint="123"
+                android:textColorHint="@color/yellow"
                 android:gravity="center"
                 android:background="@null"
                 android:textStyle="bold" />
@@ -83,7 +85,9 @@
                     android:textColor="@color/yellow"
                     android:textSize="20sp"
                     android:gravity="center"
-                    android:text="123"
+                   android:hint="123"
+
+                    android:textColorHint="@color/yellow"
                     android:background="@null"
                     android:textStyle="bold" />
 
@@ -459,6 +463,7 @@
                     android:textColor="@color/yellow"
                     android:textSize="20sp"
                     android:text="$0.00"
+                    android:id="@+id/amount_saved"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:gravity="center_vertical"

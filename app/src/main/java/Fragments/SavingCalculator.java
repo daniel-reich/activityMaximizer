@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +25,7 @@ import android.widget.TextView;
 import com.aigestudio.wheelpicker.IWheelPicker;
 import com.aigestudio.wheelpicker.WheelPicker;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import u.activitymanager.HomeActivity;
@@ -38,9 +43,16 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
     LinearLayout initiall,monthlyl;
     Button one,two,three,four,five,six,seven,eight,nine,zero,dot,delete;
     EditText initial,monthly;
-    TextView tv_yeartosave,tv_annualinterest,tv_interestearned;
+    TextView tv_yeartosave,tv_annualinterest,tv_interestearned,tv_amountsaved;
     ArrayList<String> list,list1;
     View v;
+    double Amount_saved,InterestEarned;
+    double rate;
+    double fv;
+    int n=12;
+    String str1="1",str2=".00%";
+   // EditText et_initial_amount,et_monthly_deposit;
+
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,6 +72,8 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
         tv_yeartosave=(TextView)v.findViewById(R.id.tv_yeartosave);
         tv_annualinterest=(TextView)v.findViewById(R.id.tv_annualinterest);
         tv_interestearned=(TextView)v.findViewById(R.id.tv_interestearned);
+        tv_amountsaved=(TextView)v.findViewById(R.id.amount_saved);
+        tv_annualinterest.setText(str1+str2);
 
         one = (Button)v.findViewById(R.id.btn_one);
         two = (Button)v.findViewById(R.id.btn_two);
@@ -562,7 +576,7 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
         list=new ArrayList<>();
         list1=new ArrayList<>();
 
-        for(int i=0;i<100;i++)
+        for(int i=1;i<100;i++)
             list.add(i+"");
 
         for(int i=0;i<100;i++) {
@@ -578,6 +592,78 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
         wheel1.setOnItemSelectedListener(this);
         wheel2.setOnItemSelectedListener(this);
         wheel3.setOnItemSelectedListener(this);
+
+
+        //OnTextChangef
+        initial.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length()>0)
+                {
+
+                     if(!TextUtils.isEmpty(monthly.getText().toString())) {
+                         calculations(Integer.parseInt(tv_yeartosave.getText().toString()),
+                                 Double.parseDouble(initial.getText().toString()),
+                                 Double.parseDouble(tv_annualinterest.getText().toString().replace("%", "")), Double.parseDouble(monthly.getText().toString()));
+                         //  calculations(1,100.0,2.00,10.0);
+                     }else{
+
+                             calculations(Integer.parseInt(tv_yeartosave.getText().toString()),
+                                     Double.parseDouble(initial.getText().toString()),Double.parseDouble(tv_annualinterest.getText().toString().replace("%","")),0.0);
+
+                     }
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        monthly.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length()>0)
+                {
+
+
+                    if(!TextUtils.isEmpty(initial.getText().toString())) {
+                        calculations(Integer.parseInt(tv_yeartosave.getText().toString()),
+                                Double.parseDouble(initial.getText().toString()),
+                                Double.parseDouble(tv_annualinterest.getText().toString().replace("%", "")),
+                                Double.parseDouble(monthly.getText().toString()));
+                        //  calculations(1,100.0,2.00,10.0);
+                    }
+                    else{
+
+                        calculations(Integer.parseInt(tv_yeartosave.getText().toString()),
+                                0.0,
+                                Double.parseDouble(tv_annualinterest.getText().toString().replace("%","")),
+                                Double.parseDouble(monthly.getText().toString()));
+
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
 
         return v;
     }
@@ -595,13 +681,80 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
           tv_yeartosave.setText(list.get(position));
         }
         else if(picker.getId()==R.id.main_wheel2) {
-            tv_annualinterest.setText(list.get(position)+".00%");
+           // tv_annualinterest.setText(list.get(position)+list1.get(position));
+
+             str1=list.get(position);
+            tv_annualinterest.setText(str1+str2);
         }
         else if(picker.getId()==R.id.main_wheel3) {
-            tv_interestearned.setText("$0"+list1.get(position));
+           // tv_interestearned.setText("$0"+list1.get(position));
+            str2=list1.get(position);
+            tv_annualinterest.setText(str1+str2);
+            //tv_annualinterest.setText(list.get(position)+list1.get(position));
         }
 
     }
 
+
+
+    private void calculations(int year,double principal,double rate,double monthlydeposit)
+    {
+       if(monthlydeposit==0.0) {
+            double amount=0.0;
+            InterestEarned=0.0;
+
+
+            amount = principal * Math.pow((1 + (rate) / (n * 100)), n * year);
+           InterestEarned=amount-principal;
+           tv_amountsaved.setText("$ "+amount+" ");
+           tv_interestearned.setText("$ "+InterestEarned+" ");
+
+           Log.e("interest",amount+","+InterestEarned+"");
+       }
+       else
+       {
+           double amount=0.0;
+           double interestearn=0.0;
+          // interestearn=0.0;
+           fv=0;
+           Log.e("values",year+","+principal+","+rate+","+monthlydeposit+"");
+            amount = principal * Math.pow((1 + (rate) / 100), n * year);
+           Log.e("amnt",amount+"");
+           for(int i=1;i<n*year-1;i++) {
+
+              fv= fv+(monthlydeposit * Math.pow((1 + (rate) / (100)), i));
+               Log.e("fv",fv+"");
+           }
+          // (A - P) + (FV - PMT * (n * t))
+           tv_amountsaved.setText("$ "+new DecimalFormat("###,###.##").format(amount+fv)+" ");
+           interestearn=((amount+fv)-((n*year*monthlydeposit)+principal));
+           tv_interestearned.setText("$ "+interestearn+" ");
+           Log.e("interest_m",(amount+fv)+","+interestearn+"");
+
+
+
+
+       }
+
+
+
+    }
+
+
+
+   /* Compound interest for principal:
+    P(1+r/n)^nt
+
+    Future value of a series:
+    PMT * (((1 + r/n)^nt - 1) / (r/n)) * (1+r/n)
+
+    A = the future value of the investment/loan, including interest
+    P = the principal investment amount (the initial deposit or loan amount)
+    PMT = the monthly payment
+            r = the annual interest rate (decimal)
+    n = the number of times that interest is compounded per year AND additional payment frequency
+    t = the number of years the money is invested or borrowed for
+
+            */
 
 }
