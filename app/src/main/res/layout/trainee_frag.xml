@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_direct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingBottom="8dp"
+                android:paddingRight="10dp"
+                android:paddingTop="8dp"
+                android:textSize="18sp"
+                android:textColor="#606060"
+                android:background="#e5e5e5"
+                android:fontFamily="sans-serif-medium"
+                android:text="Direct"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/directview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                android:padding="8dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:background="#e5e5e5"
+                android:paddingBottom="8dp"
+                android:paddingRight="10dp"
+                android:paddingTop="8dp"
+                android:textSize="18sp"
+                android:textColor="#606060"
+                android:fontFamily="sans-serif-medium"
+                android:text="Base"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/baseview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                android:padding="8dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

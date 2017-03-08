@@ -133,13 +133,15 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-
-
-        addNewContact(0);
-
-        return super.onOptionsItemSelected(item);
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.menu:
+                addNewContact(0);
+                break;
+        }
+        return true;
     }
 
     private void updateLabel() {
@@ -217,7 +219,8 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
 
     }
 
-    private void addNewContact(int position) {
+    private void addNewContact(int position)
+    {
         java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
         Log.e("Today is ", timeStampDate.getTime()+"");
         String timestamp=String.valueOf(timeStampDate.getTime());
@@ -238,12 +241,6 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
         pref=getActivity().getSharedPreferences("userpref",0);
         String   uid=pref.getString("uid","");
         String noteref= Constants.URL+"events/"+uid+"/"+timestamp;
-
-
-
-
-
-
 
 //        mref.child("contacts").child(uid)
 //                .child(st_fname).child("notes").child(timestamp)
@@ -271,10 +268,10 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
                 .child(String.valueOf(selectedtimeStampDate.getTime()))
                 .setValue(newcontact);
 
-        FragmentManager fm = getActivity()
-                .getSupportFragmentManager();
-        fm.popBackStack();
-
+//        FragmentManager fm = getActivity()
+//                .getSupportFragmentManager();
+//        fm.popBackStack();
+        getActivity().getSupportFragmentManager().popBackStack();
 
     }
 
