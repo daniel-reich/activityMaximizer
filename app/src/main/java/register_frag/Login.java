@@ -107,9 +107,15 @@ public class Login extends Fragment implements View.OnClickListener {
                 edit.putBoolean("signup",true);
                 edit.commit();
 
-                Intent i=new Intent(getActivity(),HomeActivity.class);
-                startActivity(i);
-                getActivity().finish();
+                try {
+                    Intent i = new Intent(getActivity(), HomeActivity.class);
+                    startActivity(i);
+                    getActivity().finish();
+                }
+                catch (Exception e)
+                {
+                    Log.e("Exception",e.getMessage());
+                }
             }
             @Override
             public void onCancelled(FirebaseError error) {

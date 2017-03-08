@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,7 +30,11 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseUser;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -57,7 +62,9 @@ public class CustomContactFragment extends Fragment
     NetworkConnection nwc;
     Firebase mref;
     SharedPreferences pref;
-    String uid,reflink="";
+    SharedPreferences.Editor edit;
+    String uid,reflink="",First_contact_added="false";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -177,9 +184,8 @@ public class CustomContactFragment extends Fragment
                 .child(st_fname)
                 .setValue(newcontact);
 
+        getdatafromfirebase();
 
-
-        Alert();
     }
     public void Alert() {
         final Dialog dialog=new Dialog(getActivity());
@@ -251,6 +257,54 @@ public class CustomContactFragment extends Fragment
                 }
             }
         });
+    }
+
+    public void getdatafromfirebase()
+    {
+        mref.child("users").child(uid).child("achievements").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                Log.e("child",dataSnapshot.child("First_contact_added").getValue()+" abc");
+                First_contact_added=dataSnapshot.child("First_contact_added").getValue().toString();
+                if(First_contact_added.equalsIgnoreCase("false"))
+                {
+                    java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
+                    Log.e("Today is ", timeStampDate.getTime()+"");
+                    String timestamp=String.valueOf(timeStampDate.getTime());
+                    Map newcontact = new HashMap();
+                    newcontact.put("First_contact_added","true");
+                    newcontact.put("First_contact_added_date",timestamp);
+                    mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+
+                    getActivity().getSupportFragmentManager().beginTransaction().
+                            replace(R.id.frame_layout,new Congratulations_activity()).addToBackStack(null).commit();
+                }
+                else
+                {
+                    Alert();
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+    public static String ConvertParseString(Object obj ) {
+        if(obj==null)
+        {
+            return "";
+        }
+        else {
+            String lastSeen= (String) obj;
+            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
+                return lastSeen;
+            else
+                return "";
+        }
+
     }
 
 }

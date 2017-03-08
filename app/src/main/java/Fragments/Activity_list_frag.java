@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -58,9 +59,9 @@ public class Activity_list_frag extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
-        v=inflater.inflate(R.layout.activity_list_frag,container,false);
         setHasOptionsMenu(true);
+        v=inflater.inflate(R.layout.activity_list_frag,container,false);
+
         lManager=new LinearLayoutManager(getActivity());
 
         rview=(RecyclerView)v.findViewById(R.id.rview);
@@ -132,19 +133,19 @@ public class Activity_list_frag extends Fragment {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     JSONObject jGroup = new JSONObject();
                     Log.e("childddd",child.child("contactName").getKey()+" abc");
-                    data.add(new AllActivity(child.child("contactName").getValue().toString(),child.child("contactRef").getValue().toString(),child.child("created").getValue().toString(),child.child("date").getValue().toString(),child.child("eventKitID").getValue().toString(),child.child("ref").getValue().toString(),child.child("type").getValue().toString(),child.child("userName").getValue().toString(),child.child("userRef").getValue().toString()));
+                    data.add(new AllActivity(ConvertParseString(child.child("contactName").getValue()),ConvertParseString(child.child("contactRef").getValue()),ConvertParseString(child.child("created").getValue()),ConvertParseString(child.child("date").getValue()),ConvertParseString(child.child("eventKitID").getValue()),ConvertParseString(child.child("ref").getValue()),ConvertParseString(child.child("type").getValue()),ConvertParseString(child.child("userName").getValue()),ConvertParseString(child.child("userRef").getValue())));
                     try {
-                        jGroup.put("contactName", child.child("contactName").getValue().toString());
-                        jGroup.put("contactRef", child.child("contactRef").getValue().toString());
-                        jGroup.put("created", child.child("created").getValue().toString());
-                        jGroup.put("date", child.child("date").getValue().toString());
-                        jGroup.put("eventKitID", child.child("eventKitID").getValue().toString());
-                        jGroup.put("ref", child.child("ref").getValue().toString());
-                        jGroup.put("type", child.child("type").getValue().toString());
-                        jGroup.put("userName", child.child("userName").getValue().toString());
-                        jGroup.put("userRef", child.child("userRef").getValue().toString());
+                        jGroup.put("contactName", ConvertParseString(child.child("contactName").getValue()));
+                        jGroup.put("contactRef", ConvertParseString(child.child("contactRef").getValue()));
+                        jGroup.put("created", ConvertParseString(child.child("created").getValue()));
+                        jGroup.put("date", ConvertParseString(child.child("date").getValue()));
+                        jGroup.put("eventKitID", ConvertParseString(child.child("eventKitID").getValue()));
+                        jGroup.put("ref", ConvertParseString(child.child("ref").getValue()));
+                        jGroup.put("type", ConvertParseString(child.child("type").getValue()));
+                        jGroup.put("userName", ConvertParseString(child.child("userName").getValue()));
+                        jGroup.put("userRef", ConvertParseString(child.child("userRef").getValue()));
                         jsonArray.put(jGroup);
-                        Log.e("child", child.child("contactName").getValue() + " abc");
+                        Log.e("child", ConvertParseString(child.child("contactName").getValue()) + " abc");
                     }
                     catch (Exception e)
                     {
@@ -170,11 +171,24 @@ public class Activity_list_frag extends Fragment {
         switch (item.getItemId())
         {
             case android.R.id.home:
-                getActivity().getSupportFragmentManager().popBackStack();
+//                getActivity().getSupportFragmentManager().popBackStack();
                 break;
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
+    public static String ConvertParseString(Object obj ) {
+        if(obj==null)
+        {
+            return "";
+        }
+        else {
+            String lastSeen= (String) obj;
+            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
+                return lastSeen;
+            else
+                return "";
+        }
 
+    }
 }

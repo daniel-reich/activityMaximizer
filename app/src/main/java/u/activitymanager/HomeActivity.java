@@ -99,8 +99,11 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        getSupportFragmentManager().popBackStack();
+
+        if(getSupportFragmentManager().getBackStackEntryCount()>0)
+            getSupportFragmentManager().popBackStack();
+        else
+            super.onBackPressed();
     }
 
     @Override
