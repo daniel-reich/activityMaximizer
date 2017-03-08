@@ -28,6 +28,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 import java.sql.Time;
 import java.text.DateFormat;
@@ -132,9 +133,10 @@ public class Add_New_Goal extends Fragment implements View.OnClickListener {
         Date date = null;
 
         try {
+            String formattedDate = targetFormat.format(new Date());
 
-            date = originalFormat.parse(currentDateTimeString);
-            String formattedDate = targetFormat.format(date);
+//            date = originalFormat.parse(currentDateTimeString);
+//            String formattedDate = targetFormat.format(date);
 //            tv.setText(formattedDate);
             Log.e("formatted date",formattedDate);
             String[] ar=formattedDate.split(" ");
@@ -146,7 +148,7 @@ public class Add_New_Goal extends Fragment implements View.OnClickListener {
             tv_starttime.setText(tm);
             tv_endtime.setText(tm);
 
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
 
         }
@@ -242,7 +244,12 @@ public class Add_New_Goal extends Fragment implements View.OnClickListener {
         newUserData.put("currentCount",m3);
         newUserData.put("title",tv_goalname.getText().toString());
         newUserData.put("ref", Constants.URL+"users/"+pref.getString("uid","")+"Goals/"+tms);
-        mref.child("users").child(pref.getString("uid","")).child("Goals").child(tms).updateChildren(newUserData);
+        mref.child("users").child(pref.getString("uid","")).child("Goals").child(tms).updateChildren(newUserData, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
     }
     public void Alert(String val) {
         final Dialog dialog=new Dialog(getActivity());

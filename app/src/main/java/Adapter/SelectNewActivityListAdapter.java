@@ -30,8 +30,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import Fragments.Activity_list_frag;
@@ -85,9 +88,6 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView tv_activity_list;
 
-
-
-
         public ViewHolder(View view) {
             super(view);
             tv_activity_list=(TextView)view.findViewById(R.id.tv_activitylist);
@@ -114,22 +114,25 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
 
                         {
                             case 0:
-
                                 increement_value="Set Appointment";
+                                increement=2;
                                 bundle.putString("title","Appointment with "+ Need_to_Quality.givenName);
                                 break;
 
                             case 5:
-                                increement_value="Appointment set to Close Life";
+                                increement=0;
+//                                increement_value="Appointment set to Close Life";
                                 bundle.putString("title","Appointment set to Close Life with "+ Need_to_Quality.givenName);
                                 break;
 
                             case 6:
-                                increement_value="Appointment set to Close IBA";
+                                increement=0;
+//                                increement_value="Appointment set to Close IBA";
                                 bundle.putString("title","Appointment set to Close IBA with "+ Need_to_Quality.givenName);
                                 break;
 
                             case 9:
+                                increement=0;
                                 increement_value="Call Back";
                                 bundle.putString("title","CallBack  with "+ Need_to_Quality.givenName);
                                 break;
@@ -145,12 +148,34 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
 
                     else if(position==2)
                     {
-                        Activity_list_frag.dialog.dismiss();
+                        increement=5;
+                        increement_value="Closed Life";
 
+                        Activity_list_frag.dialog.dismiss();
                         addContactDialog(position);
                     }
 
                     else {
+
+                        if(position==1) {
+                            increement=3;
+                            increement_value="Went on KT";
+                        }
+                       else if(position==3) {
+                            increement=5;
+                            increement_value="Closed IBA";
+                        }
+                        else if(position==7) {
+                            increement=1;
+                            increement_value="Invited to Opportunity Meeting";
+                        }
+                        else if(position==8) {
+                            increement=3;
+                            increement_value="Went To Opportunity Meeting";
+
+                        }
+                        else
+                        increement=0;
 
                         Activity_list_frag.dialog.dismiss();
                         addNewContact(position);
@@ -254,23 +279,48 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
                 .setValue(newcontact, new Firebase.CompletionListener() {
                     @Override
                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                       incrementCounter();
+                       if(increement==1|increement==3|increement==5|increement==2)
+                        incrementCounter();
+
                         Activity_list_frag.listadapter.notifyDataSetChanged();
 
                     }
                 });
     }
 
+    public String datecurrent(){
+
+        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+
+        Log.e("currenttime",currentDateTimeString);
+        String formattedDate = null;
+//        DateFormat originalFormat = new SimpleDateFormat("dd MMM yyyy hh:mm:ss a", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("MMM dd");
+        Date date = null;
+
+        try {
+             formattedDate = targetFormat.format(new Date());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return formattedDate;
+    }
+
     public void incrementCounter() {
     Log.e("uid",pref.getString("uid",""));
+
+        String currentDate = datecurrent();
+
         mref.child("users").child(pref.getString("uid",""))
-                .child("dailyPointAverages").child("Mar 07").runTransaction(new Transaction.Handler() {
+                .child("dailyPointAverages").child(currentDate).runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(final MutableData currentData) {
                 if (currentData.getValue() == null) {
-                    currentData.setValue(1);
+                    currentData.setValue(increement);
                 } else {
-                    currentData.setValue((Long) currentData.getValue() + 1);
+                    currentData.setValue((Long) currentData.getValue() + increement);
                 }
 
                 return Transaction.success(currentData);

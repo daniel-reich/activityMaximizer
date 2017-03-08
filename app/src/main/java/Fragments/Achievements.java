@@ -103,7 +103,7 @@ public class Achievements extends Fragment
                 Log.e("get data from server",dataSnapshot.getValue()+" data");
 
                 try {
-                    JSONObject obj=new JSONObject(dataSnapshot.getValue()+"");
+                    final JSONObject obj=new JSONObject(dataSnapshot.getValue()+"");
                     Log.e("json",obj.toString());
 
                     edit=pref.edit();
@@ -116,8 +116,13 @@ public class Achievements extends Fragment
                     gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Achivement_Details frag=new Achivement_Details();
+                            Bundle bundle=new Bundle();
+                            bundle.putInt("position",i);
+                            bundle.putString("data",obj+"");
+                            frag.setArguments(bundle);
                             getActivity().getSupportFragmentManager().beginTransaction().
-                                    replace(R.id.frame_layout,new Achivement_Details()).addToBackStack(null).commit();
+                                    replace(R.id.frame_layout,frag).addToBackStack(null).commit();
                         }
                     });
 

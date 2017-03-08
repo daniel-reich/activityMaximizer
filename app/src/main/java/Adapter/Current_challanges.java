@@ -48,7 +48,7 @@ public class Current_challanges extends RecyclerView.Adapter<Current_challanges.
 
         try {
             Log.e("array",array+"");
-            JSONObject obj=array.getJSONObject(i);
+            final JSONObject obj=array.getJSONObject(i);
             Log.e("obj",obj+"");
 
             holder1.title.setText(obj.getString("title"));
@@ -60,7 +60,7 @@ public class Current_challanges extends RecyclerView.Adapter<Current_challanges.
                 public void onClick(View view) {
 
                     Bundle bundle = new Bundle();
-                    bundle.putString("data", array+"");
+                    bundle.putString("data", obj+"");
                     Challange_details frag=new Challange_details();
                     frag.setArguments(bundle);
                     ((FragmentActivity) context).getSupportFragmentManager().beginTransaction().
