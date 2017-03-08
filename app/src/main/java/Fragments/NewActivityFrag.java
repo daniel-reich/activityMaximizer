@@ -64,7 +64,6 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.newactivity,container,false);
-        setHasOptionsMenu(true);
         show_calendarlayout=(LinearLayout)v.findViewById(R.id.show_calendarlayout);
         tv_date=(TextView)v.findViewById(R.id.tv_date);
 
@@ -75,7 +74,7 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        setHasOptionsMenu(true);
 
         bundle=getArguments();
 
@@ -125,27 +124,23 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
 
 
-        menu.findItem(R.id.menu).setTitle("Add");
-        menu.findItem(R.id.menu).setVisible(true);
+            menu.findItem(R.id.menu).setTitle("Add");
+
+
+
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
-            case R.id.menu:
-                addNewContact();
-                break;
-        }
+
+
+
+        addNewContact(0);
+
         return super.onOptionsItemSelected(item);
     }
-
-
 
     private void updateLabel() {
 
@@ -222,8 +217,7 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
 
     }
 
-    private void addNewContact()
-    {
+    private void addNewContact(int position) {
         java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
         Log.e("Today is ", timeStampDate.getTime()+"");
         String timestamp=String.valueOf(timeStampDate.getTime());
@@ -244,6 +238,12 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
         pref=getActivity().getSharedPreferences("userpref",0);
         String   uid=pref.getString("uid","");
         String noteref= Constants.URL+"events/"+uid+"/"+timestamp;
+
+
+
+
+
+
 
 //        mref.child("contacts").child(uid)
 //                .child(st_fname).child("notes").child(timestamp)
@@ -271,10 +271,10 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
                 .child(String.valueOf(selectedtimeStampDate.getTime()))
                 .setValue(newcontact);
 
-//        FragmentManager fm = getActivity()
-//                .getSupportFragmentManager();
-//        fm.popBackStack();
-        getActivity().getSupportFragmentManager().popBackStack();
+        FragmentManager fm = getActivity()
+                .getSupportFragmentManager();
+        fm.popBackStack();
+
 
     }
 

@@ -124,7 +124,7 @@ public class ActivityFragments  extends Fragment
 
                     DateFormat targetFormat = new SimpleDateFormat("MMM dd,yyyy");
 
-                    Calendar calendar = new GregorianCalendar();
+                     Calendar calendar = new GregorianCalendar();
                     calendar.setTime(new Date());
                     calendar.add(Calendar.DATE, 15);
                   Date  date1 = calendar.getTime();

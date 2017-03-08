@@ -166,16 +166,7 @@ public class Activity_list_frag extends Fragment {
         });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
-            case android.R.id.home:
-//                getActivity().getSupportFragmentManager().popBackStack();
-                break;
-        }
-        return true;
-    }
+
 
     public static String ConvertParseString(Object obj ) {
         if(obj==null)
