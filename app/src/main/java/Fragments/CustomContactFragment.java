@@ -277,9 +277,7 @@ public class CustomContactFragment extends Fragment
                     newcontact.put("First_contact_added","true");
                     newcontact.put("First_contact_added_date",timestamp);
                     mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
-
-                    getActivity().getSupportFragmentManager().beginTransaction().
-                            replace(R.id.frame_layout,new Congratulations_activity()).addToBackStack(null).commit();
+                    Alert();
                 }
                 else
                 {

@@ -26,7 +26,11 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import Adapter.ClientAdapter;
 import model.AllContact;
@@ -47,7 +51,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
     LinearLayoutManager layoutManager;
     ClientAdapter adapter;
     ArrayList<AllContact> data;
-    String role="client",uid="",uidd="";
+    String role="client",uid="",uidd="",Ten_new_contacts_added="false",Thirty_new_contacts_added="false",Twenty_new_contacts_added="false";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -158,9 +162,22 @@ public class AllContacts extends Fragment implements View.OnClickListener {
                         Log.e("Exception",e.getMessage());
                     }
                 }
-                adapter=new ClientAdapter(getActivity(),data,role);
-                rView.setLayoutManager(layoutManager);
-                rView.setAdapter(adapter);
+                int size=data.size();
+                    if(size==10)
+                    {
+                        putcontactcountinfirebase("10");
+                    }
+                    else if(size==20)
+                    {
+                        putcontactcountinfirebase("20");
+                    }
+                    else if(size==30)
+                    {
+                        putcontactcountinfirebase("30");
+                    }
+
+
+
             }
             @Override
             public void onCancelled(FirebaseError error) {
@@ -198,6 +215,84 @@ public class AllContacts extends Fragment implements View.OnClickListener {
             else
                 return 0;
         }
+    }
+
+    public void putcontactcountinfirebase(final String str)
+    {
+        mref.child("users").child(uid).child("achievements").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                if (str.equals("10"))
+                {
+                    Log.e("get data from server", dataSnapshot.getValue() + " data");
+                    Log.e("child", dataSnapshot.child("Ten_new_contacts_added").getValue() + " abc");
+                    Ten_new_contacts_added = dataSnapshot.child("Ten_new_contacts_added").getValue().toString();
+                    if (Ten_new_contacts_added.equalsIgnoreCase("false"))
+                    {
+                        java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
+                        Log.e("Today is ", timeStampDate.getTime() + "");
+                        String timestamp = String.valueOf(timeStampDate.getTime());
+                        Map newcontact = new HashMap();
+                        newcontact.put("Ten_new_contacts_added", "true");
+                        newcontact.put("Ten_new_contacts_added_date", timestamp);
+                        mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+                        setAdapter();
+                    }
+                }
+                else if (str.equals("20"))
+                {
+                    Log.e("get data from server", dataSnapshot.getValue() + " data");
+                    Log.e("child", dataSnapshot.child("Twenty_new_contacts_added").getValue() + " abc");
+                    Twenty_new_contacts_added = dataSnapshot.child("Twenty_new_contacts_added").getValue().toString();
+                    if (Twenty_new_contacts_added.equalsIgnoreCase("false"))
+                    {
+                        java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
+                        Log.e("Today is ", timeStampDate.getTime() + "");
+                        String timestamp = String.valueOf(timeStampDate.getTime());
+                        Map newcontact = new HashMap();
+                        newcontact.put("Twenty_new_contacts_added", "true");
+                        newcontact.put("Twenty_new_contacts_added_date", timestamp);
+                        mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+
+                        setAdapter();
+                    }
+                }
+                else if (str.equals("30"))
+                {
+                    Log.e("get data from server", dataSnapshot.getValue() + " data");
+                    Log.e("child", dataSnapshot.child("Thirty_new_contacts_added").getValue() + " abc");
+                    Thirty_new_contacts_added = dataSnapshot.child("Thirty_new_contacts_added").getValue().toString();
+                    if (Thirty_new_contacts_added.equalsIgnoreCase("false"))
+                    {
+                        java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
+                        Log.e("Today is ", timeStampDate.getTime() + "");
+                        String timestamp = String.valueOf(timeStampDate.getTime());
+                        Map newcontact = new HashMap();
+                        newcontact.put("Thirty_new_contacts_added", "true");
+                        newcontact.put("Thirty_New_contacts_added_date", timestamp);
+                        mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+
+                        setAdapter();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+
+
+
+
+    public void setAdapter()
+    {
+        adapter=new ClientAdapter(getActivity(),data,role);
+        rView.setLayoutManager(layoutManager);
+        rView.setAdapter(adapter);
     }
 
 

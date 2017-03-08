@@ -1,22 +1,46 @@
 package Fragments;
 
+import android.app.Dialog;
+import android.content.ContentProviderOperation;
+import android.content.Intent;
+import android.content.OperationApplicationException;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.RemoteException;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
+import utils.NetworkConnection;
 
 /**
  * Created by surender on 2/17/2017.
@@ -25,10 +49,13 @@ import u.activitymanager.R;
 public class Need_to_Quality extends Fragment {
 
     View v;
+    Firebase mref;
+    SharedPreferences pref;
     TextView tv_name,tv_phone;
     ImageView tv_ratinginfo,tv_activitylist,tv_contactnotes;
     FrameLayout frameLayout;
- public static    String competitive,created,credible,familyName,givenName,hasKids,homeowner,hungry,incomeOver40k,married,motivated,ofProperAge,peopleSkills,phoneNumber,ref,rating,recruitRating;
+    String uid="",First_call_from_app="";
+ public static String competitive,created,credible,familyName,givenName,hasKids,homeowner,hungry,incomeOver40k,married,motivated,ofProperAge,peopleSkills,phoneNumber,ref,rating,recruitRating;
 
     @Nullable
     @Override
@@ -37,6 +64,13 @@ public class Need_to_Quality extends Fragment {
         setHasOptionsMenu(true);
         v=inflater.inflate(R.layout.need_to_quality,container,false);
         HomeActivity.title.setText("");
+
+        pref=getActivity().getSharedPreferences("userpref",0);
+        uid=pref.getString("uid","");
+
+        Firebase.setAndroidContext(getActivity());
+        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+
         tv_ratinginfo=(ImageView)v.findViewById(R.id.tv_ratinginfo);
         tv_activitylist=(ImageView)v.findViewById(R.id.tv_activitylist);
         tv_contactnotes=(ImageView)v.findViewById(R.id.tv_contactnotes);
@@ -65,6 +99,16 @@ public class Need_to_Quality extends Fragment {
 
         tv_name.setText(givenName);
         tv_phone.setText(phoneNumber);
+
+
+        tv_phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Alert();
+            }
+        });
+
+
 
         Log.e("givenName",givenName+" abc");
 
@@ -175,4 +219,69 @@ public class Need_to_Quality extends Fragment {
         return super.onOptionsItemSelected(item);
 
     }
+
+    public void Alert() {
+        final Dialog dialog=new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.contact_call_dialog);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.gravity = Gravity.CENTER;
+        wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(wlp);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+        TextView tv_number=(TextView)dialog.findViewById(R.id.tv_number);
+        TextView tv_no=(TextView)dialog.findViewById(R.id.no);
+        TextView tv_yes=(TextView)dialog.findViewById(R.id.yes);
+
+        tv_number.setText(phoneNumber);
+
+        tv_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        tv_yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dialog.dismiss();
+                getdatafromfirebase();
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +phoneNumber));
+                startActivity(intent);
+            }
+        });
+    }
+    public void getdatafromfirebase()
+    {
+        mref.child("users").child(uid).child("achievements").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                Log.e("child",dataSnapshot.child("First_call_from_app").getValue()+" abc");
+                First_call_from_app=dataSnapshot.child("First_call_from_app").getValue().toString();
+                if(First_call_from_app.equalsIgnoreCase("false"))
+                {
+                    java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
+                    Log.e("Today is ", timeStampDate.getTime()+"");
+                    String timestamp=String.valueOf(timeStampDate.getTime());
+                    Map newcontact = new HashMap();
+                    newcontact.put("First_call_from_app","true");
+                    newcontact.put("First_call_from_app_date",timestamp);
+                    mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
 }
