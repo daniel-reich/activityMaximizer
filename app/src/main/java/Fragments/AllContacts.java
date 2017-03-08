@@ -165,15 +165,19 @@ public class AllContacts extends Fragment implements View.OnClickListener {
                 int size=data.size();
                     if(size==10)
                     {
-                        putcontactcountinfirebase("10");
+                        putcontactcountinfirebase("10",role);
                     }
                     else if(size==20)
                     {
-                        putcontactcountinfirebase("20");
+                        putcontactcountinfirebase("20",role);
                     }
                     else if(size==30)
                     {
-                        putcontactcountinfirebase("30");
+                        putcontactcountinfirebase("30",role);
+                    }
+                    else
+                    {
+                        setAdapter(role);
                     }
 
 
@@ -217,7 +221,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void putcontactcountinfirebase(final String str)
+    public void putcontactcountinfirebase(final String str, final String role)
     {
         mref.child("users").child(uid).child("achievements").addValueEventListener(new ValueEventListener() {
 
@@ -237,7 +241,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
                         newcontact.put("Ten_new_contacts_added", "true");
                         newcontact.put("Ten_new_contacts_added_date", timestamp);
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
-                        setAdapter();
+                        setAdapter(role);
                     }
                 }
                 else if (str.equals("20"))
@@ -255,7 +259,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
                         newcontact.put("Twenty_new_contacts_added_date", timestamp);
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
 
-                        setAdapter();
+                        setAdapter(role);
                     }
                 }
                 else if (str.equals("30"))
@@ -273,7 +277,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
                         newcontact.put("Thirty_New_contacts_added_date", timestamp);
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
 
-                        setAdapter();
+                        setAdapter(role);
                     }
                 }
             }
@@ -288,7 +292,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
 
 
 
-    public void setAdapter()
+    public void setAdapter(String role)
     {
         adapter=new ClientAdapter(getActivity(),data,role);
         rView.setLayoutManager(layoutManager);

@@ -271,11 +271,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             case R.id.team_button:
                 personal.setSelected(false);
                 team.setSelected(true);
-
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame,new TeamFragment()).addToBackStack(null).commit();
                 break;
             case R.id.personal_button:
                 team.setSelected(false);
                 personal.setSelected(true);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame,new PersonalFragment()).addToBackStack(null).commit();
                 break;
         }
 
