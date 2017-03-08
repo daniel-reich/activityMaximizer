@@ -25,9 +25,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import model.Activities;
 import model.UserInfo;
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
@@ -43,6 +52,8 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
     String st_email,st_pass,rvpsolutionnumber="",uplinesolutionnumber="";
     SharedPreferences pref;
     SharedPreferences.Editor edit;
+
+    static final long ONE_DAY = 24 * 60 * 60 * 1000L;
     TextView tv_done,tv_name,tv_email,tv_state,tv_phone,tv_solutionnumber,tv_rvpnumber,tv_uplinenumber,tv_trainernumber;
 
     @Nullable
@@ -55,6 +66,17 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         SplashActivity.title.setText("Registration");
+
+
+
+
+
+
+
+
+
+
+
         setHasOptionsMenu(true);
 
         tv_name=(TextView)v.findViewById(R.id.tv_name);
@@ -115,6 +137,41 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
                     }
                 });
     }
+
+
+
+
+
+
+
+    public static Map getDatesBetween(String startDate,String endDate) {
+
+
+        Map m1 = new HashMap();
+        Log.e("aaa",startDate+","+endDate);
+
+
+        long  from=Date.parse(startDate);
+
+        long to=Date.parse(endDate);
+
+        int x=0;
+
+        while(from <= to) {
+            x=x+1;
+            DateFormat targetFormat = new SimpleDateFormat("MMM dd");
+            Log.e("Dates  :",targetFormat.format(new Date(from)));
+            from += ONE_DAY;
+            m1.put(targetFormat.format(new Date(from)),0);
+        }
+        Log.e("iii","No of Dates  :"+ x);
+
+
+        return m1;
+    }
+
+
+
 
     private void writeNewUser(FirebaseUser user) {
 
@@ -178,7 +235,8 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
         m2.put("achievements",m1);
         m2.put("contactsAdded","");
         m2.put("created","");
-        m2.put("dailyPointAverages","");
+        DateFormat targetFormat = new SimpleDateFormat("MM/dd/yyyy");
+        m2.put("dailyPointAverages",getDatesBetween("12/07/2016",targetFormat.format(new Date())));
         m2.put("fivePointClients","");
         m2.put("fivePointRecruits","");
         m2.put("partner_solution_number","");

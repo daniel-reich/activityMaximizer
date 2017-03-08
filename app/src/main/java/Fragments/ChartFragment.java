@@ -35,10 +35,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import Adapter.personal_list_adapter;
 import u.activitymanager.R;
@@ -59,6 +65,15 @@ public class ChartFragment extends Fragment {
         v=inflater.inflate(R.layout.chart,container,false);
 
          lineChart = (LineChart)v.findViewById(R.id.chart);
+
+
+        lineChart.setDescription("");
+
+        lineChart.setDrawGridBackground(false);
+
+
+
+
 
 
         getnotefromfirebase();
@@ -91,13 +106,42 @@ public class ChartFragment extends Fragment {
 
                         HashMap<String,Long> map = (HashMap<String,Long>) dataSnapshot.getValue();
 
-                        ArrayList<String> labels = new ArrayList<String>();
 
-                        int i=0;
 
-                        ArrayList<Entry> entries = new ArrayList<>();
+                        Map<Long,Long> map1 = new TreeMap<Long,Long>();
+
+
+                        DateFormat dateFormat = new SimpleDateFormat("MMM dd");
 
                         for (Map.Entry<String,Long> entry : map.entrySet())
+                        {
+
+
+                            try {
+                                map1.put(dateFormat.parse(entry.getKey()).getTime(),entry.getValue());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+
+
+
+
+
+                        HashMap<String,Long> map2 = (HashMap<String,Long>) dataSnapshot.getValue();
+
+
+
+                        ArrayList<String> labels = new ArrayList<String>();
+
+
+
+                        int i=0;
+                        ArrayList<Entry> entries = new ArrayList<>();
+
+                        for (Map.Entry<Long,Long> entry : map1.entrySet())
                         {
                             Log.e("aaa",entry.getKey() + "/" + entry.getValue());
 
@@ -108,7 +152,7 @@ public class ChartFragment extends Fragment {
 
 
 
-                            labels.add(entry.getKey());
+                            labels.add(dateFormat.format(entry.getKey()));
 
                             i++;
 
@@ -127,7 +171,7 @@ public class ChartFragment extends Fragment {
                         dataset.setDrawFilled(true);
 
                         lineChart.setData(data);
-                        lineChart.animateY(5000);
+
 
 
 
@@ -150,6 +194,9 @@ public class ChartFragment extends Fragment {
                     }
                 });
     }
+
+
+
 
 
 }

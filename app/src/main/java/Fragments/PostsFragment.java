@@ -63,7 +63,15 @@ public class PostsFragment extends Fragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
+
+        if(pref.getString("rvp_solution_number","").equals(""))
+
+
         menu.findItem(R.id.menu).setIcon(R.drawable.add);
+
+        else
+
+            menu.findItem(R.id.menu).setVisible(false);
 
         super.onCreateOptionsMenu(menu, inflater);
 
