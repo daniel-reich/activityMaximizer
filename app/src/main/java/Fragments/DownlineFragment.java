@@ -50,6 +50,7 @@ import u.activitymanager.R;
 public class DownlineFragment extends Fragment implements View.OnClickListener {
     View view;
     Dialog helpdialog;
+
     TextView team,trainees,tv_direct;
     RecyclerView directview,baseview;
     LinearLayoutManager layoutManager;
