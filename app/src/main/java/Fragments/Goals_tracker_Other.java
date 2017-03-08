@@ -23,7 +23,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -33,10 +32,9 @@ import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
- * Created by surender on 2/17/2017.
+ * Created by Rohan on 3/8/2017.
  */
-
-public class Goals_Tracker extends Fragment {
+public class Goals_tracker_Other extends Fragment {
 
     RecyclerView rv_currentgoal,rv_metgoal,rv_unmetgoal;
     Current_Goals_adap cur_goal_adap;
@@ -84,12 +82,12 @@ public class Goals_Tracker extends Fragment {
 
 
 //        try {
-//            uidd = getArguments().getString("uid");
+            uid = getArguments().getString("uid");
 //            Log.e("uidd",uidd);
 //            if (uidd.length() > 1) {
 //                uid = uidd;
 //            } else {
-                uid = pref.getString("uid", "");
+//        uid = pref.getString("uid", "");
 //            }
 //        }catch (Exception e)
 //        {
@@ -112,7 +110,7 @@ public class Goals_Tracker extends Fragment {
 //
 //        }
 
-      getdatafromfirebase();
+        getdatafromfirebase();
 
         return v;
     }
@@ -131,8 +129,8 @@ public class Goals_Tracker extends Fragment {
 
                     for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
                         String key=messageSnapshot.getValue()+"";
-                          JSONObject obj=new JSONObject();
-                          JSONObject obj1=new JSONObject();
+                        JSONObject obj=new JSONObject();
+                        JSONObject obj1=new JSONObject();
 
                         obj.put("completed",messageSnapshot.child("completed").getValue());
                         obj.put("ref",messageSnapshot.child("ref").getValue());

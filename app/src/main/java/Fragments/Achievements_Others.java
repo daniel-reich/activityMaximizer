@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
@@ -22,15 +23,15 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import Adapter.Achivement_Adap;
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
- * Created by Surbhi on 16-02-2017.
+ * Created by Rohan on 3/8/2017.
  */
-
-public class Achievements extends Fragment
+public class Achievements_Others extends Fragment
 {
     GridView gridView;
     Achivement_Adap adap;
@@ -52,7 +53,7 @@ public class Achievements extends Fragment
 
 //        HomeActivity.tv_back.setVisibility(View.VISIBLE);
 //        HomeActivity.tv_back.setText("Back");
-       // setHasOptionsMenu(false);
+        // setHasOptionsMenu(false);
 
 
         gridView=(GridView)v.findViewById(R.id.gridview);
@@ -67,12 +68,12 @@ public class Achievements extends Fragment
 
 
 //        try {
-//            uidd = getArguments().getString("uid");
+            uid = getArguments().getString("uid");
 //            Log.e("uidd",uidd);
 //            if (uidd.length() > 1) {
 //                uid = uidd;
 //            } else {
-                uid = pref.getString("uid", "");
+//        uid = pref.getString("uid", "");
 //            }
 //        }catch (Exception e)
 //        {
@@ -98,39 +99,39 @@ public class Achievements extends Fragment
     {
         mref.child("users").child(uid).child("achievements").
                 addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                    @Override
+                    public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                        Log.e("get data from server",dataSnapshot.getValue()+" data");
 
-                try {
-                    JSONObject obj=new JSONObject(dataSnapshot.getValue()+"");
-                    Log.e("json",obj.toString());
+                        try {
+                            JSONObject obj=new JSONObject(dataSnapshot.getValue()+"");
+                            Log.e("json",obj.toString());
 
-                    edit=pref.edit();
-                    edit.putString("achivement",obj+"");
-                    edit.commit();
+                            edit=pref.edit();
+                            edit.putString("achivement",obj+"");
+                            edit.commit();
 
-                    adap=new Achivement_Adap(getActivity(),obj);
-                    gridView.setAdapter(adap);
-                    adap.notifyDataSetChanged();
-                    gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            getActivity().getSupportFragmentManager().beginTransaction().
-                                    replace(R.id.frame_layout,new Achivement_Details()).addToBackStack(null).commit();
+                            adap=new Achivement_Adap(getActivity(),obj);
+                            gridView.setAdapter(adap);
+                            adap.notifyDataSetChanged();
+                            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    getActivity().getSupportFragmentManager().beginTransaction().
+                                            replace(R.id.frame_layout,new Achivement_Details()).addToBackStack(null).commit();
+                                }
+                            });
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("json exception","e",e);
                         }
-                    });
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e("json exception","e",e);
-                }
-            }
-            @Override
-            public void onCancelled(FirebaseError error) {
-                Log.e("get data error",error.getMessage()+" data");
-            }
-        });
+                    }
+                    @Override
+                    public void onCancelled(FirebaseError error) {
+                        Log.e("get data error",error.getMessage()+" data");
+                    }
+                });
     }
 
     @Override

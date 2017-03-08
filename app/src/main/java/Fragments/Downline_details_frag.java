@@ -158,7 +158,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
         switch (view.getId())
         {
             case R.id.iv_contact:
-                AllContacts basic_frag = new AllContacts();
+                AllContactsOthers basic_frag = new AllContactsOthers();
                 Bundle args = new Bundle();
                 args.putString("uid", uidd);
                 basic_frag.setArguments(args);
@@ -168,7 +168,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
                 break;
 
             case R.id.iv_activity:
-                Activity_list_frag basic_frag1 = new Activity_list_frag();
+                Activity_list_other_frag basic_frag1 = new Activity_list_other_frag();
                 Bundle args1 = new Bundle();
                 args1.putString("givenName", data.get(0).getGivenName());
                 args1.putString("uid", uidd);
@@ -179,7 +179,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
                 break;
 
             case R.id.iv_achivement:
-                Achievements basic_frag2 = new Achievements();
+                Achievements_Others basic_frag2 = new Achievements_Others();
                 Bundle args2 = new Bundle();
                 args2.putString("uid", uidd);
                 basic_frag2.setArguments(args2);
@@ -189,7 +189,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
                 break;
 
             case R.id.iv_goals:
-                Goals_Tracker basic_frag3 = new Goals_Tracker();
+                Goals_tracker_Other basic_frag3 = new Goals_tracker_Other();
                 Bundle args3 = new Bundle();
                 args3.putString("uid", uidd);
                 basic_frag3.setArguments(args3);

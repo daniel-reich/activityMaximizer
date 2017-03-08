@@ -127,7 +127,7 @@ public class Add_New_Goal extends Fragment implements View.OnClickListener {
 
         Log.e("currenttime",currentDateTimeString);
 
-        DateFormat originalFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss", Locale.ENGLISH);
+        DateFormat originalFormat = new SimpleDateFormat("dd MMM yyyy hh:mm:ss a", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date date = null;
 
@@ -148,6 +148,7 @@ public class Add_New_Goal extends Fragment implements View.OnClickListener {
 
         } catch (ParseException e) {
             e.printStackTrace();
+
         }
     }
 

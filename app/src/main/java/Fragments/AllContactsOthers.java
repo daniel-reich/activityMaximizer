@@ -1,7 +1,6 @@
 package Fragments;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,14 +16,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.ClientCertRequest;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -34,9 +31,9 @@ import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
- * Created by Surbhi on 16-02-2017.
+ * Created by Rohan on 3/8/2017.
  */
-public class AllContacts extends Fragment implements View.OnClickListener {
+public class AllContactsOthers extends Fragment implements View.OnClickListener {
 
     Dialog helpdialog;
     RecyclerView rView;
@@ -61,7 +58,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
         Clients.setSelected(true);
         Recruits.setSelected(false);
         rView=(RecyclerView)view.findViewById(R.id.rview);
-       // rView.setLayoutManager(layoutManager);
+        // rView.setLayoutManager(layoutManager);
         layoutManager=new LinearLayoutManager(getActivity());
 
         pref=getActivity().getSharedPreferences("userpref",0);
@@ -69,12 +66,12 @@ public class AllContacts extends Fragment implements View.OnClickListener {
 
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
 //        try {
-//            uidd = getArguments().getString("uid");
+            uid = getArguments().getString("uid");
 //            Log.e("beforeuidd",uidd+" abv");
 //            if (uidd.length() > 1) {
 //                uid = uidd;
 //            } else {
-                uid = pref.getString("uid", "");
+//        uid = pref.getString("uid", "");
 //                Log.e("after",uidd+" abv");
 //            }
 //        }catch (Exception e)
@@ -86,7 +83,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
 
         Log.e("AllContacts","Allcontacts");
 
-                ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         HomeActivity.title.setText("All Contacts");
@@ -145,7 +142,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
                 data=new ArrayList<AllContact>();
 
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                   Log.e("child",child+" abc");
+                    Log.e("child",child+" abc");
                     try {
                         data.add(new AllContact(ConvertParseString(child.child("competitive").getValue()), ConvertParseString(child.child("created").getValue()), ConvertParseString(child.child("credible").getValue()), ConvertParseString(child.child("familyName").getValue()), ConvertParseString(child.child("givenName").getValue()), ConvertParseString(child.child("hasKids").getValue()),
                                 ConvertParseString(child.child("homeowner").getValue()), ConvertParseString(child.child("hungry").getValue()), ConvertParseString(child.child("incomeOver40k").getValue()), ConvertParseString(child.child("married").getValue()), ConvertParseString(child.child("motivated").getValue()), ConvertParseString(child.child("ofProperAge").getValue()), ConvertParseString(child.child("peopleSkills").getValue()),

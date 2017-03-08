@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
@@ -27,29 +26,26 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import Adapter.ContactActivityListAdapter;
-import Adapter.Note_Adapter;
 import Adapter.SelectNewActivityListAdapter;
 import model.AllActivity;
-import model.AllNote;
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
- * Created by surender on 2/17/2017.
+ * Created by Rohan on 3/8/2017.
  */
-
-public class Activity_list_frag extends Fragment {
+public class Activity_list_other_frag extends Fragment {
 
     View v;
     TextView tv_newactivity;
-   public static Dialog dialog;
+    public static Dialog dialog;
     RecyclerView rview;
     SelectNewActivityListAdapter adapter;
     ArrayList<AllActivity> data;
     Firebase mref;
     SharedPreferences pref;
 
-  public static   ContactActivityListAdapter listadapter;
+    public static ContactActivityListAdapter listadapter;
     LinearLayoutManager lManager;
     String uid="",name="",uidd="";
     public static JSONArray js;
@@ -99,13 +95,13 @@ public class Activity_list_frag extends Fragment {
             }
         });
 //        try {
-//            uidd = getArguments().getString("uid");
+            uid = getArguments().getString("uid");
 //            Log.e("uidd",uidd+" abv");
 //            if (uidd.length() > 1) {
 //                uid = uidd;
-//                tv_newactivity.setVisibility(View.INVISIBLE);
+                tv_newactivity.setVisibility(View.INVISIBLE);
 //            } else {
-                uid = pref.getString("uid", "");
+//        uid = pref.getString("uid", "");
 //            }
 //        }catch (Exception e)
 //        {
@@ -124,45 +120,45 @@ public class Activity_list_frag extends Fragment {
                 .child(uid)
                 .addValueEventListener(new ValueEventListener() {
 
-            @Override
-            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                Log.e("get data from server",dataSnapshot.getValue()+" data");
-                data=new ArrayList<AllActivity>();
-                JSONArray jsonArray =  new JSONArray();
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    JSONObject jGroup = new JSONObject();
-                    Log.e("childddd",child.child("contactName").getKey()+" abc");
-                    data.add(new AllActivity(child.child("contactName").getValue().toString(),child.child("contactRef").getValue().toString(),child.child("created").getValue().toString(),child.child("date").getValue().toString(),child.child("eventKitID").getValue().toString(),child.child("ref").getValue().toString(),child.child("type").getValue().toString(),child.child("userName").getValue().toString(),child.child("userRef").getValue().toString()));
-                    try {
-                        jGroup.put("contactName", child.child("contactName").getValue().toString());
-                        jGroup.put("contactRef", child.child("contactRef").getValue().toString());
-                        jGroup.put("created", child.child("created").getValue().toString());
-                        jGroup.put("date", child.child("date").getValue().toString());
-                        jGroup.put("eventKitID", child.child("eventKitID").getValue().toString());
-                        jGroup.put("ref", child.child("ref").getValue().toString());
-                        jGroup.put("type", child.child("type").getValue().toString());
-                        jGroup.put("userName", child.child("userName").getValue().toString());
-                        jGroup.put("userRef", child.child("userRef").getValue().toString());
-                        jsonArray.put(jGroup);
-                        Log.e("child", child.child("contactName").getValue() + " abc");
-                    }
-                    catch (Exception e)
-                    {
-                        Log.e("Exception",e+"");
-                    }
-                }
+                    @Override
+                    public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                        Log.e("get data from server",dataSnapshot.getValue()+" data");
+                        data=new ArrayList<AllActivity>();
+                        JSONArray jsonArray =  new JSONArray();
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            JSONObject jGroup = new JSONObject();
+                            Log.e("childddd",child.child("contactName").getKey()+" abc");
+                            data.add(new AllActivity(child.child("contactName").getValue().toString(),child.child("contactRef").getValue().toString(),child.child("created").getValue().toString(),child.child("date").getValue().toString(),child.child("eventKitID").getValue().toString(),child.child("ref").getValue().toString(),child.child("type").getValue().toString(),child.child("userName").getValue().toString(),child.child("userRef").getValue().toString()));
+                            try {
+                                jGroup.put("contactName", child.child("contactName").getValue().toString());
+                                jGroup.put("contactRef", child.child("contactRef").getValue().toString());
+                                jGroup.put("created", child.child("created").getValue().toString());
+                                jGroup.put("date", child.child("date").getValue().toString());
+                                jGroup.put("eventKitID", child.child("eventKitID").getValue().toString());
+                                jGroup.put("ref", child.child("ref").getValue().toString());
+                                jGroup.put("type", child.child("type").getValue().toString());
+                                jGroup.put("userName", child.child("userName").getValue().toString());
+                                jGroup.put("userRef", child.child("userRef").getValue().toString());
+                                jsonArray.put(jGroup);
+                                Log.e("child", child.child("contactName").getValue() + " abc");
+                            }
+                            catch (Exception e)
+                            {
+                                Log.e("Exception",e+"");
+                            }
+                        }
 
-                Log.e("jsonarray",jsonArray+" abc");
-                listadapter=new ContactActivityListAdapter(getActivity(),jsonArray,"all");
-                rview.setLayoutManager(lManager);
-                rview.setAdapter(listadapter);
+                        Log.e("jsonarray",jsonArray+" abc");
+                        listadapter=new ContactActivityListAdapter(getActivity(),jsonArray,"all");
+                        rview.setLayoutManager(lManager);
+                        rview.setAdapter(listadapter);
 
-            }
-            @Override
-            public void onCancelled(FirebaseError error) {
-                Log.e("get data error",error.getMessage()+" data");
-            }
-        });
+                    }
+                    @Override
+                    public void onCancelled(FirebaseError error) {
+                        Log.e("get data error",error.getMessage()+" data");
+                    }
+                });
     }
 
     @Override
