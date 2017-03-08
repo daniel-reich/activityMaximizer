@@ -141,19 +141,18 @@ public class ListContact extends Fragment implements View.OnClickListener {
                 allClientsArrayList=new ArrayList<AllContact>();
                 NoClientsArrayList = new ArrayList<AllContact>();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Log.e("child",child+" abc");
                     for (AllContact allContact:allContactArrayList) {
-
-                        if(allContact.getRef().equalsIgnoreCase( child.child("ref").getValue().toString())){
+                        if(allContact.getRef().equalsIgnoreCase(child.child("ref").getValue().toString())){
                             allClientsArrayList.add(allContact);
-                        }else
+                        }else {
                             NoClientsArrayList.add(allContact);
-
+                            Log.e("hemant",NoClientsArrayList.size()+" bbbb");
+                        }
 
                     }
 
                 }
-                Log.e("Exception","::"+allClientsArrayList.size());
+                Log.e("Exception","::"+allClientsArrayList.size()+""+NoClientsArrayList.size());
                 adapter=new ClientAdapter(getActivity(),allClientsArrayList,role);
                 rView.setLayoutManager(layoutManager);
                 rView.setAdapter(adapter);
@@ -169,6 +168,7 @@ public class ListContact extends Fragment implements View.OnClickListener {
 
     public void getallcontactsfromfirebase()
     {
+        Log.e("uidd",pref.getString("uid","")+" iud");
         mref.child("contacts").child(pref.getString("uid","")).addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -184,6 +184,7 @@ public class ListContact extends Fragment implements View.OnClickListener {
 
                     Log.e("child",child.child("familyName").getValue()+" abc");
                 }
+                Log.e("sixeeee",allContactArrayList.size()+" abc");
                 getdatafromfirebase("client");
             }
             @Override

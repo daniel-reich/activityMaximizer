@@ -64,6 +64,7 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.newactivity,container,false);
+        setHasOptionsMenu(true);
         show_calendarlayout=(LinearLayout)v.findViewById(R.id.show_calendarlayout);
         tv_date=(TextView)v.findViewById(R.id.tv_date);
 
@@ -74,7 +75,7 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setHasOptionsMenu(true);
+
 
         bundle=getArguments();
 
@@ -124,25 +125,27 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-
-            menu.findItem(R.id.menu).setTitle("Add");
-
-
         super.onCreateOptionsMenu(menu, inflater);
+
+
+        menu.findItem(R.id.menu).setTitle("Add");
+        menu.findItem(R.id.menu).setVisible(true);
     }
 
+
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
             case R.id.menu:
-                addNewContact(0);
+                addNewContact();
                 break;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
+
+
 
     private void updateLabel() {
 
@@ -219,7 +222,7 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
 
     }
 
-    private void addNewContact(int position)
+    private void addNewContact()
     {
         java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
         Log.e("Today is ", timeStampDate.getTime()+"");

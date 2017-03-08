@@ -68,7 +68,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
     }
 
 
-
     private void showFloatingMenus() {
 
        Fragments.FloatingMenusDialog dialog=new FloatingMenusDialog();

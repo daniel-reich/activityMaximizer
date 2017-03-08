@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,7 @@ public class ListAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> 
             @Override
             public void onClick(View view) {
 
-
+                Log.e("givennemee",data.get(position).getName()+" avc");
                 ListContact basic_frag = new ListContact();
                 Bundle args = new Bundle();
                 args.putString("givenName", data.get(position).getName());
