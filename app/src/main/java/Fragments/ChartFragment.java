@@ -4,19 +4,23 @@ package Fragments;
  * Created by jattin on 3/7/2017.
  */
 
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
-
-
-        import android.graphics.Color;
-        import android.support.v7.app.AppCompatActivity;
-        import android.os.Bundle;
+import android.graphics.Color;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.github.mikephil.charting.charts.BarChart;
         import com.github.mikephil.charting.charts.LineChart;
         import com.github.mikephil.charting.data.BarData;
@@ -26,53 +30,125 @@ import com.github.mikephil.charting.charts.BarChart;
         import com.github.mikephil.charting.data.LineData;
         import com.github.mikephil.charting.data.LineDataSet;
         import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.auth.FirebaseAuth;
 
-        import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import Adapter.personal_list_adapter;
 import u.activitymanager.R;
 
 public class ChartFragment extends Fragment {
 
 
     View v;
+    private SharedPreferences pref;
+    private Firebase mref;
+    private LineChart lineChart;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-        v=inflater.inflate(R.layout.chart,container);
+        v=inflater.inflate(R.layout.chart,container,false);
 
-        LineChart lineChart = (LineChart)v.findViewById(R.id.chart);
+         lineChart = (LineChart)v.findViewById(R.id.chart);
 
 
-        ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(4f, 0));
-        entries.add(new Entry(8f, 1));
-        entries.add(new Entry(6f, 2));
-        entries.add(new Entry(2f, 3));
-        entries.add(new Entry(18f, 4));
-        entries.add(new Entry(9f, 5));
-
-        LineDataSet dataset = new LineDataSet(entries, "# of Calls");
-
-        ArrayList<String> labels = new ArrayList<String>();
-        labels.add("January");
-        labels.add("February");
-        labels.add("March");
-        labels.add("April");
-        labels.add("May");
-        labels.add("June");
+        getnotefromfirebase();
 
 
 
-        LineData data = new LineData(labels, dataset);
-        dataset.setColors(ColorTemplate.COLORFUL_COLORS); //
-        dataset.setDrawCubic(true);
-        dataset.setDrawFilled(true);
-
-        lineChart.setData(data);
-        lineChart.animateY(5000);
         return v;
+    }
+
+    public void getnotefromfirebase()
+    {
+
+        pref=getActivity().getSharedPreferences("userpref",0);
+        Firebase.setAndroidContext(getActivity());
+        String uid=pref.getString("uid","");
+        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref.child("users")
+                .child(uid).child("dailyPointAverages")
+                .addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                        Log.e("get data from server",dataSnapshot.getValue()+" data");
+
+
+
+
+
+
+
+                        HashMap<String,Long> map = (HashMap<String,Long>) dataSnapshot.getValue();
+
+                        ArrayList<String> labels = new ArrayList<String>();
+
+                        int i=0;
+
+                        ArrayList<Entry> entries = new ArrayList<>();
+
+                        for (Map.Entry<String,Long> entry : map.entrySet())
+                        {
+                            Log.e("aaa",entry.getKey() + "/" + entry.getValue());
+
+
+
+                            entries.add(new Entry(entry.getValue(), i));
+
+
+
+
+                            labels.add(entry.getKey());
+
+                            i++;
+
+
+
+
+
+
+                        }
+
+                        LineDataSet dataset = new LineDataSet(entries, "");
+
+                        LineData data = new LineData(labels, dataset);
+                        dataset.setColors(ColorTemplate.COLORFUL_COLORS);
+                        dataset.setDrawCubic(true);
+                        dataset.setDrawFilled(true);
+
+                        lineChart.setData(data);
+                        lineChart.animateY(5000);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    }
+                    @Override
+                    public void onCancelled(FirebaseError error) {
+                        Log.e("get data error",error.getMessage()+" data");
+                    }
+                });
     }
 
 

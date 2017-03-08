@@ -62,6 +62,7 @@ import java.util.Map;
 
 import Adapter.adapter;
 import Adapter.personal_list_adapter;
+import register_frag.RegisterationDetail;
 import u.activitymanager.R;
 import utils.AnimateFirstDisplayListener;
 
@@ -108,6 +109,20 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         tv_phone=(TextView)view.findViewById(R.id.tv_phone);
 
         speedview=(SpeedView)view.findViewById(R.id.meter);
+
+
+
+        speedview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                selectViewDialog();
+
+            }
+        });
+
+
 
 
 
@@ -166,6 +181,11 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 showDialog();
                 break;
             case R.id.tv_graph:
+
+                selectViewdialog.dismiss();
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.frame_layout,new ChartFragment()).addToBackStack(null).commit();
+
                 break;
             case R.id.profile_pic:
                 selectPicDialog();

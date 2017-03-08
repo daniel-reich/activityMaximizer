@@ -230,9 +230,22 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
 
 //                for (DataSnapshot child : dataSnapshot.getChildren()) {
 //                    Log.e("child",child+" abc");
-                    data.add(new userinfoo(ConvertParseString(dataSnapshot.child("givenName").getValue()),ConvertParseString(dataSnapshot.child("familyName").getValue()),ConvertParseString(dataSnapshot.child("phoneNumber").getValue()),ConvertParseString(dataSnapshot.child("email").getValue()),ConvertParseString(dataSnapshot.child("uid").getValue()),ConvertParseString(dataSnapshot.child("contactsAdded").getValue()),
-                            ConvertParseString(dataSnapshot.child("created").getValue()),ConvertParseString(dataSnapshot.child("dailyPointAverages").getValue()),ConvertParseString(dataSnapshot.child("fivePointClients").getValue()),ConvertParseString(dataSnapshot.child("fivePointRecruits").getValue()),ConvertParseString(dataSnapshot.child("partner_solution_number").getValue()),ConvertParseString(dataSnapshot.child("partnerUID").getValue()),ConvertParseString(dataSnapshot.child("profilePictureURL").getValue()),
-                            ConvertParseString(dataSnapshot.child("ref").getValue()),ConvertParseString(dataSnapshot.child("rvp_solution_number").getValue()),ConvertParseString(dataSnapshot.child("solution_number").getValue()),ConvertParseString(dataSnapshot.child("state").getValue()),ConvertParseString(dataSnapshot.child("trainer_solution_number").getValue()),ConvertParseString(dataSnapshot.child("upline_solution_number").getValue())));
+
+                String name="";
+                if(dataSnapshot.child("givenName").getValue()!=null)
+
+                {
+
+                    name=dataSnapshot.child("givenName").getValue().toString();
+
+                }
+
+                else
+                name=name=dataSnapshot.child("givename").getValue().toString();
+
+                    data.add(new userinfoo(name,dataSnapshot.child("familyName").getValue().toString(),dataSnapshot.child("phoneNumber").getValue().toString(),dataSnapshot.child("email").getValue().toString(),dataSnapshot.child("uid").getValue().toString(),dataSnapshot.child("contactsAdded").getValue().toString(),
+                            dataSnapshot.child("created").getValue().toString(),dataSnapshot.child("dailyPointAverages").getValue().toString(),dataSnapshot.child("fivePointClients").getValue().toString(),dataSnapshot.child("fivePointRecruits").getValue().toString(),dataSnapshot.child("partner_solution_number").getValue().toString(),dataSnapshot.child("partnerUID").getValue().toString(),dataSnapshot.child("profilePictureURL").getValue().toString(),
+                            dataSnapshot.child("ref").getValue().toString(),dataSnapshot.child("rvp_solution_number").getValue().toString(),dataSnapshot.child("solution_number").toString(),dataSnapshot.child("state").toString(),dataSnapshot.child("trainer_solution_number").getValue().toString(),dataSnapshot.child("upline_solution_number").getValue().toString()));
 
                     Log.e("child",dataSnapshot.child("familyName").getValue()+" abc");
 //                }
@@ -271,7 +284,9 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
             return "";
         }
         else {
-            String lastSeen= (String) obj;
+
+
+            String lastSeen= (String) obj+"";
             if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
                 return lastSeen;
             else

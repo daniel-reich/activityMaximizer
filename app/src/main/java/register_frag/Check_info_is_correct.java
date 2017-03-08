@@ -185,7 +185,7 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
         m2.put("partnerUID","");
         m2.put("profilePictureURL","");
         m2.put("ref","");
-        m2.put("rvp_solution_number","");
+        m2.put("rvp_solution_number",pref.getString("rvpsolutionnumber",""));
         m2.put("solution_number",pref.getString("solutionnumber",""));
         m2.put("state",pref.getString("state",""));
         m2.put("trainer_solution_number",pref.getString("trainersolutionnumber",""));
