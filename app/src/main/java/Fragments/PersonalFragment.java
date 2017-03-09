@@ -162,8 +162,11 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
         imageLoader.getInstance().displayImage(pref.getString("profilePictureURL",""), Profile_pic, options, animateFirstListener);
-
-        tv_username.setText(pref.getString("givenName","")+" "+pref.getString("familyName",""));
+        if (pref.getString("givenName","") != null && !TextUtils.isEmpty(pref.getString("givenName","")) && !pref.getString("givenName","").equalsIgnoreCase("null"))
+        {
+            tv_username.setText(pref.getString("givenName", "") );
+        }
+      //  tv_username.setText(pref.getString("givenName","")+" "+pref.getString("familyName",""));
         tv_phone.setText(pref.getString("solution_number",""));
 
         getinfirebase();
