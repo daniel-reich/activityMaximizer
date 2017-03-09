@@ -100,7 +100,13 @@ public class ListContact extends Fragment implements View.OnClickListener {
                 LisiAllContact basic_frag = new LisiAllContact();
                 Bundle args = new Bundle();
                 args.putString("givenName", name);
-                args.putSerializable("NoClientsArrayList",NoClientsArrayList);
+                if(NoClientsArrayList.size()==0) {
+                    args.putSerializable("NoClientsArrayList", allContactArrayList);
+                }
+                else
+                {
+                    args.putSerializable("NoClientsArrayList", NoClientsArrayList);
+                }
                 basic_frag.setArguments(args);
 
                 getActivity().getSupportFragmentManager().beginTransaction()
@@ -137,7 +143,7 @@ public class ListContact extends Fragment implements View.OnClickListener {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                Log.e("get data from server", dataSnapshot.getChildren()+" data");
                 allClientsArrayList=new ArrayList<AllContact>();
                 NoClientsArrayList = new ArrayList<AllContact>();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
