@@ -46,7 +46,7 @@ public class Trainee_frag extends Fragment {
     Dialog helpdialog;
 
     TextView team,trainees,tv_direct;
-    RecyclerView directview,baseview;
+    RecyclerView directview;
     LinearLayoutManager layoutManager;
     LinearLayoutManager layoutManager1;
     Firebase mref;
@@ -66,7 +66,7 @@ public class Trainee_frag extends Fragment {
         //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame,new PersonalFragment()).addToBackStack(null).commit();
 
         directview=(RecyclerView)view.findViewById(R.id.directview);
-        baseview=(RecyclerView)view.findViewById(R.id.baseview);
+
         // rView.setLayoutManager(layoutManager);
         layoutManager=new LinearLayoutManager(getActivity());
         layoutManager1=new LinearLayoutManager(getActivity());
@@ -92,7 +92,7 @@ public class Trainee_frag extends Fragment {
 //            }
 //        });
         getalldownlinesuidfromfirebase();
-        getalldownlinesbaseuidfromfirebase();
+
 
         return view;
     }
@@ -160,35 +160,7 @@ public class Trainee_frag extends Fragment {
             }
         });
     }
-    public void getalldownlinesbaseuidfromfirebase()
-    {
-        Log.e("testing1",pref.getString("solution_number","")+" abc");
-        mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("Base").addValueEventListener(new ValueEventListener()
-        {
 
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("get data from server",dataSnapshot.getValue()+" data");
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Log.e("testing",child.getKey()+" abc");
-//                    uiddata.add(child.getKey().toString());
-                    getallbasedownlinesfromfirebase(child.getKey());
-
-//                    allContactArrayList.add(new AllContact(child.child("competitive").getValue().toString(),child.child("created").getValue().toString(),child.child("credible").getValue().toString(),child.child("familyName").getValue().toString(),child.child("givenName").getValue().toString(),child.child("hasKids").getValue().toString(),
-//                            child.child("homeowner").getValue().toString(),child.child("hungry").getValue().toString(),child.child("incomeOver40k").getValue().toString(),child.child("married").getValue().toString(),child.child("motivated").getValue().toString(),child.child("ofProperAge").getValue().toString(),child.child("peopleSkills").getValue().toString(),
-//                            child.child("phoneNumber").getValue().toString(),child.child("rating").getValue().toString(),child.child("recruitRating").getValue().toString(),child.child("ref").getValue().toString()));
-//
-//                    Log.e("child",child.child("familyName").getValue()+" abc");
-                }
-
-
-            }
-            @Override
-            public void onCancelled(FirebaseError error) {
-                Log.e("get data error",error.getMessage()+" data");
-            }
-        });
-    }
 
     public void getalldownlinesfromfirebase(final String uid)
     {
@@ -198,9 +170,21 @@ public class Trainee_frag extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("get data from server",dataSnapshot.getValue()+" data");
-                data.add(new AllDownlines(uid,dataSnapshot.child("givename").getValue().toString(),dataSnapshot.child("fivePointClients").getValue().toString(),dataSnapshot.child("fivePointRecruits").getValue().toString()));
 
-//
+                if(!dataSnapshot.child("trainer_solution_number").getValue().toString().equals(""))
+
+                {
+
+
+                    data.add(new AllDownlines(uid,dataSnapshot.child("givenName").getValue().toString(),dataSnapshot.child("fivePointClients").getValue().toString(),dataSnapshot.child("fivePointRecruits").getValue().toString()));
+
+
+                }
+
+
+
+
+
                 if(data.size()==1)
                 {
                     putdownlineinfirebase();
@@ -218,29 +202,11 @@ public class Trainee_frag extends Fragment {
         });
     }
 
-    public void getallbasedownlinesfromfirebase(final String uid)
-    {
-        mref.child("users").child(uid).addValueEventListener(new ValueEventListener()
-        {
 
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("get data from server",dataSnapshot.getValue()+" data");
-                basedata.add(new AllBaseDownlines(ConvertParseString(uid),ConvertParseString(dataSnapshot.child("givename").getValue()),ConvertParseString(dataSnapshot.child("fivePointClients").getValue()),ConvertParseString(dataSnapshot.child("fivePointRecruits").getValue())));
-                baseadapter=new BaseDownlineAdapter(getActivity(),basedata,fm);
-                baseview.setLayoutManager(layoutManager1);
-                baseview.setAdapter(baseadapter);
-            }
-            @Override
-            public void onCancelled(FirebaseError error) {
-                Log.e("get data error",error.getMessage()+" data");
-            }
-        });
-    }
 
     public void setDirectAdapter()
     {
-        adapter=new DownlineAdapter(getActivity(),data,fm);
+        adapter=new DownlineAdapter(getActivity(),data,fm,1);
         directview.setLayoutManager(layoutManager);
         directview.setAdapter(adapter);
     }

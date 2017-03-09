@@ -60,7 +60,7 @@ public class Challenges extends Fragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
       view=inflater.inflate(R.layout.challanges,container,false);
-       // ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("");
+
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -101,8 +101,8 @@ public class Challenges extends Fragment
         recyclerView1.setLayoutManager(layoutManager1);
         // recyclerView1.setNestedScrollingEnabled(false);
 
-        Past_challanges adapter1 = new Past_challanges(getActivity());
-        recyclerView1.setAdapter(adapter1);
+//        Past_challanges adapter1 = new Past_challanges(getActivity());
+//        recyclerView1.setAdapter(adapter1);
 
         getchallangefromfirebase();
 

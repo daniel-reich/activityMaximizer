@@ -202,7 +202,11 @@ public class Team_fragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("get data from server",dataSnapshot.getValue()+" data");
-                data.add(new AllDownlines(uid,ConvertParseString(dataSnapshot.child("givename").getValue()),ConvertParseString(dataSnapshot.child("fivePointClients").getValue()),ConvertParseString(dataSnapshot.child("fivePointRecruits").getValue())));
+
+
+                if(dataSnapshot.child("trainer_solution_number").getValue().toString().equals(""))
+
+                data.add(new AllDownlines(uid,dataSnapshot.child("givenName").getValue().toString(),dataSnapshot.child("fivePointClients").getValue().toString(),dataSnapshot.child("fivePointRecruits").getValue().toString()));
 
 //
                 if(data.size()==1)
@@ -244,7 +248,7 @@ public class Team_fragment extends Fragment {
 
     public void setDirectAdapter()
     {
-        adapter=new DownlineAdapter(getActivity(),data,fm);
+        adapter=new DownlineAdapter(getActivity(),data,fm,0);
         directview.setLayoutManager(layoutManager);
         directview.setAdapter(adapter);
     }
@@ -289,7 +293,7 @@ public class Team_fragment extends Fragment {
             return "";
         }
         else {
-            String lastSeen= String.valueOf(obj);
+            String lastSeen= (String) obj;
             if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
                 return lastSeen;
             else

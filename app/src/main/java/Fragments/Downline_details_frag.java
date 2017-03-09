@@ -245,7 +245,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
 
                     data.add(new userinfoo(name,dataSnapshot.child("familyName").getValue().toString(),dataSnapshot.child("phoneNumber").getValue().toString(),dataSnapshot.child("email").getValue().toString(),dataSnapshot.child("uid").getValue().toString(),dataSnapshot.child("contactsAdded").getValue().toString(),
                             dataSnapshot.child("created").getValue().toString(),dataSnapshot.child("dailyPointAverages").getValue().toString(),dataSnapshot.child("fivePointClients").getValue().toString(),dataSnapshot.child("fivePointRecruits").getValue().toString(),dataSnapshot.child("partner_solution_number").getValue().toString(),dataSnapshot.child("partnerUID").getValue().toString(),dataSnapshot.child("profilePictureURL").getValue().toString(),
-                            dataSnapshot.child("ref").getValue().toString(),dataSnapshot.child("rvp_solution_number").getValue().toString(),dataSnapshot.child("solution_number").toString(),dataSnapshot.child("state").toString(),dataSnapshot.child("trainer_solution_number").getValue().toString(),dataSnapshot.child("upline_solution_number").getValue().toString()));
+                            dataSnapshot.child("ref").getValue().toString(),dataSnapshot.child("rvp_solution_number").getValue().toString(),dataSnapshot.child("solution_number").getValue().toString(),dataSnapshot.child("state").toString(),dataSnapshot.child("trainer_solution_number").getValue().toString(),dataSnapshot.child("upline_solution_number").getValue().toString()));
 
                     Log.e("child",dataSnapshot.child("familyName").getValue()+" abc");
 //                }
