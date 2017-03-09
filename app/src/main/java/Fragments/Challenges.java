@@ -53,25 +53,37 @@ public class Challenges extends Fragment
     Firebase mref;
     JSONArray array;
     RecyclerView recyclerView;
+    String rvp_solutionnumber,uplinesolution_no;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
       view=inflater.inflate(R.layout.challanges,container,false);
        // ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("");
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         HomeActivity.title.setText("");
+
         setHasOptionsMenu(true);
 
         pref=getActivity().getSharedPreferences("userpref",0);
+
+        rvp_solutionnumber=pref.getString("rvp_solution_number","");
+        uplinesolution_no=pref.getString("upline_solution_number","");
+
+        Log.e("upline_solution_number",uplinesolution_no+" up");
+        Log.e("rvp_solution_number",rvp_solutionnumber+" rvp");
+
         Firebase.setAndroidContext(getActivity());
         mref=new Firebase(Constants.URL);
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
         array=new JSONArray();
 
         initViews();
+
         return view;
     }
 
@@ -175,8 +187,14 @@ public class Challenges extends Fragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.findItem(R.id.menu).setIcon(null);
-        menu.findItem(R.id.menu).setTitle("NEW");
+
+        if(rvp_solutionnumber.equalsIgnoreCase("")&uplinesolution_no.equalsIgnoreCase("")) {
+            menu.findItem(R.id.menu).setIcon(null);
+            menu.findItem(R.id.menu).setTitle("NEW");
+        }
+        else
+            menu.findItem(R.id.menu).setVisible(false);
+
     }
 
     @Override

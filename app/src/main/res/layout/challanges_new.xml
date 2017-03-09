@@ -65,6 +65,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="normal"
         android:text="None"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

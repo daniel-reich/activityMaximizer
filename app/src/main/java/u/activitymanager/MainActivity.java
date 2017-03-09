@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         rv = (RecyclerView)findViewById(R.id.recyclerview);
         rv.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         rv.setNestedScrollingEnabled(false);
-        adap=new adapter();
-        rv.setAdapter(adap);
+        //adap=new adapter();
+        //rv.setAdapter(adap);
     }
 }

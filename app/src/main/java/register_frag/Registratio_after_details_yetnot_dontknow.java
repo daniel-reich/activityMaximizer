@@ -65,8 +65,8 @@ public class Registratio_after_details_yetnot_dontknow extends Fragment implemen
                 }
 
                 edit=pref.edit();
-                edit.putString("uplinesolutionnumber",et_uplinenumber.getText().toString());
-                edit.putString("trainersolutionnumber",et_trainernumber.getText().toString());
+                edit.putString("upline_solution_number",et_uplinenumber.getText().toString());
+                edit.putString("trainer_solution_number",et_trainernumber.getText().toString());
                 edit.commit();
 
                 getActivity().getSupportFragmentManager().beginTransaction().

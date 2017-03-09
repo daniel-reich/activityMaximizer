@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.util.Pools;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,16 +67,6 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         SplashActivity.title.setText("Registration");
-
-
-
-
-
-
-
-
-
-
 
         setHasOptionsMenu(true);
 
@@ -234,7 +225,7 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
         m2.put("uid",uid);
         m2.put("achievements",m1);
         m2.put("contactsAdded","");
-        m2.put("created","");
+        m2.put("created", System.currentTimeMillis());
         DateFormat targetFormat = new SimpleDateFormat("MM/dd/yyyy");
         m2.put("dailyPointAverages",getDatesBetween("12/07/2016",targetFormat.format(new Date())));
         m2.put("fivePointClients","");

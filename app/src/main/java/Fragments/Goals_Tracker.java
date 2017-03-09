@@ -74,13 +74,13 @@ public class Goals_Tracker extends Fragment {
 //        rv_unmetgoal.setAdapter(cur_goal_adap);
 
 
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         Firebase.setAndroidContext(getActivity());
         firebaseAuth = FirebaseAuth.getInstance();
 
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
         pref=getActivity().getSharedPreferences("userpref",0);
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
 
 //        try {

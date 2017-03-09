@@ -168,7 +168,7 @@ public class RegisterationDetail extends Fragment
                 }
                 else{
                     edit=pref.edit();
-                    edit.putString("solutionnumber",st_sol_num);
+                    edit.putString("solution_number",st_sol_num);
                     edit.putString("state",st_state);
                     edit.commit();
 

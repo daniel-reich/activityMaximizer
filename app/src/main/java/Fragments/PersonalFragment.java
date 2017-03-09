@@ -53,19 +53,18 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import Adapter.adapter;
 import Adapter.personal_list_adapter;
+import model.Activity_breakdown_getset;
 import register_frag.RegisterationDetail;
 import u.activitymanager.R;
 import utils.AnimateFirstDisplayListener;
@@ -95,9 +94,10 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     private DisplayImageOptions options;
     TextView tv_phone,tv_username;
     private String uid;
-    String achieve_detail="";
     ImageView iv;
+    ArrayList<Activity_breakdown_getset> table_data;
     SpeedView speedview;
+    String achieve_detail="";
     int count[]={0,0,0,0,0,0,0,0};
 
     @Override
@@ -115,19 +115,14 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
         speedview=(SpeedView)view.findViewById(R.id.meter);
 
-
-
         speedview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 selectViewDialog();
 
             }
         });
-
-
 
 
 
@@ -170,9 +165,116 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
         tv_username.setText(pref.getString("givenName","")+" "+pref.getString("familyName",""));
         tv_phone.setText(pref.getString("phoneNumber",""));
+
         getinfirebase();
+
         return view;
     }
+
+
+    public void getinfirebase()
+    {
+        mref.child("users").child(uid).child("achievementToShow").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get data from server", dataSnapshot.getValue() + " data");
+                Log.e("child", dataSnapshot.getValue() + " abc");
+                achieve_detail = ConvertParseString(dataSnapshot.getValue());
+                setAch();
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+    public static String ConvertParseString(Object obj ) {
+        if(obj==null)
+        {
+            return "";
+        }
+        else {
+            String lastSeen= String.valueOf(obj);
+            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
+                return lastSeen;
+            else
+                return "";
+        }
+
+    }
+
+    public void setAch()
+    {
+
+        if(achieve_detail.equalsIgnoreCase("Closed_three_IBAs"))
+            iv.setImageResource(R.drawable.closed_three_ibas);
+
+        else
+        if(achieve_detail.equalsIgnoreCase("Closed_three_life"))
+            iv.setImageResource(R.drawable.closed_three_life);
+        else
+        if(achieve_detail.equalsIgnoreCase("Fifty_KTs"))
+            iv.setImageResource(R.drawable.fifty_kts);
+        else
+        if(achieve_detail.equalsIgnoreCase("First_call_from_app"))
+            iv.setImageResource(R.drawable.first_call_from_app);
+        else
+        if(achieve_detail.equalsIgnoreCase("First_contact_added"))
+            iv.setImageResource(R.drawable.first_contact_added);
+
+        else
+        if(achieve_detail.equalsIgnoreCase("First_downline"))
+            iv.setImageResource(R.drawable.first_downline);
+        else
+        if(achieve_detail.equalsIgnoreCase("One_hundred_KTs"))
+            iv.setImageResource(R.drawable.one_hundred_kts);
+        else
+        if(achieve_detail.equalsIgnoreCase("One_week_eight_five_three_one"))
+            iv.setImageResource(R.drawable.one_week_eight_five_three_one);
+        else
+        if(achieve_detail.equalsIgnoreCase("Perfect_month"))
+            iv.setImageResource(R.drawable.perfect_month);
+        else
+        if(achieve_detail.equalsIgnoreCase("Perfect_week"))
+            iv.setImageResource(R.drawable.perfect_week);
+        else
+        if(achieve_detail.equalsIgnoreCase("Ten_five_point_clients"))
+            iv.setImageResource(R.drawable.ten_five_point_clients);
+        else
+        if(achieve_detail.equalsIgnoreCase("Ten_five_point_recruits"))
+            iv.setImageResource(R.drawable.ten_five_point_recruits);
+        else
+        if(achieve_detail.equalsIgnoreCase("Ten_new_contacts_added"))
+            iv.setImageResource(R.drawable.ten_new_contacts_added);
+        else
+        if(achieve_detail.equalsIgnoreCase("Thirty_new_contacts_added"))
+            iv.setImageResource(R.drawable.thirty_new_contacts_added);
+        else
+        if(achieve_detail.equalsIgnoreCase("Three_appointments_set"))
+            iv.setImageResource(R.drawable.three_appointments_set);
+        else
+        if(achieve_detail.equalsIgnoreCase("Twenty_new_contacts_added"))
+            iv.setImageResource(R.drawable.twenty_new_contacts_added);
+        else
+        if(achieve_detail.equalsIgnoreCase("Two_hundred_KTs"))
+            iv.setImageResource(R.drawable.two_hundred_kts);
+        else
+        if(achieve_detail.equalsIgnoreCase("Two_week_eight_five_three_one"))
+            iv.setImageResource(R.drawable.two_week_eight_five_three_one);
+        else
+        if(achieve_detail.equalsIgnoreCase("Went_on_three_KTs"))
+            iv.setImageResource(R.drawable.went_on_three_kts);
+        else
+        if(achieve_detail.equalsIgnoreCase("Top_speed"))
+            iv.setImageResource(R.drawable.top_speed);
+
+
+    }
+
+
 
     @Override
     public void onClick(View view) {
@@ -210,78 +312,20 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
+    public ArrayList<Activity_breakdown_getset> setData(){
 
-    public void setAch()
-    {
+        table_data=new ArrayList<>();
+        table_data.add(new Activity_breakdown_getset("Kitchen Table Set",2,8,16));
+        table_data.add(new Activity_breakdown_getset("Kitchen Table Done",3,5,15));
+        table_data.add(new Activity_breakdown_getset("Closed Life App",5,3,15));
+        table_data.add(new Activity_breakdown_getset("Closed IBA",5,1,5));
+        table_data.add(new Activity_breakdown_getset("Confirmed Invites",1,10,10));
+        table_data.add(new Activity_breakdown_getset("New Shows",3,3,9));
+        table_data.add(new Activity_breakdown_getset("New Contacts",1,20,20));
+        table_data.add(new Activity_breakdown_getset("Bonus for 8-5-3-1",0,0,10));
 
-
-
-
-                if(achieve_detail.equalsIgnoreCase("Closed_three_IBAs"))
-                    iv.setImageResource(R.drawable.closed_three_ibas);
-
-            else
-                if(achieve_detail.equalsIgnoreCase("Closed_three_life"))
-                    iv.setImageResource(R.drawable.closed_three_life);
-            else
-                if(achieve_detail.equalsIgnoreCase("Fifty_KTs"))
-                    iv.setImageResource(R.drawable.fifty_kts);
-               else
-                if(achieve_detail.equalsIgnoreCase("First_call_from_app"))
-                    iv.setImageResource(R.drawable.first_call_from_app);
-                else
-                if(achieve_detail.equalsIgnoreCase("First_contact_added"))
-                    iv.setImageResource(R.drawable.first_contact_added);
-
-            else
-                if(achieve_detail.equalsIgnoreCase("First_downline"))
-                    iv.setImageResource(R.drawable.first_downline);
-                else
-                if(achieve_detail.equalsIgnoreCase("One_hundred_KTs"))
-                    iv.setImageResource(R.drawable.one_hundred_kts);
-                else
-                if(achieve_detail.equalsIgnoreCase("One_week_eight_five_three_one"))
-                    iv.setImageResource(R.drawable.one_week_eight_five_three_one);
-                else
-                if(achieve_detail.equalsIgnoreCase("Perfect_month"))
-                    iv.setImageResource(R.drawable.perfect_month);
-               else
-                if(achieve_detail.equalsIgnoreCase("Perfect_week"))
-                    iv.setImageResource(R.drawable.perfect_week);
-               else
-                if(achieve_detail.equalsIgnoreCase("Ten_five_point_clients"))
-                    iv.setImageResource(R.drawable.ten_five_point_clients);
-                else
-                if(achieve_detail.equalsIgnoreCase("Ten_five_point_recruits"))
-                    iv.setImageResource(R.drawable.ten_five_point_recruits);
-                else
-                if(achieve_detail.equalsIgnoreCase("Ten_new_contacts_added"))
-                    iv.setImageResource(R.drawable.ten_new_contacts_added);
-              else
-                if(achieve_detail.equalsIgnoreCase("Thirty_new_contacts_added"))
-                    iv.setImageResource(R.drawable.thirty_new_contacts_added);
-               else
-                if(achieve_detail.equalsIgnoreCase("Three_appointments_set"))
-                    iv.setImageResource(R.drawable.three_appointments_set);
-               else
-                if(achieve_detail.equalsIgnoreCase("Twenty_new_contacts_added"))
-                    iv.setImageResource(R.drawable.twenty_new_contacts_added);
-               else
-                if(achieve_detail.equalsIgnoreCase("Two_hundred_KTs"))
-                    iv.setImageResource(R.drawable.two_hundred_kts);
-               else
-                if(achieve_detail.equalsIgnoreCase("Two_week_eight_five_three_one"))
-                    iv.setImageResource(R.drawable.two_week_eight_five_three_one);
-               else
-                if(achieve_detail.equalsIgnoreCase("Went_on_three_KTs"))
-                    iv.setImageResource(R.drawable.went_on_three_kts);
-               else
-                if(achieve_detail.equalsIgnoreCase("Top_speed"))
-                    iv.setImageResource(R.drawable.top_speed);
-
-
+        return table_data;
     }
-
 
     private void selectViewDialog() {
         selectViewdialog=new Dialog(getActivity());
@@ -302,7 +346,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
     private void showDialog()
     {
-
         Dialog dialog=new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.points);
@@ -310,9 +353,10 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         LinearLayoutManager lManager=new LinearLayoutManager(getActivity());
         rview.setLayoutManager(lManager);
         rview.setNestedScrollingEnabled(false);
-        adapter adap=new adapter();
+        adapter adap=new adapter(getActivity(),setData());
         rview.setAdapter(adap);
         dialog.show();
+
     }
 
   //  Select Image  statrt
@@ -622,41 +666,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                         Log.e("get data error",error.getMessage()+" data");
                     }
                 });
-    }
-
-
-    public void getinfirebase()
-    {
-        mref.child("users").child(uid).child("achievementToShow").addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                    Log.e("get data from server", dataSnapshot.getValue() + " data");
-                    Log.e("child", dataSnapshot.getValue() + " abc");
-                    achieve_detail = ConvertParseString(dataSnapshot.getValue());
-                setAch();
-
-            }
-            @Override
-            public void onCancelled(FirebaseError error) {
-                Log.e("get data error",error.getMessage()+" data");
-            }
-        });
-    }
-
-    public static String ConvertParseString(Object obj ) {
-        if(obj==null)
-        {
-            return "";
-        }
-        else {
-            String lastSeen= String.valueOf(obj);
-            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
-                return lastSeen;
-            else
-                return "";
-        }
-
     }
 
 }

@@ -19,6 +19,7 @@ import u.activitymanager.SplashActivity;
 /**
  * Created by Surbhi on 15-02-2017.
  */
+
 public class Registratio_after_details_yetnot extends Fragment implements View.OnClickListener {
     TextView tv_dontknow,tv_next;
     EditText et_rvpnumber;
@@ -55,7 +56,7 @@ public class Registratio_after_details_yetnot extends Fragment implements View.O
         {
             case R.id.tv_dontknow:
                 edit=pref.edit();
-                edit.putString("rvpsolutionnumber",et_rvpnumber.getText().toString());
+                edit.putString("rvp_solution_number",et_rvpnumber.getText().toString());
                 edit.commit();
 
                 getActivity().getSupportFragmentManager().beginTransaction().
@@ -69,7 +70,7 @@ public class Registratio_after_details_yetnot extends Fragment implements View.O
                 }
 
                 edit=pref.edit();
-                edit.putString("rvpsolutionnumber",et_rvpnumber.getText().toString());
+                edit.putString("rvp_solution_number",et_rvpnumber.getText().toString());
                 edit.commit();
 
                 getActivity().getSupportFragmentManager().beginTransaction().

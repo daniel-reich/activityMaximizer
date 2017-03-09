@@ -51,12 +51,14 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import Adapter.BaseDownlineAdapter;
 import Adapter.adapter;
 import Adapter.personal_list_adapter;
+import model.Activity_breakdown_getset;
 import model.AllBaseDownlines;
 import u.activitymanager.R;
 import utils.AnimateFirstDisplayListener;
@@ -226,7 +228,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
 
     private void showDialog()
     {
-
+        ArrayList<Activity_breakdown_getset> data=new ArrayList<>();
         Dialog dialog=new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.points);
@@ -234,7 +236,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
         LinearLayoutManager lManager=new LinearLayoutManager(getActivity());
         rview.setLayoutManager(lManager);
         rview.setNestedScrollingEnabled(false);
-        Adapter.adapter adap=new adapter();
+        Adapter.adapter adap=new adapter(getActivity(),data);
         rview.setAdapter(adap);
         dialog.show();
     }

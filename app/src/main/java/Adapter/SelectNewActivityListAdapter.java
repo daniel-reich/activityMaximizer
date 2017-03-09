@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -31,6 +32,7 @@ import org.json.JSONObject;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,7 +53,7 @@ import utils.Constants;
 public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNewActivityListAdapter.ViewHolder> {
 
     private Context context;
-  String activity_list[]={"Set Appointment","Went on KT","Closed Life","Closed IBA","Closed Other Business","Appt Set To Closed Life",
+    String activity_list[]={"Set Appointment","Went on KT","Closed Life","Closed IBA","Closed Other Business","Appt Set To Closed Life",
           "Appt Set To Closed IBA","Invited to Opportunity Meeting","Went To Opportunity Meeting","Call Back","Dark House","Not Interested"};
     private SharedPreferences pref;
     private Firebase mref;
@@ -117,24 +119,29 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
                                 increement_value="Set Appointment";
                                 increement=2;
                                 bundle.putString("title","Appointment with "+ Need_to_Quality.givenName);
+                                bundle.putString("increementvalue","Appointments Set");
+
                                 break;
 
                             case 5:
                                 increement=0;
 //                                increement_value="Appointment set to Close Life";
                                 bundle.putString("title","Appointment set to Close Life with "+ Need_to_Quality.givenName);
+                                bundle.putString("increementvalue","null");
                                 break;
 
                             case 6:
                                 increement=0;
 //                                increement_value="Appointment set to Close IBA";
                                 bundle.putString("title","Appointment set to Close IBA with "+ Need_to_Quality.givenName);
+                                bundle.putString("increementvalue","null");
                                 break;
 
                             case 9:
                                 increement=0;
                                 increement_value="Call Back";
                                 bundle.putString("title","CallBack  with "+ Need_to_Quality.givenName);
+                                bundle.putString("increementvalue","null");
                                 break;
 
                         }
@@ -173,6 +180,10 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
                             increement=3;
                             increement_value="Went To Opportunity Meeting";
 
+                        }
+                        else if(position==4){
+                            increement=0;
+                            increement_value="Closed Other Business";
                         }
                         else
                         increement=0;
@@ -283,8 +294,16 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
                        if(increement==1|increement==3|increement==5|increement==2)
                         incrementCounter();
 
-                        Activity_list_frag.listadapter.notifyDataSetChanged();
+                        if(increement_value.equalsIgnoreCase("Closed Life")|increement_value.equalsIgnoreCase("Went on KT")|
+                               increement_value.equalsIgnoreCase("Closed IBA")|increement_value.equalsIgnoreCase("Set Appointment")|
+                                increement_value.equalsIgnoreCase("Closed Other Business")){
+//                            Log.e("check_goals_call","check_goals_call");
+                            check_Goals();
+                        }
+                        else
+                        Log.e("increement_value",increement_value);
 
+                        Activity_list_frag.listadapter.notifyDataSetChanged();
                     }
                 });
     }
@@ -333,6 +352,131 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
                     Log.e("Firebase counter","increement failed");
                 } else {
                     Log.d("Firebase counter","increment succeeded.");
+                }
+            }
+        });
+    }
+
+    public void check_Goals(){
+
+        Log.e("check_goals_call","check_goals_call");
+
+        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/users/"+pref.getString("uid","")+"/Goals/");
+        mref.keepSynced(true);
+
+        ChildEventListener childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.e("Child_Event_Verse", "onChildChanged:" + dataSnapshot.getKey());
+                String key=dataSnapshot.getKey();
+//                long key= Long.parseLong(dataSnapshot.getKey());
+//                long v=1488570223417l;
+//                int vv=v.compareTo(key);
+                //if (v<key){
+                String startdate = (String) dataSnapshot.child("startDate").getValue();
+                String enddate = (String) dataSnapshot.child("endDate").getValue();
+                //04/03/2017 12:46 PM
+                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
+                String currentDate = formatter.format(new Date());
+                try {
+                    Date start_d = (Date)formatter.parse(startdate);
+                    Date end_d = (Date)formatter.parse(enddate);
+                    Date current_d = (Date)formatter.parse(currentDate);
+
+                    Log.e("date_start",start_d+"");
+                    Log.e("date_end",end_d+"");
+                    Log.e("date_current",current_d+"");
+
+                    Log.e("increement_value",increement_value+"  ------- ");
+
+                    int cur_to_end=end_d.compareTo(current_d);
+                    int cur_to_start=start_d.compareTo(current_d);
+//                    Log.e("cur_to_end",cur_to_end+"");
+//                    Log.e("cur_to_start",cur_to_start+"");
+                    if(cur_to_end>0){
+                        Log.e("end_date_is ","greater than cur_date");
+                        if(cur_to_start<0) {
+                            Log.e("current_date_is", "greater than start date");
+                            //update value
+                            Map<String, Object> activitycount = (Map<String, Object>) dataSnapshot.child("activityCount").getValue();
+
+                            if(Integer.valueOf(activitycount.get(increement_value).toString())>0){
+                                increment_Goals_Counter(mref,key,increement_value);
+                            }
+
+                        }
+                        else
+                            Log.e("start_date_is","greater than current date");
+                    }
+                    else
+                        Log.e("currnet_date_is ","greater than end_date");
+
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Log.e("date_time_exception","e",e);
+                }
+                Log.e("start_date","startdate: "+startdate);
+                Log.e("end_date","enddate: "+enddate);
+                Log.e("currnet_date","Date: "+currentDate);
+
+//                    if (ss!=null){
+//                        Log.e("TEST","Changed values: null ");
+//                    }
+//                }
+//                else
+//                    Log.e("onChildAdded","Changed values: null ");
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.e("onChildChanged","Changed values: null ");
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Log.e("onChildremoved","Changed values: null ");
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                Log.e("onChildMoved","Changed values: null ");
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.e("onCancelled","Changed values: null ");
+            }
+        };
+        mref.addChildEventListener(childEventListener);
+    }
+
+    public void increment_Goals_Counter(Firebase ref,String key,String node) {
+
+        Log.e("uid",pref.getString("uid",""));
+        Log.e("increment_Goals_call","increment_Goals_Counter_call");
+//        String currentDate = datecurrent();
+
+        Log.e("key_node",key+"/"+node);
+
+        ref.child(key).child("currentCount").child(node).runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(final MutableData currentData) {
+                if (currentData.getValue() == null) {
+                    currentData.setValue(1);
+                } else {
+                    currentData.setValue((Long) currentData.getValue() + 1);
+                }
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
+                if (firebaseError != null) {
+                    Log.e("Firebase goals counter","increement failed");
+                } else {
+                    Log.e("Firebase goals counter","increment succeeded.");
                 }
             }
         });
