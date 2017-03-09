@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
@@ -53,8 +54,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import Adapter.BaseDownlineAdapter;
 import Adapter.adapter;
 import Adapter.personal_list_adapter;
+import model.AllBaseDownlines;
 import u.activitymanager.R;
 import utils.AnimateFirstDisplayListener;
 
@@ -82,15 +85,16 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
     private DisplayImageOptions options;
     TextView tv_phone,tv_username;
-    private String uid;
+    private String uid,solutionnumber;
 
 
     SpeedView speedview;
     int count[]={0,0,0,0,0,0,0,0};
+    HashMap<String,String> base,downline;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.personal_frag,container,false);
+        view=inflater.inflate(R.layout.hometeamfrag,container,false);
         setHasOptionsMenu(true);
         Log.e("check","check");
 
@@ -136,10 +140,14 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
 
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
         uid=pref.getString("uid","");
+        solutionnumber=pref.getString("solution_number","");
 
         storageRef= FirebaseStorage.getInstance().getReference();
 
-        getnotefromfirebase();
+        getnotefromfirebase(uid);
+        getallteambasefromfirebase(solutionnumber);
+        getallteamdownlinefromfirebase(solutionnumber);
+
 
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.userprofile)
@@ -456,7 +464,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
 
     // select image end
 
-    public void getnotefromfirebase()
+    public void getnotefromfirebase(String uid)
     {
         mref.child("events")
                 .child(uid)
@@ -523,6 +531,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
 
                         adapter=new personal_list_adapter(getActivity(),count);
                         rview.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
                         Log.e("jsonarray",jsonArray+" abc");
 
 
@@ -538,6 +547,58 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
                         Log.e("get data error",error.getMessage()+" data");
                     }
                 });
+    }
+
+
+
+
+    public void getallteambasefromfirebase(final String solutionid)
+    {
+        mref.child("Solution Numbers").child(solutionid).child("Base").addValueEventListener(new ValueEventListener()
+        {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                base=new HashMap<String, String>();
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    base.put(child.getKey().toString(),child.getValue().toString());
+                    Log.e("base",child.getKey().toString());
+                    getnotefromfirebase(child.getKey().toString());
+
+                }
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+    public void getallteamdownlinefromfirebase(final String solutionid)
+    {
+        mref.child("Solution Numbers").child(solutionid).child("downlines").addValueEventListener(new ValueEventListener()
+        {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("get data from serverssn",dataSnapshot.getValue()+" data");
+                downline=new HashMap<String, String>();
+                Log.e("child",dataSnapshot.getChildren()+"");
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    downline.put(child.getKey().toString(),"");
+                    Log.e("downline",child.getKey().toString());
+                    getnotefromfirebase(child.getKey().toString());
+                }
+                Log.e("fff",downline.size()+"");
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
     }
 
 }

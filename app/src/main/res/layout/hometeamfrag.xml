@@ -37,19 +37,19 @@
             app:siBorderWidth="2dp"
             app:siStrokeCap="round"
             app:siStrokeJoin="round"
-
+            android:visibility="gone"
             app:siBorderColor="@color/white"/>
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
-
+            android:visibility="gone"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:src="@drawable/top_speed"/>
     </LinearLayout>
-    
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,6 +57,7 @@
         android:fontFamily="sans-serif-medium"
         android:textColor="#fff"
         android:gravity="center"
+        android:visibility="gone"
         android:text="username"
         android:textSize="20sp"/>
     <TextView
@@ -67,6 +68,7 @@
         android:textColor="#fff"
         android:gravity="center"
         android:text="0000000000"
+        android:visibility="gone"
         android:textSize="18sp"/>
 
     <android.support.v7.widget.RecyclerView

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,70 +123,70 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
                 one.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        initial.setText(initial.getText()+"1");
+                        SetChangeInitalText("1");
                     }
                 });
 
                 two.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        initial.setText(initial.getText()+"2");
+                        SetChangeInitalText("2");
                     }
                 });
 
                 three.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        initial.setText(initial.getText()+"3");
+                        SetChangeInitalText("3");
                     }
                 });
 
                 four.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        initial.setText(initial.getText()+"4");
+                        SetChangeInitalText("4");
                     }
                 });
 
                 five.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        initial.setText(initial.getText()+"5");
+                        SetChangeInitalText("5");
                     }
                 });
 
                 six.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        initial.setText(initial.getText()+"6");
+                        SetChangeInitalText("6");
                     }
                 });
 
                 seven.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        initial.setText(initial.getText()+"7");
+                        SetChangeInitalText("7");
                     }
                 });
 
                 eight.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        initial.setText(initial.getText()+"8");
+                         SetChangeInitalText("8");
                     }
                 });
 
                 nine.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        initial.setText(initial.getText()+"9");
+                        SetChangeInitalText("9");
                     }
                 });
 
                 zero.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        initial.setText(initial.getText()+"0");
+                        SetChangeInitalText("0");
                     }
                 });
 
@@ -230,7 +231,7 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
                             }
                             else
                             {
-                                initial.setText(initial.getText() + ".");
+                                SetChangeInitalText(".");
                             }
                             dot.setClickable(false);
                             a=true;
@@ -346,7 +347,7 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
                     public void onClick(View v) {
                         if(b)
                         {
-
+                            Log.e("initial1","initial");
                         }
                         else
                         {
@@ -469,11 +470,13 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
                     public void onClick(View v) {
                         if(a)
                         {
-
+                            Log.e("initial2","initial");
                         }
                         else
                         {
-                            initial.setText(initial.getText() + ".");
+
+                                initial.setText(initial.getText() + ".");
+
                             dot.setClickable(false);
                             a=true;
                         }
@@ -590,7 +593,7 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
                     public void onClick(View v) {
                         if(b)
                         {
-
+                            Log.e("initial3","initial");
                         }
                         else
                         {
@@ -650,19 +653,24 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(charSequence.length()>0)
                 {
+                    try {
 
-                    if(!TextUtils.isEmpty(monthly.getText().toString())) {
-                        calculations(Integer.parseInt(tv_yeartosave.getText().toString()),
-                                Double.parseDouble(initial.getText().toString()),
-                                Double.parseDouble(tv_annualinterest.getText().toString().replace("%", "")), Double.parseDouble(monthly.getText().toString()));
-                        //  calculations(1,100.0,2.00,10.0);
-                    }else{
+                        if (!TextUtils.isEmpty(monthly.getText().toString())) {
+                            calculations(Integer.parseInt(tv_yeartosave.getText().toString()),
+                                    Double.parseDouble(initial.getText().toString()),
+                                    Double.parseDouble(tv_annualinterest.getText().toString().replace("%", "")), Double.parseDouble(monthly.getText().toString()));
 
-                        calculations(Integer.parseInt(tv_yeartosave.getText().toString()),
-                                Double.parseDouble(initial.getText().toString()),Double.parseDouble(tv_annualinterest.getText().toString().replace("%","")),0.0);
+                        } else {
 
+                            calculations(Integer.parseInt(tv_yeartosave.getText().toString()),
+                                    Double.parseDouble(initial.getText().toString()), Double.parseDouble(tv_annualinterest.getText().toString().replace("%", "")), 0.0);
+
+                        }
+
+                    }catch (Exception e)
+                    {
+                        e.printStackTrace();
                     }
-
                 }
             }
 
@@ -711,6 +719,13 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
 
 
         return v;
+    }
+
+    private void SetChangeInitalText(String s) {
+
+
+        initial.setText(initial.getText()+s);
+
     }
 
     @Override
@@ -810,7 +825,25 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
 
 
 
-   /* Compound interest for principal:
+   /*
+    if (splitter[0].length() > 0) {
+                                if (splitter[1].length() == 0) {
+
+                                } else if (splitter[1].length() == 1) {
+
+                                } else if (splitter[1].length() == 2) {
+
+                                } else if (splitter[1].length() > 2) {
+                                    Log.e("gg", "hh");
+                                    initial.setEnabled(false);
+                                    initial.setFocusable(false);
+                                    DecimalFormat numberFormat = new DecimalFormat("#.00");
+
+                                    initial.setText(numberFormat.format(Double.parseDouble(initial.getText().toString())));
+                                }
+                            }
+
+   Compound interest for principal:
     P(1+r/n)^nt
 
     Future value of a series:
@@ -825,4 +858,15 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
 
             */
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home)
+        {
+            getActivity().onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
+
+

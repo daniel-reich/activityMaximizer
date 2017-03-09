@@ -202,7 +202,7 @@ public class Team_fragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("get data from server",dataSnapshot.getValue()+" data");
-                data.add(new AllDownlines(uid,dataSnapshot.child("givename").getValue().toString(),dataSnapshot.child("fivePointClients").getValue().toString(),dataSnapshot.child("fivePointRecruits").getValue().toString()));
+                data.add(new AllDownlines(uid,ConvertParseString(dataSnapshot.child("givename").getValue()),ConvertParseString(dataSnapshot.child("fivePointClients").getValue()),ConvertParseString(dataSnapshot.child("fivePointRecruits").getValue())));
 
 //
                 if(data.size()==1)
@@ -289,7 +289,7 @@ public class Team_fragment extends Fragment {
             return "";
         }
         else {
-            String lastSeen= (String) obj;
+            String lastSeen= String.valueOf(obj);
             if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
                 return lastSeen;
             else
