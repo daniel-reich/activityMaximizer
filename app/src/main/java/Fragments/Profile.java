@@ -250,6 +250,19 @@ public class Profile extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View view) {
                 RvpDialog.dismiss();
+                Log.e("sltn no",pref.getString("rvp_solution_number","")+","+(pref.getString("givenName","")));
+                Map sendRequest = new HashMap();
+                sendRequest.put("ref", "https://activitymaximizer.firebaseio.com/Soluti...");
+                sendRequest.put("username", pref.getString("givenName","")+" " +pref.getString("familyName",""));
+                sendRequest.put("userRVPSolutionNumber",pref.getString("rvp_solution_number",""));
+                sendRequest.put("userSolutionNumber",pref.getString("solution_number",""));
+                sendRequest.put("userUID",pref.getString("uid",""));
+                sendRequest.put("userUplineSolutionNumber",pref.getString("upline_solution_number",""));
+                Log.e("sltn no1",pref.getString("rvp_solution_number","")+","+(pref.getString("givenName","")));
+                mref.child("Solution Numbers").child(pref.getString("rvp_solution_number","")).child("Pending Requests").child("RVP Requests").child(pref.getString("givenName","")).updateChildren(sendRequest);
+
+                Log.e("sltn no2",pref.getString("rvp_solution_number","")+","+(pref.getString("givenName","")));
+
             }
         });
 
