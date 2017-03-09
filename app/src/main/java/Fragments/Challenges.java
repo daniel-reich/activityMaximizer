@@ -188,12 +188,12 @@ public class Challenges extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        if(rvp_solutionnumber.equalsIgnoreCase("")&uplinesolution_no.equalsIgnoreCase("")) {
+       // if(rvp_solutionnumber.equalsIgnoreCase("")&uplinesolution_no.equalsIgnoreCase("")) {
             menu.findItem(R.id.menu).setIcon(null);
             menu.findItem(R.id.menu).setTitle("NEW");
-        }
-        else
-            menu.findItem(R.id.menu).setVisible(false);
+//        }
+//        else
+//            menu.findItem(R.id.menu).setVisible(false);
 
     }
 
