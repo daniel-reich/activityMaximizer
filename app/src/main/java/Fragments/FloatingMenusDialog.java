@@ -28,7 +28,6 @@ public class FloatingMenusDialog extends DialogFragment implements View.OnClickL
     FloatingActionButton challenges,achievements,profile,posts,pendingrequest,tools;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         view=inflater.inflate(R.layout.floatingmenudialog,container,false);
         pref=getActivity().getSharedPreferences("userpref",0);
         challenges=(FloatingActionButton)view.findViewById(R.id.menu_item);
@@ -45,7 +44,7 @@ public class FloatingMenusDialog extends DialogFragment implements View.OnClickL
         posts.setOnClickListener(this);
         tools.setOnClickListener(this);
         Log.e("rvp soltn no",pref.getString("rvp_solution_number",""));
-        if(pref.getString("rvp_solution_number","").length()!=0)
+        if(pref.getString("rvp_solution_number","").length()==0  && pref.getString("upline_solution_number","").length()==0)
         {
             Pending_Request_Layout.setVisibility(View.VISIBLE);
         }
@@ -96,6 +95,10 @@ public class FloatingMenusDialog extends DialogFragment implements View.OnClickL
             case R.id.menu_item5:
                 this.dismiss();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new PostsFragment()).addToBackStack(null).commit();
+                break;
+            case R.id.menu_item6:
+                this.dismiss();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new RVPRequestFragment()).addToBackStack(null).commit();
                 break;
         }
     }

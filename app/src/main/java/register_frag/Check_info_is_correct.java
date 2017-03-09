@@ -243,11 +243,11 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
         m2.put("partnerUID","");
         m2.put("profilePictureURL","");
         m2.put("ref","");
-        m2.put("rvp_solution_number",pref.getString("rvpsolutionnumber",""));
-        m2.put("solution_number",pref.getString("solutionnumber",""));
+        m2.put("rvp_solution_number",pref.getString("rvp_solution_number",""));
+        m2.put("solution_number",pref.getString("solution_number",""));
         m2.put("state",pref.getString("state",""));
-        m2.put("trainer_solution_number",pref.getString("trainersolutionnumber",""));
-        m2.put("upline_solution_number",pref.getString("uplinesolutionnumber",""));
+        m2.put("trainer_solution_number",pref.getString("trainer_solution_number",""));
+        m2.put("upline_solution_number",pref.getString("upline_solution_number",""));
 
 //        UserInfo userinfo = new UserInfo(pref.getString("givenName"," "), pref.getString("familyName"," "),
 //                pref.getString("phone"," "),pref.getString("email"," "), uid,
@@ -277,21 +277,20 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
                             if(uplinesolutionnumber.length()>1) {
                                 newUserData.put("upline", uplinesolutionnumber);
                             }
-                            mref.child("Solution Numbers").child(pref.getString("solutionnumber","")).updateChildren(newUserData);
+                            mref.child("Solution Numbers").child(pref.getString("solution_number","")).updateChildren(newUserData);
 
 
                             if(rvpsolutionnumber.length()>1)
                             {
                                 Map rv = new HashMap();
-                                rv.put(uid, pref.getString("solutionnumber",""));
+                                rv.put(uid, pref.getString("solution_number",""));
                                 mref.child("Solution Numbers").child(rvpsolutionnumber).child("Base").updateChildren(rv);
                             }
-
                             if(uplinesolutionnumber.length()>1)
                             {
                                 Map dv = new HashMap();
                                 dv.put("name", pref.getString("givenName",""));
-                                dv.put("solutionNumber", pref.getString("solutionnumber",""));
+                                dv.put("solutionNumber", pref.getString("solution_number",""));
                                 dv.put("uid", uid);
                                 mref.child("Solution Numbers").child(uplinesolutionnumber).child("downlines").child(uid).updateChildren(dv);
                             }
