@@ -3,6 +3,7 @@ package Adapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
@@ -20,12 +22,14 @@ import org.w3c.dom.Text;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import Fragments.Activity_list_frag;
 import Fragments.Need_to_Quality;
+import model.AllContact;
 import u.activitymanager.R;
 import utils.Constants;
 import utils.NetworkConnection;
@@ -39,8 +43,8 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
     private SharedPreferences pref;
     private Firebase mref;
-    String uid,Went_on_three_KTs="false",Fifty_KTs="false",One_hundred_KTs="false",Two_hundred_KTs="false",Three_appointments_set="false",Closed_three_life="false",Closed_three_IBAs="false";
-
+    String uid="",Went_on_three_KTs="false",Fifty_KTs="false",One_hundred_KTs="false",Two_hundred_KTs="false",Three_appointments_set="false",Closed_three_life="false",Closed_three_IBAs="false",One_week_eight_five_three_one="false",Perfect_week="false",Two_week_eight_five_three_one="false",Perfect_month="false";
+    ArrayList<AllContact> data;
 
 
 
@@ -131,6 +135,7 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                     }
                 }
                 Log.e("inside", "oo");
+                getdatafromfirebase();
             }
             else if(str.equalsIgnoreCase("all"))
             {
@@ -186,12 +191,8 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                     }
                 }
                 Log.e("inside", "oo");
+                getdatafromfirebase();
             }
-
-
-
-
-
         } catch (Exception e) {
 
             Log.e("i","e",e);
@@ -403,4 +404,195 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
             }
         });
     }
+
+    public void getdatafromfirebase()
+    {
+        mref.child("contacts").child(uid).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("getdatauidd",uid+" abv");
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                data=new ArrayList<AllContact>();
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.e("child",child+" abc");
+                    try {
+                        data.add(new AllContact(ConvertParseString(child.child("competitive").getValue()), ConvertParseString(child.child("created").getValue()), ConvertParseString(child.child("credible").getValue()), ConvertParseString(child.child("familyName").getValue()), ConvertParseString(child.child("givenName").getValue()), ConvertParseString(child.child("hasKids").getValue()),
+                                ConvertParseString(child.child("homeowner").getValue()), ConvertParseString(child.child("hungry").getValue()), ConvertParseString(child.child("incomeOver40k").getValue()), ConvertParseString(child.child("married").getValue()), ConvertParseString(child.child("motivated").getValue()), ConvertParseString(child.child("ofProperAge").getValue()), ConvertParseString(child.child("peopleSkills").getValue()),
+                                ConvertParseString(child.child("phoneNumber").getValue()), String.valueOf(ConvertParseInteger(child.child("rating").getValue())), String.valueOf(ConvertParseInteger(child.child("recruitRating").getValue())), ConvertParseString(child.child("ref").getValue())));
+
+                        Log.e("child", child.child("familyName").getValue() + " abc");
+                    }
+                    catch(Exception e)
+                    {
+                        Log.e("Exception",e.getMessage());
+                    }
+                }
+                int size=data.size();
+                Log.e("sizee",size+" abcc"+Three_appointments_setcount+","+Closed_three_lifecount+","+Closed_three_IBAscount);
+
+                if(Three_appointments_setcount>4 & Three_appointments_setcount<9 & Closed_three_lifecount==3 & Closed_three_IBAscount==1)
+                {
+                    puteightfivethreeoneinfirebase();
+                }
+                if(Three_appointments_setcount>4 & Three_appointments_setcount<9 & Closed_three_lifecount<=11 & Closed_three_IBAscount<4 & size>=20)
+                {
+                    putperfactweekinfirebase();
+                }
+                if(Three_appointments_setcount>19 & Three_appointments_setcount<33 & Closed_three_lifecount==12 & Closed_three_IBAscount==4)
+                {
+                    puteightfivethreeonetwoinfirebase();
+                }
+                if(Three_appointments_setcount>19 & Three_appointments_setcount<33 & Closed_three_lifecount>=12 & Closed_three_IBAscount>=4 & size>=80)
+                {
+                    putperfactmonthinfirebase();
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+    public static String ConvertParseString(Object obj ) {
+        if(obj==null)
+        {
+            return "";
+        }
+        else {
+            String lastSeen= (String) obj;
+            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
+                return lastSeen;
+            else
+                return "";
+        }
+
+    }
+
+
+    public static int ConvertParseInteger(Object obj) {
+        if(obj==null)
+        {
+            return 0;
+        }
+        else {
+            Long lastSeen = (Long) obj;
+            if (lastSeen != null | lastSeen != 0) {
+                String str=String.valueOf(lastSeen);
+                return Integer.valueOf(str);
+            }
+            else
+                return 0;
+        }
+    }
+    public void puteightfivethreeoneinfirebase()
+    {
+        mref.child("users").child(uid).child("achievements").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                    Log.e("get data from server", dataSnapshot.getValue() + " data");
+                    Log.e("child", dataSnapshot.child("One_week_eight_five_three_one").getValue() + " abc");
+                One_week_eight_five_three_one = dataSnapshot.child("One_week_eight_five_three_one").getValue().toString();
+                    if (One_week_eight_five_three_one.equalsIgnoreCase("false"))
+                    {
+                        java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
+                        Log.e("Today is ", timeStampDate.getTime() + "");
+                        String timestamp = String.valueOf(timeStampDate.getTime());
+                        Map newcontact = new HashMap();
+                        newcontact.put("One_week_eight_five_three_one", "true");
+                        newcontact.put("One_week_eight_five_three_one_date", timestamp);
+                        mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+                    }
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+    public void putperfactweekinfirebase()
+    {
+        mref.child("users").child(uid).child("achievements").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get data from server", dataSnapshot.getValue() + " data");
+                Log.e("child", dataSnapshot.child("Perfect_week").getValue() + " abc");
+                Perfect_week = dataSnapshot.child("Perfect_week").getValue().toString();
+                if (Perfect_week.equalsIgnoreCase("false"))
+                {
+                    java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
+                    Log.e("Today is ", timeStampDate.getTime() + "");
+                    String timestamp = String.valueOf(timeStampDate.getTime());
+                    Map newcontact = new HashMap();
+                    newcontact.put("Perfect_week", "true");
+                    newcontact.put("Perfect_week_date", timestamp);
+                    mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+    public void puteightfivethreeonetwoinfirebase()
+    {
+        mref.child("users").child(uid).child("achievements").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get data from server", dataSnapshot.getValue() + " data");
+                Log.e("child", dataSnapshot.child("Two_week_eight_five_three_one").getValue() + " abc");
+                Two_week_eight_five_three_one = dataSnapshot.child("Two_week_eight_five_three_one").getValue().toString();
+                if (Two_week_eight_five_three_one.equalsIgnoreCase("false"))
+                {
+                    java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
+                    Log.e("Today is ", timeStampDate.getTime() + "");
+                    String timestamp = String.valueOf(timeStampDate.getTime());
+                    Map newcontact = new HashMap();
+                    newcontact.put("Two_week_eight_five_three_one", "true");
+                    newcontact.put("Two_week_eight_five_three_one_date", timestamp);
+                    mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+    public void putperfactmonthinfirebase()
+    {
+        mref.child("users").child(uid).child("achievements").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get data from server", dataSnapshot.getValue() + " data");
+                Log.e("child", dataSnapshot.child("Perfect_month").getValue() + " abc");
+                Perfect_month = dataSnapshot.child("Perfect_month").getValue().toString();
+                if (Perfect_month.equalsIgnoreCase("false"))
+                {
+                    java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
+                    Log.e("Today is ", timeStampDate.getTime() + "");
+                    String timestamp = String.valueOf(timeStampDate.getTime());
+                    Map newcontact = new HashMap();
+                    newcontact.put("Perfect_month", "true");
+                    newcontact.put("Perfect_month_date", timestamp);
+                    mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
 }

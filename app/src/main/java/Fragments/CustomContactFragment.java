@@ -28,8 +28,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.MutableData;
+import com.firebase.client.Transaction;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -37,6 +41,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -183,7 +190,7 @@ public class CustomContactFragment extends Fragment
                 .child(uid)
                 .child(st_fname)
                 .setValue(newcontact);
-
+        check_Goals();
         getdatafromfirebase();
 
     }
@@ -304,5 +311,137 @@ public class CustomContactFragment extends Fragment
         }
 
     }
+
+
+
+
+    public void check_Goals(){
+
+        Log.e("check_goals_call","check_goals_call");
+
+        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/users/"+pref.getString("uid","")+"/Goals/");
+        mref.keepSynced(true);
+
+        ChildEventListener childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.e("Child_Event_Verse", "onChildChanged:" + dataSnapshot.getKey());
+                String key=dataSnapshot.getKey();
+//                long key= Long.parseLong(dataSnapshot.getKey());
+//                long v=1488570223417l;
+//                int vv=v.compareTo(key);
+                //if (v<key){
+                String startdate = (String) dataSnapshot.child("startDate").getValue();
+                String enddate = (String) dataSnapshot.child("endDate").getValue();
+                //04/03/2017 12:46 PM
+                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
+                String currentDate = formatter.format(new Date());
+
+                try {
+                    Date start_d = (Date)formatter.parse(startdate);
+                    Date end_d = (Date)formatter.parse(enddate);
+                    Date current_d = (Date)formatter.parse(currentDate);
+
+                    Log.e("date_start",start_d+"");
+                    Log.e("date_end",end_d+"");
+                    Log.e("date_current",current_d+"");
+
+                    Log.e("increement_value"," Contacts Added ------- ");
+
+                    int cur_to_end=end_d.compareTo(current_d);
+                    int cur_to_start=start_d.compareTo(current_d);
+//                    Log.e("cur_to_end",cur_to_end+"");
+//                    Log.e("cur_to_start",cur_to_start+"");
+                    if(cur_to_end>0){
+                        Log.e("end_date_is ","greater than cur_date");
+                        if(cur_to_start<0) {
+                            Log.e("current_date_is", "greater than start date");
+                            //update value
+                            Map<String, Object> activitycount = (Map<String, Object>) dataSnapshot.child("activityCount").getValue();
+
+                            if(Integer.valueOf(activitycount.get("Contacts Added").toString())>0){
+                                increment_Goals_Counter(mref,key,"Contacts Added");
+                            }
+
+                        }
+                        else
+                            Log.e("start_date_is","greater than current date");
+                    }
+                    else
+                        Log.e("currnet_date_is ","greater than end_date");
+
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Log.e("date_time_exception","e",e);
+                }
+                Log.e("start_date","startdate: "+startdate);
+                Log.e("end_date","enddate: "+enddate);
+                Log.e("currnet_date","Date: "+currentDate);
+
+//                    if (ss!=null){
+//                        Log.e("TEST","Changed values: null ");
+//                    }
+//                }
+//                else
+//                    Log.e("onChildAdded","Changed values: null ");
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.e("onChildChanged","Changed values: null ");
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Log.e("onChildremoved","Changed values: null ");
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                Log.e("onChildMoved","Changed values: null ");
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.e("onCancelled","Changed values: null ");
+            }
+        };
+        mref.addChildEventListener(childEventListener);
+    }
+
+    public void increment_Goals_Counter(Firebase ref,String key,String node) {
+
+        Log.e("uid",pref.getString("uid",""));
+        Log.e("increment_Goals_call","increment_Goals_Counter_call");
+//        String currentDate = datecurrent();
+
+        Log.e("key_node",key+"/"+node);
+
+        ref.child(key).child("currentCount").child(node).runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(final MutableData currentData) {
+                if (currentData.getValue() == null) {
+                    currentData.setValue(1);
+                } else {
+                    currentData.setValue((Long) currentData.getValue() + 1);
+                }
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
+                if (firebaseError != null) {
+                    Log.e("Firebase goals counter","increement failed");
+                } else {
+                    Log.e("Firebase goals counter","increment succeeded.");
+                }
+            }
+        });
+    }
+
+
+
 
 }
