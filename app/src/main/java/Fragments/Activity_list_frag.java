@@ -174,7 +174,7 @@ public class Activity_list_frag extends Fragment {
             return "";
         }
         else {
-            String lastSeen= (String) obj;
+            String lastSeen= String.valueOf(obj);
             if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
                 return lastSeen;
             else

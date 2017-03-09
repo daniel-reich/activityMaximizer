@@ -18,6 +18,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
@@ -52,11 +53,14 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,8 +95,8 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     private DisplayImageOptions options;
     TextView tv_phone,tv_username;
     private String uid;
-
-
+    String achieve_detail="";
+    ImageView iv;
     SpeedView speedview;
     int count[]={0,0,0,0,0,0,0,0};
 
@@ -107,6 +111,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
         tv_username=(TextView) view.findViewById(R.id.tv_username);
         tv_phone=(TextView)view.findViewById(R.id.tv_phone);
+        iv=(ImageView)view.findViewById(R.id.im_achievement);
 
         speedview=(SpeedView)view.findViewById(R.id.meter);
 
@@ -165,7 +170,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
         tv_username.setText(pref.getString("givenName","")+" "+pref.getString("familyName",""));
         tv_phone.setText(pref.getString("phoneNumber",""));
-
+        getinfirebase();
         return view;
     }
 
@@ -205,6 +210,77 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
+
+    public void setAch()
+    {
+
+
+
+
+                if(achieve_detail.equalsIgnoreCase("Closed_three_IBAs"))
+                    iv.setImageResource(R.drawable.closed_three_ibas);
+
+            else
+                if(achieve_detail.equalsIgnoreCase("Closed_three_life"))
+                    iv.setImageResource(R.drawable.closed_three_life);
+            else
+                if(achieve_detail.equalsIgnoreCase("Fifty_KTs"))
+                    iv.setImageResource(R.drawable.fifty_kts);
+               else
+                if(achieve_detail.equalsIgnoreCase("First_call_from_app"))
+                    iv.setImageResource(R.drawable.first_call_from_app);
+                else
+                if(achieve_detail.equalsIgnoreCase("First_contact_added"))
+                    iv.setImageResource(R.drawable.first_contact_added);
+
+            else
+                if(achieve_detail.equalsIgnoreCase("First_downline"))
+                    iv.setImageResource(R.drawable.first_downline);
+                else
+                if(achieve_detail.equalsIgnoreCase("One_hundred_KTs"))
+                    iv.setImageResource(R.drawable.one_hundred_kts);
+                else
+                if(achieve_detail.equalsIgnoreCase("One_week_eight_five_three_one"))
+                    iv.setImageResource(R.drawable.one_week_eight_five_three_one);
+                else
+                if(achieve_detail.equalsIgnoreCase("Perfect_month"))
+                    iv.setImageResource(R.drawable.perfect_month);
+               else
+                if(achieve_detail.equalsIgnoreCase("Perfect_week"))
+                    iv.setImageResource(R.drawable.perfect_week);
+               else
+                if(achieve_detail.equalsIgnoreCase("Ten_five_point_clients"))
+                    iv.setImageResource(R.drawable.ten_five_point_clients);
+                else
+                if(achieve_detail.equalsIgnoreCase("Ten_five_point_recruits"))
+                    iv.setImageResource(R.drawable.ten_five_point_recruits);
+                else
+                if(achieve_detail.equalsIgnoreCase("Ten_new_contacts_added"))
+                    iv.setImageResource(R.drawable.ten_new_contacts_added);
+              else
+                if(achieve_detail.equalsIgnoreCase("Thirty_new_contacts_added"))
+                    iv.setImageResource(R.drawable.thirty_new_contacts_added);
+               else
+                if(achieve_detail.equalsIgnoreCase("Three_appointments_set"))
+                    iv.setImageResource(R.drawable.three_appointments_set);
+               else
+                if(achieve_detail.equalsIgnoreCase("Twenty_new_contacts_added"))
+                    iv.setImageResource(R.drawable.twenty_new_contacts_added);
+               else
+                if(achieve_detail.equalsIgnoreCase("Two_hundred_KTs"))
+                    iv.setImageResource(R.drawable.two_hundred_kts);
+               else
+                if(achieve_detail.equalsIgnoreCase("Two_week_eight_five_three_one"))
+                    iv.setImageResource(R.drawable.two_week_eight_five_three_one);
+               else
+                if(achieve_detail.equalsIgnoreCase("Went_on_three_KTs"))
+                    iv.setImageResource(R.drawable.went_on_three_kts);
+               else
+                if(achieve_detail.equalsIgnoreCase("Top_speed"))
+                    iv.setImageResource(R.drawable.top_speed);
+
+
+    }
 
 
     private void selectViewDialog() {
@@ -546,6 +622,41 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                         Log.e("get data error",error.getMessage()+" data");
                     }
                 });
+    }
+
+
+    public void getinfirebase()
+    {
+        mref.child("users").child(uid).child("achievementToShow").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                    Log.e("get data from server", dataSnapshot.getValue() + " data");
+                    Log.e("child", dataSnapshot.getValue() + " abc");
+                    achieve_detail = ConvertParseString(dataSnapshot.getValue());
+                setAch();
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+    public static String ConvertParseString(Object obj ) {
+        if(obj==null)
+        {
+            return "";
+        }
+        else {
+            String lastSeen= String.valueOf(obj);
+            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
+                return lastSeen;
+            else
+                return "";
+        }
+
     }
 
 }

@@ -41,6 +41,7 @@
             app:siBorderColor="@color/white"/>
 
         <ImageView
+            android:id="@+id/im_achievement"
             android:layout_width="60dp"
             android:layout_height="60dp"
 
