@@ -56,6 +56,7 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
     FragmentManager fm;
     SharedPreferences pref;
     String uid="",First_downline="";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

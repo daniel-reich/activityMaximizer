@@ -194,14 +194,14 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
                     public void onClick(View v) {
                         String[] splitter = initial.getText().toString().split("\\.");
 
-                        splitter[1].length();
-                        splitter[0].length();
+                      /*  splitter[1].length();
+                        splitter[0].length();*/
 
                         if(a)
                         {
                             Log.e("initial","initial");
 
-                            initial.setText(String.format( "%.2f",splitter[1])) ;
+                            //initial.setText(String.format( "%.2f",splitter[1])) ;
                             /*if (splitter[1].length() < 2 ){
 
                             if (splitter[1].length() == 0 ){
