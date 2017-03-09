@@ -1,6 +1,10 @@
 package Adapter;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -9,9 +13,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.MutableData;
+import com.firebase.client.Transaction;
 
 import java.util.ArrayList;
 
@@ -25,13 +36,22 @@ import u.activitymanager.R;
  * Created by Rohan on 3/7/2017.
  */
 public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private final SharedPreferences pref;
     Context c;
     ArrayList<AllDownlines> data;
     FragmentManager fm;
-    public DownlineAdapter(Context c, ArrayList<AllDownlines> data, FragmentManager fm) {
+    private Firebase mref;
+
+    int mode;
+    
+    
+
+    public DownlineAdapter(Context c, ArrayList<AllDownlines> data, FragmentManager fm,int mode) {
         this.c = c;
         this.data=data;
         this.fm=fm;
+        this.mode=mode;
+        pref=c.getSharedPreferences("userpref",0);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -96,6 +116,21 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
             }
         });
 
+
+        holder1.layout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+
+                mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+              Options(position);
+
+
+
+                return true;
+            }
+        });
+
     }
 
     @Override
@@ -103,4 +138,89 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
         //Log.e("size", String.valueOf(r.getDotdList().size()));
         return data.size();
     }
+
+public void Options(final int position)
+{
+
+    Activity activity=(Activity)c;
+    final AlertDialog.Builder builderSingle = new AlertDialog.Builder(activity);
+
+    builderSingle.setTitle("Select");
+
+    final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(activity, android.R.layout.select_dialog_singlechoice);
+
+   if(mode==1)
+    arrayAdapter.add("Add To Team");
+
+
+    arrayAdapter.add("Delete");
+
+
+    builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+
+
+            if(which==0)
+            {
+
+
+                mref.child("users").child(data.get(position).getUid())
+                        .child("trainer_solution_number").runTransaction(new Transaction.Handler() {
+                    @Override
+                    public Transaction.Result doTransaction(final MutableData currentData) {
+
+
+                            currentData.setValue("");
+
+
+                        return Transaction.success(currentData);
+                    }
+
+                    @Override
+                    public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
+                        if (firebaseError != null) {
+                            Log.e("Firebase counter","increement failed");
+
+
+
+                        } else {
+                            Log.d("Firebase counter","increment succeeded.");
+
+                            data.remove(position);
+                            notifyDataSetChanged();
+
+                        }
+                    }
+                });
+
+            }
+
+
+            else
+            {
+
+                mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("downlines").child(data.get(position).getUid()).removeValue();
+
+                data.remove(position);
+                notifyDataSetChanged();
+            }
+                    }
+    });
+    builderSingle.show();
+
+
+
 }
+
+
+
+
+
+
+}
+
+
+
+
+
