@@ -26,6 +26,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import Adapter.Current_Goals_adap;
@@ -46,6 +50,7 @@ public class Goals_Tracker extends Fragment {
     SharedPreferences pref;
     SharedPreferences.Editor edit;
     JSONObject obj;
+    JSONArray current_array,met_array,unmet_array;
     String uid="",uidd="";
     @Nullable
     @Override
@@ -68,11 +73,10 @@ public class Goals_Tracker extends Fragment {
         rv_unmetgoal.setNestedScrollingEnabled(true);
 
         rv_currentgoal.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-//        rv_unmetgoal.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rv_metgoal.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rv_unmetgoal.setLayoutManager(new LinearLayoutManager(getActivity()));
 //        cur_goal_adap=new Current_Goals_adap(getActivity(),);
 //        rv_unmetgoal.setAdapter(cur_goal_adap);
-
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         Firebase.setAndroidContext(getActivity());
@@ -120,7 +124,6 @@ public class Goals_Tracker extends Fragment {
     public JSONArray getdatafromfirebase()
     {
 
-        final JSONArray array=new JSONArray();
         Log.e("uid",pref.getString("uid",""));
         mref.child("users").child(uid).child("Goals").addValueEventListener(new ValueEventListener() {
 
@@ -129,10 +132,20 @@ public class Goals_Tracker extends Fragment {
                 Log.e("get data from server",dataSnapshot.getValue()+" data");
                 try {
 
+                    current_array=new JSONArray();
+                    met_array=new JSONArray();
+                    unmet_array=new JSONArray();
+
                     for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
                         String key=messageSnapshot.getValue()+"";
                           JSONObject obj=new JSONObject();
                           JSONObject obj1=new JSONObject();
+                        JSONObject obj2=new JSONObject();
+
+                        String enddate = (String) messageSnapshot.child("endDate").getValue();
+
+                       String check_met= Check_enddate(enddate);
+
 
                         obj.put("completed",messageSnapshot.child("completed").getValue());
                         obj.put("ref",messageSnapshot.child("ref").getValue());
@@ -140,10 +153,6 @@ public class Goals_Tracker extends Fragment {
                         obj.put("startDate",messageSnapshot.child("startDate").getValue());
                         obj.put("endDate",messageSnapshot.child("endDate").getValue());
                         obj.put("finished",messageSnapshot.child("finished").getValue());
-
-//                        DataSnapshot activitycount= (DataSnapshot) messageSnapshot.child("activityCount").getValue();
-
-//                        Object activity=messageSnapshot.child("activityCount").getValue();
 
                         Map<String, Object> activitycount = (Map<String, Object>) messageSnapshot.child("activityCount").getValue();
                         obj1.put("Appointment Set",activitycount.get("Appointments Set").toString());
@@ -153,18 +162,64 @@ public class Goals_Tracker extends Fragment {
                         obj1.put("Closed Other Business",activitycount.get("Closed Other Business").toString());
                         obj1.put("Contacts Added",activitycount.get("Contacts Added").toString());
                         obj1.put("Closed IBA",activitycount.get("Closed IBA").toString());
+
+
+
+                        Map<String, Object> currentcount = (Map<String, Object>) messageSnapshot.child("currentCount").getValue();
+                        if(currentcount.containsKey("Appointments Set"))
+                        obj2.put("Appointment Set",currentcount.get("Appointments Set").toString());
+                        if(currentcount.containsKey("Closed Life"))
+                        obj2.put("Closed Life",currentcount.get("Closed Life").toString());
+                        if(currentcount.containsKey("Went on KT"))
+                        obj2.put("Went on KT",currentcount.get("Went on KT").toString());
+                        if(currentcount.containsKey("Total Premium"))
+                        obj2.put("Total Premium",currentcount.get("Total Premium").toString());
+                        if(currentcount.containsKey("Closed Other Business"))
+                        obj2.put("Closed Other Business",currentcount.get("Closed Other Business").toString());
+                        if(currentcount.containsKey("Contacts Added"))
+                        obj2.put("Contacts Added",currentcount.get("Contacts Added").toString());
+                        if(currentcount.containsKey("Closed IBA"))
+                        obj2.put("Closed IBA",currentcount.get("Closed IBA").toString());
+
+
+
                         obj.put("activityCount",obj1);
+                        obj.put("currentCount",obj2);
+
                         Log.e("value",obj+"");
-                        array.put(obj);
-                        Log.e("arrayinclass",array+"");
+
+                        if(check_met.equalsIgnoreCase("current")) {
+                            Log.e("add_in_current_array","add_in_current_array");
+                            if(messageSnapshot.child("completed").getValue().toString().equalsIgnoreCase("true"))
+                                met_array.put(obj);
+                            else
+                                current_array.put(obj);
+                        }
+                        else {
+                            Log.e("add_in_met_array","add_in_met_array");
+                            if(messageSnapshot.child("completed").getValue().toString().equalsIgnoreCase("true"))
+                            met_array.put(obj);
+                            else
+                                unmet_array.put(obj);
+                        }
+
+                        Log.e("arrayinclass",current_array+"");
                     }
 
                     edit=pref.edit();
-                    edit.putString("current_goals",array+"");
+                    edit.putString("current_goals",current_array+"");
                     edit.commit();
 
-                    cur_goal_adap=new Current_Goals_adap(getActivity(),array);
+                    cur_goal_adap=new Current_Goals_adap(getActivity(),current_array);
                     rv_currentgoal.setAdapter(cur_goal_adap);
+
+                    cur_goal_adap=new Current_Goals_adap(getActivity(),met_array);
+                    rv_metgoal.setAdapter(cur_goal_adap);
+
+
+                    cur_goal_adap=new Current_Goals_adap(getActivity(),unmet_array);
+                    rv_unmetgoal.setAdapter(cur_goal_adap);
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -178,8 +233,38 @@ public class Goals_Tracker extends Fragment {
             }
         });
 
-        return array;
+        return current_array;
+    }
 
+    public String Check_enddate(String enddate){
+
+        String ret_value="";
+
+        DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm a");
+
+        String currentDate = formatter.format(new Date());
+
+        try {
+            Date end_d = (Date)formatter.parse(enddate);
+            Date current_d = (Date)formatter.parse(currentDate);
+            Log.e("date_start",current_d+"");
+            Log.e("date_end",end_d+"");
+
+            int cur_to_end=end_d.compareTo(current_d);
+
+            if(cur_to_end>0){
+                ret_value="current";
+                Log.e("end_date_is ","greater than cur_date");
+            }
+            else {
+                ret_value="met";
+                Log.e("currnet_date_is", "greater than end_date");
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return ret_value;
     }
 
     @Override

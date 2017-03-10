@@ -54,6 +54,8 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
     String str1="1",str2=".00%";
     double initialamount=0,annualinterest=0,monthly_deposit=0;
     int year=1;
+    boolean value1=false,value2=false;
+    String check_editText;
 
     //  calculations(1,100.0,2.00,10.0);
     // EditText et_initial_amount,et_monthly_deposit;
@@ -106,8 +108,12 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
         monthlyl = (LinearLayout)v.findViewById(R.id.monthlyl);
 
         initial.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                check_editText="1";
+                checktext(initial);
+                Log.e("check_edittext",check_editText);
                 switch(event.getAction())
                 {
                     case MotionEvent.ACTION_DOWN:
@@ -119,138 +125,118 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
                         monthlyl.setBackgroundColor(Color.GRAY);
                         break;
                 }
-
-                one.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SetChangeInitalText("1");
-                    }
-                });
-
-                two.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SetChangeInitalText("2");
-                    }
-                });
-
-                three.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SetChangeInitalText("3");
-                    }
-                });
-
-                four.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SetChangeInitalText("4");
-                    }
-                });
-
-                five.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SetChangeInitalText("5");
-                    }
-                });
-
-                six.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SetChangeInitalText("6");
-                    }
-                });
-
-                seven.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SetChangeInitalText("7");
-                    }
-                });
-
-                eight.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                         SetChangeInitalText("8");
-                    }
-                });
-
-                nine.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SetChangeInitalText("9");
-                    }
-                });
-
-                zero.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SetChangeInitalText("0");
-                    }
-                });
-
-                dot.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String[] splitter = initial.getText().toString().split("\\.");
-
-                      /*  splitter[1].length();
-                        splitter[0].length();*/
-
-                        if(a)
-                        {
-                            Log.e("initial","initial");
-
-                            //initial.setText(String.format( "%.2f",splitter[1])) ;
-                            /*if (splitter[1].length() < 2 ){
-
-                            if (splitter[1].length() == 0 ){
-
-
-
-                            }
-
-                            if (splitter[1].length() == 1 ){
-
-
-                            }*/
-
-
-
-
-
-                           // initial.setText("$ "+new DecimalFormat("###,###.##").format(Double.parseDouble(initial.getText().toString())*0.01)+" ");
-                        }
-                        else
-                        {
-
-                            if(initial.getText().toString().length()<1)
-                            {
-
-                            }
-                            else
-                            {
-                                SetChangeInitalText(".");
-                            }
-                            dot.setClickable(false);
-                            a=true;
-                        }
-                    }
-                });
-
-                delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        initial.setText("");
-                        tv_yeartosave.setText("1");
-                        tv_annualinterest.setText("1.00%");
-                        tv_interestearned.setText("0.00");
-                        tv_amountsaved.setText("0.00");
-                        a=false;
-                        dot.setClickable(true);
-                    }
-                });
+//                one.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        SetChangeInitalText("1");
+//                    }
+//                });
+//
+//                two.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        SetChangeInitalText("2");
+//                    }
+//                });
+//
+//                three.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        SetChangeInitalText("3");
+//                    }
+//                });
+//
+//                four.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        SetChangeInitalText("4");
+//                    }
+//                });
+//
+//                five.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        SetChangeInitalText("5");
+//                    }
+//                });
+//
+//                six.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        SetChangeInitalText("6");
+//                    }
+//                });
+//
+//                seven.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        SetChangeInitalText("7");
+//                    }
+//                });
+//
+//                eight.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                         SetChangeInitalText("8");
+//                    }
+//                });
+//
+//                nine.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        SetChangeInitalText("9");
+//                    }
+//                });
+//
+//                zero.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        SetChangeInitalText("0");
+//                    }
+//                });
+//
+//                dot.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        String[] splitter = initial.getText().toString().split("\\.");
+//
+//                      /*  splitter[1].length();
+//                        splitter[0].length();*/
+//
+//                        if(a)
+//                        {
+//                            Log.e("initial","initial");
+//
+//                        }
+//                        else
+//                        {
+//
+//                            if(initial.getText().toString().length()<1)
+//                            {
+//
+//                            }
+//                            else
+//                            {
+//                                SetChangeInitalText(".");
+//                            }
+//                            dot.setClickable(false);
+//                            a=true;
+//                        }
+//                    }
+//                });
+//
+//                delete.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        initial.setText("");
+//                        tv_yeartosave.setText("1");
+//                        tv_annualinterest.setText("1.00%");
+//                        tv_interestearned.setText("0.00");
+//                        tv_amountsaved.setText("0.00");
+//                        a=false;
+//                        dot.setClickable(true);
+//                    }
+//                });
                 return true;
             }
         });
@@ -258,6 +244,10 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
         monthly.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+
+                check_editText="2";
+                Log.e("check_edittext",check_editText);
+                checktext(monthly);
                 switch(event.getAction())
                 {
 
@@ -272,107 +262,112 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
                         initiall.setBackgroundColor(Color.GRAY);
                         break;
                 }
-                one.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"1");
-                    }
-                });
 
-                two.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"2");
-                    }
-                });
+//                one.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"1");
+//                    }
+//                });
+//
+//                two.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"2");
+//                    }
+//                });
+//
+//                three.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"3");
+//                    }
+//                });
+//
+//                four.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"4");
+//                    }
+//                });
+//
+//                five.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"5");
+//                    }
+//                });
+//
+//                six.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"6");
+//                    }
+//                });
+//
+//                seven.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"7");
+//                    }
+//                });
+//
+//                eight.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"8");
+//                    }
+//                });
+//
+//                nine.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"9");
+//                    }
+//                });
+//
+//                zero.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"0");
+//                    }
+//                });
+//
+//                dot.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+////                        monthly textonchangelistner
+//
+//                        if(b)
+//                        {
+//                            Log.e("initial1","initial");
+//                        }
+//                        else
+//                        {
+//                            monthly.setText(monthly.getText() + ".");
+//                            dot.setClickable(false);
+//                            b=true;
+//                        }
+//
+//                    }
+//                });
+//
+//
+//
+//                delete.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText("");
+//                        tv_yeartosave.setText("1");
+//                        tv_annualinterest.setText("1.00%");
+//                        tv_interestearned.setText("0.00");
+//                        tv_amountsaved.setText("0.00");
+//                        b=false;
+//                        dot.setClickable(true);
+//                    }
+//                });
 
-                three.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"3");
-                    }
-                });
-
-                four.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"4");
-                    }
-                });
-
-                five.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"5");
-                    }
-                });
-
-                six.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"6");
-                    }
-                });
-
-                seven.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"7");
-                    }
-                });
-
-                eight.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"8");
-                    }
-                });
-
-                nine.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"9");
-                    }
-                });
-
-                zero.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"0");
-                    }
-                });
-
-                dot.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(b)
-                        {
-                            Log.e("initial1","initial");
-                        }
-                        else
-                        {
-                            monthly.setText(monthly.getText() + ".");
-                            dot.setClickable(false);
-                            b=true;
-                        }
-
-                    }
-                });
-
-
-
-                delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText("");
-                        tv_yeartosave.setText("1");
-                        tv_annualinterest.setText("1.00%");
-                        tv_interestearned.setText("0.00");
-                        tv_amountsaved.setText("0.00");
-                        b=false;
-                        dot.setClickable(true);
-                    }
-                });
                 return true;
             }
         });
@@ -381,6 +376,9 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
+                check_editText="1";
+                Log.e("check_edittext",check_editText);
+                checktext(initial);
                 switch(event.getAction())
                 {
 
@@ -395,106 +393,140 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
                         monthlyl.setBackgroundColor(Color.GRAY);
                         break;
                 }
-                one.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        initial.setText(initial.getText()+"1");
-                    }
-                });
-
-                two.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        initial.setText(initial.getText()+"2");
-                    }
-                });
-
-                three.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        initial.setText(initial.getText()+"3");
-                    }
-                });
-
-                four.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        initial.setText(initial.getText()+"4");
-                    }
-                });
-
-                five.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        initial.setText(initial.getText()+"5");
-                    }
-                });
-
-                six.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        initial.setText(initial.getText()+"6");
-                    }
-                });
-
-                seven.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        initial.setText(initial.getText()+"7");
-                    }
-                });
-
-                eight.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        initial.setText(initial.getText()+"8");
-                    }
-                });
-
-                nine.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        initial.setText(initial.getText()+"9");
-                    }
-                });
-
-                zero.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        initial.setText(initial.getText()+"0");
-                    }
-                });
-
-                dot.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(a)
-                        {
-                            Log.e("initial2","initial");
-                        }
-                        else
-                        {
-
-                                initial.setText(initial.getText() + ".");
-
-                            dot.setClickable(false);
-                            a=true;
-                        }
-                    }
-                });
-
-                delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        initial.setText("");
-                        tv_yeartosave.setText("1");
-                        tv_annualinterest.setText("1.00%");
-                        tv_interestearned.setText("0.00");
-                        tv_amountsaved.setText("0.00");
-                        a=false;
-                        dot.setClickable(true);
-                    }
-                });
+//                one.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        String text=initial.getText().toString();
+//
+//                        if(a){
+//
+//                            if(value1&value2){
+//                                String[] arr=text.split(".");
+//                                arr[1]="10";
+//                                text=arr[0]+"."+arr[1];
+//                                initial.setText(text);
+//                                value1=false;
+//                            }
+//                            else if(value2){
+////                                String text=initial.getText().toString();
+//                                String[] arr=text.split(".");
+//                                arr[1] = arr[1].substring(0,arr[1].length()-1) + "1";
+//                                text=arr[0]+"."+arr[1];
+//                                initial.setText(text);
+//                                value2=false;
+//                            }
+//                            else if(value1==false&value2==false){
+//                                initial.setText(text+"1");
+//                            }
+//                        }
+//                        else
+//                            initial.setText(text+"1");
+//
+//
+////                        initial.setText(initial.getText()+"1");
+//                    }
+//                });
+//
+//                two.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        initial.setText(initial.getText()+"2");
+//                    }
+//                });
+//
+//                three.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        initial.setText(initial.getText()+"3");
+//                    }
+//                });
+//
+//                four.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        initial.setText(initial.getText()+"4");
+//                    }
+//                });
+//
+//                five.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        initial.setText(initial.getText()+"5");
+//                    }
+//                });
+//
+//                six.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        initial.setText(initial.getText()+"6");
+//                    }
+//                });
+//
+//                seven.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        initial.setText(initial.getText()+"7");
+//                    }
+//                });
+//
+//                eight.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        initial.setText(initial.getText()+"8");
+//                    }
+//                });
+//
+//                nine.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        initial.setText(initial.getText()+"9");
+//                    }
+//                });
+//
+//                zero.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        initial.setText(initial.getText()+"0");
+//                    }
+//                });
+//
+//                dot.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        Log.e("dot click initial","dot click initial");
+//
+//                        if(a)
+//                        {
+//                            Log.e("initial2","initial");
+//                        }
+//                        else
+//                        {
+//
+//                                initial.setText(initial.getText() + ".00");
+//
+//                            value1=true;
+//                            value2=true;
+//
+//                            dot.setClickable(false);
+//                            a=true;
+//                        }
+//                    }
+//                });
+//
+//                delete.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        initial.setText("");
+//                        tv_yeartosave.setText("1");
+//                        tv_annualinterest.setText("1.00%");
+//                        tv_interestearned.setText("0.00");
+//                        tv_amountsaved.setText("0.00");
+//                        a=false;
+//                        dot.setClickable(true);
+//                    }
+//                });
 
                 return true;
             }
@@ -504,6 +536,11 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
+                check_editText="2";
+                checktext(monthly);
+
+                Log.e("check_edittext",check_editText);
+
                 switch(event.getAction())
                 {
 
@@ -518,104 +555,104 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
                         initiall.setBackgroundColor(Color.GRAY);
                         break;
                 }
-                one.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"1");
-                    }
-                });
-
-                two.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"2");
-                    }
-                });
-
-                three.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"3");
-                    }
-                });
-
-                four.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"4");
-                    }
-                });
-
-                five.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"5");
-                    }
-                });
-
-                six.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"6");
-                    }
-                });
-
-                seven.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"7");
-                    }
-                });
-
-                eight.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"8");
-                    }
-                });
-
-                nine.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"9");
-                    }
-                });
-
-                zero.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText(monthly.getText()+"0");
-                    }
-                });
-
-                dot.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(b)
-                        {
-                            Log.e("initial3","initial");
-                        }
-                        else
-                        {
-                            monthly.setText(monthly.getText() + ".");
-                            dot.setClickable(false);
-                            b=true;
-                        }
-                    }
-                });
-
-                delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        monthly.setText("");
-                        tv_yeartosave.setText("1");
-                        tv_annualinterest.setText("1.00%");
-                        tv_interestearned.setText("0.00");
-                        tv_amountsaved.setText("0.00");
-                        b=false;
-                        dot.setClickable(true);
-                    }
-                });
+//                one.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"1");
+//                    }
+//                });
+//
+//                two.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"2");
+//                    }
+//                });
+//
+//                three.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"3");
+//                    }
+//                });
+//
+//                four.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"4");
+//                    }
+//                });
+//
+//                five.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"5");
+//                    }
+//                });
+//
+//                six.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"6");
+//                    }
+//                });
+//
+//                seven.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"7");
+//                    }
+//                });
+//
+//                eight.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"8");
+//                    }
+//                });
+//
+//                nine.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"9");
+//                    }
+//                });
+//
+//                zero.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText(monthly.getText()+"0");
+//                    }
+//                });
+//
+//                dot.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        if(b)
+//                        {
+//                            Log.e("initial3","initial");
+//                        }
+//                        else
+//                        {
+//                            monthly.setText(monthly.getText() + ".");
+//                            dot.setClickable(false);
+//                            b=true;
+//                        }
+//                    }
+//                });
+//
+//                delete.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        monthly.setText("");
+//                        tv_yeartosave.setText("1");
+//                        tv_annualinterest.setText("1.00%");
+//                        tv_interestearned.setText("0.00");
+//                        tv_amountsaved.setText("0.00");
+//                        b=false;
+//                        dot.setClickable(true);
+//                    }
+//                });
 
                 return true;
             }
@@ -692,6 +729,7 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
                 {
 
 
+
                     if(!TextUtils.isEmpty(initial.getText().toString())) {
                         calculations(Integer.parseInt(tv_yeartosave.getText().toString()),
                                 Double.parseDouble(initial.getText().toString()),
@@ -717,14 +755,253 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
         });
 
 
+        one.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-        return v;
+                        SetChangeInitalText("1");
+//
+
+//                        Log.e("check_edittext",check_editText);
+//
+//                        String text;
+//                        if(check_editText.equalsIgnoreCase("1"))
+//                       text=initial.getText().toString();
+//                        else
+//                            text=monthly.getText().toString();
+//
+//                        if(a){
+//
+//                            Log.e("textvalue",text);
+//
+//                            if(value1&value2){
+//                                String[] arr=text.split("\\.");
+//                                arr[1]="10";
+//                                text=arr[0]+"."+arr[1];
+////                                initial.setText(text);
+//                                value1=false;
+//                            }
+//                            else if(value2){
+////                                String text=initial.getText().toString();
+//                                String[] arr=text.split("\\.");
+//                                arr[1] = arr[1].substring(0,arr[1].length()-1) + "1";
+//                                text=arr[0]+"."+arr[1];
+////                                initial.setText(text);
+//                                value2=false;
+//                            }
+//                            else if(value1==false&value2==false){
+////                                text=text+"1";
+////                                initial.setText(text+"1");
+//                            }
+//                        }
+//                        else
+//                        text=text+"1";
+//
+//
+//                        if(check_editText.equalsIgnoreCase("1"))
+//                            initial.setText(text);
+//                        else
+//                            monthly.setText(text);
+
+                    }
+                });
+
+                two.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        SetChangeInitalText("2");
+//
+//                        initial.setText(initial.getText()+"2");
+                    }
+                });
+
+                three.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SetChangeInitalText("3");
+//
+//                        initial.setText(initial.getText()+"3");
+                    }
+                });
+
+                four.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SetChangeInitalText("4");
+//                        initial.setText(initial.getText()+"4");
+                    }
+                });
+
+                five.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SetChangeInitalText("5");
+//                        initial.setText(initial.getText()+"5");
+                    }
+                });
+
+                six.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SetChangeInitalText("6");
+//                        initial.setText(initial.getText()+"6");
+                    }
+                });
+
+                seven.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SetChangeInitalText("7");
+//                        initial.setText(initial.getText()+"7");
+                    }
+                });
+
+                eight.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SetChangeInitalText("8");
+//                        initial.setText(initial.getText()+"8");
+                    }
+                });
+
+                nine.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SetChangeInitalText("9");
+//                        initial.setText(initial.getText()+"9");
+                    }
+                });
+
+                zero.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SetChangeInitalText("0");
+//                        initial.setText(initial.getText()+"0");
+                    }
+                });
+
+                dot.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Log.e("dot click initial","dot click initial");
+
+                        if(a)
+                        {
+                            Log.e("initial2","initial");
+                        }
+                        else
+                        {
+                                if(check_editText.equalsIgnoreCase("1"))
+                                initial.setText(initial.getText() + ".00");
+                            else
+                                monthly.setText(monthly.getText()+".00");
+
+                            value1=true;
+                            value2=true;
+                            dot.setClickable(false);
+                            a=true;
+                        }
+                    }
+                });
+
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if(check_editText.equalsIgnoreCase("1"))
+                        initial.setText("");
+                        else
+                        monthly.setText("");
+
+                        tv_yeartosave.setText("1");
+                        tv_annualinterest.setText("1.00%");
+                        tv_interestearned.setText("0.00");
+                        tv_amountsaved.setText("0.00");
+
+                        a=false;
+                        value1=false;
+                        value2=false;
+                        dot.setClickable(true);
+                    }
+                });
+
+            return v;
+    }
+
+    public void checktext(EditText et){
+
+        String text=et.getText().toString();
+
+        Log.e("editext_value",text+"  value");
+
+        if(text.contains(".")){
+
+            String[] arr=text.split("\\.");
+
+            if(arr[1].equalsIgnoreCase("00")){
+                value1=true;
+                value2=true;
+            }
+            else {
+                value1 = false;
+                value2=false;
+            }
+
+            dot.setClickable(true);
+
+        }
+        else {
+            a = false;
+            dot.setClickable(true);
+        }
+
     }
 
     private void SetChangeInitalText(String s) {
 
+        Log.e("check_edittext",check_editText);
 
-        initial.setText(initial.getText()+s);
+        String text;
+        if(check_editText.equalsIgnoreCase("1"))
+            text=initial.getText().toString();
+        else
+            text=monthly.getText().toString();
+
+        if(a){
+
+            Log.e("textvalue",text);
+
+            if(value1&value2){
+                String[] arr=text.split("\\.");
+                arr[1]=s+"0";
+                text=arr[0]+"."+arr[1];
+//                                initial.setText(text);
+                value1=false;
+            }
+            else if(value2){
+//                                String text=initial.getText().toString();
+                String[] arr=text.split("\\.");
+                arr[1] = arr[1].substring(0,arr[1].length()-1) + s;
+                text=arr[0]+"."+arr[1];
+//                                initial.setText(text);
+                value2=false;
+            }
+            else if(value1==false&value2==false){
+//                                text=text+"1";
+//                                initial.setText(text+"1");
+            }
+        }
+        else
+            text=text+s;
+
+
+        if(check_editText.equalsIgnoreCase("1"))
+            initial.setText(text);
+        else
+            monthly.setText(text);
+
 
     }
 
@@ -786,11 +1063,7 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
             }
         }
 
-
-
-
     }
-
 
 
     private void calculations(int year,double principal,double rate,double monthlydeposit)
