@@ -36,7 +36,7 @@ import u.activitymanager.R;
 /**
  * Created by Surbhi on 09-03-2017.
  */
-public class RVPRequestFragment extends Fragment
+public class PendingRequestFragment extends Fragment
 {
     View view;
     RecyclerView rView;
@@ -89,10 +89,6 @@ public class RVPRequestFragment extends Fragment
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("get data from server",dataSnapshot.getValue()+" data");
                  map=new HashMap() ;
-//                downline=new HashMap<String, String>();
-//                for (DataSnapshot child : dataSnapshot.getChildren()) {
-//                    Log.e("key",child.getKey().toString()+"key");
-
                    map= new HashMap<String, String>();
                    data=new ArrayList<JSONObject>();
                     for (DataSnapshot child : dataSnapshot.getChildren()) {

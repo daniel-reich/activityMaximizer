@@ -181,7 +181,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                Log.e("get data from server", dataSnapshot.getValue() + " data");
+                Log.e("get achievements", dataSnapshot.getValue() + " data");
                 Log.e("child", dataSnapshot.getValue() + " abc");
                 achieve_detail = ConvertParseString(dataSnapshot.getValue());
                 setAch();
@@ -595,7 +595,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                        Log.e("get data from server",dataSnapshot.getValue()+" data");
+                        Log.e("get notes",dataSnapshot.getValue()+" data");
 
                         JSONArray jsonArray =  new JSONArray();
                         for (com.firebase.client.DataSnapshot child : dataSnapshot.getChildren()) {

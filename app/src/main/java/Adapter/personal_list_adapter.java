@@ -48,7 +48,7 @@ public class personal_list_adapter extends RecyclerView.Adapter<personal_list_ad
     @Override
     public int getItemCount()
     {
-        Log.e("count","count");
+       // Log.e("count","count");
         return activity_list.length;
     }
 
