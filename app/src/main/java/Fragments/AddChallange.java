@@ -212,8 +212,6 @@ public class AddChallange extends Fragment implements View.OnClickListener {
         return view;
     }
 
-
-
     public void datecurrent(){
 
         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
@@ -305,7 +303,6 @@ public class AddChallange extends Fragment implements View.OnClickListener {
             }
         });
     }
-
 
     public void datedilog(final boolean b,final TextView tv, final TextView tv1)
     {
