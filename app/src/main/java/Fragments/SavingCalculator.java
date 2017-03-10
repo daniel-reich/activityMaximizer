@@ -738,46 +738,52 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
     public void onItemSelected(WheelPicker picker, Object data, int position) {
 
         if(picker.getId()==R.id.main_wheel1) {
-            tv_yeartosave.setText(list.get(position));
-            year=Integer.parseInt(tv_yeartosave.getText().toString());
-            initialamount=Double.parseDouble(initial.getText().toString());
-            annualinterest=Double.parseDouble(tv_annualinterest.getText().toString().replace("%", ""));
-            monthly_deposit=Double.parseDouble(monthly.getText().toString());
 
-            calculations(year,
+            if(!TextUtils.isEmpty(initial.getText().toString())  & !TextUtils.isEmpty(monthly.getText().toString())) {
+                tv_yeartosave.setText(list.get(position));
+                year = Integer.parseInt(tv_yeartosave.getText().toString());
+                initialamount = Double.parseDouble(initial.getText().toString());
+                annualinterest = Double.parseDouble(tv_annualinterest.getText().toString().replace("%", ""));
+                monthly_deposit = Double.parseDouble(monthly.getText().toString());
+
+                calculations(year,
                         initialamount,
                         annualinterest,
                         monthly_deposit);
+            }
         }
         else if(picker.getId()==R.id.main_wheel2) {
             // tv_annualinterest.setText(list.get(position)+list1.get(position));
+            if(!TextUtils.isEmpty(initial.getText().toString()) & !TextUtils.isEmpty(monthly.getText().toString())) {
+                str1 = list.get(position);
+                tv_annualinterest.setText(str1 + str2);
+                year = Integer.parseInt(tv_yeartosave.getText().toString());
+                initialamount = Double.parseDouble(initial.getText().toString());
+                annualinterest = Double.parseDouble(tv_annualinterest.getText().toString().replace("%", ""));
+                monthly_deposit = Double.parseDouble(monthly.getText().toString());
 
-            str1=list.get(position);
-            tv_annualinterest.setText(str1+str2);
-            year=Integer.parseInt(tv_yeartosave.getText().toString());
-            initialamount=Double.parseDouble(initial.getText().toString());
-            annualinterest=Double.parseDouble(tv_annualinterest.getText().toString().replace("%", ""));
-            monthly_deposit=Double.parseDouble(monthly.getText().toString());
-
-            calculations(year,
-                    initialamount,
-                    annualinterest,
-                    monthly_deposit);
+                calculations(year,
+                        initialamount,
+                        annualinterest,
+                        monthly_deposit);
+            }
         }
         else if(picker.getId()==R.id.main_wheel3) {
             // tv_interestearned.setText("$0"+list1.get(position));
-            str2=list1.get(position);
-            tv_annualinterest.setText(str1+str2);
-            year=Integer.parseInt(tv_yeartosave.getText().toString());
-            initialamount=Double.parseDouble(initial.getText().toString());
-            annualinterest=Double.parseDouble(tv_annualinterest.getText().toString().replace("%", ""));
-            monthly_deposit=Double.parseDouble(monthly.getText().toString());
+            if(!TextUtils.isEmpty(initial.getText().toString())  & !TextUtils.isEmpty(monthly.getText().toString())) {
+                str2 = list1.get(position);
+                tv_annualinterest.setText(str1 + str2);
+                year = Integer.parseInt(tv_yeartosave.getText().toString());
+                initialamount = Double.parseDouble(initial.getText().toString());
+                annualinterest = Double.parseDouble(tv_annualinterest.getText().toString().replace("%", ""));
+                monthly_deposit = Double.parseDouble(monthly.getText().toString());
 
-            calculations(year,
-                    initialamount,
-                    annualinterest,
-                    monthly_deposit);
-            //tv_annualinterest.setText(list.get(position)+list1.get(position));
+                calculations(year,
+                        initialamount,
+                        annualinterest,
+                        monthly_deposit);
+                //tv_annualinterest.setText(list.get(position)+list1.get(position));
+            }
         }
 
 

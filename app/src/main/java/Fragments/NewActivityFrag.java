@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.firebase.client.ChildEventListener;
@@ -65,6 +66,7 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
 
     Bundle bundle;
     java.sql.Timestamp selectedtimeStampDate;
+    boolean checkdate;
 
 
     @Nullable
@@ -143,7 +145,13 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        addNewContact(0);
+        if(item.getItemId()==R.id.menu) {
+            if (!checkdate) {
+                Toast.makeText(getActivity(), "Please select date", Toast.LENGTH_LONG).show();
+            } else {
+                addNewContact(0);
+            }
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -197,6 +205,7 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
                             selecteddate = sdf.parse(tv_date.getText().toString());
                             selectedtimeStampDate = new Timestamp(selecteddate.getTime());
                             Log.e("selectedtime",selectedtimeStampDate.getTime()+"");
+                            checkdate=true;
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
@@ -231,8 +240,7 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
             json.put("name",bundle.getString("name",""));
             json.put("time",timestamp+"");
 
-            Activity_list_frag.js.put(json);
-            Activity_list_frag.listadapter.notifyDataSetChanged();
+
 
         } catch (Exception e) {
 

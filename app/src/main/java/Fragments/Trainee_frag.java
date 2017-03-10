@@ -101,10 +101,10 @@ public class Trainee_frag extends Fragment {
         switch (item.getItemId())
         {
 
-            case android.R.id.home:
+            /*case android.R.id.home:
                 // getActivity().getSupportFragmentManager().popBackStack();
                 showHelpDialog();
-                break;
+                break;*/
 
             case R.id.menu:
                 //showFloatingMenus();

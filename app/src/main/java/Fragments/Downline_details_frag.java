@@ -222,6 +222,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
                 getActivity().getSupportFragmentManager().popBackStack();
                 //getActivity().finish();
                 break;
+
         }
         return super.onOptionsItemSelected(item);
     }

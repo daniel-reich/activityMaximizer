@@ -1,5 +1,7 @@
 package utils;
 
+import android.app.Dialog;
+
 import org.json.JSONObject;
 
 /**
@@ -9,5 +11,6 @@ public class Constants {
 
     public static String URL="https://activitymaximizer-d07c2.firebaseio.com/";
     public static JSONObject jsonObject;
+    public static final Dialog  helpdialog = null;
 
 }

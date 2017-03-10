@@ -55,7 +55,7 @@ import u.activitymanager.R;
 public class HomeFragment extends Fragment implements View.OnClickListener {
     View view;
     TextView team,personal;
-    Dialog helpdialog;
+     Dialog helpdialog;
     LinearLayout lay_day;
     Firebase mref;
     FirebaseAuth firebaseAuth;
@@ -250,10 +250,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         switch (item.getItemId())
         {
 
-                case android.R.id.home:
+               /* case android.R.id.home:
                    // getActivity().getSupportFragmentManager().popBackStack();
                     showHelpDialog();
-                    break;
+                    break;*/
 
             case R.id.menu:
                 showFloatingMenus();
@@ -339,7 +339,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         tv_report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String URI="mailto:surender9466073570@gmail.com";
+                String URI="mailto:activitymaximizerapp@gmail.com";
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 Uri data = Uri.parse(URI);
                 intent.setData(data);

@@ -92,17 +92,14 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout1,basic_frag).addToBackStack(null).commit();
 
+
+
         return view;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
-
-            case android.R.id.home:
-                // getActivity().getSupportFragmentManager().popBackStack();
-                showHelpDialog();
-                break;
 
             case R.id.menu:
                 //showFloatingMenus();

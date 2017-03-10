@@ -43,6 +43,7 @@ import Fragments.Activity_list_frag;
 import Fragments.Need_to_Quality;
 import Fragments.NewActivityFrag;
 import register_frag.Register;
+import u.activitymanager.APPListener;
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 import utils.Constants;
@@ -59,7 +60,7 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
     private Firebase mref;
     private Dialog AddNewContact;
     int amount,increement;
-    String increement_value;
+    String increement_value = "";
 
     public SelectNewActivityListAdapter(Context context) {
         this.context = context;
@@ -243,13 +244,13 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
         Log.e("Today is ", timeStampDate.getTime()+"");
         String timestamp=String.valueOf(timeStampDate.getTime());
 
-        JSONObject json=new JSONObject();
+        final JSONObject json=new JSONObject();
         try {
             json.put("name",activity_list[position]);
             json.put("time",timestamp+"");
 
-            Activity_list_frag.js.put(json);
-            Activity_list_frag.listadapter.notifyDataSetChanged();
+            //Activity_list_frag.js.put(json);
+            //Activity_list_frag.listadapter.notifyDataSetChanged();
         } catch (Exception e) {
 
             Log.e("y","e",e);
@@ -303,7 +304,8 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
                         else
                         Log.e("increement_value",increement_value);
 
-                        Activity_list_frag.listadapter.notifyDataSetChanged();
+                        //Activity_list_frag.listadapter.notifyDataSetChanged();
+                        APPListener.getInstance().SetIAAPermissionRefreshListener(json);
                     }
                 });
     }

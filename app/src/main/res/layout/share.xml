@@ -29,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/post"
+            android:paddingLeft="5dp"
             android:hint="What would you like to Share"
             android:background="@null"/>
 

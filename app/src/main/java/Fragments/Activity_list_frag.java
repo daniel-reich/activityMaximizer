@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -30,8 +31,10 @@ import java.util.ArrayList;
 import Adapter.ContactActivityListAdapter;
 import Adapter.Note_Adapter;
 import Adapter.SelectNewActivityListAdapter;
+import interfaces.ISelectNewActivity;
 import model.AllActivity;
 import model.AllNote;
+import u.activitymanager.APPListener;
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
@@ -39,7 +42,7 @@ import u.activitymanager.R;
  * Created by surender on 2/17/2017.
  */
 
-public class Activity_list_frag extends Fragment {
+public class Activity_list_frag extends Fragment implements ISelectNewActivity {
 
     View v;
     TextView tv_newactivity;
@@ -54,11 +57,14 @@ public class Activity_list_frag extends Fragment {
     LinearLayoutManager lManager;
     String uid="",name="",uidd="";
     public static JSONArray js;
+    JSONArray jsonArray;
+
     @Nullable
     @Override
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        APPListener.getInstance().SetIAAPermissionListener(this);
         setHasOptionsMenu(true);
         v=inflater.inflate(R.layout.activity_list_frag,container,false);
 
@@ -118,6 +124,11 @@ public class Activity_list_frag extends Fragment {
         return v;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        APPListener.getInstance().RemoveIAAPermissionRefreshListener(this);
+    }
 
     public void getnotefromfirebase()
     {
@@ -129,7 +140,7 @@ public class Activity_list_frag extends Fragment {
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
                 Log.e("get data from server",dataSnapshot.getValue()+" data");
                 data=new ArrayList<AllActivity>();
-                JSONArray jsonArray =  new JSONArray();
+                jsonArray =  new JSONArray();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     JSONObject jGroup = new JSONObject();
                     Log.e("childddd",child.child("contactName").getKey()+" abc");
@@ -181,5 +192,14 @@ public class Activity_list_frag extends Fragment {
                 return "";
         }
 
+    }
+
+    @Override
+    public void OnRefreshListener(JSONObject object) {
+        jsonArray.put(object);
+
+
+        adapter.notifyDataSetChanged();
+        Log.e("chal","ja bhai");
     }
 }
