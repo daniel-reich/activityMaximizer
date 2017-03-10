@@ -28,6 +28,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -357,8 +360,8 @@ public class Achivement_Details extends Fragment
                 if(obj.getString("Top_speed").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.top_speed);
                     tv_achivementname.setText("Top Speed");
-                    tv_achivementdate.setText("Earned on, "+obj.getString("Top_speed_date"));
-
+                    long timestamp = Long.parseLong(obj.getString("Top_speed_date")) * 1000L;
+                    tv_achivementdate.setText("Earned on, "+getDate(timestamp ));
                     achivement_name="Top_speed";
                     b=true;
                 }
@@ -451,4 +454,21 @@ public class Achivement_Details extends Fragment
 
     }
 
+
+
+
+
+
+
+    private String getDate(long timeStamp){
+
+        try{
+            DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+            Date netDate = (new Date(timeStamp));
+            return sdf.format(netDate);
+        }
+        catch(Exception ex){
+            return "xx";
+        }
+    }
 }

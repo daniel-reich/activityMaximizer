@@ -192,6 +192,11 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
             case R.id.profile_pic:
                 selectPicDialog();
                 break;
+            case R.id.tv_filter:
+                selectViewdialog.dismiss();
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.frame_layout,new Team_Points_Selection_Frag()).addToBackStack(null).commit();
+                break;
         }
 
     }
@@ -212,7 +217,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
     private void selectViewDialog() {
         selectViewdialog=new Dialog(getActivity());
         selectViewdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        selectViewdialog.setContentView(R.layout.graphviewdialog);
+        selectViewdialog.setContentView(R.layout.teamgraphviewdialog);
         Window window = selectViewdialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
         wlp.gravity = Gravity.BOTTOM;
@@ -221,8 +226,10 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         TextView Activity_value_breakdown=(TextView)selectViewdialog.findViewById(R.id.tv_breakdown);
         TextView Graph=(TextView)selectViewdialog.findViewById(R.id.tv_graph);
+        TextView tv_filter=(TextView)selectViewdialog.findViewById(R.id.tv_filter);
         Activity_value_breakdown.setOnClickListener(this);
         Graph.setOnClickListener(this);
+        tv_filter.setOnClickListener(this);
         selectViewdialog.show();
     }
 
