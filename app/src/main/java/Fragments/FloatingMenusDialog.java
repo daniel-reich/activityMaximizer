@@ -98,7 +98,7 @@ public class FloatingMenusDialog extends DialogFragment implements View.OnClickL
                 break;
             case R.id.menu_item6:
                 this.dismiss();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new PendingRequestFragment()).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new RVPRequestFragment()).addToBackStack(null).commit();
                 break;
         }
     }

@@ -146,7 +146,7 @@ public class Team_fragment extends Fragment {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("get downlines",dataSnapshot.getValue()+" data");
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Log.e("testing",child.getKey()+" abc");
 //                    uiddata.add(child.getKey().toString());
@@ -175,7 +175,7 @@ public class Team_fragment extends Fragment {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("get downline uids",dataSnapshot.getValue()+" data");
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Log.e("testing",child.getKey()+" abc");
 //                    uiddata.add(child.getKey().toString());
@@ -204,7 +204,7 @@ public class Team_fragment extends Fragment {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("get downlines server",dataSnapshot.getValue()+" data");
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
 
 
                 if(dataSnapshot.child("trainer_solution_number").getValue().toString().equals(""))
@@ -236,8 +236,8 @@ public class Team_fragment extends Fragment {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("get all base downlines",dataSnapshot.getValue()+" data");
-                basedata.add(new AllBaseDownlines(ConvertParseString(uid),ConvertParseString(dataSnapshot.child("givename").getValue()),ConvertParseString(dataSnapshot.child("fivePointClients").getValue()),ConvertParseString(dataSnapshot.child("fivePointRecruits").getValue())));
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                basedata.add(new AllBaseDownlines(ConvertParseString(uid),ConvertParseString(dataSnapshot.child("givenName").getValue()),ConvertParseString(dataSnapshot.child("fivePointClients").getValue()),ConvertParseString(dataSnapshot.child("fivePointRecruits").getValue())));
                 baseadapter=new BaseDownlineAdapter(getActivity(),basedata,fm);
                 baseview.setLayoutManager(layoutManager1);
                 baseview.setAdapter(baseadapter);
@@ -249,11 +249,13 @@ public class Team_fragment extends Fragment {
         });
     }
 
-    public void setDirectAdapter()
-    {
-        adapter=new DownlineAdapter(getActivity(),data,fm,0);
-        directview.setLayoutManager(layoutManager);
-        directview.setAdapter(adapter);
+    public void setDirectAdapter() {
+
+        if (getActivity() != null) {
+            adapter = new DownlineAdapter(getActivity(), data, fm, 0);
+            directview.setLayoutManager(layoutManager);
+            directview.setAdapter(adapter);
+        }
     }
 
 
@@ -263,7 +265,7 @@ public class Team_fragment extends Fragment {
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                Log.e("get data ", dataSnapshot.getValue() + " data");
+                Log.e("get data from server", dataSnapshot.getValue() + " data");
                 Log.e("child", dataSnapshot.child("First_downline").getValue() + " abc");
                 First_downline = dataSnapshot.child("First_downline").getValue().toString();
                 if (First_downline.equalsIgnoreCase("false"))

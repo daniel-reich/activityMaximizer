@@ -144,7 +144,8 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
             case R.id.team_button:
                 trainees.setSelected(false);
                 team.setSelected(true);
-                showaddtoteam=true;
+                showaddtoteam=!showaddtoteam;
+                Log.e("showaddtoteam",showaddtoteam+"");
                 Team_fragment basic_frag = new Team_fragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_layout1,basic_frag).addToBackStack(null).commit();
@@ -152,6 +153,7 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
             case R.id.personal_button:
                 team.setSelected(false);
                 trainees.setSelected(true);
+            showaddtoteam=!showaddtoteam;
                 Trainee_frag basic_frag1 = new Trainee_frag();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_layout1,basic_frag1).addToBackStack(null).commit();

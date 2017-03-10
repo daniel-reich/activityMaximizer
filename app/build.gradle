@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.activity.maximizer"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
         multiDexEnabled=true

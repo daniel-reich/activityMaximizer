@@ -254,7 +254,7 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
         newcontact.put("contactName", Need_to_Quality.givenName);
         newcontact.put("contactRef",Need_to_Quality.ref);
         newcontact.put("created",timestamp);
-        newcontact.put("date",timestamp);
+        newcontact.put("date",selectedtimeStampDate.getTime());
         newcontact.put("eventKitID","");
         newcontact.put("ref",noteref);
         newcontact.put("amount",0);

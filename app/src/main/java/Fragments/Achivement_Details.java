@@ -82,7 +82,7 @@ public class Achivement_Details extends Fragment
 
             obj=new JSONObject(getArguments().getString("data"));
 
-            if(i==9){
+            if(i==0){
                 if(obj.getString("Closed_three_IBAs").equalsIgnoreCase("true")) {
                     iv.setImageResource(R.drawable.closed_three_ibas);
                     tv_achivementname.setText("Closed Three IBAs");
@@ -97,7 +97,7 @@ public class Achivement_Details extends Fragment
                     b=false;
                 }
             }
-            else if(i==8) {
+            else if(i==1) {
                 if(obj.getString("Closed_three_life").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.closed_three_life);
                     tv_achivementname.setText("Closed Three Life");
@@ -112,7 +112,7 @@ public class Achivement_Details extends Fragment
                  b=false;
                 }
             }
-            else if(i==14) {
+            else if(i==2) {
                 if(obj.getString("Fifty_KTs").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.fifty_kts);
                     tv_achivementname.setText("Fifty KTs");
@@ -126,7 +126,7 @@ public class Achivement_Details extends Fragment
                     tv_achivementdate.setText("Earn the Fifty KTs achievement by going on 50 KTs in one year");
                b=false;
                 }
-            }else if(i==2) {
+            }else if(i==3) {
                 if(obj.getString("First_call_from_app").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.first_call_from_app);
                     tv_achivementname.setText("First Call From App");
@@ -140,7 +140,7 @@ public class Achivement_Details extends Fragment
                     tv_achivementdate.setText("Earn the First call from app achievement by making your first call from app");
                 b=false;
                 }
-            }else if(i==1) {
+            }else if(i==4) {
                 if(obj.getString("First_contact_added").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.first_contact_added);
                     tv_achivementname.setText("First Contact Added");
@@ -154,7 +154,7 @@ public class Achivement_Details extends Fragment
                     tv_achivementdate.setText("Earn the First contact added achievement by adding your first contact");
                 b=false;
                 }
-            }else if(i==3) {
+            }else if(i==5) {
                 if(obj.getString("First_downline").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.first_downline);
                     tv_achivementname.setText("First Downline");
@@ -168,7 +168,7 @@ public class Achivement_Details extends Fragment
                     tv_achivementdate.setText("Earn the First downline achievement by getting your first downline");
                b=false;
                 }
-            }else if(i==15) {
+            }else if(i==6) {
                 if(obj.getString("One_hundred_KTs").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.one_hundred_kts);
                     tv_achivementname.setText("One hundred KTs");
@@ -182,7 +182,7 @@ public class Achivement_Details extends Fragment
                     tv_achivementdate.setText("Earn the One hundred KTs achievement by going on 100 KTs in one year");
                 b=false;
                 }
-            }else if(i==11) {
+            }else if(i==7) {
                 if(obj.getString("One_week_eight_five_three_one").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.one_week_eight_five_three_one);
                     tv_achivementname.setText("One Week 8531");
@@ -196,7 +196,7 @@ public class Achivement_Details extends Fragment
                     tv_achivementdate.setText("Earn the One week eight five three one achievement by getting an 8-5-3-1 in one a week period");
                b=false;
                 }
-            }else if(i==13) {
+            }else if(i==8) {
                 if(obj.getString("Perfect_month").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.perfect_month);
                     tv_achivementname.setText("Perfect Month");
@@ -210,7 +210,7 @@ public class Achivement_Details extends Fragment
                     tv_achivementdate.setText("Earn the Perfect month achievement by getting your first perfect month");
                b=false;
                 }
-            }else if(i==12) {
+            }else if(i==9) {
                 if(obj.getString("Perfect_week").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.perfect_week);
                     tv_achivementname.setText("Perfect Week");
@@ -225,7 +225,7 @@ public class Achivement_Details extends Fragment
                     tv_achivementdate.setText("Earn the Perfect week achievement by getting your first perfect week");
                 b=false;
                 }
-            }else if(i==4) {
+            }else if(i==10) {
                 if(obj.getString("Ten_five_point_clients").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.ten_five_point_clients);
                     tv_achivementname.setText("Ten Five Points Clients");
@@ -239,7 +239,7 @@ public class Achivement_Details extends Fragment
                     tv_achivementdate.setText("Earn the Ten five point clients achievement by rating ten 4/5 point clients");
                 b=false;
                 }
-            }else if(i==5) {
+            }else if(i==11) {
                 if(obj.getString("Ten_five_point_recruits").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.ten_five_point_recruits);
                     tv_achivementname.setText("Ten Five Points Recruits");
@@ -253,7 +253,7 @@ public class Achivement_Details extends Fragment
                     tv_achivementdate.setText("Earn the Ten five point recruits achievement by rating ten 4/5 point recruits");
                b=false;
                 }
-            }else if(i==17) {
+            }else if(i==12) {
                 if(obj.getString("Ten_new_contacts_added").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.ten_new_contacts_added);
                     tv_achivementname.setText("Ten new contacts added");
@@ -267,7 +267,7 @@ public class Achivement_Details extends Fragment
                     tv_achivementdate.setText("Earn the Ten new contacts added achievement by adding 10 new contacts within one week");
                b=false;
                 }
-            }else if(i==19) {
+            }else if(i==13) {
                 if(obj.getString("Thirty_new_contacts_added").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.thirty_new_contacts_added);
                     tv_achivementname.setText("Thirty new contacts added");
@@ -281,7 +281,7 @@ public class Achivement_Details extends Fragment
                     tv_achivementdate.setText("Earn the Thirty new contacts added achievement by");
                b=false;
                 }
-            }else if(i==6) {
+            }else if(i==14) {
                 if(obj.getString("Three_appointments_set").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.three_appointments_set);
                     tv_achivementname.setText("3 Appointment Set");
@@ -296,7 +296,7 @@ public class Achivement_Details extends Fragment
                     tv_achivementdate.setText("Earn the Three appointments set achievement by setting three appointments");
                b=false;
                 }
-            }else if(i==18) {
+            }else if(i==15) {
                 if(obj.getString("Twenty_new_contacts_added").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.twenty_new_contacts_added);
                     tv_achivementname.setText("Twenty New Contacts Added");
@@ -326,7 +326,7 @@ public class Achivement_Details extends Fragment
                     tv_achivementdate.setText("Earn the Two hundred KTs achievement by going on 200 KTs in one year");
                b=false;
                 }
-            }else if(i==10) {
+            }else if(i==17) {
                 if(obj.getString("Two_week_eight_five_three_one").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.two_week_eight_five_three_one);
                     tv_achivementname.setText("Two Week 8531");
@@ -341,7 +341,7 @@ public class Achivement_Details extends Fragment
                     tv_achivementdate.setText("Earn the Two week eight five three one achievement by getting an 8-5-3-1 in a two week period");
                 b=false;
                 }
-            }else if(i==7) {
+            }else if(i==18) {
                 if(obj.getString("Went_on_three_KTs").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.went_on_three_kts);
                     tv_achivementname.setText("Went on three KTs");
@@ -356,7 +356,7 @@ public class Achivement_Details extends Fragment
                     tv_achivementdate.setText("Earn the first Went on three KTs achievement by going on three KTs");
                 b=false;
                 }
-            }else if(i==0) {
+            }else if(i==19) {
                 if(obj.getString("Top_speed").equalsIgnoreCase("true")){
                     iv.setImageResource(R.drawable.top_speed);
                     tv_achivementname.setText("Top Speed");

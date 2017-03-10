@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -117,26 +116,14 @@ public class Edit_Profile extends Fragment implements View.OnClickListener {
         lay_phone=(RelativeLayout)v.findViewById(R.id.lay_phone);
         lay_password=(RelativeLayout)v.findViewById(R.id.lay_password);
 
-//        tv_fname.setText(pref.getString("givenName",""));
-//        tv_lname.setText(pref.getString("familyName",""));
-//        tv_phone.setText(pref.getString("phoneNumber",""));
+        tv_fname.setText(pref.getString("givenName",""));
+        tv_lname.setText(pref.getString("familyName",""));
+        tv_phone.setText(pref.getString("phoneNumber",""));
 
         lay_phone.setOnClickListener(this);
         lay_lname.setOnClickListener(this);
         lay_fname.setOnClickListener(this);
         lay_password.setOnClickListener(this);
-
-
-
-        if(!TextUtils.isEmpty(pref.getString("givenName",""))  &&(pref.getString("givenName","")!=null)) {
-            tv_fname.setText(pref.getString("givenName", ""));
-        }
-        if(!TextUtils.isEmpty(pref.getString("familyName",""))) {
-            tv_lname.setText(pref.getString("familyName", ""));
-        }
-        if(!TextUtils.isEmpty(pref.getString("phoneNumber", ""))) {
-            tv_phone.setText(pref.getString("phoneNumber", ""));
-        }
 
     }
 

@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -144,6 +145,9 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
         firebaseAuth = FirebaseAuth.getInstance();
 
         mref=new Firebase(Constants.URL);
+
+
+
 
         storageRef= FirebaseStorage.getInstance().getReference();
 
@@ -262,11 +266,15 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
                         .cacheOnDisk(true)
                         .build();
 
-                Log.e("profilepic",pref.getString("profilePictureURL","null image path"));
 
 
+
+                if(getActivity()==null)
+                    return;
                 ImageLoader imageLoader = ImageLoader.getInstance();
                 imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
+
+
                 imageLoader.getInstance().displayImage(ConvertParseString(data.get(0).getProfilePictureURL()), Profile_pic, options, animateFirstListener);
 
                 tv_username.setText(data.get(0).getGivenName());

@@ -2,25 +2,18 @@ package Adapter;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.firebase.client.Firebase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,27 +33,57 @@ import u.activitymanager.R;
 public class RVPRequestAdapter  extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context c;
     ArrayList<JSONObject> data;
-    StorageReference storageRef;
-    Firebase mref;
-    SharedPreferences pref;
-
 
     public RVPRequestAdapter(Context c, ArrayList<JSONObject> data) {
         this.c = c;
         this.data = data;
-        Log.e("size",data.size()+"");
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
         RelativeLayout layout;
-        TextView name, detail;
-         LinearLayout view;
+        TextView name,detail;
         public ViewHolder(View itemView) {
             super(itemView);
-            this.view=(LinearLayout)itemView.findViewById(R.id.layout);
-            this.name = (TextView) itemView.findViewById(R.id.name);
-            this.detail = (TextView) itemView.findViewById(R.id.detail);
+
+            this.name=(TextView)itemView.findViewById(R.id.name);
+            this.detail=(TextView)itemView.findViewById(R.id.detail);
+         itemView.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 showAllowDialog();
+             }
+
+             private void showAllowDialog() {
+
+
+            final Dialog     RvpDialog=new Dialog(c);
+                 RvpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                 RvpDialog.setContentView(R.layout.allowrequest_dialog);
+                 Window window = RvpDialog.getWindow();
+                 TextView tv_send=(TextView)RvpDialog.findViewById(R.id.tv_save);
+                 TextView tv_cancel=(TextView)RvpDialog.findViewById(R.id.cancel);
+                 tv_send.setText("Send");
+
+                 tv_cancel.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View view) {
+                         RvpDialog.dismiss();
+                     }
+                 });
+                 tv_send.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View view) {
+
+                         RvpDialog.dismiss();
+
+                     }
+                 });
+
+                 window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                 RvpDialog.show();
+             }
+         });
         }
     }
     @Override
@@ -83,76 +106,6 @@ public class RVPRequestAdapter  extends  RecyclerView.Adapter<RecyclerView.ViewH
         try {
             holder1.name.setText(data.get(position).getString("username"));
             holder1.detail.setText(data.get(position).getString("key")+" has requested to become an RVP");
-            holder1.view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    final Dialog RvpDialog = new Dialog(c);
-                    RvpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    RvpDialog.setContentView(R.layout.allowrequest_dialog);
-                    Window window = RvpDialog.getWindow();
-                    TextView tv_send = (TextView) RvpDialog.findViewById(R.id.tv_save);
-                    TextView tv_cancel = (TextView) RvpDialog.findViewById(R.id.cancel);
-                   // tv_send.setText("Send");
-
-                    tv_cancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            RvpDialog.dismiss();
-
-                        Log.e("pos",position+"");
-                            try {
-
-                                Log.e("enter", "enter");
-            pref = c.getSharedPreferences("userpref", 0);
-            Firebase.setAndroidContext(c);
-            storageRef = FirebaseStorage.getInstance().getReference();
-            mref = new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
-            Log.e("values", data.get(position).getString("key") + "," + data.get(position).getString("key"));
-            mref.child("Solution Numbers").child(data.get(position).getString("RVPsoltn_number")).child("Pending Requests").child("RVP Requests").child(data.get(position).getString("key")).removeValue();
-
-                                //removeRequest(data.get(getAdapterPosition()).getString("key"), data.get(getAdapterPosition()).getString("data.get(getAdapterPosition()).getString(\"key\")"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    tv_send.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                            //  RvpDialog.dismiss();
-                            RvpDialog.dismiss();
-
-                            Log.e("pos",position+"");
-                            try {
-
-                                Log.e("enter", "enter");
-                                pref = c.getSharedPreferences("userpref", 0);
-                                Firebase.setAndroidContext(c);
-                                storageRef = FirebaseStorage.getInstance().getReference();
-                                mref = new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
-                                Map sendRequest = new HashMap();
-                                sendRequest.put("rvp_solution_number","");
-                                sendRequest.put("upline_solution_number","");
-                                Log.e("uid",data.get(position).getString("uid"));
-                                mref.child("users").child(data.get(position).getString("uid")).updateChildren(sendRequest);
-                                Log.e("values", data.get(position).getString("key") + "," + data.get(position).getString("key"));
-                                mref.child("Solution Numbers").child(data.get(position).getString("RVPsoltn_number")).child("Pending Requests").child("RVP Requests").child(data.get(position).getString("key")).removeValue();
-
-                                //removeRequest(data.get(getAdapterPosition()).getString("key"), data.get(getAdapterPosition()).getString("data.get(getAdapterPosition()).getString(\"key\")"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    });
-
-                    window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    RvpDialog.show();
-
-                }
-            });
         } catch (JSONException e) {
             e.printStackTrace();
         }

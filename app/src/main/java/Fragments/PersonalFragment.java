@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -162,11 +163,8 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
         imageLoader.getInstance().displayImage(pref.getString("profilePictureURL",""), Profile_pic, options, animateFirstListener);
-        if (pref.getString("givenName","") != null && !TextUtils.isEmpty(pref.getString("givenName","")) && !pref.getString("givenName","").equalsIgnoreCase("null"))
-        {
-            tv_username.setText(pref.getString("givenName", "") );
-        }
-      //  tv_username.setText(pref.getString("givenName","")+" "+pref.getString("familyName",""));
+
+        tv_username.setText(pref.getString("givenName","")+" "+pref.getString("familyName",""));
         tv_phone.setText(pref.getString("solution_number",""));
 
         getinfirebase();
@@ -181,7 +179,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                Log.e("get achievements", dataSnapshot.getValue() + " data");
+                Log.e("get data from server", dataSnapshot.getValue() + " data");
                 Log.e("child", dataSnapshot.getValue() + " abc");
                 achieve_detail = ConvertParseString(dataSnapshot.getValue());
                 setAch();
@@ -557,23 +555,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 scaled.compress(Bitmap.CompressFormat.PNG, 100, baos);
                 byte[] b = baos.toByteArray();
 
-//                st_base64 = Base64.encodeToString(b, Base64.DEFAULT);
-//
-//                //st_base64=st_base64.replaceAll(" ","").replaceAll("\n","");
-//
-//                Log.e("base64",st_base64);
 
-//                Bitmap bitmap1 = MediaStore.Images.Media.getBitmap(getContentResolver() ,Crop.getOutput(result) );
-//
-//                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//                bitmap1.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-//                byte[] byteArray = byteArrayOutputStream .toByteArray();
-//                st_base64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
-                //st_base64=st_base64.replaceAll(" ","").replaceAll("\n","");
-
-//                Log.e("base642",st_base64);
-//                Upload_Base64();
 
             } catch (Exception e) {
                 Log.e("e","e",e);
@@ -595,7 +577,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                        Log.e("get notes",dataSnapshot.getValue()+" data");
+                        Log.e("get data from server",dataSnapshot.getValue()+" data");
 
                         JSONArray jsonArray =  new JSONArray();
                         for (com.firebase.client.DataSnapshot child : dataSnapshot.getChildren()) {
@@ -613,20 +595,37 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                                 switch(child.child("type").getValue().toString())
 
                                 {
-                                    case "Invited to Opportunity Meeting":
 
-                                        count[6]++;
 
+                                    case "Closed Life":
+
+
+                                        count[3]++;
+                                        count[4]=count[4]+Integer.parseInt(child.child("amount").getValue().toString());
                                         break;
-
-
-                                    case "Went to Opportunity Meeting":
+                                    case "Invited to Opportunity Meeting":
 
                                         count[7]++;
 
                                         break;
 
+
+                                    case "Went To Opportunity Meeting":
+
+                                        count[8]++;
+
+
+
                                     case "Set Appointment":
+
+                                        Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
+
+                                        if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
+
+
+                                            count[5]++;
+
+
 
                                         count[0]++;
                                         break;
@@ -639,6 +638,41 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                                     case "Closed IBA":
 
                                         count[3]++;
+                                        break;
+
+
+                                    case "Call Back":
+
+                                        Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
+
+                                        if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
+
+
+                                            count[5]++;
+
+                                        break;
+
+
+                                    case "Appt Set To Closed IBA":
+
+                                        Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
+
+                                        if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
+
+
+                                            count[5]++;
+
+                                        break;
+
+                                    case "Appt Set To Closed Life":
+
+                                        Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
+
+                                        if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
+
+
+                                            count[5]++;
+
                                         break;
 
                                 }

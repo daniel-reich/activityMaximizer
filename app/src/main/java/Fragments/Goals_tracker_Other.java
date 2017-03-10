@@ -185,6 +185,7 @@ public class Goals_tracker_Other extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         menu.findItem(R.id.menu).setIcon(null);
         menu.findItem(R.id.menu).setTitle("NEW");
+        menu.findItem(R.id.menu).setVisible(false);
     }
 
     @Override

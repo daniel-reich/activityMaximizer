@@ -91,7 +91,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
 
 
     SpeedView speedview;
-    int count[]={0,0,0,0,0,0,0,0};
+    int count[]=new int[8];
     HashMap<String,String> base,downline;
 
     @Override
@@ -475,13 +475,162 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
 
     public void getnotefromfirebase(String uid)
     {
+
+
+        mref.child("events")
+                .child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Log.e("get data from  events",dataSnapshot.getValue()+" data");
+
+                JSONArray jsonArray =  new JSONArray();
+                for (com.firebase.client.DataSnapshot child : dataSnapshot.getChildren()) {
+                    JSONObject jGroup = new JSONObject();
+                    Log.e("childddd",child.child("contactName").getKey()+" abc");
+                    //alue().toString(),child.child("created").getValue().toString(),child.child("date").getValue().toString(),child.child("eventKitID").getValue().toString(),child.child("ref").getValue().toString(),child.child("type").getValue().toString(),child.child("userName").getValue().toString(),child.child("userRef").getValue().toString()));
+                    try {
+
+                        Log.e ("oo",child.child("type").getValue().toString());
+
+                        String activity_list[]={"Set Appointment","Went on KT","Closed Life","closed IBA","Closed Other Business","Appt Set To Closed Life",
+                                "Appt Set To Closed IBA","Invite to Opportunity Meeting","Went To Opportunity Meeting","Call Back","Dark House","Not Interested"};
+
+
+                        switch(child.child("type").getValue().toString())
+
+                        {
+
+
+                            case "Closed Life":
+
+
+                                count[3]++;
+                                count[4]=count[4]+Integer.parseInt(child.child("amount").getValue().toString());
+                                break;
+                            case "Invited to Opportunity Meeting":
+
+                                count[6]++;
+
+                                break;
+
+
+                            case "Went To Opportunity Meeting":
+
+                                count[7]++;
+
+
+                                break;
+
+
+
+                            case "Set Appointment":
+
+                                Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
+
+                                if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
+
+
+                                    count[5]++;
+
+
+
+                                count[0]++;
+                                break;
+
+                            case "Went on KT":
+
+                                count[1]++;
+                                break;
+
+                            case "Closed IBA":
+
+                                count[3]++;
+                                break;
+
+
+                            case "Call Back":
+
+                                Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
+
+                                if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
+
+
+                                    count[5]++;
+
+                                break;
+
+
+                            case "Appt Set To Closed IBA":
+
+                                Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
+
+                                if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
+
+
+                                    count[5]++;
+
+                                break;
+
+                            case "Appt Set To Closed Life":
+
+                                Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
+
+                                if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
+
+
+                                    count[5]++;
+
+                                break;
+
+                        }
+
+
+
+
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e("Exception",e+"");
+                    }
+                }
+
+
+
+                adapter=new personal_list_adapter(getActivity(),count);
+                rview.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                Log.e("jsonarray",jsonArray+" abc");
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
+
+    }
+
+
+
+    public void getnotefromfirebase1(String uid)
+    {
+
+
+
         mref.child("events")
                 .child(uid)
                 .addValueEventListener(new ValueEventListener() {
 
                     @Override
                     public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                        Log.e("get data from server",dataSnapshot.getValue()+" data");
+                        Log.e("get data from  events1",dataSnapshot.getValue()+" data");
+
+
+                        count=new int[8];
 
                         JSONArray jsonArray =  new JSONArray();
                         for (com.firebase.client.DataSnapshot child : dataSnapshot.getChildren()) {
@@ -499,20 +648,40 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
                                 switch(child.child("type").getValue().toString())
 
                                 {
+
+
+                                    case "Closed Life":
+
+
+                                        count[3]++;
+                                        count[4]=count[4]+Integer.parseInt(child.child("amount").getValue().toString());
+                                        break;
                                     case "Invited to Opportunity Meeting":
+
+                                        count[6]++;
+
+                                        break;
+
+
+                                    case "Went To Opportunity Meeting":
 
                                         count[7]++;
 
-                                        break;
-
-
-                                    case "Went to Opportunity Meeting":
-
-                                        count[8]++;
 
                                         break;
+
+
 
                                     case "Set Appointment":
+
+                                        Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
+
+                                        if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
+
+
+                                            count[5]++;
+
+
 
                                         count[0]++;
                                         break;
@@ -527,7 +696,45 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
                                         count[3]++;
                                         break;
 
+
+                                    case "Call Back":
+
+                                        Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
+
+                                        if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
+
+
+                                            count[5]++;
+
+                                        break;
+
+
+                                    case "Appt Set To Closed IBA":
+
+                                        Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
+
+                                        if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
+
+
+                                            count[5]++;
+
+                                        break;
+
+                                    case "Appt Set To Closed Life":
+
+                                        Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
+
+                                        if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
+
+
+                                            count[5]++;
+
+                                        break;
+
                                 }
+
+
+
 
                             }
                             catch (Exception e)
@@ -568,7 +775,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                Log.e("get data from base",dataSnapshot.getValue()+" data");
                 base=new HashMap<String, String>();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     base.put(child.getKey().toString(),child.getValue().toString());
@@ -592,7 +799,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("get data from serverssn",dataSnapshot.getValue()+" data");
+                Log.e("get data from downline",dataSnapshot.getValue()+" data");
                 downline=new HashMap<String, String>();
                 Log.e("child",dataSnapshot.getChildren()+"");
                 for (DataSnapshot child : dataSnapshot.getChildren()) {

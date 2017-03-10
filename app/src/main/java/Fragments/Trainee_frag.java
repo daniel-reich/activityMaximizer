@@ -212,11 +212,13 @@ public class Trainee_frag extends Fragment {
 
 
 
-    public void setDirectAdapter()
-    {
-        adapter=new DownlineAdapter(getActivity(),data,fm,1);
-        directview.setLayoutManager(layoutManager);
-        directview.setAdapter(adapter);
+    public void setDirectAdapter() {
+
+        if (getActivity() != null) {
+            adapter = new DownlineAdapter(getActivity(), data, fm, 1);
+            directview.setLayoutManager(layoutManager);
+            directview.setAdapter(adapter);
+        }
     }
 
 

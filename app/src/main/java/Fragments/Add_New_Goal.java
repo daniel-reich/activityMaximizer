@@ -129,7 +129,7 @@ public class Add_New_Goal extends Fragment implements View.OnClickListener {
         Log.e("currenttime",currentDateTimeString);
 
         DateFormat originalFormat = new SimpleDateFormat("dd MMM yyyy hh:mm:ss a", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        DateFormat targetFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date date = null;
 
         try {
