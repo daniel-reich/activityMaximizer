@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
 
 
-       >
+        >
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -24,6 +24,7 @@
                 android:layout_width="70dp"
                 android:layout_height="80dp"
                 android:gravity="center"
+                android:visibility="gone"
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/holo_orange_dark"
                 android:textColor="@android:color/white"
@@ -31,18 +32,18 @@
                 android:id="@+id/addtoteam"
                 android:text="Add to team"/>
 
-        <TextView
-            android:layout_width="70dp"
-            android:layout_height="80dp"
-            android:gravity="center"
-            android:id="@+id/delete"
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="80dp"
+                android:gravity="center"
+                android:id="@+id/delete"
 
-            android:layout_gravity="center_vertical"
-            android:background="@android:color/holo_red_dark"
-            android:textColor="@android:color/white"
-            android:text="Delete"/>
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/holo_red_dark"
+                android:textColor="@android:color/white"
+                android:text="Delete"/>
 
-    </LinearLayout>
+        </LinearLayout>
     </FrameLayout>
 
     <!-- Your main layout here -->

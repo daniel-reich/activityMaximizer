@@ -175,8 +175,16 @@ public class Trainee_frag extends Fragment {
 
                 {
 
+                    String s="";
 
-                    data.add(new AllDownlines(uid,dataSnapshot.child("givenName").getValue().toString(),dataSnapshot.child("fivePointClients").getValue().toString(),dataSnapshot.child("fivePointRecruits").getValue().toString()));
+                    if(dataSnapshot.child("givenName").getValue()!=null)
+
+                         s=dataSnapshot.child("givenName").getValue().toString();
+
+                    else
+                       s= dataSnapshot.child("givename").getValue().toString();
+
+                    data.add(new AllDownlines(uid,ConvertParseString(s),ConvertParseString(dataSnapshot.child("fivePointClients").getValue().toString()),ConvertParseString(dataSnapshot.child("fivePointRecruits").getValue().toString())));
 
 
                 }

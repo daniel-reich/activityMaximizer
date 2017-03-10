@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -204,7 +205,8 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.findItem(R.id.menu).setVisible(false);
+        menu.findItem(R.id.menu).setVisible(false).setEnabled(false);
+
     }
 
     @Override
@@ -212,7 +214,9 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
         switch (item.getItemId())
         {
             case android.R.id.home:
+              //  getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 getActivity().getSupportFragmentManager().popBackStack();
+                //getActivity().finish();
                 break;
         }
         return super.onOptionsItemSelected(item);

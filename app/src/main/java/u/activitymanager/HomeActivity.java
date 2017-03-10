@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -200,9 +201,11 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
 
             case R.id.home:
                 //Log.e("eft","eft");
+
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new HomeFragment()).addToBackStack(null).commit();
                 break;
             case R.id.contact:
+
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ContactFragment()).addToBackStack(null).commit();
                 break;
             case R.id.downline:
@@ -222,6 +225,25 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
 
     @Override
     public void onMenuItemReselect(@IdRes int i, int i1, boolean b) {
+        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        switch (i)
+        {
 
+            case R.id.home:
+                //Log.e("eft","eft");
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new HomeFragment()).addToBackStack(null).commit();
+                break;
+            case R.id.contact:
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ContactFragment()).addToBackStack(null).commit();
+                break;
+            case R.id.downline:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new DownlineFragment()).addToBackStack(null).commit();
+                break;
+            case R.id.activity:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ActivityFragments()).addToBackStack(null).commit();
+                break;
+        }
     }
 }

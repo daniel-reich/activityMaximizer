@@ -56,6 +56,8 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
     FragmentManager fm;
     SharedPreferences pref;
     String uid="",First_downline="";
+   public static boolean showedit;
+    public static boolean showaddtoteam;
 
     @Nullable
     @Override
@@ -104,6 +106,18 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
 
             case R.id.menu:
                 //showFloatingMenus();
+                showedit=!showedit;
+                Log.e("showedit",showedit+"");
+                if(showedit)
+                {
+                    item.setTitle("Edit");
+
+
+                }
+                else{
+                    item.setTitle("Done");
+
+                }
                 break;
 
         }
@@ -130,6 +144,7 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
             case R.id.team_button:
                 trainees.setSelected(false);
                 team.setSelected(true);
+                showaddtoteam=true;
                 Team_fragment basic_frag = new Team_fragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_layout1,basic_frag).addToBackStack(null).commit();

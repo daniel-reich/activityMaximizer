@@ -14,9 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
@@ -29,17 +27,15 @@ import com.firebase.client.Transaction;
 
 import java.util.ArrayList;
 
-import Fragments.DownlineFragment;
 import Fragments.Downline_details_frag;
-import Fragments.ListContact;
 import model.AllDownlines;
-import model.AllList;
 import u.activitymanager.R;
 
 /**
- * Created by Rohan on 3/7/2017.
+ * Created by root on 10/3/17.
  */
-public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+public class TeamDirectDownlineAdapter   extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final SharedPreferences pref;
     Context c;
     ArrayList<AllDownlines> data;
@@ -47,13 +43,12 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
     private Firebase mref;
 
 
-
     int mode;
     private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
-    
-    
 
-    public DownlineAdapter(Context c, ArrayList<AllDownlines> data, FragmentManager fm,int mode) {
+
+
+    public TeamDirectDownlineAdapter(Context c, ArrayList<AllDownlines> data, FragmentManager fm,int mode) {
         this.c = c;
         this.data=data;
         this.fm=fm;
@@ -67,7 +62,6 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
         TextView username,clientpoint,recruiterpoint;
         SwipeRevealLayout swipeRevealLayout;
         TextView delete,addtoitem;
-        ImageView iv_minus;
         public ViewHolder(View itemView) {
             super(itemView);
             layout=(LinearLayout)itemView.findViewById(R.id.layout);
@@ -76,15 +70,7 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
             recruiterpoint=(TextView)itemView.findViewById(R.id.tv_pointrecuirters_count);
             swipeRevealLayout=(SwipeRevealLayout)itemView.findViewById(R.id.swipeview);
             delete=(TextView)itemView.findViewById(R.id.delete);
-
             addtoitem=(TextView)itemView.findViewById(R.id.addtoteam);
-            if(DownlineFragment.showaddtoteam=true)
-            {
-                addtoitem.setVisibility(View.GONE);
-            }
-            else {
-                addtoitem.setVisibility(View.VISIBLE);
-            }
 
         }
     }
@@ -95,7 +81,7 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
         {
             c=parent.getContext();
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.downline_trainees_adap_item, parent, false);
-            return new ViewHolder(view);
+            return new TeamDirectDownlineAdapter.ViewHolder(view);
 
         }
 
@@ -103,7 +89,7 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        final ViewHolder holder1= (ViewHolder) holder;
+        final TeamDirectDownlineAdapter.ViewHolder holder1= (TeamDirectDownlineAdapter.ViewHolder) holder;
         holder1.username.setText(data.get(position).getName());
         Log.e("dddd",data.get(position).getFivePointRecruits().toString()+" abc");
         if(data.get(position).getFivePointClients().toString().equalsIgnoreCase(""))
@@ -171,122 +157,122 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
         return data.size();
     }
 
-public void Options(final int position)
-{
+    public void Options(final int position)
+    {
 
-    Activity activity=(Activity)c;
-    final AlertDialog.Builder builderSingle = new AlertDialog.Builder(activity);
+        Activity activity=(Activity)c;
+        final AlertDialog.Builder builderSingle = new AlertDialog.Builder(activity);
 
-    builderSingle.setTitle("Select");
+        builderSingle.setTitle("Select");
 
-    final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(activity, android.R.layout.select_dialog_singlechoice);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(activity, android.R.layout.select_dialog_singlechoice);
 
-   if(mode==1)
-    arrayAdapter.add("Add To Team");
-
-
-    arrayAdapter.add("Delete");
+        if(mode==1)
+            arrayAdapter.add("Add To Team");
 
 
-    builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
+        arrayAdapter.add("Delete");
 
 
-            if(which==0)
-            {
+        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
 
-                mref.child("users").child(data.get(position).getUid())
-                        .child("trainer_solution_number").runTransaction(new Transaction.Handler() {
-                    @Override
-                    public Transaction.Result doTransaction(final MutableData currentData) {
+                if(which==0)
+                {
+
+
+                    mref.child("users").child(data.get(position).getUid())
+                            .child("trainer_solution_number").runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(final MutableData currentData) {
 
 
                             currentData.setValue("");
 
 
-                        return Transaction.success(currentData);
-                    }
-
-                    @Override
-                    public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
-                        if (firebaseError != null) {
-                            Log.e("Firebase counter","increement failed");
-
-
-
-                        } else {
-                            Log.d("Firebase counter","increment succeeded.");
-
-                            data.remove(position);
-                            notifyDataSetChanged();
-
+                            return Transaction.success(currentData);
                         }
-                    }
-                });
 
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
+                            if (firebaseError != null) {
+                                Log.e("Firebase counter","increement failed");
+
+
+
+                            } else {
+                                Log.d("Firebase counter","increment succeeded.");
+
+                                data.remove(position);
+                                notifyDataSetChanged();
+
+                            }
+                        }
+                    });
+
+                }
+
+
+                else
+                {
+
+                    mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("downlines").child(data.get(position).getUid()).removeValue();
+
+                    data.remove(position);
+                    notifyDataSetChanged();
+                }
+            }
+        });
+        builderSingle.show();
+
+
+
+    }
+
+
+    public void Deleteitem(int position)
+    {
+        mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("downlines").child(data.get(position).getUid()).removeValue();
+
+        data.remove(position);
+
+        notifyDataSetChanged();
+    }
+
+
+    public void AddToTeam(final int position)
+    {
+        mref.child("users").child(data.get(position).getUid())
+                .child("trainer_solution_number").runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(final MutableData currentData) {
+
+
+                currentData.setValue("");
+
+
+                return Transaction.success(currentData);
             }
 
+            @Override
+            public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
+                if (firebaseError != null) {
+                    Log.e("Firebase counter","increement failed");
 
-            else
-            {
 
-                mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("downlines").child(data.get(position).getUid()).removeValue();
 
-                data.remove(position);
-                notifyDataSetChanged();
+                } else {
+                    Log.d("Firebase counter","increment succeeded.");
+
+                    data.remove(position);
+                    notifyDataSetChanged();
+
+                }
             }
-                    }
-    });
-    builderSingle.show();
-
-
-
-}
-
-
-public void Deleteitem(int position)
-{
-    mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("downlines").child(data.get(position).getUid()).removeValue();
-
-    data.remove(position);
-
-    notifyDataSetChanged();
-}
-
-
-public void AddToTeam(final int position)
-{
-    mref.child("users").child(data.get(position).getUid())
-            .child("trainer_solution_number").runTransaction(new Transaction.Handler() {
-        @Override
-        public Transaction.Result doTransaction(final MutableData currentData) {
-
-
-            currentData.setValue("");
-
-
-            return Transaction.success(currentData);
-        }
-
-        @Override
-        public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
-            if (firebaseError != null) {
-                Log.e("Firebase counter","increement failed");
-
-
-
-            } else {
-                Log.d("Firebase counter","increment succeeded.");
-
-                data.remove(position);
-                notifyDataSetChanged();
-
-            }
-        }
-    });
-}
+        });
+    }
 
 
 
@@ -296,7 +282,7 @@ public void AddToTeam(final int position)
      * Call this method in {@link android.app.Activity#onSaveInstanceState(Bundle)}
      */
     public void saveStates(Bundle outState) {
-       viewBinderHelper.saveStates(outState);
+        viewBinderHelper.saveStates(outState);
     }
 
     /**
@@ -304,9 +290,10 @@ public void AddToTeam(final int position)
      * Call this method in {@link android.app.Activity#onRestoreInstanceState(Bundle)}
      */
     public void restoreStates(Bundle inState) {
-       viewBinderHelper.restoreStates(inState);
+        viewBinderHelper.restoreStates(inState);
     }
 }
+
 
 
 

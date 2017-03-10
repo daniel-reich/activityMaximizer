@@ -37,6 +37,7 @@ import java.util.Map;
 
 import Adapter.BaseDownlineAdapter;
 import Adapter.DownlineAdapter;
+import Adapter.TeamDirectDownlineAdapter;
 import model.AllBaseDownlines;
 import model.AllDownlines;
 import u.activitymanager.HomeActivity;
@@ -59,8 +60,10 @@ public class Team_fragment extends Fragment {
     ArrayList<AllDownlines> data;
     ArrayList<AllBaseDownlines> basedata;
     DownlineAdapter adapter;
+    TeamDirectDownlineAdapter teamdradap;
     BaseDownlineAdapter baseadapter;
     String uid="",First_downline="";
+    boolean addtoteam;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -293,7 +296,7 @@ public class Team_fragment extends Fragment {
             return "";
         }
         else {
-            String lastSeen= (String) obj;
+            String lastSeen= (String.valueOf(obj));
             if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
                 return lastSeen;
             else

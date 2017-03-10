@@ -65,6 +65,9 @@ dependencies {
 
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
 
+    compile 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.0'
+    compile 'com.miguelcatalan:materialsearchview:1.4.0'
+
 
 
 }

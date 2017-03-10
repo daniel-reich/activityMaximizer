@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import Fragments.Need_to_Quality;
 import Fragments.SortByFragment;
@@ -31,10 +32,14 @@ public class ClientAdapter  extends  RecyclerView.Adapter<RecyclerView.ViewHolde
     Context c;
     ArrayList<AllContact> data;
     String role;
+    ArrayList<AllContact> alldata;
     public ClientAdapter(Context c, ArrayList<AllContact> data, String role) {
         this.c = c;
         this.data=data;
         this.role=role;
+
+        this.alldata=new ArrayList<>();
+        this.alldata.addAll(data);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -111,5 +116,26 @@ public class ClientAdapter  extends  RecyclerView.Adapter<RecyclerView.ViewHolde
     public int getItemCount() {
         //Log.e("size", String.valueOf(r.getDotdList().size()));
         return data.size();
+    }
+
+
+
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        data.clear();
+        if (charText.length() == 0) {
+            data.addAll(alldata);
+        }
+        else
+        {
+            for (AllContact wp : alldata)
+            {
+                if (wp.getGivenName().toLowerCase(Locale.getDefault()).contains(charText))
+                {
+                    data.add(wp);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

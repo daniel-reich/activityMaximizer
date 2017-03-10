@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
+import com.chauthai.swipereveallayout.ViewBinderHelper;
+
 import java.util.ArrayList;
 
 import Fragments.Downline_details_frag;
@@ -26,6 +29,8 @@ public class BaseDownlineAdapter extends  RecyclerView.Adapter<RecyclerView.View
     Context c;
     ArrayList<AllBaseDownlines> data;
     FragmentManager fm;
+    private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
+
     public BaseDownlineAdapter(Context c, ArrayList<AllBaseDownlines> data, FragmentManager fm) {
         this.c = c;
         this.data=data;
@@ -36,12 +41,16 @@ public class BaseDownlineAdapter extends  RecyclerView.Adapter<RecyclerView.View
 
         LinearLayout layout;
         TextView username,clientpoint,recruiterpoint;
+        SwipeRevealLayout swipeRevealLayout;
+        TextView delete,Addtoteam;
         public ViewHolder(View itemView) {
             super(itemView);
             layout=(LinearLayout)itemView.findViewById(R.id.layout);
             username=(TextView)itemView.findViewById(R.id.tv_username);
             clientpoint=(TextView)itemView.findViewById(R.id.tv_pointclients_count);
             recruiterpoint=(TextView)itemView.findViewById(R.id.tv_pointrecuirters_count);
+           // swipeRevealLayout=(SwipeRevealLayout)itemView.findViewById(R.id.swipeview);
+            //swipeRevealLayout.setVisibility(View.GONE);
 
         }
     }
@@ -51,7 +60,7 @@ public class BaseDownlineAdapter extends  RecyclerView.Adapter<RecyclerView.View
 
         {
             c=parent.getContext();
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.downline_trainees_adap_item, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.basedownlineitem, parent, false);
             return new ViewHolder(view);
 
         }
@@ -92,6 +101,10 @@ public class BaseDownlineAdapter extends  RecyclerView.Adapter<RecyclerView.View
                         addToBackStack(null).commit();
             }
         });
+
+
+      //  viewBinderHelper.bind(holder1.swipeRevealLayout, String.valueOf(data.get(position)));
+
 
     }
 

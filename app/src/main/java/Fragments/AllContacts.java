@@ -9,7 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ClientCertRequest;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
@@ -51,6 +54,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
     LinearLayoutManager layoutManager;
     ClientAdapter adapter;
     ArrayList<AllContact> data;
+    EditText search_contact;
     String role="client",uid="",uidd="",Ten_new_contacts_added="false",Thirty_new_contacts_added="false",Twenty_new_contacts_added="false";
     @Nullable
     @Override
@@ -65,6 +69,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
         Clients.setSelected(true);
         Recruits.setSelected(false);
         rView=(RecyclerView)view.findViewById(R.id.rview);
+        search_contact=(EditText)view.findViewById(R.id.edt_searchcontact);
        // rView.setLayoutManager(layoutManager);
         layoutManager=new LinearLayoutManager(getActivity());
 
@@ -96,13 +101,37 @@ public class AllContacts extends Fragment implements View.OnClickListener {
         HomeActivity.title.setText("All Contacts");
 
 
+
+        search_contact.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence cs, int start, int before, int count) {
+                if(String.valueOf(cs).length()>0) {
+                    Log.e("Hello", "Hello");
+//                        adapter = new Listing_Adapter(data);
+                    adapter.filter(cs.toString().toLowerCase());
+//
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         return view;
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.findItem(R.id.menu).setVisible(true);
-        menu.findItem(R.id.menu).setIcon(R.mipmap.sort);
+        menu.findItem(R.id.menu).setVisible(false);
+       // menu.findItem(R.id.menu).setIcon(R.mipmap.sort);
         menu.findItem(R.id.list).setVisible(false);
         //   menu.findItem(R.id.list).setIcon(R.mipmap.addlist);
     }
@@ -196,7 +225,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
             return "";
         }
         else {
-            String lastSeen= (String) obj;
+            String lastSeen= String.valueOf(obj);
             if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
                 return lastSeen;
             else
