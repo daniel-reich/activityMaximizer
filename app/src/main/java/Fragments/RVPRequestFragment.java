@@ -110,16 +110,6 @@ public class RVPRequestFragment extends Fragment
                             e.printStackTrace();
                             Log.e("excptn","e",e);
                         }
-                       // map.put(child.getKey().toString(),child.getValue().toString());
-//                    map = dataSnapshot.getValue(Map.class);
-//                    String RVPSolutionNumber = map.get("userRVPSolutionNumber").toString();
-//                    String SolutionNumber = map.get("userSolutionNumber").toString();
-//                    String Uid=map.get("userUID").toString();
-//                    String ref=map.get("ref").toString();
-//                    String UplineSolutionNumber=map.get("userUplineSolutionNumber").toString();
-//                    String username=map.get("username").toString();
-//                    rvpRequests.add(new RVPRequest(child.getKey().toString(),ref,SolutionNumber,RVPSolutionNumber,Uid,UplineSolutionNumber,username));
-//                    downline.put(child.getKey().toString(),child.getValue().toString());
                 }
 
 

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:id="@+id/layout"
-    android:background="#e7e7e7e7"
+    android:background="#fff"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -17,7 +17,7 @@
             android:id="@+id/iv_userimage"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/top_speed"/>
+            android:src="@drawable/user"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -95,7 +95,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="8dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/speed_meter"/>
+                android:src="@drawable/speedo"/>
 
         </LinearLayout>
 

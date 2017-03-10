@@ -206,7 +206,12 @@ public class Profile extends Fragment implements View.OnClickListener {
                 getActivity().finish();
             }
         });
-
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                settingsdialog.dismiss();
+            }
+        });
         tv_editprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
