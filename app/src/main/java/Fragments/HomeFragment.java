@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,7 +60,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     Firebase mref;
     FirebaseAuth firebaseAuth;
     SharedPreferences pref;
-    String time="";
+    String time="",Top_speed="",uid="";
     Date date,d;
     TextView tvDay,tvHour,tvMinute,tvSecond;
     String start_date,end_date;
@@ -89,7 +91,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         HomeActivity.title.setText("Home");
         Firebase.setAndroidContext(getActivity());
         pref=getActivity().getSharedPreferences("userpref",0);
+        uid=pref.getString("uid","");
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        puttopspeedinfirebase();
         firebaseAuth = FirebaseAuth.getInstance();
         AskMarshMallowPermissions();
         getTime();
@@ -361,5 +365,50 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         helpdialog.show();
     }
+
+
+
+    public void puttopspeedinfirebase()
+    {
+        mref.child("users").child(uid).child("achievements").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get data from server", dataSnapshot.getValue() + " data");
+                Log.e("child", dataSnapshot.child("Top_speed").getValue() + " abc");
+                Top_speed = ConvertParseString(dataSnapshot.child("Top_speed").getValue());
+                if (Top_speed.equalsIgnoreCase("false"))
+                {
+                    java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
+                    Log.e("Today is ", timeStampDate.getTime() + "");
+                    String timestamp = String.valueOf(timeStampDate.getTime());
+                    Map newcontact = new HashMap();
+                    newcontact.put("Top_speed", "true");
+                    newcontact.put("Top_speed_date", timestamp);
+                    mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+    public static String ConvertParseString(Object obj ) {
+        if(obj==null)
+        {
+            return "";
+        }
+        else {
+            String lastSeen= String.valueOf(obj);
+            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
+                return lastSeen;
+            else
+                return "";
+        }
+
+    }
+
 
 }
