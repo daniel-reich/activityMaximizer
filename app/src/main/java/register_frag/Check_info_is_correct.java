@@ -88,17 +88,17 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
 
         pref=getActivity().getSharedPreferences("userpref",0);
 
-        rvpsolutionnumber= pref.getString("rvpsolutionnumber","");
-        uplinesolutionnumber=pref.getString("uplinesolutionnumber","");
+        rvpsolutionnumber= pref.getString("rvp_solution_number","");
+        uplinesolutionnumber=pref.getString("upline_solution_number","");
 
         tv_name.setText(pref.getString("givenName",""));
         tv_email.setText(pref.getString("email",""));
         tv_phone.setText(pref.getString("phoneNumber",""));
         tv_state.setText(pref.getString("state",""));
-        tv_rvpnumber.setText(pref.getString("rvpsolutionnumber",""));
-        tv_solutionnumber.setText(pref.getString("solutionnumber",""));
-        tv_uplinenumber.setText(pref.getString("uplinesolutionnumber",""));
-        tv_trainernumber.setText(pref.getString("trainersolutionnumber",""));
+        tv_rvpnumber.setText(pref.getString("rvp_solution_number",""));
+        tv_solutionnumber.setText(pref.getString("solution_number",""));
+        tv_uplinenumber.setText(pref.getString("upline_solution_number",""));
+        tv_trainernumber.setText(pref.getString("trainer_solution_number",""));
 
         st_email=pref.getString("email","");
         st_pass=pref.getString("password","def");
@@ -271,12 +271,12 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
                             mref.child("Solution Numbers").child(pref.getString("solution_number","")).updateChildren(newUserData);
 
 
-                            if(rvpsolutionnumber.length()>1)
-                            {
-                                Map rv = new HashMap();
-                                rv.put(uid, pref.getString("solution_number",""));
-                                mref.child("Solution Numbers").child(rvpsolutionnumber).child("Base").updateChildren(rv);
-                            }
+//                            if(rvpsolutionnumber.length()>1)
+//                            {
+//                                Map rv = new HashMap();
+//                                rv.put(uid, pref.getString("solution_number",""));
+//                                mref.child("Solution Numbers").child(rvpsolutionnumber).child("Base").updateChildren(rv);
+//                            }
                             if(uplinesolutionnumber.length()>1)
                             {
                                 Map dv = new HashMap();
@@ -290,7 +290,7 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
                             fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
                             getActivity().getSupportFragmentManager().beginTransaction().
-                            replace(R.id.splash_layout,new Login()).commit();
+                                    replace(R.id.splash_layout,new Login()).commit();
 
 //                            Intent in =new Intent(getActivity(),HomeActivity.class);
 //                            startActivity(in);

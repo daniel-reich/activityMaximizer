@@ -615,14 +615,14 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                                 {
                                     case "Invited to Opportunity Meeting":
 
-                                        count[7]++;
+                                        count[6]++;
 
                                         break;
 
 
                                     case "Went to Opportunity Meeting":
 
-                                        count[8]++;
+                                        count[7]++;
 
                                         break;
 
