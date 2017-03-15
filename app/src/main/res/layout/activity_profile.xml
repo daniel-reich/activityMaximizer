@@ -324,6 +324,7 @@
                 android:orientation="horizontal"
                 android:paddingBottom="9dp"
                 android:paddingTop="9dp"
+                android:id="@+id/add_partnership_layout"
                 >
 
 

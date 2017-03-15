@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -27,6 +28,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,7 +68,7 @@ public class Profile extends Fragment implements View.OnClickListener {
     MenuItem menu;
     Toolbar toolbar;
     Dialog settingsdialog,helpdialog;
-    RelativeLayout lay_branch_tran;
+    RelativeLayout lay_branch_tran,addPartnershipLayout;
     View view;
     TextView RVP;
     Dialog RvpDialog;
@@ -118,7 +121,8 @@ public class Profile extends Fragment implements View.OnClickListener {
         RVP=(TextView)view.findViewById(R.id.tv_rvp);
         lay_branch_tran=(RelativeLayout)view.findViewById(R.id.lay_branchtransfer);
         profile_pic=(CircleImageView)view.findViewById(R.id.profile_pic);
-
+         addPartnershipLayout=(RelativeLayout) view.findViewById(R.id.add_partnership_layout);
+        addPartnershipLayout.setOnClickListener(this);
         RVP.setOnClickListener(this);
         lay_branch_tran.setOnClickListener(this);
 
@@ -228,6 +232,10 @@ public class Profile extends Fragment implements View.OnClickListener {
                 break;
             case R.id.lay_branchtransfer:
                 showBranch();
+                break;
+            case R.id.add_partnership_layout:
+                showPartnershipDialog();
+                break;
         }
     }
 
@@ -297,6 +305,61 @@ public class Profile extends Fragment implements View.OnClickListener {
         RvpDialog.show();
     }
 
+
+
+
+
+
+
+
+    private void showPartnershipDialog()
+    {
+        RvpDialog=new Dialog(getActivity());
+        RvpDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        RvpDialog.setContentView(R.layout.partnershiprequestdialog);
+        Window window = RvpDialog.getWindow();
+        TextView tv_send=(TextView)RvpDialog.findViewById(R.id.tv_send);
+        TextView tv_cancel=(TextView)RvpDialog.findViewById(R.id.cancel);
+        final EditText PartnerSolutionNumber=(EditText)RvpDialog.findViewById(R.id.et_partner_solution_number);
+
+        //tv_send.setText("Send");
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RvpDialog.dismiss();
+            }
+        });
+        tv_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RvpDialog.dismiss();
+
+                if (PartnerSolutionNumber.getText().toString().length()>0)
+                {
+                    // add Partnership request
+                    Map sendRequest = new HashMap();
+                    sendRequest.put("name",(pref.getString("givenName","")+" "+(pref.getString("familyName",""))));
+                    sendRequest.put("solutionNumber",(pref.getString("solution_number","")));
+                    sendRequest.put("uid",(pref.getString("uid","")) );
+//                    sendRequest.put("userRVPSolutionNumber",pref.getString("rvp_solution_number",""));
+//                    sendRequest.put("userSolutionNumber",pref.getString("solution_number",""));
+//                    sendRequest.put("userUID",pref.getString("uid",""));
+//                    sendRequest.put("userUplineSolutionNumber",pref.getString("upline_solution_number",""));
+                    Log.e("sltn no1",pref.getString("rvp_solution_number","")+","+(pref.getString("givenName","")));
+                    mref.child("Solution Numbers").child(PartnerSolutionNumber.getText().toString()).child("PartnerShip Request").updateChildren(sendRequest);
+                }
+                else
+                {
+                    Toast.makeText(getActivity(),"Please enter your Partner Solution Number",Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            }
+        });
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        RvpDialog.show();
+    }
     //  Select Image  statrt
 
     private void selectPicDialog() {

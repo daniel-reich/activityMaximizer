@@ -43,6 +43,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.ntt.customgaugeview.library.GaugeView;
 import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
@@ -89,24 +90,28 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
     TextView tv_phone,tv_username;
     private String uid,solutionnumber;
 
-
-    SpeedView speedview;
-    int count[]=new int[8];
+    DiamondImageView profile;
+    ImageView image;
+    GaugeView speedview;
+    int count[]={0,0,0,0,0,0,0,0};
     HashMap<String,String> base,downline;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.hometeamfrag,container,false);
+        view=inflater.inflate(R.layout.personal_frag,container,false);
         setHasOptionsMenu(true);
         Log.e("check","check");
 
         rview=(RecyclerView)view.findViewById(R.id.rview);
         Profile_pic=(DiamondImageView)view.findViewById(R.id.profile_pic);
+        Profile_pic.setVisibility(View.GONE);
+        image=(ImageView) view.findViewById(R.id.im_achievement);
+        image.setVisibility(View.GONE);
 
         tv_username=(TextView) view.findViewById(R.id.tv_username);
         tv_phone=(TextView)view.findViewById(R.id.tv_phone);
 
-        speedview=(SpeedView)view.findViewById(R.id.meter);
+        speedview=(GaugeView)view.findViewById(R.id.meter);
 
 
 
@@ -121,11 +126,12 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
         });
 
 
-
+       // speedview.setShowRangeValues(true);
+        //speedview.setTargetValue(10);
 
 
 // change MAX speed to 320
-        speedview.setMaxSpeed(100);
+       // speedview.setMaxSpeed(100);
 // change speed to 140 Km/h
 
         linearLayoutManager=new LinearLayoutManager(getActivity());
@@ -192,11 +198,6 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
             case R.id.profile_pic:
                 selectPicDialog();
                 break;
-            case R.id.tv_filter:
-                selectViewdialog.dismiss();
-                getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.frame_layout,new Team_Points_Selection_Frag()).addToBackStack(null).commit();
-                break;
         }
 
     }
@@ -217,7 +218,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
     private void selectViewDialog() {
         selectViewdialog=new Dialog(getActivity());
         selectViewdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        selectViewdialog.setContentView(R.layout.teamgraphviewdialog);
+        selectViewdialog.setContentView(R.layout.graphviewdialog);
         Window window = selectViewdialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
         wlp.gravity = Gravity.BOTTOM;
@@ -226,10 +227,8 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         TextView Activity_value_breakdown=(TextView)selectViewdialog.findViewById(R.id.tv_breakdown);
         TextView Graph=(TextView)selectViewdialog.findViewById(R.id.tv_graph);
-        TextView tv_filter=(TextView)selectViewdialog.findViewById(R.id.tv_filter);
         Activity_value_breakdown.setOnClickListener(this);
         Graph.setOnClickListener(this);
-        tv_filter.setOnClickListener(this);
         selectViewdialog.show();
     }
 
@@ -475,162 +474,13 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
 
     public void getnotefromfirebase(String uid)
     {
-
-
-        mref.child("events")
-                .child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Log.e("get data from  events",dataSnapshot.getValue()+" data");
-
-                JSONArray jsonArray =  new JSONArray();
-                for (com.firebase.client.DataSnapshot child : dataSnapshot.getChildren()) {
-                    JSONObject jGroup = new JSONObject();
-                    Log.e("childddd",child.child("contactName").getKey()+" abc");
-                    //alue().toString(),child.child("created").getValue().toString(),child.child("date").getValue().toString(),child.child("eventKitID").getValue().toString(),child.child("ref").getValue().toString(),child.child("type").getValue().toString(),child.child("userName").getValue().toString(),child.child("userRef").getValue().toString()));
-                    try {
-
-                        Log.e ("oo",child.child("type").getValue().toString());
-
-                        String activity_list[]={"Set Appointment","Went on KT","Closed Life","closed IBA","Closed Other Business","Appt Set To Closed Life",
-                                "Appt Set To Closed IBA","Invite to Opportunity Meeting","Went To Opportunity Meeting","Call Back","Dark House","Not Interested"};
-
-
-                        switch(child.child("type").getValue().toString())
-
-                        {
-
-
-                            case "Closed Life":
-
-
-                                count[3]++;
-                                count[4]=count[4]+Integer.parseInt(child.child("amount").getValue().toString());
-                                break;
-                            case "Invited to Opportunity Meeting":
-
-                                count[6]++;
-
-                                break;
-
-
-                            case "Went To Opportunity Meeting":
-
-                                count[7]++;
-
-
-                                break;
-
-
-
-                            case "Set Appointment":
-
-                                Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
-
-                                if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
-
-
-                                    count[5]++;
-
-
-
-                                count[0]++;
-                                break;
-
-                            case "Went on KT":
-
-                                count[1]++;
-                                break;
-
-                            case "Closed IBA":
-
-                                count[3]++;
-                                break;
-
-
-                            case "Call Back":
-
-                                Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
-
-                                if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
-
-
-                                    count[5]++;
-
-                                break;
-
-
-                            case "Appt Set To Closed IBA":
-
-                                Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
-
-                                if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
-
-
-                                    count[5]++;
-
-                                break;
-
-                            case "Appt Set To Closed Life":
-
-                                Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
-
-                                if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
-
-
-                                    count[5]++;
-
-                                break;
-
-                        }
-
-
-
-
-                    }
-                    catch (Exception e)
-                    {
-                        Log.e("Exception",e+"");
-                    }
-                }
-
-
-
-                adapter=new personal_list_adapter(getActivity(),count);
-                rview.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-                Log.e("jsonarray",jsonArray+" abc");
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-
-
-
-    }
-
-
-
-    public void getnotefromfirebase1(String uid)
-    {
-
-
-
         mref.child("events")
                 .child(uid)
                 .addValueEventListener(new ValueEventListener() {
 
                     @Override
                     public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                        Log.e("get data from  events1",dataSnapshot.getValue()+" data");
-
-
-                        count=new int[8];
+                        Log.e("get data from server",dataSnapshot.getValue()+" data");
 
                         JSONArray jsonArray =  new JSONArray();
                         for (com.firebase.client.DataSnapshot child : dataSnapshot.getChildren()) {
@@ -648,40 +498,20 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
                                 switch(child.child("type").getValue().toString())
 
                                 {
-
-
-                                    case "Closed Life":
-
-
-                                        count[3]++;
-                                        count[4]=count[4]+Integer.parseInt(child.child("amount").getValue().toString());
-                                        break;
                                     case "Invited to Opportunity Meeting":
-
-                                        count[6]++;
-
-                                        break;
-
-
-                                    case "Went To Opportunity Meeting":
 
                                         count[7]++;
 
-
                                         break;
 
 
+                                    case "Went to Opportunity Meeting":
+
+                                        count[8]++;
+
+                                        break;
 
                                     case "Set Appointment":
-
-                                        Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
-
-                                        if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
-
-
-                                            count[5]++;
-
-
 
                                         count[0]++;
                                         break;
@@ -696,45 +526,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
                                         count[3]++;
                                         break;
 
-
-                                    case "Call Back":
-
-                                        Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
-
-                                        if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
-
-
-                                            count[5]++;
-
-                                        break;
-
-
-                                    case "Appt Set To Closed IBA":
-
-                                        Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
-
-                                        if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
-
-
-                                            count[5]++;
-
-                                        break;
-
-                                    case "Appt Set To Closed Life":
-
-                                        Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
-
-                                        if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
-
-
-                                            count[5]++;
-
-                                        break;
-
                                 }
-
-
-
 
                             }
                             catch (Exception e)
@@ -775,7 +567,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("get data from base",dataSnapshot.getValue()+" data");
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
                 base=new HashMap<String, String>();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     base.put(child.getKey().toString(),child.getValue().toString());
@@ -799,7 +591,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("get data from downline",dataSnapshot.getValue()+" data");
+                Log.e("get data from serverssn",dataSnapshot.getValue()+" data");
                 downline=new HashMap<String, String>();
                 Log.e("child",dataSnapshot.getChildren()+"");
                 for (DataSnapshot child : dataSnapshot.getChildren()) {

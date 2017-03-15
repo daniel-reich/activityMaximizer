@@ -12,7 +12,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -38,6 +37,8 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.github.anastr.speedviewlib.DeluxeSpeedView;
+import com.github.anastr.speedviewlib.PointerSpeedometer;
 import com.github.anastr.speedviewlib.SpeedView;
 import com.github.siyamed.shapeimageview.DiamondImageView;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -51,6 +52,8 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.ntt.customgaugeview.library.GaugeView;
+
 import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
@@ -66,7 +69,7 @@ import java.util.Map;
 import Adapter.adapter;
 import Adapter.personal_list_adapter;
 import model.Activity_breakdown_getset;
-import register_frag.RegisterationDetail;
+
 import u.activitymanager.R;
 import utils.AnimateFirstDisplayListener;
 
@@ -97,7 +100,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     private String uid;
     ImageView iv;
     ArrayList<Activity_breakdown_getset> table_data;
-    SpeedView speedview;
+    GaugeView speedview;
     String achieve_detail="";
     int count[]={0,0,0,0,0,0,0,0};
 
@@ -114,8 +117,12 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         tv_phone=(TextView)view.findViewById(R.id.tv_phone);
         iv=(ImageView)view.findViewById(R.id.im_achievement);
 
-        speedview=(SpeedView)view.findViewById(R.id.meter);
+        speedview=(GaugeView) view.findViewById(R.id.meter);
+      //  speedview.setShowRangeValues(true);
 
+//        speedview.setPointerColor(getActivity().getResources().getColor(android.R.color.white));
+//        speedview.setSpeedometerColor(getActivity().getResources().getColor(android.R.color.transparent));
+         // speedview.setSpeedBackgroundColor(getActivity().getResources().getColor(android.R.color.transparent));
         speedview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,7 +135,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
 
 // change MAX speed to 320
-        speedview.setMaxSpeed(100);
+      //  speedview.setMaxSpeed(100);
 // change speed to 140 Km/h
 
         linearLayoutManager=new LinearLayoutManager(getActivity());
@@ -163,14 +170,54 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
         imageLoader.getInstance().displayImage(pref.getString("profilePictureURL",""), Profile_pic, options, animateFirstListener);
-
-        tv_username.setText(pref.getString("givenName","")+" "+pref.getString("familyName",""));
+        if (pref.getString("givenName","") != null && !TextUtils.isEmpty(pref.getString("givenName","")) && !pref.getString("givenName","").equalsIgnoreCase("null"))
+        {
+            tv_username.setText(pref.getString("givenName", "") );
+        }
+      //  tv_username.setText(pref.getString("givenName","")+" "+pref.getString("familyName",""));
         tv_phone.setText(pref.getString("solution_number",""));
 
         getinfirebase();
 
+        getinfirebasedailipoint();
+
         return view;
     }
+
+
+
+
+    public void getinfirebasedailipoint()
+    {
+        mref.child("users").child(uid).child("dailyPointAverages").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get achievements1111", dataSnapshot.getValue() + " data");
+                Log.e("child11111111111", dataSnapshot.getValue() + " abc");
+
+                for(com.firebase.client.DataSnapshot child:dataSnapshot.getChildren()){
+
+//                    String key=child.getKey();
+
+                  //  int value= Integer.parseInt(child.getValue());
+                    long value=((Long)child.getValue());
+                    Log.e("achievementToShow",value+"");
+                    speedview.setTargetValue(value);
+
+                }
+
+               // achieve_detail = ConvertParseString(dataSnapshot.getValue());
+               // setAch();
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
 
 
     public void getinfirebase()
@@ -179,7 +226,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                Log.e("get data from server", dataSnapshot.getValue() + " data");
+                Log.e("get achievements", dataSnapshot.getValue() + " data");
                 Log.e("child", dataSnapshot.getValue() + " abc");
                 achieve_detail = ConvertParseString(dataSnapshot.getValue());
                 setAch();
@@ -555,8 +602,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 scaled.compress(Bitmap.CompressFormat.PNG, 100, baos);
                 byte[] b = baos.toByteArray();
 
-
-
             } catch (Exception e) {
                 Log.e("e","e",e);
                 e.printStackTrace();
@@ -577,7 +622,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                        Log.e("get data from server",dataSnapshot.getValue()+" data");
+                        Log.e("get notes",dataSnapshot.getValue()+" data");
 
                         JSONArray jsonArray =  new JSONArray();
                         for (com.firebase.client.DataSnapshot child : dataSnapshot.getChildren()) {
@@ -595,37 +640,20 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                                 switch(child.child("type").getValue().toString())
 
                                 {
-
-
-                                    case "Closed Life":
-
-
-                                        count[3]++;
-                                        count[4]=count[4]+Integer.parseInt(child.child("amount").getValue().toString());
-                                        break;
                                     case "Invited to Opportunity Meeting":
+
+                                        count[6]++;
+
+                                        break;
+
+
+                                    case "Went to Opportunity Meeting":
 
                                         count[7]++;
 
                                         break;
 
-
-                                    case "Went To Opportunity Meeting":
-
-                                        count[8]++;
-
-
-
                                     case "Set Appointment":
-
-                                        Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
-
-                                        if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
-
-
-                                            count[5]++;
-
-
 
                                         count[0]++;
                                         break;
@@ -640,41 +668,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                                         count[3]++;
                                         break;
 
-
-                                    case "Call Back":
-
-                                        Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
-
-                                        if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
-
-
-                                            count[5]++;
-
-                                        break;
-
-
-                                    case "Appt Set To Closed IBA":
-
-                                        Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
-
-                                        if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
-
-
-                                            count[5]++;
-
-                                        break;
-
-                                    case "Appt Set To Closed Life":
-
-                                        Log.e("timestamp111",Long.parseLong(child.child("date").getValue().toString())+","+System.currentTimeMillis());
-
-                                        if(Long.parseLong(child.child("date").getValue().toString())> System.currentTimeMillis())
-
-
-                                            count[5]++;
-
-                                        break;
-
                                 }
 
                             }
@@ -684,19 +677,9 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                             }
                         }
 
-
-
                         adapter=new personal_list_adapter(getActivity(),count);
                         rview.setAdapter(adapter);
                         Log.e("jsonarray",jsonArray+" abc");
-
-
-
-
-
-
-
-
                     }
                     @Override
                     public void onCancelled(FirebaseError error) {

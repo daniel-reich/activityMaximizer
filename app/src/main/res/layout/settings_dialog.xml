@@ -80,6 +80,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/blue"
                 android:id="@+id/tv_admin"
+                android:visibility="gone"
                 android:gravity="center"
                 android:paddingBottom="11dp"
                 android:paddingTop="11dp"

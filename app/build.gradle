@@ -18,6 +18,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    repositories {
+        jcenter()
+    }
 
     android {
         packagingOptions {
@@ -62,12 +65,11 @@ dependencies {
     compile 'com.github.anastr:speedviewlib:1.1.4'
     compile 'com.soundcloud.android:android-crop:1.0.0@aar'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-
+    compile 'com.github.thuat26:CustomGaugeView:1.0'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
 
     compile 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.0'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
-
 
 
 }
