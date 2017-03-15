@@ -103,6 +103,7 @@ public class ClientAdapter  extends  RecyclerView.Adapter<RecyclerView.ViewHolde
                 args.putString("rating", String.valueOf(data.get(position).getRating()));
                 args.putString("recruitRating", String.valueOf(data.get(position).getRecruitRating()));
                 args.putString("ref", data.get(position).getRef().toString());
+                args.putSerializable("allcontact",data.get(position));
                 basic_frag.setArguments(args);
 
                 ((FragmentActivity) c).getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, basic_frag).

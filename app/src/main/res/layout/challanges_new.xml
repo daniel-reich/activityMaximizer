@@ -11,69 +11,189 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:background="#ccc"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold"
-        android:text="Challange Name"/>
-    <TextView
-        android:id="@+id/tv_settitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:hint="Set Title"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="normal"
-        />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:background="#ccc"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:text="Challange Name"/>
+        <TextView
+            android:id="@+id/tv_settitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:hint="Set Title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="normal"
+            />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:background="#ccc"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold"
-        android:text="Reward"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:background="#ccc"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:text="Reward"/>
 
-    <TextView
-        android:id="@+id/tv_setreward"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="normal"
-        android:hint="Set a Reward"
-        />
+        <TextView
+            android:id="@+id/tv_setreward"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="normal"
+            android:hint="Set a Reward"
+            />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold"
-        android:background="#ccc"
-        android:text="Time Limit"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:background="#ccc"
+            android:text="Time Limit"/>
 
-    <TextView
-        android:id="@+id/tv_timelimit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="normal"
-        android:text="None"/>
+        <TextView
+            android:id="@+id/tv_timelimit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="normal"
+            android:text="None"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/lay_date"
+            android:visibility="gone">
+            <RelativeLayout
+                android:id="@+id/lay_startdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:paddingBottom="9dp"
+                android:paddingTop="9dp"
+                >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold"
-        android:background="#ccc"
-        android:text="Included Activity Types"/>
+
+                <TextView
+                    android:id="@+id/textview9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start Date"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_centerVertical="true"/>
+
+                <TextView
+                    android:id="@+id/tv_startdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12/03/2017"
+                    android:textSize="16sp"
+                    android:singleLine="true"
+                    android:gravity="right"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_marginRight="4dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/tv_starttime"
+                    android:layout_toStartOf="@+id/tv_starttime" />
+
+                <TextView
+                    android:id="@+id/tv_starttime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="03:00 PM"
+                    android:textSize="16sp"
+                    android:singleLine="true"
+                    android:gravity="right"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_alignTop="@+id/tv_startdate"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ddd"
+
+                />
+
+            <RelativeLayout
+                android:id="@+id/lay_enddate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:paddingBottom="9dp"
+                android:paddingTop="9dp"
+                >
+
+
+                <TextView
+                    android:id="@+id/textview8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="End Date"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_centerVertical="true"/>
+
+                <TextView
+                    android:id="@+id/tv_enddate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12/03/2017"
+                    android:textSize="16sp"
+                    android:singleLine="true"
+                    android:gravity="right"
+                    android:layout_marginRight="4dp"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/tv_endtime"
+                    android:layout_toStartOf="@+id/tv_endtime" />
+
+
+                <TextView
+                    android:id="@+id/tv_endtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="03:00 PM"
+                    android:textSize="16sp"
+                    android:singleLine="true"
+                    android:gravity="right"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:background="#ccc"
+            android:text="Included Activity Types"/>
 
         <LinearLayout
             android:layout_width="match_parent"

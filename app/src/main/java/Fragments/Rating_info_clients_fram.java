@@ -28,14 +28,16 @@ import java.util.Map;
 
 import Adapter.ClientAdapter;
 import model.AllContact;
+import model.AllRatingContact;
 import u.activitymanager.R;
 
 /**
  * Created by surender on 2/17/2017.
  */
 
-public class Rating_info_clients_fram extends Fragment {
-
+public class Rating_info_clients_fram extends Fragment
+{
+    ArrayList<AllRatingContact> data;
     View v;
     TextView tv_rating,tv_married,tv_haskids,tv_aged,tv_homeowner,tv_income;
     ImageView im_marriedcheck,im_marriedcross,im_haskidscheck,im_haskidscross,im_agecheck,im_agecross,im_homecheck,im_homecross,im_incomecheck,im_incomecross;
@@ -78,99 +80,97 @@ public class Rating_info_clients_fram extends Fragment {
         im_incomecheck=(ImageView)v.findViewById(R.id.incomecheck);
         im_incomecross=(ImageView)v.findViewById(R.id.incomecross);
 
-
-
-        competitive = getArguments().getString("competitive");
-        created = getArguments().getString("created");
-        credible = getArguments().getString("credible");
-        familyName = getArguments().getString("familyName");
         givenName = getArguments().getString("givenName");
-        hasKids = getArguments().getString("hasKids");
-        homeowner = getArguments().getString("homeowner");
-        hungry = getArguments().getString("hungry");
-        incomeOver40k = getArguments().getString("incomeOver40k");
-        married = getArguments().getString("married");
-        motivated = getArguments().getString("motivated");
-        ofProperAge = getArguments().getString("ofProperAge");
-        peopleSkills = getArguments().getString("peopleSkills");
-        phoneNumber = getArguments().getString("phoneNumber");
         ref = getArguments().getString("ref");
-        rating = Integer.parseInt(getArguments().getString("rating"));
-        recruitRating =Integer.parseInt( getArguments().getString("recruitRating"));
-//        Toast.makeText(getActivity(), rating+" anc", Toast.LENGTH_SHORT).show();
-        if(rating>0)
-        {
-            a=rating;
-            rate=rating;
-            tv_rating.setText("Rating: " + a);
-            if(married.equalsIgnoreCase("false"))
-            {
-                im_marriedcheck.setImageResource(R.drawable.checkgray32);
-                im_marriedcross.setImageResource(R.drawable.closered32);
-                b=false;
+        Log.e("uiddddd",uid+",,"+givenName);
+        getcontactdatafromfirebase(givenName);
 
-            }
-            else
-            {
-                im_marriedcheck.setImageResource(R.drawable.checkgreen32);
-                im_marriedcross.setImageResource(R.drawable.closegray32);
-                b=true;
-            }
-            if(hasKids.equalsIgnoreCase("false"))
-            {
-                im_haskidscheck.setImageResource(R.drawable.checkgray32);
-                im_haskidscross.setImageResource(R.drawable.closered32);
-                c=false;
-            }
-            else
-            {
-                im_haskidscheck.setImageResource(R.drawable.checkgreen32);
-                im_haskidscross.setImageResource(R.drawable.closegray32);
-                c=true;
-            }
-            if(ofProperAge.equalsIgnoreCase("false"))
-            {
-                im_agecheck.setImageResource(R.drawable.checkgray32);
-                im_agecross.setImageResource(R.drawable.closered32);
-                d=false;
-            }
-            else
-            {
-                im_agecheck.setImageResource(R.drawable.checkgreen32);
-                im_agecross.setImageResource(R.drawable.closegray32);
-                d=true;
-            }
-            if(homeowner.equalsIgnoreCase("false"))
-            {
-                im_homecheck.setImageResource(R.drawable.checkgray32);
-                im_homecross.setImageResource(R.drawable.closered32);
-                e=false;
-            }
-            else
-            {
-                im_homecheck.setImageResource(R.drawable.checkgreen32);
-                im_homecross.setImageResource(R.drawable.closegray32);
-                e=true;
-            }
-            if(incomeOver40k.equalsIgnoreCase("false"))
-            {
-                im_incomecheck.setImageResource(R.drawable.checkgray32);
-                im_incomecross.setImageResource(R.drawable.closered32);
-                f=false;
-            }
-            else
-            {
-                im_incomecheck.setImageResource(R.drawable.checkgreen32);
-                im_incomecross.setImageResource(R.drawable.closegray32);
-                f=true;
-            }
-        }
-
-
-
-
-
-
+//        competitive = getArguments().getString("competitive");
+//        created = getArguments().getString("created");
+//        credible = getArguments().getString("credible");
+//        familyName = getArguments().getString("familyName");
+//        givenName = getArguments().getString("givenName");
+//        hasKids = getArguments().getString("hasKids");
+//        homeowner = getArguments().getString("homeowner");
+//        hungry = getArguments().getString("hungry");
+//        incomeOver40k = getArguments().getString("incomeOver40k");
+//        married = getArguments().getString("married");
+//        motivated = getArguments().getString("motivated");
+//        ofProperAge = getArguments().getString("ofProperAge");
+//        peopleSkills = getArguments().getString("peopleSkills");
+//        phoneNumber = getArguments().getString("phoneNumber");
+//        ref = getArguments().getString("ref");
+//        rating = Integer.parseInt(getArguments().getString("rating"));
+//        recruitRating =Integer.parseInt( getArguments().getString("recruitRating"));
+////        Toast.makeText(getActivity(), rating+" anc", Toast.LENGTH_SHORT).show();
+//        Log.e("uiddddd",uid+",,"+rating);
+//        if(rating>0)
+//        {
+//            a=rating;
+//            rate=rating;
+//            tv_rating.setText("Rating: " + a);
+//            if(married.equalsIgnoreCase("false"))
+//            {
+//                im_marriedcheck.setImageResource(R.drawable.checkgray32);
+//                im_marriedcross.setImageResource(R.drawable.closered32);
+//                b=false;
+//
+//            }
+//            else
+//            {
+//                im_marriedcheck.setImageResource(R.drawable.checkgreen32);
+//                im_marriedcross.setImageResource(R.drawable.closegray32);
+//                b=true;
+//            }
+//            if(hasKids.equalsIgnoreCase("false"))
+//            {
+//                im_haskidscheck.setImageResource(R.drawable.checkgray32);
+//                im_haskidscross.setImageResource(R.drawable.closered32);
+//                c=false;
+//            }
+//            else
+//            {
+//                im_haskidscheck.setImageResource(R.drawable.checkgreen32);
+//                im_haskidscross.setImageResource(R.drawable.closegray32);
+//                c=true;
+//            }
+//            if(ofProperAge.equalsIgnoreCase("false"))
+//            {
+//                im_agecheck.setImageResource(R.drawable.checkgray32);
+//                im_agecross.setImageResource(R.drawable.closered32);
+//                d=false;
+//            }
+//            else
+//            {
+//                im_agecheck.setImageResource(R.drawable.checkgreen32);
+//                im_agecross.setImageResource(R.drawable.closegray32);
+//                d=true;
+//            }
+//            if(homeowner.equalsIgnoreCase("false"))
+//            {
+//                im_homecheck.setImageResource(R.drawable.checkgray32);
+//                im_homecross.setImageResource(R.drawable.closered32);
+//                e=false;
+//            }
+//            else
+//            {
+//                im_homecheck.setImageResource(R.drawable.checkgreen32);
+//                im_homecross.setImageResource(R.drawable.closegray32);
+//                e=true;
+//            }
+//            if(incomeOver40k.equalsIgnoreCase("false"))
+//            {
+//                im_incomecheck.setImageResource(R.drawable.checkgray32);
+//                im_incomecross.setImageResource(R.drawable.closered32);
+//                f=false;
+//            }
+//            else
+//            {
+//                im_incomecheck.setImageResource(R.drawable.checkgreen32);
+//                im_incomecross.setImageResource(R.drawable.closegray32);
+//                f=true;
+//            }
+//        }
 
         im_marriedcheck.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -608,4 +608,131 @@ public class Rating_info_clients_fram extends Fragment {
         }
 
     }
+
+
+    public void getcontactdatafromfirebase(String givenname)
+    {
+        mref.child("contacts").child(uid).child(givenname).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("getdatauidd",uid+" abv");
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                data=new ArrayList<AllRatingContact>();
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.e("child",child+" abc");
+                    try {
+                        data.add(new AllRatingContact(ConvertParseString(dataSnapshot.child("competitive").getValue()), ConvertParseString(dataSnapshot.child("created").getValue()), ConvertParseString(dataSnapshot.child("credible").getValue()), ConvertParseString(dataSnapshot.child("familyName").getValue()), ConvertParseString(dataSnapshot.child("givenName").getValue()), ConvertParseString(dataSnapshot.child("hasKids").getValue()),
+                                ConvertParseString(dataSnapshot.child("homeowner").getValue()), ConvertParseString(dataSnapshot.child("hungry").getValue()), ConvertParseString(dataSnapshot.child("incomeOver40k").getValue()), ConvertParseString(dataSnapshot.child("married").getValue()), ConvertParseString(dataSnapshot.child("motivated").getValue()), ConvertParseString(dataSnapshot.child("ofProperAge").getValue()), ConvertParseString(dataSnapshot.child("peopleSkills").getValue()),
+                                ConvertParseString(dataSnapshot.child("phoneNumber").getValue()), ConvertParseInteger(dataSnapshot.child("rating").getValue()),ConvertParseInteger(dataSnapshot.child("recruitRating").getValue()), ConvertParseString(dataSnapshot.child("ref").getValue())));
+
+                        Log.e("child", dataSnapshot.child("rating").getValue() + " abc"+dataSnapshot.child("recruitRating").getValue());
+                    }
+                    catch(Exception e)
+                    {
+                        Log.e("Exception",e.getMessage());
+                    }
+                }
+
+
+                competitive = data.get(0).getCompetitive();
+                created = data.get(0).getCreated();
+                credible = data.get(0).getCredible();
+                familyName = data.get(0).getFamilyName();
+//                givenName = data.get(0).getGivenName();
+                hasKids = data.get(0).getHasKids();
+                homeowner = data.get(0).getHomeowner();
+                hungry = data.get(0).getHungry();
+                incomeOver40k = data.get(0).getIncomeOver40k();
+                married = data.get(0).getMarried();
+                motivated = data.get(0).getMotivated();
+                ofProperAge = data.get(0).getOfProperAge();
+                peopleSkills = data.get(0).getPeopleSkills();
+                phoneNumber = data.get(0).getPhoneNumber();
+
+                rating = data.get(0).getRating();
+                recruitRating =data.get(0).getRecruitRating();
+                Log.e("ratinggg",competitive+" cccc"+created+married+recruitRating+rating+ref);
+      //        Toast.makeText(getActivity(), rating+" anc", Toast.LENGTH_SHORT).show();
+                if(rating>0)
+                {
+                    a=rating;
+                    rate=rating;
+                    tv_rating.setText("Rating: " + a);
+                    if(married.equalsIgnoreCase("false"))
+                    {
+                        im_marriedcheck.setImageResource(R.drawable.checkgray32);
+                        im_marriedcross.setImageResource(R.drawable.closered32);
+                        b=false;
+
+                    }
+                    else
+                    {
+                        im_marriedcheck.setImageResource(R.drawable.checkgreen32);
+                        im_marriedcross.setImageResource(R.drawable.closegray32);
+                        b=true;
+                    }
+                    if(hasKids.equalsIgnoreCase("false"))
+                    {
+                        im_haskidscheck.setImageResource(R.drawable.checkgray32);
+                        im_haskidscross.setImageResource(R.drawable.closered32);
+                        c=false;
+                    }
+                    else
+                    {
+                        im_haskidscheck.setImageResource(R.drawable.checkgreen32);
+                        im_haskidscross.setImageResource(R.drawable.closegray32);
+                        c=true;
+                    }
+                    if(ofProperAge.equalsIgnoreCase("false"))
+                    {
+                        im_agecheck.setImageResource(R.drawable.checkgray32);
+                        im_agecross.setImageResource(R.drawable.closered32);
+                        d=false;
+                    }
+                    else
+                    {
+                        im_agecheck.setImageResource(R.drawable.checkgreen32);
+                        im_agecross.setImageResource(R.drawable.closegray32);
+                        d=true;
+                    }
+                    if(homeowner.equalsIgnoreCase("false"))
+                    {
+                        im_homecheck.setImageResource(R.drawable.checkgray32);
+                        im_homecross.setImageResource(R.drawable.closered32);
+                        e=false;
+                    }
+                    else
+                    {
+                        im_homecheck.setImageResource(R.drawable.checkgreen32);
+                        im_homecross.setImageResource(R.drawable.closegray32);
+                        e=true;
+                    }
+                    if(incomeOver40k.equalsIgnoreCase("false"))
+                    {
+                        im_incomecheck.setImageResource(R.drawable.checkgray32);
+                        im_incomecross.setImageResource(R.drawable.closered32);
+                        f=false;
+                    }
+                    else
+                    {
+                        im_incomecheck.setImageResource(R.drawable.checkgreen32);
+                        im_incomecross.setImageResource(R.drawable.closegray32);
+                        f=true;
+                    }
+                }
+
+
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+
+
 }

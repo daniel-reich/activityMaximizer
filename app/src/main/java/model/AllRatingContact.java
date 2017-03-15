@@ -1,20 +1,15 @@
 package model;
 
-import com.google.firebase.database.IgnoreExtraProperties;
-
-import java.io.Serializable;
-
 /**
- * Created by Rohan on 3/2/2017.
+ * Created by Rohan on 3/15/2017.
  */
-@IgnoreExtraProperties
-public class AllContact implements Serializable
+public class AllRatingContact
 {
     String competitive,created,credible,familyName,givenName,hasKids,homeowner,hungry,incomeOver40k,
-        married,motivated,ofProperAge,peopleSkills,phoneNumber,ref;
+            married,motivated,ofProperAge,peopleSkills,phoneNumber,ref;
     int rating,recruitRating;
 
-    public AllContact(String competitive, String created, String credible, String familyName, String givenName, String hasKids, String homeowner, String hungry, String incomeOver40k, String married, String motivated, String ofProperAge, String peopleSkills, String phoneNumber, String rating, String recruitRating, String ref) {
+    public AllRatingContact(String competitive, String created, String credible, String familyName, String givenName, String hasKids, String homeowner, String hungry, String incomeOver40k, String married, String motivated, String ofProperAge, String peopleSkills, String phoneNumber, int rating, int recruitRating, String ref) {
         this.competitive = competitive;
         this.created = created;
         this.credible = credible;
@@ -29,21 +24,8 @@ public class AllContact implements Serializable
         this.ofProperAge = ofProperAge;
         this.peopleSkills = peopleSkills;
         this.phoneNumber = phoneNumber;
-        if(rating.equalsIgnoreCase("")|rating.equalsIgnoreCase(null))
-        {
-            this.rating = Integer.parseInt("0");
-        }
-        else {
-            this.rating = Integer.parseInt(rating);
-        }
-        if(recruitRating.equalsIgnoreCase("")|recruitRating.equalsIgnoreCase(null))
-        {
-            this.recruitRating = Integer.parseInt("0");
-        }
-        else {
-            this.recruitRating = Integer.parseInt(recruitRating);
-        }
-        this.ref = ref;
+        this.rating = rating;
+        this.recruitRating =recruitRating;
     }
 
     public String getCompetitive() {

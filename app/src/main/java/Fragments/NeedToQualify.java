@@ -80,7 +80,7 @@ public class NeedToQualify extends Fragment implements View.OnClickListener {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.findItem(R.id.menu).setVisible(true);
+        menu.findItem(R.id.menu).setVisible(false);
         menu.findItem(R.id.menu).setIcon(R.mipmap.sort);
         menu.findItem(R.id.list).setVisible(false);
         //   menu.findItem(R.id.list).setIcon(R.mipmap.addlist);
@@ -90,10 +90,9 @@ public class NeedToQualify extends Fragment implements View.OnClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
-            case R.id.menu:
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new SortByFragment()).addToBackStack(null).commit();
-                break;
-
+//            case R.id.menu:
+//                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new SortByFragment()).addToBackStack(null).commit();
+//                break;
             case android.R.id.home:
                 getActivity().getSupportFragmentManager().popBackStack();
                 break;

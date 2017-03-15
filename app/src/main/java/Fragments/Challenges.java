@@ -83,6 +83,7 @@ public class Challenges extends Fragment
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         Firebase.setAndroidContext(getActivity());
 
+
         mref=new Firebase(Constants.URL);
 
 

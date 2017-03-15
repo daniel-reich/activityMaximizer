@@ -61,144 +61,145 @@ public class Need_to_Quality extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        setHasOptionsMenu(true);
-        v=inflater.inflate(R.layout.need_to_quality,container,false);
-        HomeActivity.title.setText("");
+        if(v==null) {
+            setHasOptionsMenu(true);
+            v = inflater.inflate(R.layout.need_to_quality, container, false);
+            HomeActivity.title.setText("");
 
-        pref=getActivity().getSharedPreferences("userpref",0);
-        uid=pref.getString("uid","");
+            pref = getActivity().getSharedPreferences("userpref", 0);
+            uid = pref.getString("uid", "");
 
-        Firebase.setAndroidContext(getActivity());
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+            Firebase.setAndroidContext(getActivity());
+            mref = new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
 
-        tv_ratinginfo=(ImageView)v.findViewById(R.id.tv_ratinginfo);
-        tv_activitylist=(ImageView)v.findViewById(R.id.tv_activitylist);
-        tv_contactnotes=(ImageView)v.findViewById(R.id.tv_contactnotes);
-        frameLayout=(FrameLayout)v.findViewById(R.id.frame_layout1);
+            tv_ratinginfo = (ImageView) v.findViewById(R.id.tv_ratinginfo);
+            tv_activitylist = (ImageView) v.findViewById(R.id.tv_activitylist);
+            tv_contactnotes = (ImageView) v.findViewById(R.id.tv_contactnotes);
+            frameLayout = (FrameLayout) v.findViewById(R.id.frame_layout1);
 
-        tv_name=(TextView)v.findViewById(R.id.tv_username);
-        tv_phone=(TextView)v.findViewById(R.id.tv_phone);
+            tv_name = (TextView) v.findViewById(R.id.tv_username);
+            tv_phone = (TextView) v.findViewById(R.id.tv_phone);
 
-        competitive = getArguments().getString("competitive");
-        created = getArguments().getString("created");
-        credible = getArguments().getString("credible");
-        familyName = getArguments().getString("familyName");
-        givenName = getArguments().getString("givenName");
-        hasKids = getArguments().getString("hasKids");
-        homeowner = getArguments().getString("homeowner");
-        hungry = getArguments().getString("hungry");
-        incomeOver40k = getArguments().getString("incomeOver40k");
-        married = getArguments().getString("married");
-        motivated = getArguments().getString("motivated");
-        ofProperAge = getArguments().getString("ofProperAge");
-        peopleSkills = getArguments().getString("peopleSkills");
-        phoneNumber = getArguments().getString("phoneNumber");
-        ref = getArguments().getString("ref");
-        rating = getArguments().getString("rating");
-        recruitRating = getArguments().getString("recruitRating");
+            competitive = getArguments().getString("competitive");
+            created = getArguments().getString("created");
+            credible = getArguments().getString("credible");
+            familyName = getArguments().getString("familyName");
+            givenName = getArguments().getString("givenName");
+            hasKids = getArguments().getString("hasKids");
+            homeowner = getArguments().getString("homeowner");
+            hungry = getArguments().getString("hungry");
+            incomeOver40k = getArguments().getString("incomeOver40k");
+            married = getArguments().getString("married");
+            motivated = getArguments().getString("motivated");
+            ofProperAge = getArguments().getString("ofProperAge");
+            peopleSkills = getArguments().getString("peopleSkills");
+            phoneNumber = getArguments().getString("phoneNumber");
+            ref = getArguments().getString("ref");
+            rating = getArguments().getString("rating");
+            recruitRating = getArguments().getString("recruitRating");
 
-        tv_name.setText(givenName);
-        tv_phone.setText(phoneNumber);
-
-
-        tv_phone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Alert();
-            }
-        });
+            tv_name.setText(givenName);
+            tv_phone.setText(phoneNumber);
 
 
+            tv_phone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Alert();
+                }
+            });
 
-        Log.e("givenName",givenName+" abc");
 
-        Rating_info_fram basic_frag = new Rating_info_fram();
-        Bundle args = new Bundle();
-        args.putString("givenName", givenName);
-        args.putString("phoneNumber", phoneNumber);
-        args.putString("competitive", competitive);
-        args.putString("created", created);
+            Log.e("givenName", givenName + " abc");
 
-        args.putString("credible", credible);
-        args.putString("familyName", familyName);
-        args.putString("hasKids", hasKids);
-        args.putString("homeowner", homeowner);
+            Rating_info_fram basic_frag = new Rating_info_fram();
+            Bundle args = new Bundle();
+            args.putString("givenName", givenName);
+            args.putString("phoneNumber", phoneNumber);
+            args.putString("competitive", competitive);
+            args.putString("created", created);
 
-        args.putString("hungry", hungry);
-        args.putString("incomeOver40k", incomeOver40k);
-        args.putString("married", married);
-        args.putString("motivated", motivated);
+            args.putString("credible", credible);
+            args.putString("familyName", familyName);
+            args.putString("hasKids", hasKids);
+            args.putString("homeowner", homeowner);
 
-        args.putString("ofProperAge", ofProperAge);
-        args.putString("peopleSkills", peopleSkills);
-        args.putString("rating", rating);
-        args.putString("recruitRating", recruitRating);
-        args.putString("ref", ref);
-        basic_frag.setArguments(args);
+            args.putString("hungry", hungry);
+            args.putString("incomeOver40k", incomeOver40k);
+            args.putString("married", married);
+            args.putString("motivated", motivated);
 
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout1,basic_frag).addToBackStack(null).commit();
+            args.putString("ofProperAge", ofProperAge);
+            args.putString("peopleSkills", peopleSkills);
+            args.putString("rating", rating);
+            args.putString("recruitRating", recruitRating);
+            args.putString("ref", ref);
+            basic_frag.setArguments(args);
 
-        tv_ratinginfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Rating_info_fram basic_frag = new Rating_info_fram();
-                Bundle args = new Bundle();
-                args.putString("givenName", givenName);
-                args.putString("phoneNumber", phoneNumber);
-                args.putString("competitive", competitive);
-                args.putString("created", created);
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame_layout1, basic_frag).addToBackStack(null).commit();
 
-                args.putString("credible", credible);
-                args.putString("familyName", familyName);
-                args.putString("hasKids", hasKids);
-                args.putString("homeowner", homeowner);
+            tv_ratinginfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Rating_info_fram basic_frag = new Rating_info_fram();
+                    Bundle args = new Bundle();
+                    args.putString("givenName", givenName);
+                    args.putString("phoneNumber", phoneNumber);
+                    args.putString("competitive", competitive);
+                    args.putString("created", created);
 
-                args.putString("hungry", hungry);
-                args.putString("incomeOver40k", incomeOver40k);
-                args.putString("married", married);
-                args.putString("motivated", motivated);
+                    args.putString("credible", credible);
+                    args.putString("familyName", familyName);
+                    args.putString("hasKids", hasKids);
+                    args.putString("homeowner", homeowner);
 
-                args.putString("ofProperAge", ofProperAge);
-                args.putString("peopleSkills", peopleSkills);
-                args.putString("rating", rating);
-                args.putString("recruitRating", recruitRating);
-                args.putString("ref", ref);
-                basic_frag.setArguments(args);
+                    args.putString("hungry", hungry);
+                    args.putString("incomeOver40k", incomeOver40k);
+                    args.putString("married", married);
+                    args.putString("motivated", motivated);
 
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout1,basic_frag).addToBackStack(null).commit();
-            }
-        });
+                    args.putString("ofProperAge", ofProperAge);
+                    args.putString("peopleSkills", peopleSkills);
+                    args.putString("rating", rating);
+                    args.putString("recruitRating", recruitRating);
+                    args.putString("ref", ref);
+                    basic_frag.setArguments(args);
 
-        tv_activitylist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.frame_layout1, basic_frag).addToBackStack(null).commit();
+                }
+            });
 
-                Activity_list_frag basic_frag = new Activity_list_frag();
-                Bundle args = new Bundle();
-                args.putString("givenName", givenName);
-                basic_frag.setArguments(args);
+            tv_activitylist.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout1,basic_frag).addToBackStack(null).commit();
-            }
-        });
+                    Activity_list_frag basic_frag = new Activity_list_frag();
+                    Bundle args = new Bundle();
+                    args.putString("givenName", givenName);
+                    basic_frag.setArguments(args);
 
-        tv_contactnotes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.frame_layout1, basic_frag).addToBackStack(null).commit();
+                }
+            });
 
-                Contact_notes_frag basic_frag = new Contact_notes_frag();
-                Bundle args = new Bundle();
-                args.putString("givenName", givenName);
-                basic_frag.setArguments(args);
+            tv_contactnotes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout1,basic_frag).addToBackStack(null).commit();
-            }
-        });
+                    Contact_notes_frag basic_frag = new Contact_notes_frag();
+                    Bundle args = new Bundle();
+                    args.putString("givenName", givenName);
+                    basic_frag.setArguments(args);
 
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.frame_layout1, basic_frag).addToBackStack(null).commit();
+                }
+            });
+
+        }
         return v;
     }
 

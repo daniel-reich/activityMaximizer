@@ -13,23 +13,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import model.AllRatingContact;
 import u.activitymanager.R;
 
 /**
  * Created by surender on 2/17/2017.
  */
 
-public class Rating_info_recruits_fram extends Fragment {
-
+public class Rating_info_recruits_fram extends Fragment
+{
+    ArrayList<AllRatingContact> data;
     View v;
     TextView tv_rating,tv_married,tv_haskids,tv_aged,tv_homeowner,tv_income;
     ImageView im_hungrycheck,im_hungrycross,im_crediblecheck,im_crediblecross,im_skillscheck,im_skillscross,im_competitivecheck,im_competitvecross,im_motivatecheck,im_motivatecross;
@@ -72,92 +76,95 @@ public class Rating_info_recruits_fram extends Fragment {
         im_motivatecheck=(ImageView)v.findViewById(R.id.motivatecheck);
         im_motivatecross=(ImageView)v.findViewById(R.id.motivatecross);
 
-
-
-        competitive = getArguments().getString("competitive");
-        created = getArguments().getString("created");
-        credible = getArguments().getString("credible");
-        familyName = getArguments().getString("familyName");
         givenName = getArguments().getString("givenName");
-        hasKids = getArguments().getString("hasKids");
-        homeowner = getArguments().getString("homeowner");
-        hungry = getArguments().getString("hungry");
-        incomeOver40k = getArguments().getString("incomeOver40k");
-        married = getArguments().getString("married");
-        motivated = getArguments().getString("motivated");
-        ofProperAge = getArguments().getString("ofProperAge");
-        peopleSkills = getArguments().getString("peopleSkills");
-        phoneNumber = getArguments().getString("phoneNumber");
         ref = getArguments().getString("ref");
-        rating = Integer.parseInt(getArguments().getString("rating"));
-        recruitRating =Integer.parseInt( getArguments().getString("recruitRating"));
+        Log.e("uiddddd",uid+",,"+givenName);
+        getcontactdatafromfirebase(givenName);
 
-        if(recruitRating>0)
-        {
-            a=recruitRating;
-            tv_rating.setText("Recruit Rating: " + a);
-            if(hungry.equalsIgnoreCase("false"))
-            {
-                im_hungrycheck.setImageResource(R.drawable.checkgray32);
-                im_hungrycross.setImageResource(R.drawable.closered32);
-                b=false;
+//        competitive = getArguments().getString("competitive");
+//        created = getArguments().getString("created");
+//        credible = getArguments().getString("credible");
+//        familyName = getArguments().getString("familyName");
+//        givenName = getArguments().getString("givenName");
+//        hasKids = getArguments().getString("hasKids");
+//        homeowner = getArguments().getString("homeowner");
+//        hungry = getArguments().getString("hungry");
+//        incomeOver40k = getArguments().getString("incomeOver40k");
+//        married = getArguments().getString("married");
+//        motivated = getArguments().getString("motivated");
+//        ofProperAge = getArguments().getString("ofProperAge");
+//        peopleSkills = getArguments().getString("peopleSkills");
+//        phoneNumber = getArguments().getString("phoneNumber");
+//        ref = getArguments().getString("ref");
+//        rating = Integer.parseInt(getArguments().getString("rating"));
+//        recruitRating =Integer.parseInt( getArguments().getString("recruitRating"));
 
-            }
-            else
-            {
-                im_hungrycheck.setImageResource(R.drawable.checkgreen32);
-                im_hungrycross.setImageResource(R.drawable.closegray32);
-                b=true;
-            }
-            if(credible.equalsIgnoreCase("false"))
-            {
-                im_crediblecheck.setImageResource(R.drawable.checkgray32);
-                im_crediblecross.setImageResource(R.drawable.closered32);
-                c=false;
-            }
-            else
-            {
-                im_crediblecheck.setImageResource(R.drawable.checkgreen32);
-                im_crediblecross.setImageResource(R.drawable.closegray32);
-                c=true;
-            }
-            if(peopleSkills.equalsIgnoreCase("false"))
-            {
-                im_skillscheck.setImageResource(R.drawable.checkgray32);
-                im_skillscross.setImageResource(R.drawable.closered32);
-                d=false;
-            }
-            else
-            {
-                im_skillscheck.setImageResource(R.drawable.checkgreen32);
-                im_skillscross.setImageResource(R.drawable.closegray32);
-                d=true;
-            }
-            if(competitive.equalsIgnoreCase("false"))
-            {
-                im_competitivecheck.setImageResource(R.drawable.checkgray32);
-                im_competitvecross.setImageResource(R.drawable.closered32);
-                e=false;
-            }
-            else
-            {
-                im_competitivecheck.setImageResource(R.drawable.checkgreen32);
-                im_competitvecross.setImageResource(R.drawable.closegray32);
-                e=true;
-            }
-            if(motivated.equalsIgnoreCase("false"))
-            {
-                im_motivatecheck.setImageResource(R.drawable.checkgray32);
-                im_motivatecross.setImageResource(R.drawable.closered32);
-                f=false;
-            }
-            else
-            {
-                im_motivatecheck.setImageResource(R.drawable.checkgreen32);
-                im_motivatecross.setImageResource(R.drawable.closegray32);
-                f=true;
-            }
-        }
+//        if(recruitRating>0)
+//        {
+//            a=recruitRating;
+//            tv_rating.setText("Recruit Rating: " + a);
+//            if(hungry.equalsIgnoreCase("false"))
+//            {
+//                im_hungrycheck.setImageResource(R.drawable.checkgray32);
+//                im_hungrycross.setImageResource(R.drawable.closered32);
+//                b=false;
+//
+//            }
+//            else
+//            {
+//                im_hungrycheck.setImageResource(R.drawable.checkgreen32);
+//                im_hungrycross.setImageResource(R.drawable.closegray32);
+//                b=true;
+//            }
+//            if(credible.equalsIgnoreCase("false"))
+//            {
+//                im_crediblecheck.setImageResource(R.drawable.checkgray32);
+//                im_crediblecross.setImageResource(R.drawable.closered32);
+//                c=false;
+//            }
+//            else
+//            {
+//                im_crediblecheck.setImageResource(R.drawable.checkgreen32);
+//                im_crediblecross.setImageResource(R.drawable.closegray32);
+//                c=true;
+//            }
+//            if(peopleSkills.equalsIgnoreCase("false"))
+//            {
+//                im_skillscheck.setImageResource(R.drawable.checkgray32);
+//                im_skillscross.setImageResource(R.drawable.closered32);
+//                d=false;
+//            }
+//            else
+//            {
+//                im_skillscheck.setImageResource(R.drawable.checkgreen32);
+//                im_skillscross.setImageResource(R.drawable.closegray32);
+//                d=true;
+//            }
+//            if(competitive.equalsIgnoreCase("false"))
+//            {
+//                im_competitivecheck.setImageResource(R.drawable.checkgray32);
+//                im_competitvecross.setImageResource(R.drawable.closered32);
+//                e=false;
+//            }
+//            else
+//            {
+//                im_competitivecheck.setImageResource(R.drawable.checkgreen32);
+//                im_competitvecross.setImageResource(R.drawable.closegray32);
+//                e=true;
+//            }
+//            if(motivated.equalsIgnoreCase("false"))
+//            {
+//                im_motivatecheck.setImageResource(R.drawable.checkgray32);
+//                im_motivatecross.setImageResource(R.drawable.closered32);
+//                f=false;
+//            }
+//            else
+//            {
+//                im_motivatecheck.setImageResource(R.drawable.checkgreen32);
+//                im_motivatecross.setImageResource(R.drawable.closegray32);
+//                f=true;
+//            }
+//        }
 
 
 
@@ -597,6 +604,133 @@ public class Rating_info_recruits_fram extends Fragment {
         }
 
     }
+
+
+
+    public void getcontactdatafromfirebase(String givenname)
+    {
+        mref.child("contacts").child(uid).child(givenname).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("getdatauidd",uid+" abv");
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                data=new ArrayList<AllRatingContact>();
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.e("child",child+" abc");
+                    try {
+                        data.add(new AllRatingContact(ConvertParseString(dataSnapshot.child("competitive").getValue()), ConvertParseString(dataSnapshot.child("created").getValue()), ConvertParseString(dataSnapshot.child("credible").getValue()), ConvertParseString(dataSnapshot.child("familyName").getValue()), ConvertParseString(dataSnapshot.child("givenName").getValue()), ConvertParseString(dataSnapshot.child("hasKids").getValue()),
+                                ConvertParseString(dataSnapshot.child("homeowner").getValue()), ConvertParseString(dataSnapshot.child("hungry").getValue()), ConvertParseString(dataSnapshot.child("incomeOver40k").getValue()), ConvertParseString(dataSnapshot.child("married").getValue()), ConvertParseString(dataSnapshot.child("motivated").getValue()), ConvertParseString(dataSnapshot.child("ofProperAge").getValue()), ConvertParseString(dataSnapshot.child("peopleSkills").getValue()),
+                                ConvertParseString(dataSnapshot.child("phoneNumber").getValue()), ConvertParseInteger(dataSnapshot.child("rating").getValue()),ConvertParseInteger(dataSnapshot.child("recruitRating").getValue()), ConvertParseString(dataSnapshot.child("ref").getValue())));
+
+                        Log.e("child", dataSnapshot.child("rating").getValue() + " abc"+dataSnapshot.child("recruitRating").getValue());
+                    }
+                    catch(Exception e)
+                    {
+                        Log.e("Exception",e.getMessage());
+                    }
+                }
+
+
+                competitive = data.get(0).getCompetitive();
+                created = data.get(0).getCreated();
+                credible = data.get(0).getCredible();
+                familyName = data.get(0).getFamilyName();
+//                givenName = data.get(0).getGivenName();
+                hasKids = data.get(0).getHasKids();
+                homeowner = data.get(0).getHomeowner();
+                hungry = data.get(0).getHungry();
+                incomeOver40k = data.get(0).getIncomeOver40k();
+                married = data.get(0).getMarried();
+                motivated = data.get(0).getMotivated();
+                ofProperAge = data.get(0).getOfProperAge();
+                peopleSkills = data.get(0).getPeopleSkills();
+                phoneNumber = data.get(0).getPhoneNumber();
+
+                rating = data.get(0).getRating();
+                recruitRating =data.get(0).getRecruitRating();
+                Log.e("ratinggg",competitive+" cccc"+created+married+recruitRating+rating+ref);
+                //        Toast.makeText(getActivity(), rating+" anc", Toast.LENGTH_SHORT).show();
+
+                if(recruitRating>0)
+                {
+                    a=recruitRating;
+                    tv_rating.setText("Recruit Rating: " + a);
+                    if(hungry.equalsIgnoreCase("false"))
+                    {
+                        im_hungrycheck.setImageResource(R.drawable.checkgray32);
+                        im_hungrycross.setImageResource(R.drawable.closered32);
+                        b=false;
+
+                    }
+                    else
+                    {
+                        im_hungrycheck.setImageResource(R.drawable.checkgreen32);
+                        im_hungrycross.setImageResource(R.drawable.closegray32);
+                        b=true;
+                    }
+                    if(credible.equalsIgnoreCase("false"))
+                    {
+                        im_crediblecheck.setImageResource(R.drawable.checkgray32);
+                        im_crediblecross.setImageResource(R.drawable.closered32);
+                        c=false;
+                    }
+                    else
+                    {
+                        im_crediblecheck.setImageResource(R.drawable.checkgreen32);
+                        im_crediblecross.setImageResource(R.drawable.closegray32);
+                        c=true;
+                    }
+                    if(peopleSkills.equalsIgnoreCase("false"))
+                    {
+                        im_skillscheck.setImageResource(R.drawable.checkgray32);
+                        im_skillscross.setImageResource(R.drawable.closered32);
+                        d=false;
+                    }
+                    else
+                    {
+                        im_skillscheck.setImageResource(R.drawable.checkgreen32);
+                        im_skillscross.setImageResource(R.drawable.closegray32);
+                        d=true;
+                    }
+                    if(competitive.equalsIgnoreCase("false"))
+                    {
+                        im_competitivecheck.setImageResource(R.drawable.checkgray32);
+                        im_competitvecross.setImageResource(R.drawable.closered32);
+                        e=false;
+                    }
+                    else
+                    {
+                        im_competitivecheck.setImageResource(R.drawable.checkgreen32);
+                        im_competitvecross.setImageResource(R.drawable.closegray32);
+                        e=true;
+                    }
+                    if(motivated.equalsIgnoreCase("false"))
+                    {
+                        im_motivatecheck.setImageResource(R.drawable.checkgray32);
+                        im_motivatecross.setImageResource(R.drawable.closered32);
+                        f=false;
+                    }
+                    else
+                    {
+                        im_motivatecheck.setImageResource(R.drawable.checkgreen32);
+                        im_motivatecross.setImageResource(R.drawable.closegray32);
+                        f=true;
+                    }
+                }
+
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+
+
 }
 
 
