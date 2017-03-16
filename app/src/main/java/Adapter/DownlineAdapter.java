@@ -102,7 +102,8 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position)
+    {
         final ViewHolder holder1= (ViewHolder) holder;
         holder1.username.setText(data.get(position).getName());
         Log.e("dddd",data.get(position).getFivePointRecruits().toString()+" abc");

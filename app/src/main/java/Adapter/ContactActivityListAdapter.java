@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -40,7 +41,6 @@ import utils.NetworkConnection;
 public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActivityListAdapter.ViewHolder> {
 
     private Context context;
-
     private SharedPreferences pref;
     private Firebase mref;
     String uid="",Went_on_three_KTs="false",Fifty_KTs="false",One_hundred_KTs="false",Two_hundred_KTs="false",Three_appointments_set="false",Closed_three_life="false",Closed_three_IBAs="false",One_week_eight_five_three_one="false",Perfect_week="false",Two_week_eight_five_three_one="false",Perfect_month="false";
@@ -71,9 +71,9 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
 
     @Override
-    public void onBindViewHolder(ContactActivityListAdapter.ViewHolder viewHolder, int i) {
-
-
+    public void onBindViewHolder(ContactActivityListAdapter.ViewHolder viewHolder, final int i)
+    {
+        final ViewHolder holder1= (ViewHolder) viewHolder;
 
        /* viewHolder.reward.setText(android.get(i).getCurrent_reward());
 
@@ -198,7 +198,19 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
             Log.e("i","e",e);
 
         }
+        holder1.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+                try {
+                    Deleteitem(i,array.getJSONObject(i).getString("keyid"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //Options(position);
 
+            }
+        });
 
     }
 
@@ -209,14 +221,15 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView tv_activity_list;
-
-        private TextView timestamp;
+        SwipeRevealLayout swipeRevealLayout;
+        private TextView timestamp,delete;
 
         public ViewHolder(View view) {
             super(view);
             tv_activity_list=(TextView)view.findViewById(R.id.tv_start);
             timestamp=(TextView)view.findViewById(R.id.tv_date);
-
+            swipeRevealLayout=(SwipeRevealLayout)view.findViewById(R.id.swipeview);
+            delete=(TextView)view.findViewById(R.id.delete);
             tv_activity_list.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -594,5 +607,12 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
             }
         });
     }
+    public void Deleteitem(int position, String keyid)
+    {
+        mref.child("events").child(pref.getString("uid","")).child(keyid).removeValue();
 
+        data.remove(position);
+
+        notifyDataSetChanged();
+    }
 }

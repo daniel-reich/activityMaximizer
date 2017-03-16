@@ -53,7 +53,7 @@ public class Activity_list_frag extends Fragment implements ISelectNewActivity {
     Firebase mref;
     SharedPreferences pref;
 
-  public static   ContactActivityListAdapter listadapter;
+  public static ContactActivityListAdapter listadapter;
     LinearLayoutManager lManager;
     String uid="",name="",uidd="";
     public static JSONArray js;
@@ -143,9 +143,10 @@ public class Activity_list_frag extends Fragment implements ISelectNewActivity {
                 jsonArray =  new JSONArray();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     JSONObject jGroup = new JSONObject();
-                    Log.e("childddd",child.child("contactName").getKey()+" abc");
+                    Log.e("childddd",child.getKey()+" abc");
                     data.add(new AllActivity(ConvertParseString(child.child("contactName").getValue()),ConvertParseString(child.child("contactRef").getValue()),ConvertParseString(child.child("created").getValue()),ConvertParseString(child.child("date").getValue()),ConvertParseString(child.child("eventKitID").getValue()),ConvertParseString(child.child("ref").getValue()),ConvertParseString(child.child("type").getValue()),ConvertParseString(child.child("userName").getValue()),ConvertParseString(child.child("userRef").getValue())));
                     try {
+                        jGroup.put("keyid", ConvertParseString(child.getKey()+""));
                         jGroup.put("contactName", ConvertParseString(child.child("contactName").getValue()));
                         jGroup.put("contactRef", ConvertParseString(child.child("contactRef").getValue()));
                         jGroup.put("created", ConvertParseString(child.child("created").getValue()));
