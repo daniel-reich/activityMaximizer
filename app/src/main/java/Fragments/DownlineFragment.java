@@ -70,9 +70,8 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
         trainees=(TextView)view.findViewById(R.id.personal_button);
         team.setOnClickListener(this);
         trainees.setOnClickListener(this);
-        team.setSelected(false);
-        trainees.setSelected(true);
-
+        team.setSelected(true);
+        trainees.setSelected(false);
         pref=getActivity().getSharedPreferences("userpref",0);
         Firebase.setAndroidContext(getActivity());
 
@@ -139,21 +138,22 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.team_button:
-                trainees.setSelected(false);
-                team.setSelected(true);
+                trainees.setSelected(true);
+                team.setSelected(false);
                 showaddtoteam=!showaddtoteam;
                 Log.e("showaddtoteam",showaddtoteam+"");
-                Team_fragment basic_frag = new Team_fragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout1,basic_frag).addToBackStack(null).commit();
-                break;
-            case R.id.personal_button:
-                team.setSelected(false);
-                trainees.setSelected(true);
-            showaddtoteam=!showaddtoteam;
                 Trainee_frag basic_frag1 = new Trainee_frag();
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout1,basic_frag1).addToBackStack(null).commit();
+                        .replace(R.id.frame_layout1,basic_frag1).commit();
+
+                break;
+            case R.id.personal_button:
+                team.setSelected(true);
+                trainees.setSelected(false);
+            showaddtoteam=!showaddtoteam;
+                Team_fragment basic_frag = new Team_fragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout1,basic_frag).commit();
                 break;
         }
     }
