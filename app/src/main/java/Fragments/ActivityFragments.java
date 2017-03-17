@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -63,6 +64,9 @@ public class ActivityFragments  extends Fragment
     SharedPreferences.Editor edit;
     private Firebase mref;
     JSONObject obj;
+    String uid;
+    int count=0;
+    JSONObject checkfilter;
 
     @Nullable
     @Override
@@ -81,6 +85,18 @@ public class ActivityFragments  extends Fragment
 
 
         pref=getActivity().getSharedPreferences("userpref",0);
+        uid=pref.getString("uid","");
+
+       // Toast.makeText(getActivity(), f+" acccc", Toast.LENGTH_SHORT).show();
+      /*  DateFormat targetFormat = new SimpleDateFormat("MMM dd,yyyy");
+
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DATE, 15);
+        Date  date1 = calendar.getTime();
+
+        String e_date=pref.getString("filter_enddate",targetFormat.format(date1));
+        String s_date=pref.getString("filter_startdate",targetFormat.format(new Date()));*/
         DateFormat targetFormat = new SimpleDateFormat("MMM dd,yyyy");
 
         Calendar calendar = new GregorianCalendar();
@@ -91,14 +107,47 @@ public class ActivityFragments  extends Fragment
         String e_date=pref.getString("filter_enddate",targetFormat.format(date1));
         String s_date=pref.getString("filter_startdate",targetFormat.format(new Date()));
 
-        getdatafromfirebase();
+
+
+
+
+
+        Date start_date;
+
+
+
+
+
+        Log.e("filter",e_date+","+s_date);
+
+        list = getDates(s_date, e_date);
+        getdatafromfirebase(uid);
+        String f=pref.getString("filter","");
+        Log.e("filter_pref",f+"value");
+        try {
+            checkfilter =new JSONObject(f);
+            if(checkfilter.getString("team").equalsIgnoreCase("true"))
+            {
+                getalldownlinesuidfromfirebase();
+                getalldownlinesbaseuidfromfirebase();
+            }
+            if(checkfilter.getString("trainees").equalsIgnoreCase("true"))
+            {
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
         return view;
     }
 
 
-    public JSONArray getdatafromfirebase()
+    public JSONArray getdatafromfirebase(String uid)
     {
 
+         Log.e("uid",uid+"");
         pref.getString("filter","");
         obj=new JSONObject();
 
@@ -111,9 +160,9 @@ public class ActivityFragments  extends Fragment
 
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
         final JSONArray array=new JSONArray();
-        pref=getActivity().getSharedPreferences("userpref",0);
+//        pref=getActivity().getSharedPreferences("userpref",0);
 
-        mref.child("events").child(pref.getString("uid","")).addValueEventListener(new ValueEventListener() {
+        mref.child("events").child(uid).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
@@ -122,30 +171,6 @@ public class ActivityFragments  extends Fragment
 
 
 
-                    DateFormat targetFormat = new SimpleDateFormat("MMM dd,yyyy");
-
-                     Calendar calendar = new GregorianCalendar();
-                    calendar.setTime(new Date());
-                    calendar.add(Calendar.DATE, 15);
-                  Date  date1 = calendar.getTime();
-
-                    String e_date=pref.getString("filter_enddate",targetFormat.format(date1));
-                    String s_date=pref.getString("filter_startdate",targetFormat.format(new Date()));
-
-
-
-
-
-
-                    Date start_date;
-
-
-
-
-
-                    Log.e("filter",e_date+","+s_date);
-
-                    list = getDates(s_date, e_date);
 
                     for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
                         JSONObject json=new JSONObject();
@@ -354,8 +379,9 @@ public class ActivityFragments  extends Fragment
 
 
 
-                    adapter = new ActivitiesAdapter(getActivity(), list);
-                    activities.setAdapter(adapter);
+                       adapter = new ActivitiesAdapter(getActivity(), list);
+                      activities.setAdapter(adapter);
+
 
 
 
@@ -508,4 +534,55 @@ public class ActivityFragments  extends Fragment
 
 
     }
+
+
+    public void getalldownlinesuidfromfirebase()
+    {
+        Log.e("testing1",pref.getString("solution_number","")+" abc");
+        mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("downlines").addValueEventListener(new ValueEventListener()
+        {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("get data from server1",dataSnapshot.getValue()+" data");
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.e("testing1",child.getKey()+" abc");
+                   getdatafromfirebase(child.getKey());
+                    count++;
+
+                }
+
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+    public void getalldownlinesbaseuidfromfirebase()
+    {
+        Log.e("testing1",pref.getString("solution_number","")+" abc");
+        mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("Base").addValueEventListener(new ValueEventListener()
+        {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("get data from server2",dataSnapshot.getValue()+" data");
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.e("testing2",child.getKey()+" abc");
+                   getdatafromfirebase(child.getKey());
+                   count++;
+                }
+
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
 }

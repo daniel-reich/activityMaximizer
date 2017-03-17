@@ -67,6 +67,7 @@ public class Filter_Frag extends Fragment {
 
     SharedPreferences pref;
     SharedPreferences.Editor edit;
+    boolean team,trainee;
 
     JSONObject obj;
 
@@ -129,8 +130,9 @@ public class Filter_Frag extends Fragment {
 
         obj=new JSONObject();
 
+
         try {
-            obj=new JSONObject(pref.getString("filter",""));
+            obj=new JSONObject(pref.getString("filter","false"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -661,6 +663,7 @@ public class Filter_Frag extends Fragment {
                 if (object.getBoolean("team")) {
                     cb_team.setChecked(true);
                     iv_team.setImageResource(R.drawable.checkmark_bl24);
+                    iv_team.setVisibility(View.VISIBLE);
                 } else {
                     cb_team.setChecked(false);
                     iv_team.setImageBitmap(null);
@@ -671,6 +674,7 @@ public class Filter_Frag extends Fragment {
                 if (object.getBoolean("trainees")) {
                     cb_trainees.setChecked(true);
                     iv_trainees.setImageResource(R.drawable.checkmark_bl24);
+                    iv_personal.setVisibility(View.VISIBLE);
                 } else {
                     cb_trainees.setChecked(false);
                     iv_trainees.setImageBitmap(null);
@@ -681,6 +685,7 @@ public class Filter_Frag extends Fragment {
                 if (object.getBoolean("personal")) {
                     cb_personal.setChecked(true);
                     iv_personal.setImageResource(R.drawable.checkmark_bl24);
+
                 } else {
                     cb_personal.setChecked(false);
                     iv_personal.setImageBitmap(null);

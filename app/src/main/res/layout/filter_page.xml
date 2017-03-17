@@ -160,7 +160,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:fontFamily="sans-serif-medium"
             android:padding="12dp"
-            android:checked="true"
+            android:checked="false"
             android:button="@null"
             android:layout_weight=".1"
             android:textColor="@color/colorPrimary"
@@ -171,6 +171,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:visibility="gone"
             android:src="@drawable/checkmark_bl24"
             />
 
@@ -196,7 +197,7 @@
             android:fontFamily="sans-serif-medium"
             android:padding="12dp"
             android:button="@null"
-            android:checked="true"
+            android:checked="false"
             android:layout_weight=".1"
             android:textColor="@color/colorPrimary"
             android:text="Trainees"/>
@@ -206,6 +207,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:visibility="gone"
             android:src="@drawable/checkmark_bl24"
             />
 
