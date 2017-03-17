@@ -202,6 +202,5 @@ public class Activity_list_frag extends Fragment implements ISelectNewActivity {
 
 
         adapter.notifyDataSetChanged();
-        Log.e("chal","ja bhai");
     }
 }
