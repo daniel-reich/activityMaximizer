@@ -2,6 +2,7 @@ package Adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -50,14 +51,17 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
 
     JSONArray array;
-    String str="";
+    String str="",name="";
     public static int Went_on_three_KTscount=0,Three_appointments_setcount=0,Closed_three_lifecount=0,Closed_three_IBAscount=0;
-    public ContactActivityListAdapter(Context context, JSONArray array,String str) {
+    public ContactActivityListAdapter(Context context, JSONArray array,String str,String name) {
         this.context = context;
         this.array=array;
         this.str=str;
+        this.name=name;
         Log.e("notifydatasetchanged","notifydatasetchanged");
     }
+
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.add_need_activity_adap, viewGroup, false);
@@ -78,120 +82,88 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
        /* viewHolder.reward.setText(android.get(i).getCurrent_reward());
 
         viewHolder.current_leader.setText(android.get(i).getCurrent_leader());*/
+
         try {
 
-            if(str.equalsIgnoreCase("simple")) {
+            if(name.equalsIgnoreCase(array.getJSONObject(i).getString("contactName"))) {
 
-                viewHolder.tv_activity_list.setText(array.getJSONObject(i).getString("name"));
+                if (str.equalsIgnoreCase("simple")) {
 
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy' 'hh:mm a");
+                    viewHolder.tv_activity_list.setText(array.getJSONObject(i).getString("type"));
 
-                long time = Long.parseLong(array.getJSONObject(i).getString("time"));
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy' 'hh:mm a");
 
-                viewHolder.timestamp.setText(simpleDateFormat.format(time));
+                    long time = Long.parseLong(array.getJSONObject(i).getString("time"));
 
-                if(array.getJSONObject(i).getString("name").equals("Went on KT"))
-                {
-                    Went_on_three_KTscount++;
-                    if(Went_on_three_KTscount==3)
-                    {
-                        putthreewentonktinfirebase("3");
-                    }
-                    else if(Went_on_three_KTscount==50)
-                    {
-                        putthreewentonktinfirebase("50");
-                    }
-                    else if(Went_on_three_KTscount==100)
-                    {
-                        putthreewentonktinfirebase("100");
-                    }
-                    else if(Went_on_three_KTscount==200)
-                    {
-                        putthreewentonktinfirebase("200");
-                    }
-                }
-                else if(array.getJSONObject(i).getString("name").equals("Set Appointment"))
-                {
-                    Three_appointments_setcount++;
-                    if(Three_appointments_setcount==3)
-                    {
-                        putthreeappointmentinfirebase("3");
-                    }
-                }
-                else if(array.getJSONObject(i).getString("name").equals("Closed Life"))
-                {
-                    Closed_three_lifecount++;
-                    if(Closed_three_lifecount==3)
-                    {
-                        putthreeclosedlifeinfirebase("3");
-                    }
-                }
-                else if(array.getJSONObject(i).getString("name").equals("Closed IBA"))
-                {
-                    Closed_three_IBAscount++;
-                    if(Closed_three_IBAscount==3)
-                    {
-                        putthreeclosedibainfirebase("3");
-                    }
-                }
-                Log.e("inside", "oo");
-                getdatafromfirebase();
-            }
-            else if(str.equalsIgnoreCase("all"))
-            {
-                viewHolder.tv_activity_list.setText(array.getJSONObject(i).getString("type"));
+                    viewHolder.timestamp.setText(simpleDateFormat.format(time));
 
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy' 'hh:mm a");
+                    if (array.getJSONObject(i).getString("name").equals("Went on KT")) {
+                        Went_on_three_KTscount++;
+                        if (Went_on_three_KTscount == 3) {
+                            putthreewentonktinfirebase("3");
+                        } else if (Went_on_three_KTscount == 50) {
+                            putthreewentonktinfirebase("50");
+                        } else if (Went_on_three_KTscount == 100) {
+                            putthreewentonktinfirebase("100");
+                        } else if (Went_on_three_KTscount == 200) {
+                            putthreewentonktinfirebase("200");
+                        }
+                    } else if (array.getJSONObject(i).getString("name").equals("Set Appointment")) {
+                        Three_appointments_setcount++;
+                        if (Three_appointments_setcount == 3) {
+                            putthreeappointmentinfirebase("3");
+                        }
+                    } else if (array.getJSONObject(i).getString("name").equals("Closed Life")) {
+                        Closed_three_lifecount++;
+                        if (Closed_three_lifecount == 3) {
+                            putthreeclosedlifeinfirebase("3");
+                        }
+                    } else if (array.getJSONObject(i).getString("name").equals("Closed IBA")) {
+                        Closed_three_IBAscount++;
+                        if (Closed_three_IBAscount == 3) {
+                            putthreeclosedibainfirebase("3");
+                        }
+                    }
+                    Log.e("inside", "oo");
+                    getdatafromfirebase();
+                } else if (str.equalsIgnoreCase("all")) {
+                    viewHolder.tv_activity_list.setText(array.getJSONObject(i).getString("type"));
 
-                long time = Long.parseLong(array.getJSONObject(i).getString("date"));
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy' 'hh:mm a");
 
-                viewHolder.timestamp.setText(simpleDateFormat.format(time));
-                if(array.getJSONObject(i).getString("type").equals("Went on KT"))
-                {
-                    Went_on_three_KTscount++;
-                    if(Went_on_three_KTscount==3)
-                    {
-                        putthreewentonktinfirebase("3");
+                    long time = Long.parseLong(array.getJSONObject(i).getString("date"));
+
+                    viewHolder.timestamp.setText(simpleDateFormat.format(time));
+                    if (array.getJSONObject(i).getString("type").equals("Went on KT")) {
+                        Went_on_three_KTscount++;
+                        if (Went_on_three_KTscount == 3) {
+                            putthreewentonktinfirebase("3");
+                        } else if (Went_on_three_KTscount == 50) {
+                            putthreewentonktinfirebase("50");
+                        } else if (Went_on_three_KTscount == 100) {
+                            putthreewentonktinfirebase("100");
+                        } else if (Went_on_three_KTscount == 200) {
+                            putthreewentonktinfirebase("200");
+                        }
+                    } else if (array.getJSONObject(i).getString("type").equals("Set Appointment")) {
+                        Three_appointments_setcount++;
+                        if (Three_appointments_setcount == 3) {
+                            putthreeappointmentinfirebase("3");
+                        }
+                    } else if (array.getJSONObject(i).getString("type").equals("Closed Life")) {
+                        Closed_three_lifecount++;
+                        if (Closed_three_lifecount == 3) {
+                            putthreeclosedlifeinfirebase("3");
+                        }
+                    } else if (array.getJSONObject(i).getString("type").equals("Closed IBA")) {
+                        Closed_three_IBAscount++;
+                        if (Closed_three_IBAscount == 3) {
+                            putthreeclosedibainfirebase("3");
+                        }
                     }
-                    else if(Went_on_three_KTscount==50)
-                    {
-                        putthreewentonktinfirebase("50");
-                    }
-                    else if(Went_on_three_KTscount==100)
-                    {
-                        putthreewentonktinfirebase("100");
-                    }
-                    else if(Went_on_three_KTscount==200)
-                    {
-                        putthreewentonktinfirebase("200");
-                    }
+                    Log.e("inside", "oo");
+                    getdatafromfirebase();
                 }
-                else if(array.getJSONObject(i).getString("type").equals("Set Appointment"))
-                {
-                    Three_appointments_setcount++;
-                    if(Three_appointments_setcount==3)
-                    {
-                        putthreeappointmentinfirebase("3");
-                    }
-                }
-                else if(array.getJSONObject(i).getString("type").equals("Closed Life"))
-                {
-                    Closed_three_lifecount++;
-                    if(Closed_three_lifecount==3)
-                    {
-                        putthreeclosedlifeinfirebase("3");
-                    }
-                }
-                else if(array.getJSONObject(i).getString("type").equals("Closed IBA"))
-                {
-                    Closed_three_IBAscount++;
-                    if(Closed_three_IBAscount==3)
-                    {
-                        putthreeclosedibainfirebase("3");
-                    }
-                }
-                Log.e("inside", "oo");
-                getdatafromfirebase();
             }
         } catch (Exception e) {
 
@@ -215,7 +187,8 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return array.length();
     }
 

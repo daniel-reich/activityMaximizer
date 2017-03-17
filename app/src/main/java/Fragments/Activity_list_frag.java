@@ -89,7 +89,7 @@ public class Activity_list_frag extends Fragment implements ISelectNewActivity {
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
 
         rview.setLayoutManager(lManager);
-        listadapter=new ContactActivityListAdapter(getActivity(),js,"simple");
+        listadapter=new ContactActivityListAdapter(getActivity(),js,"simple",name);
         rview.setAdapter(listadapter);
         tv_newactivity=(TextView)v.findViewById(R.id.tv_newactivity);
         tv_newactivity.setOnClickListener(new View.OnClickListener() {
@@ -144,29 +144,30 @@ public class Activity_list_frag extends Fragment implements ISelectNewActivity {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     JSONObject jGroup = new JSONObject();
                     Log.e("childddd",child.getKey()+" abc");
-                    data.add(new AllActivity(ConvertParseString(child.child("contactName").getValue()),ConvertParseString(child.child("contactRef").getValue()),ConvertParseString(child.child("created").getValue()),ConvertParseString(child.child("date").getValue()),ConvertParseString(child.child("eventKitID").getValue()),ConvertParseString(child.child("ref").getValue()),ConvertParseString(child.child("type").getValue()),ConvertParseString(child.child("userName").getValue()),ConvertParseString(child.child("userRef").getValue())));
-                    try {
-                        jGroup.put("keyid", ConvertParseString(child.getKey()+""));
-                        jGroup.put("contactName", ConvertParseString(child.child("contactName").getValue()));
-                        jGroup.put("contactRef", ConvertParseString(child.child("contactRef").getValue()));
-                        jGroup.put("created", ConvertParseString(child.child("created").getValue()));
-                        jGroup.put("date", ConvertParseString(child.child("date").getValue()));
-                        jGroup.put("eventKitID", ConvertParseString(child.child("eventKitID").getValue()));
-                        jGroup.put("ref", ConvertParseString(child.child("ref").getValue()));
-                        jGroup.put("type", ConvertParseString(child.child("type").getValue()));
-                        jGroup.put("userName", ConvertParseString(child.child("userName").getValue()));
-                        jGroup.put("userRef", ConvertParseString(child.child("userRef").getValue()));
-                        jsonArray.put(jGroup);
-                        Log.e("child", ConvertParseString(child.child("contactName").getValue()) + " abc");
-                    }
-                    catch (Exception e)
+                    if(name.equalsIgnoreCase(ConvertParseString(child.child("contactName").getValue())))
                     {
-                        Log.e("Exception",e+"");
+                        data.add(new AllActivity(ConvertParseString(child.child("contactName").getValue()), ConvertParseString(child.child("contactRef").getValue()), ConvertParseString(child.child("created").getValue()), ConvertParseString(child.child("date").getValue()), ConvertParseString(child.child("eventKitID").getValue()), ConvertParseString(child.child("ref").getValue()), ConvertParseString(child.child("type").getValue()), ConvertParseString(child.child("userName").getValue()), ConvertParseString(child.child("userRef").getValue())));
+                        try {
+                            jGroup.put("keyid", ConvertParseString(child.getKey() + ""));
+                            jGroup.put("contactName", ConvertParseString(child.child("contactName").getValue()));
+                            jGroup.put("contactRef", ConvertParseString(child.child("contactRef").getValue()));
+                            jGroup.put("created", ConvertParseString(child.child("created").getValue()));
+                            jGroup.put("date", ConvertParseString(child.child("date").getValue()));
+                            jGroup.put("eventKitID", ConvertParseString(child.child("eventKitID").getValue()));
+                            jGroup.put("ref", ConvertParseString(child.child("ref").getValue()));
+                            jGroup.put("type", ConvertParseString(child.child("type").getValue()));
+                            jGroup.put("userName", ConvertParseString(child.child("userName").getValue()));
+                            jGroup.put("userRef", ConvertParseString(child.child("userRef").getValue()));
+                            jsonArray.put(jGroup);
+                            Log.e("child", ConvertParseString(child.child("contactName").getValue()) + " abc");
+                        } catch (Exception e) {
+                            Log.e("Exception", e + "");
+                        }
                     }
                 }
 
                 Log.e("jsonarray",jsonArray+" abc");
-                listadapter=new ContactActivityListAdapter(getActivity(),jsonArray,"all");
+                listadapter=new ContactActivityListAdapter(getActivity(),jsonArray,"all",name);
                 rview.setLayoutManager(lManager);
                 rview.setAdapter(listadapter);
 
