@@ -126,7 +126,7 @@ public class Filter_Frag extends Fragment {
         tv_startdate=(TextView)view.findViewById(R.id.tv_startdate);
         tv_enddate=(TextView)view.findViewById(R.id.tv_enddate);
 
-        setdata(pref.getString("filter",""));
+
 
         obj=new JSONObject();
 
@@ -136,6 +136,8 @@ public class Filter_Frag extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        setdata(pref.getString("filter"," "));
 
 //        getDates(" "," ");
 
@@ -253,6 +255,9 @@ public class Filter_Frag extends Fragment {
         cb_default.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                Log.e("checkbox","set checked true");
+
                 if(b) {
                     iv_default.setImageResource(R.drawable.checkmark_bl24);
                     try {
@@ -638,6 +643,8 @@ public class Filter_Frag extends Fragment {
             }
         });
 
+//        cb_default.setChecked(true);
+
         return view;
     }
 
@@ -658,27 +665,41 @@ public class Filter_Frag extends Fragment {
                     iv_default.setImageBitmap(null);
                 }
             }
+            else{
+                cb_default.setChecked(true);
+                iv_default.setImageResource(R.drawable.checkmark_bl24);
+                obj.put("default",true);
+            }
 
             if(object.has("team")) {
                 if (object.getBoolean("team")) {
                     cb_team.setChecked(true);
                     iv_team.setImageResource(R.drawable.checkmark_bl24);
-                    iv_team.setVisibility(View.VISIBLE);
+
                 } else {
                     cb_team.setChecked(false);
                     iv_team.setImageBitmap(null);
                 }
+            }
+            else{
+                cb_team.setChecked(true);
+                iv_team.setImageResource(R.drawable.checkmark_bl24);
+                obj.put("team",true);
             }
 
             if(object.has("trainees")) {
                 if (object.getBoolean("trainees")) {
                     cb_trainees.setChecked(true);
                     iv_trainees.setImageResource(R.drawable.checkmark_bl24);
-                    iv_personal.setVisibility(View.VISIBLE);
+
                 } else {
                     cb_trainees.setChecked(false);
                     iv_trainees.setImageBitmap(null);
                 }
+            }else{
+                cb_trainees.setChecked(true);
+                iv_trainees.setImageResource(R.drawable.checkmark_bl24);
+                obj.put("trainees",true);
             }
 
             if(object.has("personal")) {
@@ -691,6 +712,11 @@ public class Filter_Frag extends Fragment {
                     iv_personal.setImageBitmap(null);
                 }
             }
+            else{
+                cb_personal.setChecked(true);
+                iv_personal.setImageResource(R.drawable.checkmark_bl24);
+                obj.put("personal",true);
+            }
 
             if(object.has("went_on_kt")) {
                 if (object.getBoolean("went_on_kt")) {
@@ -700,6 +726,11 @@ public class Filter_Frag extends Fragment {
                     cb_went_kt.setChecked(false);
                     iv_went_kt.setImageBitmap(null);
                 }
+            }
+            else{
+                cb_went_kt.setChecked(true);
+                iv_went_kt.setImageResource(R.drawable.checkmark_bl24);
+                obj.put("went_on_kt",true);
             }
 
             if(object.has("closelife")) {
@@ -711,6 +742,12 @@ public class Filter_Frag extends Fragment {
                     iv_closelife.setImageBitmap(null);
                 }
             }
+            else
+            {
+                cb_closelife.setChecked(true);
+                iv_closelife.setImageResource(R.drawable.checkmark_bl24);
+                obj.put("closelife",true);
+            }
 
             if(object.has("closeiba")) {
                 if (object.getBoolean("closeiba")) {
@@ -720,6 +757,11 @@ public class Filter_Frag extends Fragment {
                     cb_closeiba.setChecked(false);
                     iv_closeiba.setImageBitmap(null);
                 }
+            }
+            else{
+                cb_closeiba.setChecked(true);
+                iv_closeiba.setImageResource(R.drawable.checkmark_bl24);
+                obj.put("closeiba",true);
             }
 
             if(object.has("closeotherbusiness")) {
@@ -731,6 +773,11 @@ public class Filter_Frag extends Fragment {
                     iv_closeotherbus.setImageBitmap(null);
                 }
             }
+            else{
+                cb_closeotherbus.setChecked(true);
+                iv_closeotherbus.setImageResource(R.drawable.checkmark_bl24);
+                obj.put("closeotherbusiness",true);
+            }
 
             if(object.has("appt_closelife")) {
                 if (object.getBoolean("appt_closelife")) {
@@ -740,6 +787,12 @@ public class Filter_Frag extends Fragment {
                     cb_appt_closelife.setChecked(false);
                     iv_appt_closelife.setImageBitmap(null);
                 }
+            }
+            else
+            {
+                cb_appt_closelife.setChecked(true);
+                iv_appt_closelife.setImageResource(R.drawable.checkmark_bl24);
+                obj.put("appt_closelife",true);
             }
 
             if(object.has("appt_closeiba")) {
@@ -751,6 +804,11 @@ public class Filter_Frag extends Fragment {
                     iv_appt_closeiba.setImageBitmap(null);
                 }
             }
+            else{
+                cb_appt_closeiba.setChecked(true);
+                iv_appt_closeiba.setImageResource(R.drawable.checkmark_bl24);
+                obj.put("appt_closeiba",true);
+            }
 
             if(object.has("callback")) {
                 if (object.getBoolean("callback")) {
@@ -760,6 +818,12 @@ public class Filter_Frag extends Fragment {
                     cb_callback.setChecked(false);
                     iv_callback.setImageBitmap(null);
                 }
+            }
+            else
+            {
+                cb_callback.setChecked(true);
+                iv_callback.setImageResource(R.drawable.checkmark_bl24);
+                obj.put("callback",true);
             }
 
             if(object.has("darkhouse")) {
@@ -771,6 +835,12 @@ public class Filter_Frag extends Fragment {
                     iv_darkhouse.setImageBitmap(null);
                 }
             }
+            else
+            {
+                cb_darkhouse.setChecked(true);
+                iv_darkhouse.setImageResource(R.drawable.checkmark_bl24);
+                obj.put("darkhouse",true);
+            }
 
             if(object.has("invite_oppt_meeting")) {
                 if (object.getBoolean("invite_oppt_meeting")) {
@@ -780,6 +850,12 @@ public class Filter_Frag extends Fragment {
                     cb_invite_opp_meeting.setChecked(false);
                     iv_invite_oppt_meeting.setImageBitmap(null);
                 }
+            }
+            else
+            {
+                cb_invite_opp_meeting.setChecked(true);
+                iv_invite_oppt_meeting.setImageResource(R.drawable.checkmark_bl24);
+                obj.put("invite_oppt_meeting",true);
             }
 
 
@@ -793,6 +869,11 @@ public class Filter_Frag extends Fragment {
                     iv_appointmentset.setImageBitmap(null);
                 }
             }
+            else{
+                cb_appointmentset.setChecked(true);
+                iv_appointmentset.setImageResource(R.drawable.checkmark_bl24);
+                obj.put("appointmentset",true);
+            }
 
 
             if(object.has("oppt_meeting")) {
@@ -804,6 +885,12 @@ public class Filter_Frag extends Fragment {
                     iv_oppt_meeting.setImageBitmap(null);
                 }
             }
+            else{
+                cb_opp_meeting.setChecked(true);
+                iv_oppt_meeting.setImageResource(R.drawable.checkmark_bl24);
+                obj.put("oppt_meeting",true);
+            }
+
 
             if(object.has("notinterested")) {
                 if (object.getBoolean("notinterested")) {
@@ -814,6 +901,15 @@ public class Filter_Frag extends Fragment {
                     iv_notinterested.setImageBitmap(null);
                 }
             }
+            else{
+                cb_notinterested.setChecked(true);
+                iv_notinterested.setImageResource(R.drawable.checkmark_bl24);
+                obj.put("notinterested",true);
+            }
+
+            edit=pref.edit();
+            edit.putString("filter",obj+"");
+            edit.commit();
 
         } catch (JSONException e) {
             e.printStackTrace();
