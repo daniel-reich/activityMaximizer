@@ -69,7 +69,7 @@ public class ActivityFragments  extends Fragment
     String uid;
     int count=0;
     JSONObject checkfilter;
-    ArrayList<AllDownlines> data;
+    ArrayList<AllDownlines> data,datateam;
 
     @Nullable
     @Override
@@ -562,7 +562,8 @@ public class ActivityFragments  extends Fragment
                 Log.e("get data from server1",dataSnapshot.getValue()+" data");
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Log.e("testing1",child.getKey()+" abc");
-                   getdatafromfirebase(child.getKey());
+                   // if(dataSnapshot.child("trainer_solution_number").getValue().toString().equals(""))
+                   getallteamdownlinesfromfirebase(child.getKey());
                     count++;
 
                 }
@@ -656,10 +657,15 @@ public class ActivityFragments  extends Fragment
                 }
 
 
+
+
+                if(data.size()>0)
                 for(int i=0;i<data.size();i++)
                 {
                     getdatafromfirebase(data.get(i).getUid());
                 }
+
+
 
 
 
@@ -671,6 +677,37 @@ public class ActivityFragments  extends Fragment
             }
         });
     }
+
+
+
+
+    public void getallteamdownlinesfromfirebase(final String uid)
+    {
+        mref.child("users").child(uid).addValueEventListener(new ValueEventListener()
+        {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+
+                datateam=new ArrayList<AllDownlines>();
+                if(dataSnapshot.child("trainer_solution_number").getValue().toString().equals("")) {
+                    datateam.add(new AllDownlines(uid, dataSnapshot.child("givenName").getValue().toString(), dataSnapshot.child("fivePointClients").getValue().toString(), dataSnapshot.child("fivePointRecruits").getValue().toString()));
+
+                }
+                if(datateam.size()>0)
+                for(int i=0;i<datateam.size();i++)
+                {
+                    getdatafromfirebase(datateam.get(i).getUid());
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
 
     public static String ConvertParseString(Object obj ) {
         if(obj==null)

@@ -267,7 +267,8 @@ public class ActivityDetails extends Fragment {
                             }
                         }
 
-
+                         if(getActivity()==null)
+                          return;
                         adapter = new ActivityDetailAdapter(getActivity().getApplicationContext(),data);
 
                         rview.setAdapter(adapter);

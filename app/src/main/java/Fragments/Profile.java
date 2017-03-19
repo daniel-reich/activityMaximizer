@@ -169,6 +169,7 @@ public class Profile extends Fragment implements View.OnClickListener {
         switch (item.getItemId())
         {
             case R.id.menu:
+
                 showSettingsDialog();
                 break;
             case android.R.id.home:
