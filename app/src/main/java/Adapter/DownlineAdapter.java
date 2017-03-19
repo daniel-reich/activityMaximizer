@@ -80,10 +80,11 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
             addtoitem=(TextView)itemView.findViewById(R.id.addtoteam);
             if(DownlineFragment.showaddtoteam)
             {
-                addtoitem.setVisibility(View.GONE);
+                addtoitem.setVisibility(View.VISIBLE);
             }
             else {
-                addtoitem.setVisibility(View.VISIBLE);
+
+                addtoitem.setVisibility(View.GONE);
             }
 
         }

@@ -128,29 +128,30 @@ public class ActivityFragments  extends Fragment
         String f=pref.getString("filter","");
         Log.e("filter_pref",f+"value");
         try {
-            checkfilter =new JSONObject(f);
-            if(checkfilter.getString("personal").equalsIgnoreCase("true"))
-            {
-                getdatafromfirebase(uid);
-            }
-            if(checkfilter.getString("team").equalsIgnoreCase("true"))
-            {
-                getalldownlinesuidfromfirebase();
-                getalldownlinesbaseuidfromfirebase();
-            }
-            if(checkfilter.getString("trainees").equalsIgnoreCase("true"))
-            {
+            if (!TextUtils.isEmpty("f")) {
+                checkfilter = new JSONObject(f);
+                if (checkfilter.getString("personal").equalsIgnoreCase("true")) {
+                    getdatafromfirebase(uid);
+                }
+                if (checkfilter.getString("team").equalsIgnoreCase("true")) {
+                    getalldownlinesuidfromfirebase();
+                    getalldownlinesbaseuidfromfirebase();
+                }
+                if (checkfilter.getString("trainees").equalsIgnoreCase("true")) {
 
-                getalltrdownlinesuidfromfirebase();
-            }
-            else
-            {
-                adapter = new ActivitiesAdapter(getActivity(), list);
-                activities.setAdapter(adapter);
+                    getalltrdownlinesuidfromfirebase();
+                } else {
+                    adapter = new ActivitiesAdapter(getActivity(), list);
+                    activities.setAdapter(adapter);
 
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
+            adapter = new ActivitiesAdapter(getActivity(), list);
+            activities.setAdapter(adapter);
+
         }
 
 
