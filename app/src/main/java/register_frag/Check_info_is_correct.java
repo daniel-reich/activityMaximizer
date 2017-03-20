@@ -123,6 +123,7 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
                         }else{
                             //display some message here
                             Log.e("error_message",task.getException()+" ex");
+                            if(getActivity()!=null)
                             Toast.makeText(getActivity(),"Registration Error", Toast.LENGTH_LONG).show();
                         }
                     }

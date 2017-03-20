@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import Fragments.DownlineFragment;
 import Fragments.Downline_details_frag;
 import Fragments.ListContact;
+import interfaces.IDownloadAdapter;
 import model.AllDownlines;
 import model.AllList;
 import u.activitymanager.R;
@@ -43,6 +44,7 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
     private final SharedPreferences pref;
     Context c;
     ArrayList<AllDownlines> data;
+    IDownloadAdapter iDownloadAdapter;
     FragmentManager fm;
     private Firebase mref;
 
@@ -53,12 +55,13 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
     
     
 
-    public DownlineAdapter(Context c, ArrayList<AllDownlines> data, FragmentManager fm,int mode) {
+    public DownlineAdapter(Context c, ArrayList<AllDownlines> data, FragmentManager fm,int mode,IDownloadAdapter iDownloadAdapter) {
         this.c = c;
         this.data=data;
         this.fm=fm;
         this.mode=mode;
         pref=c.getSharedPreferences("userpref",0);
+        this.iDownloadAdapter = iDownloadAdapter;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -106,32 +109,34 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position)
     {
         final ViewHolder holder1= (ViewHolder) holder;
-        holder1.username.setText(data.get(position).getName());
-        Log.e("dddd",data.get(position).getFivePointRecruits().toString()+" abc");
-        if(data.get(position).getFivePointClients().toString().equalsIgnoreCase(""))
+        AllDownlines allDownlines =  data.get(position);
+        holder1.username.setText(allDownlines.getName());
+        Log.e("dddd",allDownlines.getFivePointRecruits().toString()+" abc");
+        if(allDownlines.getFivePointClients().toString().equalsIgnoreCase(""))
         {
             holder1.clientpoint.setText("0");
         }
         else {
-            holder1.clientpoint.setText(data.get(position).getFivePointClients());
+            holder1.clientpoint.setText(allDownlines.getFivePointClients());
         }
-        if(data.get(position).getFivePointRecruits().toString().equalsIgnoreCase(""))
+        if(allDownlines.getFivePointRecruits().toString().equalsIgnoreCase(""))
         {
             holder1.recruiterpoint.setText("0");
         }
         else {
-            holder1.recruiterpoint.setText(data.get(position).getFivePointRecruits());
+            holder1.recruiterpoint.setText(allDownlines.getFivePointRecruits());
         }
-
+        holder1.layout.setTag(allDownlines);
         holder1.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 //                fm.beginTransaction().
 //                        replace(R.id.frame_layout,new Downline_details_frag()).addToBackStack(null).commit();
+                AllDownlines allDownlines = (AllDownlines) holder1.layout.getTag();
                 Downline_details_frag basic_frag = new Downline_details_frag();
                 Bundle args = new Bundle();
-                args.putString("uid", data.get(position).getUid());
+                args.putString("uid", allDownlines.getUid());
                 basic_frag.setArguments(args);
 
                 ((FragmentActivity) c).getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, basic_frag).
@@ -145,7 +150,8 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
             @Override
             public void onClick(View v) {
                 mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
-                Deleteitem(position);
+                AllDownlines allDownlines = (AllDownlines) holder1.layout.getTag();
+                Deleteitem(allDownlines);
                 //Options(position);
 
             }
@@ -155,7 +161,8 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
             @Override
             public void onClick(View v) {
                 mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
-                AddToTeam(position);
+                AllDownlines allDownlines = (AllDownlines) holder1.layout.getTag();
+                AddToTeam(allDownlines);
 
             }
         });
@@ -248,19 +255,17 @@ public void Options(final int position)
 }
 
 
-public void Deleteitem(int position)
+public void Deleteitem(AllDownlines allDownlines)
 {
-    mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("downlines").child(data.get(position).getUid()).removeValue();
-
-    data.remove(position);
-
-    notifyDataSetChanged();
+    mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("downlines").child(allDownlines.getUid()).removeValue();
+    iDownloadAdapter.onRefreshAdapter(allDownlines);
 }
 
 
-public void AddToTeam(final int position)
+public void AddToTeam(final AllDownlines allDownlines)
 {
-    mref.child("users").child(data.get(position).getUid())
+
+    mref.child("users").child(allDownlines.getUid())
             .child("trainer_solution_number").runTransaction(new Transaction.Handler() {
         @Override
         public Transaction.Result doTransaction(final MutableData currentData) {
@@ -276,15 +281,9 @@ public void AddToTeam(final int position)
         public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
             if (firebaseError != null) {
                 Log.e("Firebase counter","increement failed");
-
-
-
             } else {
                 Log.d("Firebase counter","increment succeeded.");
-
-                data.remove(position);
-                notifyDataSetChanged();
-
+                iDownloadAdapter.onRefreshAdapter(allDownlines);
             }
         }
     });
