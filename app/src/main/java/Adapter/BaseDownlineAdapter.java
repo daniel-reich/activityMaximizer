@@ -21,6 +21,7 @@ import Fragments.Downline_details_frag;
 import model.AllBaseDownlines;
 import model.AllDownlines;
 import u.activitymanager.R;
+import utils.GaugeView;
 
 /**
  * Created by Rohan on 3/7/2017.
@@ -42,9 +43,11 @@ public class BaseDownlineAdapter extends  RecyclerView.Adapter<RecyclerView.View
         LinearLayout layout;
         TextView username,clientpoint,recruiterpoint;
         SwipeRevealLayout swipeRevealLayout;
+        GaugeView SpeedView;
         TextView delete,Addtoteam;
         public ViewHolder(View itemView) {
             super(itemView);
+            SpeedView=(GaugeView)itemView.findViewById(R.id.meter);
             layout=(LinearLayout)itemView.findViewById(R.id.layout);
             username=(TextView)itemView.findViewById(R.id.tv_username);
             clientpoint=(TextView)itemView.findViewById(R.id.tv_pointclients_count);
@@ -70,6 +73,7 @@ public class BaseDownlineAdapter extends  RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final ViewHolder holder1= (ViewHolder) holder;
+        holder1.SpeedView.setTargetValue((float)0.0);
         holder1.username.setText(data.get(position).getName());
         Log.e("dddd",data.get(position).getFivePointRecruits().toString()+" abc");
         if(data.get(position).getFivePointClients().toString().equalsIgnoreCase(""))

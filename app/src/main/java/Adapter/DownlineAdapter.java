@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
@@ -36,6 +37,7 @@ import interfaces.IDownloadAdapter;
 import model.AllDownlines;
 import model.AllList;
 import u.activitymanager.R;
+import utils.GaugeView;
 
 /**
  * Created by Rohan on 3/7/2017.
@@ -71,8 +73,10 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
         SwipeRevealLayout swipeRevealLayout;
         TextView delete,addtoitem;
         ImageView iv_minus;
+        GaugeView gaugeView;
         public ViewHolder(View itemView) {
             super(itemView);
+            gaugeView=(GaugeView)itemView.findViewById(R.id.meter);
             layout=(LinearLayout)itemView.findViewById(R.id.layout);
             username=(TextView)itemView.findViewById(R.id.tv_username);
             clientpoint=(TextView)itemView.findViewById(R.id.tv_pointclients_count);
@@ -81,13 +85,13 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
             delete=(TextView)itemView.findViewById(R.id.delete);
 
             addtoitem=(TextView)itemView.findViewById(R.id.addtoteam);
-            if(DownlineFragment.showaddtoteam)
+            if(DownlineFragment.showaddtoteam && !DownlineFragment.showaddtotrainne)
             {
-                addtoitem.setVisibility(View.VISIBLE);
+                addtoitem.setVisibility(View.GONE);
             }
             else {
 
-                addtoitem.setVisibility(View.GONE);
+                addtoitem.setVisibility(View.VISIBLE);
             }
 
         }
@@ -111,6 +115,7 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
         final ViewHolder holder1= (ViewHolder) holder;
         AllDownlines allDownlines =  data.get(position);
         holder1.username.setText(allDownlines.getName());
+        holder1.gaugeView.setTargetValue((float) 0.0);
         Log.e("dddd",allDownlines.getFivePointRecruits().toString()+" abc");
         if(allDownlines.getFivePointClients().toString().equalsIgnoreCase(""))
         {
@@ -127,6 +132,7 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
             holder1.recruiterpoint.setText(allDownlines.getFivePointRecruits());
         }
         holder1.layout.setTag(allDownlines);
+
         holder1.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -258,7 +264,13 @@ public void Options(final int position)
 public void Deleteitem(AllDownlines allDownlines)
 {
     mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("downlines").child(allDownlines.getUid()).removeValue();
-    iDownloadAdapter.onRefreshAdapter(allDownlines);
+    for (AllDownlines allDownlines1:data) {
+        if (allDownlines1.getUid().equalsIgnoreCase(allDownlines.getUid())){
+            data.remove(allDownlines);
+            notifyDataSetChanged();
+            break;
+        }
+    }
 }
 
 

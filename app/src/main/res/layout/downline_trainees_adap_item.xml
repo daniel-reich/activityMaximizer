@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:gauge="http://schemas.android.com/apk/res-auto"
     app:mode="same_level"
     android:id="@+id/swipeview"
     app:dragEdge="right">
@@ -28,6 +29,7 @@
                 android:background="@android:color/holo_orange_dark"
                 android:textColor="@android:color/white"
                 android:paddingRight="5dp"
+                android:visibility="gone"
                 android:id="@+id/addtoteam"
                 android:text="Add to team"/>
 
@@ -144,13 +146,36 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-
+                    <utils.GaugeView
+                        android:id="@+id/meter"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="16dp"
+                        gauge:divisions="8"
+                        gauge:subdivisions="1"
+                        gauge:scaleEndValue="100"
+                        gauge:showInnerRim="true"
+                        gauge:showNeedle="true"
+                        gauge:rangeValues="@array/speedTestRangeValues"
+                        gauge:showOuterBorder="false"
+                        android:background="@android:color/transparent"
+                        gauge:showOuterRim="false"
+                        gauge:showOuterShadow="false"
+                        gauge:showRangeText="true"
+                        gauge:showRanges="true"
+                        android:layout_marginTop="8dp"
+                        gauge:showScale="true"
+                        gauge:textUnit=""
+                        gauge:textUnitSize="0.06"
+                        gauge:textValueSize="0.15" />
                     <ImageView
                         android:id="@+id/iv_speed_meter"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="8dp"
+                        android:visibility="gone"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/speedo"/>
 

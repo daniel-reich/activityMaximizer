@@ -57,7 +57,7 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
     SharedPreferences pref;
     String uid="",First_downline="";
    public static boolean showedit;
-    public static boolean showaddtoteam;
+    public static boolean showaddtoteam,showaddtotrainne;
 
     @Nullable
     @Override
@@ -91,7 +91,8 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_layout1,basic_frag).addToBackStack(null).commit();
 
-
+        showaddtoteam=true;
+        showaddtotrainne=false;
 
         return view;
     }
@@ -140,7 +141,9 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
             case R.id.team_button:
                 trainees.setSelected(true);
                 team.setSelected(false);
-                showaddtoteam=!showaddtoteam;
+               // showaddtoteam=!showaddtoteam;
+                showaddtoteam=false;
+                showaddtotrainne=true;
                 Log.e("showaddtoteam",showaddtoteam+"");
                 Trainee_frag basic_frag1 = new Trainee_frag();
                 getActivity().getSupportFragmentManager().beginTransaction()
@@ -150,7 +153,8 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
             case R.id.personal_button:
                 team.setSelected(true);
                 trainees.setSelected(false);
-            showaddtoteam=!showaddtoteam;
+                showaddtoteam=true;
+                showaddtotrainne=false;
                 Team_fragment basic_frag = new Team_fragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_layout1,basic_frag).commit();
