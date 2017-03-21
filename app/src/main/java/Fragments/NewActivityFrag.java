@@ -283,7 +283,11 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
                     @Override
                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                         if(increement_value.equalsIgnoreCase("Appointments Set")){
+
+                            incrementCounter();
+
                             check_Goals();
+
                         }
                     }
                 });
@@ -313,54 +317,53 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
 //                long v=1488570223417l;
 //                int vv=v.compareTo(key);
                 //if (v<key){
-                String startdate = (String) dataSnapshot.child("startDate").getValue();
-                String enddate = (String) dataSnapshot.child("endDate").getValue();
-                //04/03/2017 12:46 PM
-                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
-                String currentDate = formatter.format(new Date());
+                if(!key.equalsIgnoreCase("users")) {
+                    String startdate = (String) dataSnapshot.child("startDate").getValue();
+                    String enddate = (String) dataSnapshot.child("endDate").getValue();
+                    //04/03/2017 12:46 PM
+                    DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
+                    String currentDate = formatter.format(new Date());
 
-                try {
-                    Date start_d = (Date)formatter.parse(startdate);
-                    Date end_d = (Date)formatter.parse(enddate);
-                    Date current_d = (Date)formatter.parse(currentDate);
+                    try {
+                        Date start_d = (Date) formatter.parse(startdate);
+                        Date end_d = (Date) formatter.parse(enddate);
+                        Date current_d = (Date) formatter.parse(currentDate);
 
-                    Log.e("date_start",start_d+"");
-                    Log.e("date_end",end_d+"");
-                    Log.e("date_current",current_d+"");
+                        Log.e("date_start", start_d + "");
+                        Log.e("date_end", end_d + "");
+                        Log.e("date_current", current_d + "");
 
-                    Log.e("increement_value",increement_value+"  ------- ");
+                        Log.e("increement_value", increement_value + "  ------- ");
 
-                    int cur_to_end=end_d.compareTo(current_d);
-                    int cur_to_start=start_d.compareTo(current_d);
+                        int cur_to_end = end_d.compareTo(current_d);
+                        int cur_to_start = start_d.compareTo(current_d);
 //                    Log.e("cur_to_end",cur_to_end+"");
 //                    Log.e("cur_to_start",cur_to_start+"");
-                    if(cur_to_end>0){
-                        Log.e("end_date_is ","greater than cur_date");
-                        if(cur_to_start<0) {
-                            Log.e("current_date_is", "greater than start date");
-                            //update value
-                            Map<String, Object> activitycount = (Map<String, Object>) dataSnapshot.child("activityCount").getValue();
+                        if (cur_to_end > 0) {
+                            Log.e("end_date_is ", "greater than cur_date");
+                            if (cur_to_start < 0) {
+                                Log.e("current_date_is", "greater than start date");
+                                //update value
+                                Map<String, Object> activitycount = (Map<String, Object>) dataSnapshot.child("activityCount").getValue();
 
-                            if(Integer.valueOf(activitycount.get(increement_value).toString())>0){
-                                increment_Goals_Counter(mref,key,increement_value);
-                            }
+                                if (Integer.valueOf(activitycount.get(increement_value).toString()) > 0) {
+                                    increment_Goals_Counter(mref, key, increement_value);
+                                }
 
-                        }
-                        else
-                            Log.e("start_date_is","greater than current date");
+                            } else
+                                Log.e("start_date_is", "greater than current date");
+                        } else
+                            Log.e("currnet_date_is ", "greater than end_date");
+
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        Log.e("date_time_exception", "e", e);
                     }
-                    else
-                        Log.e("currnet_date_is ","greater than end_date");
-
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    Log.e("date_time_exception","e",e);
+                    Log.e("start_date", "startdate: " + startdate);
+                    Log.e("end_date", "enddate: " + enddate);
+                    Log.e("currnet_date", "Date: " + currentDate);
                 }
-                Log.e("start_date","startdate: "+startdate);
-                Log.e("end_date","enddate: "+enddate);
-                Log.e("currnet_date","Date: "+currentDate);
-
 //                    if (ss!=null){
 //                        Log.e("TEST","Changed values: null ");
 //                    }
@@ -526,6 +529,58 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
 
     }
 
+
+    public void incrementCounter() {
+
+
+        String currentDate = datecurrent();
+
+        Log.e("uid increment_counter",pref.getString("uid","")+" "+currentDate);
+
+        mref.child("users").child(pref.getString("uid",""))
+                .child("dailyPointAverages").child(currentDate).runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(final MutableData currentData) {
+                if (currentData.getValue() == null) {
+                    currentData.setValue(2);
+                } else {
+                    currentData.setValue((Long) currentData.getValue() + 2);
+                }
+
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
+                if (firebaseError != null) {
+                    Log.e("Firebase counter","increement failed");
+                } else {
+                    Log.d("Firebase counter","increment succeeded.");
+                }
+            }
+        });
+    }
+
+
+    public String datecurrent(){
+
+        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+
+        Log.e("currenttime",currentDateTimeString);
+        String formattedDate = null;
+//        DateFormat originalFormat = new SimpleDateFormat("dd MMM yyyy hh:mm:ss a", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("MMM dd");
+        Date date = null;
+
+        try {
+            formattedDate = targetFormat.format(new Date());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return formattedDate;
+    }
 
 
 }

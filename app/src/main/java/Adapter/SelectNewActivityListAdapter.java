@@ -240,6 +240,9 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
     }
 
     private void addNewContact(int position) {
+
+        Log.e("addNewContact_call","addnewcontact call");
+
         java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
         Log.e("Today is ", timeStampDate.getTime()+"");
         String timestamp=String.valueOf(timeStampDate.getTime());
@@ -292,6 +295,9 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
                 .setValue(newcontact, new Firebase.CompletionListener() {
                     @Override
                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+
+                        Log.e("addNewContact_call","addnewcontact oncomplete");
+
                        if(increement==1|increement==3|increement==5|increement==2)
                         incrementCounter();
 
@@ -330,7 +336,7 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
     }
 
     public void incrementCounter() {
-    Log.e("uid",pref.getString("uid",""));
+    Log.e("uid increment counter",pref.getString("uid",""));
 
         String currentDate = datecurrent();
 
@@ -527,52 +533,51 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
                 Log.e("date_start",startdate+"");
                 Log.e("date_end",enddate+"");
                 Log.e("date_current",currentDate+"");
+                if(!key.equalsIgnoreCase("users")) {
+                    try {
+                        Date start_d = new Date();
+                        Date end_d = new Date();
+                        Date current_d = new Date();
 
-                try {
-                    Date start_d=new Date();
-                    Date end_d=new Date();
-                    Date current_d=new Date();
+                        start_d = (Date) formatter.parse(startdate);
+                        end_d = (Date) formatter.parse(enddate);
+                        current_d = (Date) formatter.parse(currentDate);
 
-                    start_d = (Date)formatter.parse(startdate);
-                    end_d = (Date)formatter.parse(enddate);
-                    current_d = (Date)formatter.parse(currentDate);
+                        Log.e("date_start", start_d + "");
+                        Log.e("date_end", end_d + "");
+                        Log.e("date_current", current_d + "");
 
-                    Log.e("date_start",start_d+"");
-                    Log.e("date_end",end_d+"");
-                    Log.e("date_current",current_d+"");
+                        Log.e("increement_value", increement_value + "  ------- ");
 
-                    Log.e("increement_value",increement_value+"  ------- ");
-
-                    int cur_to_end=end_d.compareTo(current_d);
-                    int cur_to_start=start_d.compareTo(current_d);
+                        int cur_to_end = end_d.compareTo(current_d);
+                        int cur_to_start = start_d.compareTo(current_d);
 //                    Log.e("cur_to_end",cur_to_end+"");
 //                    Log.e("cur_to_start",cur_to_start+"");
-                    if(cur_to_end>0){
-                        Log.e("end_date_is ","greater than cur_date");
-                        if(cur_to_start<0) {
-                            Log.e("current_date_is", "greater than start date");
-                            //update value
-                            Map<String, Object> activitycount = (Map<String, Object>) dataSnapshot.child("activityCount").getValue();
+                        if (cur_to_end > 0) {
+                            Log.e("end_date_is ", "greater than cur_date");
+                            if (cur_to_start < 0) {
+                                Log.e("current_date_is", "greater than start date");
+                                //update value
+                                Map<String, Object> activitycount = (Map<String, Object>) dataSnapshot.child("activityCount").getValue();
 
-                            if(Integer.valueOf(activitycount.get(increement_value).toString())>0){
-                                increment_Goals_Counter_premium(mref,key,"Total Premium");
-                            }
+                                if (Integer.valueOf(activitycount.get(increement_value).toString()) > 0) {
+                                    increment_Goals_Counter_premium(mref, key, "Total Premium");
+                                }
 
-                        }
-                        else
-                            Log.e("start_date_is","greater than current date");
+                            } else
+                                Log.e("start_date_is", "greater than current date");
+                        } else
+                            Log.e("currnet_date_is ", "greater than end_date");
+
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        Log.e("date_time_exception", "e", e);
                     }
-                    else
-                        Log.e("currnet_date_is ","greater than end_date");
-
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    Log.e("date_time_exception","e",e);
+                    Log.e("start_date", "startdate: " + startdate);
+                    Log.e("end_date", "enddate: " + enddate);
+                    Log.e("currnet_date", "Date: " + currentDate);
                 }
-                Log.e("start_date","startdate: "+startdate);
-                Log.e("end_date","enddate: "+enddate);
-                Log.e("currnet_date","Date: "+currentDate);
 
 //                    if (ss!=null){
 //                        Log.e("TEST","Changed values: null ");

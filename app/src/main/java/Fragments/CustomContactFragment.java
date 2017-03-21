@@ -40,6 +40,9 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -207,6 +210,8 @@ public class CustomContactFragment extends Fragment
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
 
+        dialog.setCancelable(false);
+
         TextView tv_no=(TextView)dialog.findViewById(R.id.no);
         TextView tv_yes=(TextView)dialog.findViewById(R.id.yes);
 
@@ -275,6 +280,17 @@ public class CustomContactFragment extends Fragment
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
                 Log.e("get data from server",dataSnapshot.getValue()+" data");
                 Log.e("child",dataSnapshot.child("First_contact_added").getValue()+" abc");
+                 JSONObject obj = null;
+                try {
+                    obj = new JSONObject(dataSnapshot.getValue()+"");
+
+                    Log.e("obj",obj.toString());
+                } catch (JSONException e) {
+
+                    Log.e("e","e",e);
+                    e.printStackTrace();
+                }
+
                 First_contact_added=ConvertParseString(dataSnapshot.child("First_contact_added").getValue());
                 if(First_contact_added.equalsIgnoreCase("false"))
                 {
@@ -285,6 +301,15 @@ public class CustomContactFragment extends Fragment
                     newcontact.put("First_contact_added","true");
                     newcontact.put("First_contact_added_date",timestamp);
                     mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+//
+//                    Achivement_Details frag=new Achivement_Details();
+//                    Bundle bundle=new Bundle();
+//                    bundle.putInt("position",4);
+//                    bundle.putString("data",obj+"");
+//                    frag.setArguments(bundle);
+//                    getActivity().getSupportFragmentManager().beginTransaction().
+//                            replace(R.id.frame_layout,frag).addToBackStack(null).commit();
+
                     Alert();
                 }
                 else
