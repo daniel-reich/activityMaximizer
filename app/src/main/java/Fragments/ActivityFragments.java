@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -45,6 +46,7 @@ import java.util.Locale;
 import Adapter.ActivitiesAdapter;
 import Adapter.PostsAdapter;
 import model.Activities;
+import model.AllDownlines;
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
@@ -67,6 +69,7 @@ public class ActivityFragments  extends Fragment
     String uid;
     int count=0;
     JSONObject checkfilter;
+    ArrayList<AllDownlines> data,datateam;
 
     @Nullable
     @Override
@@ -121,22 +124,34 @@ public class ActivityFragments  extends Fragment
         Log.e("filter",e_date+","+s_date);
 
         list = getDates(s_date, e_date);
-        getdatafromfirebase(uid);
+       // getdatafromfirebase(uid);
         String f=pref.getString("filter","");
         Log.e("filter_pref",f+"value");
         try {
-            checkfilter =new JSONObject(f);
-            if(checkfilter.getString("team").equalsIgnoreCase("true"))
-            {
-                getalldownlinesuidfromfirebase();
-                getalldownlinesbaseuidfromfirebase();
-            }
-            if(checkfilter.getString("trainees").equalsIgnoreCase("true"))
-            {
+            if (!TextUtils.isEmpty("f")) {
+                checkfilter = new JSONObject(f);
+                if (checkfilter.getString("personal").equalsIgnoreCase("true")) {
+                    getdatafromfirebase(uid);
+                }
+                if (checkfilter.getString("team").equalsIgnoreCase("true")) {
+                    getalldownlinesuidfromfirebase();
+                    getalldownlinesbaseuidfromfirebase();
+                }
+                if (checkfilter.getString("trainees").equalsIgnoreCase("true")) {
 
+                    getalltrdownlinesuidfromfirebase();
+                } else {
+                    adapter = new ActivitiesAdapter(getActivity(), list);
+                    activities.setAdapter(adapter);
+
+                }
             }
-        } catch (JSONException e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
+            adapter = new ActivitiesAdapter(getActivity(), list);
+            activities.setAdapter(adapter);
+
         }
 
 
@@ -547,7 +562,8 @@ public class ActivityFragments  extends Fragment
                 Log.e("get data from server1",dataSnapshot.getValue()+" data");
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Log.e("testing1",child.getKey()+" abc");
-                   getdatafromfirebase(child.getKey());
+                   // if(dataSnapshot.child("trainer_solution_number").getValue().toString().equals(""))
+                   getallteamdownlinesfromfirebase(child.getKey());
                     count++;
 
                 }
@@ -584,5 +600,129 @@ public class ActivityFragments  extends Fragment
             }
         });
     }
+
+
+    public void getalltrdownlinesuidfromfirebase()
+    {
+        Log.e("testing1",pref.getString("solution_number","")+" abc");
+        mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("downlines").addValueEventListener(new ValueEventListener()
+        {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.e("testing",child.getKey()+" abc");
+
+                    getalldownlinesfromfirebase(child.getKey());
+
+
+                }
+
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+
+    public void getalldownlinesfromfirebase(final String uid)
+    {
+        mref.child("users").child(uid).addValueEventListener(new ValueEventListener()
+        {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+                 data=new ArrayList<AllDownlines>();
+                if(!dataSnapshot.child("trainer_solution_number").getValue().toString().equals(""))
+
+                {
+
+                    String s="";
+
+                    if(dataSnapshot.child("givenName").getValue()!=null)
+
+                        s=dataSnapshot.child("givenName").getValue().toString();
+
+                    else
+                        s= dataSnapshot.child("givename").getValue().toString();
+
+                    data.add(new AllDownlines(uid,ConvertParseString(s),ConvertParseString(dataSnapshot.child("fivePointClients").getValue().toString()),ConvertParseString(dataSnapshot.child("fivePointRecruits").getValue().toString())));
+
+
+                }
+
+
+
+
+                if(data.size()>0)
+                for(int i=0;i<data.size();i++)
+                {
+                    getdatafromfirebase(data.get(i).getUid());
+                }
+
+
+
+
+
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+
+
+
+    public void getallteamdownlinesfromfirebase(final String uid)
+    {
+        mref.child("users").child(uid).addValueEventListener(new ValueEventListener()
+        {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("get data from server",dataSnapshot.getValue()+" data");
+
+                datateam=new ArrayList<AllDownlines>();
+                if(dataSnapshot.child("trainer_solution_number").getValue().toString().equals("")) {
+                    datateam.add(new AllDownlines(uid, dataSnapshot.child("givenName").getValue().toString(), dataSnapshot.child("fivePointClients").getValue().toString(), dataSnapshot.child("fivePointRecruits").getValue().toString()));
+
+                }
+                if(datateam.size()>0)
+                for(int i=0;i<datateam.size();i++)
+                {
+                    getdatafromfirebase(datateam.get(i).getUid());
+                }
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
+
+
+    public static String ConvertParseString(Object obj ) {
+        if(obj==null)
+        {
+            return "";
+        }
+        else {
+            String lastSeen= String.valueOf(obj);
+            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
+                return lastSeen;
+            else
+                return "";
+        }
+
+    }
+
 
 }

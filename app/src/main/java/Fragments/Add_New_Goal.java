@@ -222,7 +222,6 @@ public class Add_New_Goal extends Fragment implements View.OnClickListener {
         if(Integer.parseInt(tv_went_on_kt.getText().toString())>0)
             m3.put("Went on KT",0);
 
-
         String tms= String.valueOf(System.currentTimeMillis());
         Log.e("update success","update success");
 
@@ -251,6 +250,7 @@ public class Add_New_Goal extends Fragment implements View.OnClickListener {
             }
         });
     }
+
     public void Alert(String val) {
         final Dialog dialog=new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

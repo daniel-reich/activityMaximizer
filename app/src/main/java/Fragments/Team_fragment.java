@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -38,6 +39,7 @@ import java.util.Map;
 import Adapter.BaseDownlineAdapter;
 import Adapter.DownlineAdapter;
 import Adapter.TeamDirectDownlineAdapter;
+import interfaces.IDownloadAdapter;
 import model.AllBaseDownlines;
 import model.AllDownlines;
 import u.activitymanager.HomeActivity;
@@ -46,7 +48,7 @@ import u.activitymanager.R;
 /**
  * Created by Rohan on 3/9/2017.
  */
-public class Team_fragment extends Fragment {
+public class Team_fragment extends Fragment implements IDownloadAdapter{
     View view;
     Dialog helpdialog;
 
@@ -252,7 +254,7 @@ public class Team_fragment extends Fragment {
     public void setDirectAdapter() {
 
         if (getActivity() != null) {
-            adapter = new DownlineAdapter(getActivity(), data, fm, 0);
+            adapter = new DownlineAdapter(getActivity(), data, fm, 0,Team_fragment.this);
             directview.setLayoutManager(layoutManager);
             directview.setAdapter(adapter);
         }
@@ -305,6 +307,18 @@ public class Team_fragment extends Fragment {
                 return "";
         }
 
+    }
+
+    @Override
+    public void onRefreshAdapter(AllDownlines allDownlines) {
+        for (AllDownlines allDownlines1:data) {
+            if (allDownlines1.getUid().equalsIgnoreCase(allDownlines.getUid())){
+                data.remove(allDownlines1);
+                adapter.notifyDataSetChanged();
+                Toast.makeText(getActivity(),"on Refresh",Toast.LENGTH_LONG).show();
+                break;
+            }
+        }
     }
 
 }

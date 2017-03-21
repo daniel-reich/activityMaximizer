@@ -157,7 +157,6 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
                     {
                         increement=5;
                         increement_value="Closed Life";
-
                         Activity_list_frag.dialog.dismiss();
                         addContactDialog(position);
                     }
@@ -222,6 +221,8 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
                 if(amount>0) {
                     AddNewContact.dismiss();
                     addNewContact(position);
+
+                    check_Goals_premium();
                 }
                 else
                     Toast.makeText(context,"Please Enter Amount",Toast.LENGTH_LONG).show();
@@ -298,7 +299,7 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
                                increement_value.equalsIgnoreCase("Closed IBA")|increement_value.equalsIgnoreCase("Set Appointment")|
                                 increement_value.equalsIgnoreCase("Closed Other Business")){
 //                            Log.e("check_goals_call","check_goals_call");
-//                            check_Goals();
+                            check_Goals();
                         }
                         else
                         Log.e("increement_value",increement_value);
@@ -357,130 +358,288 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
         });
     }
 
-//    public void check_Goals(){
-//
-//        Log.e("check_goals_call","check_goals_call");
-//
-//        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/users/"+pref.getString("uid","")+"/Goals/");
-//        mref.keepSynced(true);
-//
-//        ChildEventListener childEventListener = new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                Log.e("Child_Event_Verse", "onChildChanged:" + dataSnapshot.getKey());
-//                String key=dataSnapshot.getKey();
-////                long key= Long.parseLong(dataSnapshot.getKey());
-////                long v=1488570223417l;
-////                int vv=v.compareTo(key);
-//                //if (v<key){
-//                String startdate = (String) dataSnapshot.child("startDate").getValue();
-//                String enddate = (String) dataSnapshot.child("endDate").getValue();
-//                //04/03/2017 12:46 PM
-//                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
-//                String currentDate = formatter.format(new Date());
-//                try {
-//                    Date start_d = (Date)formatter.parse(startdate);
-//                    Date end_d = (Date)formatter.parse(enddate);
-//                    Date current_d = (Date)formatter.parse(currentDate);
-//
-//                    Log.e("date_start",start_d+"");
-//                    Log.e("date_end",end_d+"");
-//                    Log.e("date_current",current_d+"");
-//
-//                    Log.e("increement_value",increement_value+"  ------- ");
-//
-//                    int cur_to_end=end_d.compareTo(current_d);
-//                    int cur_to_start=start_d.compareTo(current_d);
-////                    Log.e("cur_to_end",cur_to_end+"");
-////                    Log.e("cur_to_start",cur_to_start+"");
-//                    if(cur_to_end>0){
-//                        Log.e("end_date_is ","greater than cur_date");
-//                        if(cur_to_start<0) {
-//                            Log.e("current_date_is", "greater than start date");
-//                            //update value
-//                            Map<String, Object> activitycount = (Map<String, Object>) dataSnapshot.child("activityCount").getValue();
-//
-//                            if(Integer.valueOf(activitycount.get(increement_value).toString())>0){
-//                                increment_Goals_Counter(mref,key,increement_value);
-//                            }
-//
-//                        }
-//                        else
-//                            Log.e("start_date_is","greater than current date");
+    public void check_Goals(){
+
+        Log.e("check_goals_call","check_goals_call");
+
+        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/users/"+pref.getString("uid","")+"/Goals/");
+        mref.keepSynced(true);
+
+        ChildEventListener childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.e("Child_Event_Verse", "onChildChanged:" + dataSnapshot.getKey());
+                String key=dataSnapshot.getKey();
+
+//                long key= Long.parseLong(dataSnapshot.getKey());
+//                long v=1488570223417l;
+//                int vv=v.compareTo(key);
+                //if (v<key){
+
+                if(!key.equalsIgnoreCase("users")) {
+                    String startdate = (String) dataSnapshot.child("startDate").getValue();
+                    String enddate = (String) dataSnapshot.child("endDate").getValue();
+                    //04/03/2017 12:46 PM
+                    DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
+                    String currentDate = formatter.format(new Date());
+
+                    try {
+
+                        Log.e("start_date1", "startdate: " + startdate);
+                        Log.e("end_date1", "enddate: " + enddate);
+                        Log.e("currnet_date1", "Date: " + currentDate);
+
+                        Date start_d = new Date();
+                        Date end_d = new Date();
+                        Date current_d = new Date();
+
+                        start_d = (Date) formatter.parse(startdate);
+                        end_d = (Date) formatter.parse(enddate);
+                        current_d = (Date) formatter.parse(currentDate);
+
+                        Log.e("date_start", start_d + "");
+                        Log.e("date_end", end_d + "");
+                        Log.e("date_current", current_d + "");
+
+                        Log.e("increement_value", increement_value + "  ------- ");
+
+                        int cur_to_end = end_d.compareTo(current_d);
+                        int cur_to_start = start_d.compareTo(current_d);
+//                    Log.e("cur_to_end",cur_to_end+"");
+//                    Log.e("cur_to_start",cur_to_start+"");
+                        if (cur_to_end > 0) {
+                            Log.e("end_date_is ", "greater than cur_date");
+                            if (cur_to_start < 0) {
+                                Log.e("current_date_is", "greater than start date");
+                                //update value
+                                Map<String, Object> activitycount = (Map<String, Object>) dataSnapshot.child("activityCount").getValue();
+
+                                if (Integer.valueOf(activitycount.get(increement_value).toString()) > 0) {
+                                    increment_Goals_Counter(mref, key, increement_value);
+                                }
+
+                            } else
+                                Log.e("start_date_is", "greater than current date");
+                        } else
+                            Log.e("currnet_date_is ", "greater than end_date");
+
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        Log.e("date_time_exception", "e", e);
+                    }
+
+                    Log.e("start_date2", "startdate: " + startdate);
+                    Log.e("end_date2", "enddate: " + enddate);
+                    Log.e("currnet_date2", "Date: " + currentDate);
+                }
+
+//                    if (ss!=null){
+//                        Log.e("TEST","Changed values: null ");
 //                    }
-//                    else
-//                        Log.e("currnet_date_is ","greater than end_date");
-//
-//
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                    Log.e("date_time_exception","e",e);
 //                }
-//                Log.e("start_date","startdate: "+startdate);
-//                Log.e("end_date","enddate: "+enddate);
-//                Log.e("currnet_date","Date: "+currentDate);
+//                else
+//                    Log.e("onChildAdded","Changed values: null ");
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.e("onChildChanged","Changed values: null ");
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Log.e("onChildremoved","Changed values: null ");
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                Log.e("onChildMoved","Changed values: null ");
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.e("onCancelled","Changed values: null ");
+            }
+        };
+        mref.addChildEventListener(childEventListener);
+    }
 //
-////                    if (ss!=null){
-////                        Log.e("TEST","Changed values: null ");
-////                    }
-////                }
-////                else
-////                    Log.e("onChildAdded","Changed values: null ");
-//
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//                Log.e("onChildChanged","Changed values: null ");
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//                Log.e("onChildremoved","Changed values: null ");
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//                Log.e("onChildMoved","Changed values: null ");
-//            }
-//
-//            @Override
-//            public void onCancelled(FirebaseError firebaseError) {
-//                Log.e("onCancelled","Changed values: null ");
-//            }
-//        };
-//        mref.addChildEventListener(childEventListener);
-//    }
-//
-//    public void increment_Goals_Counter(Firebase ref,String key,String node) {
-//
-//        Log.e("uid",pref.getString("uid",""));
-//        Log.e("increment_Goals_call","increment_Goals_Counter_call");
-////        String currentDate = datecurrent();
-//
-//        Log.e("key_node",key+"/"+node);
-//
-//        ref.child(key).child("currentCount").child(node).runTransaction(new Transaction.Handler() {
-//            @Override
-//            public Transaction.Result doTransaction(final MutableData currentData) {
-//                if (currentData.getValue() == null) {
-//                    currentData.setValue(1);
-//                } else {
-//                    currentData.setValue((Long) currentData.getValue() + 1);
+    public void increment_Goals_Counter(Firebase ref,String key,String node)
+    {
+
+        Log.e("uid",pref.getString("uid",""));
+        Log.e("increment_Goals_call","increment_Goals_Counter_call");
+//        String currentDate = datecurrent();
+
+        Log.e("key_node",key+"/"+node);
+
+        ref.child(key).child("currentCount").child(node).runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(final MutableData currentData) {
+                if (currentData.getValue() == null) {
+                    currentData.setValue(1);
+                } else {
+                    currentData.setValue((Long) currentData.getValue() + 1);
+                }
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
+                if (firebaseError != null) {
+                    Log.e("Firebase goals counter","increement failed");
+                } else {
+                    Log.e("Firebase goals counter","increment succeeded.");
+                }
+            }
+        });
+    }
+
+
+    //************   increement  Total Premium ***********************//
+
+
+    public void check_Goals_premium(){
+
+        Log.e("check_goals_call","check_goals_call");
+
+        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/users/"+pref.getString("uid","")+"/Goals/");
+//        mref.keepSynced(true);
+
+        ChildEventListener childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.e("Child_Event_Verse", "onChildChanged:" + dataSnapshot.getKey());
+                String key=dataSnapshot.getKey();
+//                long key= Long.parseLong(dataSnapshot.getKey());
+//                long v=1488570223417l;
+//                int vv=v.compareTo(key);
+                //if (v<key){
+                String startdate = (String) dataSnapshot.child("startDate").getValue();
+
+                String enddate = (String) dataSnapshot.child("endDate").getValue();
+                //04/03/2017 12:46 PM
+                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
+                String currentDate = formatter.format(new Date());
+
+                Log.e("date_start",startdate+"");
+                Log.e("date_end",enddate+"");
+                Log.e("date_current",currentDate+"");
+
+                try {
+                    Date start_d=new Date();
+                    Date end_d=new Date();
+                    Date current_d=new Date();
+
+                    start_d = (Date)formatter.parse(startdate);
+                    end_d = (Date)formatter.parse(enddate);
+                    current_d = (Date)formatter.parse(currentDate);
+
+                    Log.e("date_start",start_d+"");
+                    Log.e("date_end",end_d+"");
+                    Log.e("date_current",current_d+"");
+
+                    Log.e("increement_value",increement_value+"  ------- ");
+
+                    int cur_to_end=end_d.compareTo(current_d);
+                    int cur_to_start=start_d.compareTo(current_d);
+//                    Log.e("cur_to_end",cur_to_end+"");
+//                    Log.e("cur_to_start",cur_to_start+"");
+                    if(cur_to_end>0){
+                        Log.e("end_date_is ","greater than cur_date");
+                        if(cur_to_start<0) {
+                            Log.e("current_date_is", "greater than start date");
+                            //update value
+                            Map<String, Object> activitycount = (Map<String, Object>) dataSnapshot.child("activityCount").getValue();
+
+                            if(Integer.valueOf(activitycount.get(increement_value).toString())>0){
+                                increment_Goals_Counter_premium(mref,key,"Total Premium");
+                            }
+
+                        }
+                        else
+                            Log.e("start_date_is","greater than current date");
+                    }
+                    else
+                        Log.e("currnet_date_is ","greater than end_date");
+
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Log.e("date_time_exception","e",e);
+                }
+                Log.e("start_date","startdate: "+startdate);
+                Log.e("end_date","enddate: "+enddate);
+                Log.e("currnet_date","Date: "+currentDate);
+
+//                    if (ss!=null){
+//                        Log.e("TEST","Changed values: null ");
+//                    }
 //                }
-//                return Transaction.success(currentData);
-//            }
-//
-//            @Override
-//            public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
-//                if (firebaseError != null) {
-//                    Log.e("Firebase goals counter","increement failed");
-//                } else {
-//                    Log.e("Firebase goals counter","increment succeeded.");
-//                }
-//            }
-//        });
-//    }
+//                else
+//                    Log.e("onChildAdded","Changed values: null ");
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.e("onChildChanged","Changed values: null ");
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Log.e("onChildremoved","Changed values: null ");
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                Log.e("onChildMoved","Changed values: null ");
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.e("onCancelled","Changed values: null ");
+            }
+        };
+        mref.addChildEventListener(childEventListener);
+    }
+    //
+    public void increment_Goals_Counter_premium(Firebase ref,String key,String node) {
+
+        Log.e("uid",pref.getString("uid",""));
+        Log.e("increment_Goals_call","increment_Goals_Counter_call");
+//        String currentDate = datecurrent();
+
+        Log.e("key_node",key+"/"+node);
+
+        ref.child(key).child("currentCount").child(node).runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(final MutableData currentData) {
+                if (currentData.getValue() == null) {
+                    currentData.setValue(amount);
+                } else {
+                    currentData.setValue((Long) currentData.getValue() + amount);
+                }
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
+                if (firebaseError != null) {
+                    Log.e("Firebase goals counter","increement failed");
+                } else {
+                    Log.e("Firebase goals counter","increment succeeded.");
+                }
+            }
+        });
+    }
+
+
+    //**************  end icreement Total Premium ******************//
+
+
 //
 //
 //    public void check_Challange(){

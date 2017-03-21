@@ -338,6 +338,8 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
             case R.id.tv_graph:
 
                 selectViewdialog.dismiss();
+                if(getActivity()==null)
+                    return;
                 getActivity().getSupportFragmentManager().beginTransaction().
                         replace(R.id.frame_layout,new ChartFragment()).addToBackStack(null).commit();
 

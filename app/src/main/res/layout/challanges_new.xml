@@ -71,6 +71,7 @@
             android:orientation="vertical"
             android:id="@+id/lay_date"
             android:visibility="gone">
+
             <RelativeLayout
                 android:id="@+id/lay_startdate"
                 android:layout_width="match_parent"
@@ -196,6 +197,7 @@
             android:text="Included Activity Types"/>
 
         <LinearLayout
+            android:id="@+id/lay_hastimefalse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -428,5 +430,265 @@
                 />
 
         </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lay_hastimetrue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_marginRight="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_totalpremium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#606060"
+                android:padding="12dp"
+                android:button="@null"
+                android:checked="false"
+                android:layout_weight=".1"
+                android:text="Total Premium"/>
+
+            <ImageView
+                android:id="@+id/iv_totalpremium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:src="@drawable/checkmark_bl24"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_contactadded"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#606060"
+                android:padding="12dp"
+                android:button="@null"
+                android:checked="false"
+                android:layout_weight=".1"
+                android:text="Contact Added"/>
+
+            <ImageView
+                android:id="@+id/iv_contactadded"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:src="@drawable/checkmark_bl24"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_appointmentset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#606060"
+                android:padding="12dp"
+                android:button="@null"
+                android:checked="false"
+                android:layout_weight=".1"
+                android:text="Appointment Set"/>
+
+            <ImageView
+                android:id="@+id/iv_appointmentset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:src="@drawable/checkmark_bl24"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_wenton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#606060"
+                android:padding="12dp"
+                android:button="@null"
+                android:checked="false"
+                android:layout_weight=".1"
+                android:text="Went on KT"/>
+
+            <ImageView
+                android:id="@+id/iv_wenton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:src="@drawable/checkmark_bl24"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_closelife"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#606060"
+                android:padding="12dp"
+                android:button="@null"
+                android:checked="false"
+                android:layout_weight=".1"
+                android:text="Close Life"/>
+
+            <ImageView
+                android:id="@+id/iv_closelife"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:src="@drawable/checkmark_bl24"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_closeiba"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#606060"
+                android:padding="12dp"
+                android:button="@null"
+                android:checked="false"
+                android:layout_weight=".1"
+                android:text="Close IBA"/>
+
+            <ImageView
+                android:id="@+id/iv_closeiba"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:src="@drawable/checkmark_bl24"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_closeotherbusiness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#606060"
+                android:padding="12dp"
+                android:button="@null"
+                android:checked="false"
+                android:layout_weight=".1"
+                android:text="Close Other Business"/>
+
+            <ImageView
+                android:id="@+id/iv_closeotherbusiness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:src="@drawable/checkmark_bl24"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd"
+            />
+
+        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>
