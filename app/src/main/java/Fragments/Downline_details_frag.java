@@ -50,6 +50,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.ntt.customgaugeview.library.GaugeView;
 import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
@@ -80,7 +81,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
     RecyclerView rview;
     LinearLayoutManager linearLayoutManager;
     personal_list_adapter adapter;
-    ImageView meter;
+
     DiamondImageView Profile_pic;
     StorageReference storageRef;
     FirebaseAuth firebaseAuth;
@@ -94,10 +95,14 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
     String uidd="";
     ArrayList<userinfoo> data;
     int count[]={0,0,0,0,0,0,0,0};
+    private GaugeView speedview;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.downline_details_page,container,false);
         setHasOptionsMenu(true);
+
+        speedview=(GaugeView) view.findViewById(R.id.meter);
 
         try {
             uidd = getArguments().getString("uid");
@@ -114,7 +119,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
 //        Log.e("check","check");
 
 
-        meter=(ImageView)view.findViewById(R.id.meter);
+
         rview=(RecyclerView)view.findViewById(R.id.rview);
         Profile_pic=(DiamondImageView)view.findViewById(R.id.profile_pic);
 
@@ -137,7 +142,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
         activityimg.setOnClickListener(this);
         achivementsimg.setOnClickListener(this);
         goalsimg.setOnClickListener(this);
-        meter.setOnClickListener(this);
+
 
         pref=getActivity().getSharedPreferences("userpref",0);
 
@@ -154,6 +159,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
         getdatafromfirebase();
 
         getnotefromfirebase();
+        getinfirebasedailipoint();
 
         return view;
     }
@@ -308,6 +314,37 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
 
     }
 
+
+    public void getinfirebasedailipoint()
+    {
+        mref.child("users").child(uidd).child("dailyPointAverages").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get achievements1111", dataSnapshot.getValue() + " data");
+                Log.e("child11111111111", dataSnapshot.getValue() + " abc");
+
+                for(com.firebase.client.DataSnapshot child:dataSnapshot.getChildren()){
+
+//                    String key=child.getKey();
+
+                    //  int value= Integer.parseInt(child.getValue());
+                    long value=((Long)child.getValue());
+                    Log.e("achievementToShow",value+"");
+                    speedview.setTargetValue(value);
+
+                }
+
+                // achieve_detail = ConvertParseString(dataSnapshot.getValue());
+                // setAch();
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
     public void getnotefromfirebase()
     {
         mref.child("events")

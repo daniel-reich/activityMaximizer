@@ -163,6 +163,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         if (!addPermission(permissionsList, Manifest.permission.CAMERA))
             permissionsNeeded.add("CAMERA");
 
+        if (!addPermission(permissionsList, Manifest.permission.READ_CONTACTS))
+            permissionsNeeded.add("READ_CALENDAR");
+
 
         if (permissionsList.size() > 0) {
 //            if (permissionsNeeded.size() > 0) {
