@@ -78,7 +78,7 @@ public class Profile extends Fragment implements View.OnClickListener {
     TextView tv_phone,tv_username,tv_email,tv_solution_num,tv_rvp_num,tv_trainer_num,tv_upline_num,tv_partner_num;
     SharedPreferences pref;
     SharedPreferences.Editor edit;
-
+    RelativeLayout RvpLayout;
     static final int CAMERA_CAPTURE = 1;
     final int PIC_CROP = 3;
     final int GALLAY_IMAGE= 2;
@@ -95,7 +95,7 @@ public class Profile extends Fragment implements View.OnClickListener {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        RvpLayout=(RelativeLayout)view.findViewById(R.id.rvp_layout);
         Firebase.setAndroidContext(getActivity());
         storageRef= FirebaseStorage.getInstance().getReference();
         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
@@ -123,7 +123,8 @@ public class Profile extends Fragment implements View.OnClickListener {
         profile_pic=(CircleImageView)view.findViewById(R.id.profile_pic);
          addPartnershipLayout=(RelativeLayout) view.findViewById(R.id.add_partnership_layout);
         addPartnershipLayout.setOnClickListener(this);
-        RVP.setOnClickListener(this);
+        RvpLayout.setOnClickListener(this);
+
         lay_branch_tran.setOnClickListener(this);
 
         setImage();
@@ -228,7 +229,7 @@ public class Profile extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId())
         {
-            case R.id.tv_rvp:
+            case R.id.rvp_layout:
                 showDialog();
                 break;
             case R.id.lay_branchtransfer:

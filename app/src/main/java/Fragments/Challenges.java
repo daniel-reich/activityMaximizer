@@ -147,7 +147,6 @@ public class Challenges extends Fragment
                                     obj.put("finished", messageSnapshot.child("finished").getValue());
                                     obj.put("finishedDate", messageSnapshot.child("finishedDate").getValue());
                                     obj.put("hasTimeLimit", messageSnapshot.child("hasTimeLimit").getValue());
-
                                     obj.put("ref", messageSnapshot.child("ref").getValue());
                                     obj.put("reward", messageSnapshot.child("reward").getValue());
                                     obj.put("startDate", messageSnapshot.child("startDate").getValue());
