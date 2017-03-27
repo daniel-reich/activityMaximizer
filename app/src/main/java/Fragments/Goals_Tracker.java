@@ -82,7 +82,7 @@ public class Goals_Tracker extends Fragment {
         Firebase.setAndroidContext(getActivity());
         firebaseAuth = FirebaseAuth.getInstance();
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         pref=getActivity().getSharedPreferences("userpref",0);
 
 

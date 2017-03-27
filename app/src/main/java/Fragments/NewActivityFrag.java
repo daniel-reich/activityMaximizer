@@ -305,7 +305,7 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
 
         Log.e("check_goals_call","check_goals_call");
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/users/"+pref.getString("uid","")+"/Goals/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/users/"+pref.getString("uid","")+"/Goals/");
         mref.keepSynced(true);
 
         ChildEventListener childEventListener = new ChildEventListener() {
@@ -318,8 +318,40 @@ public class NewActivityFrag extends Fragment implements DatePickerDialog.OnDate
 //                int vv=v.compareTo(key);
                 //if (v<key){
                 if(!key.equalsIgnoreCase("users")) {
-                    String startdate = (String) dataSnapshot.child("startDate").getValue();
-                    String enddate = (String) dataSnapshot.child("endDate").getValue();
+
+                    String startdate = null;
+                    String enddate = null;
+
+                    if(String.valueOf(dataSnapshot.child("startDate").getValue()).contains("."))
+                    {
+                        startdate = String.valueOf(dataSnapshot.child("startDate").getValue());
+                       // enddate = dataSnapshot.child("endDate").getValue().toString();
+
+                        String []arr=startdate.split("\\.");
+                        startdate=arr[0];
+
+                    }
+                    else {
+                        startdate = String.valueOf(dataSnapshot.child("startDate").getValue());
+                        //enddate = dataSnapshot.child("endDate").getValue().toString();
+                    }
+                    if(String.valueOf(dataSnapshot.child("endDate").getValue()).contains("."))
+                    {
+                       // startdate = dataSnapshot.child("startDate").getValue().toString();
+                        enddate = String.valueOf(dataSnapshot.child("endDate").getValue());
+
+                        String []arr=enddate.split("\\.");
+                        enddate=arr[0];
+
+                    }
+                    else {
+                        //startdate = dataSnapshot.child("startDate").getValue().toString();
+                        enddate = String.valueOf(dataSnapshot.child("endDate").getValue());
+                    }
+
+
+
+
                     //04/03/2017 12:46 PM
                     DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
                     String currentDate = formatter.format(new Date());

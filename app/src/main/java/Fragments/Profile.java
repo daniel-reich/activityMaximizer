@@ -98,7 +98,7 @@ public class Profile extends Fragment implements View.OnClickListener {
         RvpLayout=(RelativeLayout)view.findViewById(R.id.rvp_layout);
         Firebase.setAndroidContext(getActivity());
         storageRef= FirebaseStorage.getInstance().getReference();
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
 
         init();
 

@@ -76,7 +76,7 @@ public class Trainee_frag extends Fragment implements IDownloadAdapter {
         pref=getActivity().getSharedPreferences("userpref",0);
         Firebase.setAndroidContext(getActivity());
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
 
         uid=pref.getString("uid","");
 
@@ -186,7 +186,7 @@ public class Trainee_frag extends Fragment implements IDownloadAdapter {
                     else
                        s= dataSnapshot.child("givename").getValue().toString();
 
-                    data.add(new AllDownlines(uid,ConvertParseString(s),ConvertParseString(dataSnapshot.child("fivePointClients").getValue().toString()),ConvertParseString(dataSnapshot.child("fivePointRecruits").getValue().toString())));
+                    data.add(new AllDownlines(uid,String.valueOf(s),String.valueOf(dataSnapshot.child("fivePointClients").getValue().toString()),String.valueOf(dataSnapshot.child("fivePointRecruits").getValue().toString())));
 
 
                 }
@@ -256,21 +256,6 @@ public class Trainee_frag extends Fragment implements IDownloadAdapter {
         });
     }
 
-
-    public static String ConvertParseString(Object obj ) {
-        if(obj==null)
-        {
-            return "";
-        }
-        else {
-            String lastSeen= String.valueOf(obj);
-            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
-                return lastSeen;
-            else
-                return "";
-        }
-
-    }
 
     @Override
     public void onRefreshAdapter(AllDownlines allDownlines) {

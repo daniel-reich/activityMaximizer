@@ -49,15 +49,15 @@ public class Activity_list_frag extends Fragment implements ISelectNewActivity {
    public static Dialog dialog;
     RecyclerView rview;
     SelectNewActivityListAdapter adapter;
-    ArrayList<AllActivity> data;
+
     Firebase mref;
     SharedPreferences pref;
 
   public static ContactActivityListAdapter listadapter;
     LinearLayoutManager lManager;
     String uid="",name="",uidd="";
-    public static JSONArray js;
-    JSONArray jsonArray;
+    JSONArray js;
+    public static  JSONArray jsonArray;
 
     @Nullable
     @Override
@@ -86,7 +86,7 @@ public class Activity_list_frag extends Fragment implements ISelectNewActivity {
 
 
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
 
         rview.setLayoutManager(lManager);
         listadapter=new ContactActivityListAdapter(getActivity(),js,"simple",name);
@@ -132,34 +132,35 @@ public class Activity_list_frag extends Fragment implements ISelectNewActivity {
 
     public void getnotefromfirebase()
     {
-        mref.child("events")
-                .child(uid)
-                .addValueEventListener(new ValueEventListener() {
 
+
+        mref.child("events")
+                .child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
                 Log.e("get data from server",dataSnapshot.getValue()+" data");
-                data=new ArrayList<AllActivity>();
+
                 jsonArray =  new JSONArray();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     JSONObject jGroup = new JSONObject();
                     Log.e("childddd",child.getKey()+" abc");
-                    if(name.equalsIgnoreCase(ConvertParseString(child.child("contactName").getValue())))
+                    if(name.equalsIgnoreCase(String.valueOf(child.child("contactName").getValue())))
                     {
-                        data.add(new AllActivity(ConvertParseString(child.child("contactName").getValue()), ConvertParseString(child.child("contactRef").getValue()), ConvertParseString(child.child("created").getValue()), ConvertParseString(child.child("date").getValue()), ConvertParseString(child.child("eventKitID").getValue()), ConvertParseString(child.child("ref").getValue()), ConvertParseString(child.child("type").getValue()), ConvertParseString(child.child("userName").getValue()), ConvertParseString(child.child("userRef").getValue())));
+                        //data.add(new AllActivity(String.valueOf(child.child("contactName").getValue()), String.valueOf(child.child("contactRef").getValue()), String.valueOf(child.child("created").getValue()), String.valueOf(child.child("date").getValue()), String.valueOf(child.child("eventKitID").getValue()), String.valueOf(child.child("ref").getValue()), String.valueOf(child.child("type").getValue()), String.valueOf(child.child("userName").getValue()), String.valueOf(child.child("userRef").getValue())));
                         try {
-                            jGroup.put("keyid", ConvertParseString(child.getKey() + ""));
-                            jGroup.put("contactName", ConvertParseString(child.child("contactName").getValue()));
-                            jGroup.put("contactRef", ConvertParseString(child.child("contactRef").getValue()));
-                            jGroup.put("created", ConvertParseString(child.child("created").getValue()));
-                            jGroup.put("date", ConvertParseString(child.child("date").getValue()));
-                            jGroup.put("eventKitID", ConvertParseString(child.child("eventKitID").getValue()));
-                            jGroup.put("ref", ConvertParseString(child.child("ref").getValue()));
-                            jGroup.put("type", ConvertParseString(child.child("type").getValue()));
-                            jGroup.put("userName", ConvertParseString(child.child("userName").getValue()));
-                            jGroup.put("userRef", ConvertParseString(child.child("userRef").getValue()));
+                            jGroup.put("keyid", String.valueOf(child.getKey() + ""));
+                            jGroup.put("contactName", String.valueOf(child.child("contactName").getValue()));
+                            jGroup.put("contactRef", String.valueOf(child.child("contactRef").getValue()));
+                            jGroup.put("created", String.valueOf(child.child("created").getValue()));
+                            jGroup.put("date", String.valueOf(child.child("date").getValue()));
+                            jGroup.put("eventKitID", String.valueOf(child.child("eventKitID").getValue()));
+                            jGroup.put("ref", String.valueOf(child.child("ref").getValue()));
+                            jGroup.put("type", String.valueOf(child.child("type").getValue()));
+                            jGroup.put("userName", String.valueOf(child.child("userName").getValue()));
+                            jGroup.put("userRef", String.valueOf(child.child("userRef").getValue()));
                             jsonArray.put(jGroup);
-                            Log.e("child", ConvertParseString(child.child("contactName").getValue()) + " abc");
+                            Log.e("child", String.valueOf(child.child("contactName").getValue()) + " abc");
                         } catch (Exception e) {
                             Log.e("Exception", e + "");
                         }
@@ -170,31 +171,19 @@ public class Activity_list_frag extends Fragment implements ISelectNewActivity {
                 listadapter=new ContactActivityListAdapter(getActivity(),jsonArray,"all",name);
                 rview.setLayoutManager(lManager);
                 rview.setAdapter(listadapter);
-
             }
+
             @Override
-            public void onCancelled(FirebaseError error) {
-                Log.e("get data error",error.getMessage()+" data");
+            public void onCancelled(FirebaseError firebaseError) {
+
             }
         });
-    }
-
-
-
-    public static String ConvertParseString(Object obj ) {
-        if(obj==null)
-        {
-            return "";
-        }
-        else {
-            String lastSeen= String.valueOf(obj);
-            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
-                return lastSeen;
-            else
-                return "";
-        }
 
     }
+
+
+
+
 
     @Override
     public void OnRefreshListener(JSONObject object) {

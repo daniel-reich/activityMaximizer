@@ -76,7 +76,7 @@ public class RegisterationDetail extends Fragment
         pref=getActivity().getSharedPreferences("userpref",0);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         firebaseAuth = FirebaseAuth.getInstance();
 
         sp_state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

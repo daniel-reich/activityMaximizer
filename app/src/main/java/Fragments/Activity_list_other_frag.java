@@ -111,7 +111,7 @@ public class Activity_list_other_frag  extends Fragment
         }
 
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         final JSONArray array=new JSONArray();
         pref=getActivity().getSharedPreferences("userpref",0);
 

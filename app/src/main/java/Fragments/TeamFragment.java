@@ -47,6 +47,7 @@ import com.ntt.customgaugeview.library.GaugeView;
 import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -96,6 +97,9 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
     int count[]={0,0,0,0,0,0,0,0};
     HashMap<String,String> base,downline;
 
+    JSONArray json;
+    long team_members;
+    long value=0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.personal_frag,container,false);
@@ -146,15 +150,13 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
         Firebase.setAndroidContext(getActivity());
         firebaseAuth = FirebaseAuth.getInstance();
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         uid=pref.getString("uid","");
         solutionnumber=pref.getString("solution_number","");
 
         storageRef= FirebaseStorage.getInstance().getReference();
 
-        getnotefromfirebase(uid);
-        getallteambasefromfirebase(solutionnumber);
-        getallteamdownlinefromfirebase(solutionnumber);
+
 
 
         options = new DisplayImageOptions.Builder()
@@ -174,10 +176,158 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
         tv_username.setText(pref.getString("givenName","")+" "+pref.getString("familyName",""));
         tv_phone.setText(pref.getString("phoneNumber",""));
 
+        String json_data=pref.getString("team","");
+
+        try {
+            if(json_data.length()<=0)
+                json=new JSONArray();
+            else
+            json=new JSONArray(json_data);
+
+
+
+            if(find_json_state(uid))
+            getnotefromfirebase(uid);
+            getallteambasefromfirebase(solutionnumber);
+            getallteamdownlinefromfirebase(solutionnumber);
+
+
+        } catch (JSONException e) {
+
+
+            Log.e("aaa","aaa",e);
+            e.printStackTrace();
+        }
+
         return view;
     }
 
-    @Override
+
+    public boolean find_json(String uid)
+    {
+
+
+      for(int i=0;i<json.length();i++)
+      {
+          try {
+              JSONObject json_obj= (JSONObject) json.get(i);
+
+              if(json_obj.getString("uid").equals(uid))
+                  return true;
+
+
+          } catch (JSONException e) {
+              e.printStackTrace();
+          }
+
+
+      }
+
+
+      return false;
+
+
+    }
+
+
+
+    public boolean find_json_state(String uid)
+    {
+
+
+
+        if(!find_json(uid))
+
+            return true;
+
+
+
+        for(int i=0;i<json.length();i++)
+        {
+            try {
+                JSONObject json_obj= (JSONObject) json.get(i);
+
+                if(json_obj.getString("uid").equals(uid) && json_obj.getBoolean("selected"))
+                    return true;
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+        return false;
+
+
+    }
+
+
+
+
+
+    public int find_json_position(String uid) {
+
+
+        for (int i = 0; i < json.length(); i++) {
+            try {
+                JSONObject json_obj = (JSONObject) json.get(i);
+
+                if (json_obj.getString("uid").equals(uid))
+                    return i;
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        return -1;
+    }
+
+
+
+
+    public long find_count() {
+
+        long count=0;
+        for (int i = 0; i < json.length(); i++) {
+            try {
+                JSONObject json_obj = (JSONObject) json.get(i);
+
+                if (json_obj.getBoolean("selected"))
+
+                    count++;
+
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        return count;
+    }
+
+
+        @Override
     public void onClick(View view) {
         switch (view.getId())
         {
@@ -218,7 +368,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
     private void selectViewDialog() {
         selectViewdialog=new Dialog(getActivity());
         selectViewdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        selectViewdialog.setContentView(R.layout.graphviewdialog);
+        selectViewdialog.setContentView(R.layout.graphviewdialog1);
         Window window = selectViewdialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
         wlp.gravity = Gravity.BOTTOM;
@@ -227,6 +377,31 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         TextView Activity_value_breakdown=(TextView)selectViewdialog.findViewById(R.id.tv_breakdown);
         TextView Graph=(TextView)selectViewdialog.findViewById(R.id.tv_graph);
+
+        TextView filter=(TextView)selectViewdialog.findViewById(R.id.tv_filter);
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                Log.e("json",json.toString());
+                selectViewdialog.dismiss();
+
+
+                edit=pref.edit();
+                edit.putString("team",json.toString());
+                edit.commit();
+
+
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.frame_layout,new Team_Points_Selection_Frag()).addToBackStack(null).commit();
+
+
+
+
+
+            }
+        });
         Activity_value_breakdown.setOnClickListener(this);
         Graph.setOnClickListener(this);
         selectViewdialog.show();
@@ -472,7 +647,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
 
     // select image end
 
-    public void getnotefromfirebase(String uid)
+    public void getnotefromfirebase(final String uid)
     {
         mref.child("events")
                 .child(uid)
@@ -482,6 +657,13 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
                     public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
                         Log.e("get data from server",dataSnapshot.getValue()+" data");
 
+
+
+
+
+
+
+
                         JSONArray jsonArray =  new JSONArray();
                         for (com.firebase.client.DataSnapshot child : dataSnapshot.getChildren()) {
                             JSONObject jGroup = new JSONObject();
@@ -489,45 +671,67 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
                             //alue().toString(),child.child("created").getValue().toString(),child.child("date").getValue().toString(),child.child("eventKitID").getValue().toString(),child.child("ref").getValue().toString(),child.child("type").getValue().toString(),child.child("userName").getValue().toString(),child.child("userRef").getValue().toString()));
                             try {
 
-                                Log.e ("oo",child.child("type").getValue().toString());
 
-                                String activity_list[]={"Set Appointment","Went on KT","Closed Life","closed IBA","Closed Other Business","Appt Set To Closed Life",
-                                        "Appt Set To Closed IBA","Invite to Opportunity Meeting","Went To Opportunity Meeting","Call Back","Dark House","Not Interested"};
-
-
-                                switch(child.child("type").getValue().toString())
+                                if (!find_json(uid))
 
                                 {
-                                    case "Invited to Opportunity Meeting":
 
-                                        count[7]++;
+                                    JSONObject js = new JSONObject();
+                                    js.put("uid", uid);
+                                    js.put("name", child.child("userName").getValue());
+                                    js.put("count", 0);
+                                    js.put("selected", true);
 
-                                        break;
-
-
-                                    case "Went to Opportunity Meeting":
-
-                                        count[8]++;
-
-                                        break;
-
-                                    case "Set Appointment":
-
-                                        count[0]++;
-                                        break;
-
-                                    case "Went on KT":
-
-                                        count[1]++;
-                                        break;
-
-                                    case "Closed IBA":
-
-                                        count[3]++;
-                                        break;
+                                    json.put(js);
 
                                 }
 
+                                Log.e("oo", child.child("type").getValue().toString());
+
+
+                                if (find_json_state(uid))
+
+                                {
+
+
+                                    String activity_list[] = {"Set Appointment", "Went on KT", "Closed Life", "closed IBA", "Closed Other Business", "Appt Set To Closed Life",
+                                            "Appt Set To Closed IBA", "Invite to Opportunity Meeting", "Went To Opportunity Meeting", "Call Back", "Dark House", "Not Interested"};
+
+
+                                    switch (child.child("type").getValue().toString())
+
+                                    {
+                                        case "Invited to Opportunity Meeting":
+
+                                            count[7]++;
+
+                                            break;
+
+
+                                        case "Went to Opportunity Meeting":
+
+                                            count[8]++;
+
+                                            break;
+
+                                        case "Set Appointment":
+
+                                            count[0]++;
+                                            break;
+
+                                        case "Went on KT":
+
+                                            count[1]++;
+                                            break;
+
+                                        case "Closed IBA":
+
+                                            count[3]++;
+                                            break;
+
+                                    }
+
+                                }
                             }
                             catch (Exception e)
                             {
@@ -540,6 +744,12 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
                         adapter=new personal_list_adapter(getActivity(),count);
                         rview.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
+
+
+                        if(find_json_state(uid))
+                        getinfirebasedailipoint(uid);
+
+
                         Log.e("jsonarray",jsonArray+" abc");
 
 
@@ -557,6 +767,68 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
                 });
     }
 
+
+
+    public void getinfirebasedailipoint(final String uid)
+    {
+        mref.child("users").child(uid).child("dailyPointAverages").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                Log.e("get achievements1111", dataSnapshot.getValue() + " data");
+                Log.e("child11111111111", dataSnapshot.getValue() + " abc");
+
+                long val=0;
+
+              int pos=  find_json_position(uid);
+
+
+                for(com.firebase.client.DataSnapshot child:dataSnapshot.getChildren()){
+
+//                    String key=child.getKey();
+
+                    //  int value= Integer.parseInt(child.getValue());
+                    value =value+((Long)child.getValue());
+
+                    val=val+ (Long)child.getValue();
+                    Log.e("achievementToShow",value+"");
+
+
+                }
+
+
+                try {
+                    json.getJSONObject(pos).put("count",val);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
+
+                ;
+
+                if(find_count()==0)
+
+                speedview.setTargetValue(0);
+
+                else
+
+                    speedview.setTargetValue(value);
+
+
+
+
+                // achieve_detail = String.valueOf(dataSnapshot.getValue());
+                // setAch();
+
+            }
+            @Override
+            public void onCancelled(FirebaseError error) {
+                Log.e("get data error",error.getMessage()+" data");
+            }
+        });
+    }
 
 
 

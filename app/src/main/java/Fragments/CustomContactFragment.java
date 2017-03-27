@@ -59,6 +59,8 @@ import u.activitymanager.R;
 import utils.Constants;
 import utils.NetworkConnection;
 
+import static Fragments.Activity_list_frag.dialog;
+
 /**
  * Created by Surbhi on 18-02-2017.
  */
@@ -73,6 +75,8 @@ public class CustomContactFragment extends Fragment
     SharedPreferences pref;
     SharedPreferences.Editor edit;
     String uid,reflink="",First_contact_added="false";
+
+    JSONObject obj = null;
 
     @Nullable
     @Override
@@ -96,7 +100,7 @@ public class CustomContactFragment extends Fragment
         Firebase.setAndroidContext(getActivity());
         nwc=new NetworkConnection(getActivity());
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
 
         tv_save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,11 +200,13 @@ public class CustomContactFragment extends Fragment
         getdatafromfirebase();
 
     }
-    public void Alert() {
-        final Dialog dialog=new Dialog(getActivity());
+    public void Alert( boolean cond) {
+         dialog=new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.addcontact_dialog);
         dialog.setCancelable(false);
+
+        final boolean condition=cond;
         dialog.setCanceledOnTouchOutside(false);
         Window window = dialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
@@ -209,19 +215,37 @@ public class CustomContactFragment extends Fragment
         window.setAttributes(wlp);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+        Log.e("cond",condition+"");
 
         dialog.setCancelable(false);
 
         TextView tv_no=(TextView)dialog.findViewById(R.id.no);
-        TextView tv_yes=(TextView)dialog.findViewById(R.id.yes);
+        final TextView tv_yes=(TextView)dialog.findViewById(R.id.yes);
 
         tv_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
+
+
                 if(getActivity()==null)
                     return;
-                getActivity().getSupportFragmentManager().popBackStack();
+
+
+                Log.e("cond",condition+"");
+                if(condition) {
+                    Achivement_Details frag = new Achivement_Details();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("position", 4);
+                    bundle.putString("data", obj + "");
+                    frag.setArguments(bundle);
+                    getActivity().getSupportFragmentManager().beginTransaction().
+                            replace(R.id.frame_layout, frag).addToBackStack(null).commit();
+
+                }
+                else {
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
             }
         });
         tv_yes.setOnClickListener(new View.OnClickListener() {
@@ -262,7 +286,7 @@ public class CustomContactFragment extends Fragment
                     // Executing all the insert operations as a single database transaction
                     getActivity().getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
 //                    Toast.makeText(getActivity(), "Contact is successfully added", Toast.LENGTH_SHORT).show();
-                    getActivity().getSupportFragmentManager().popBackStack();
+
                 }catch (RemoteException e) {
                     e.printStackTrace();
                 }catch (OperationApplicationException e) {
@@ -274,13 +298,15 @@ public class CustomContactFragment extends Fragment
 
     public void getdatafromfirebase()
     {
-        mref.child("users").child(uid).child("achievements").addValueEventListener(new ValueEventListener() {
 
+        mref.child("users").child(uid).child("achievements").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
                 Log.e("get data from server",dataSnapshot.getValue()+" data");
                 Log.e("child",dataSnapshot.child("First_contact_added").getValue()+" abc");
-                 JSONObject obj = null;
+
                 try {
                     obj = new JSONObject(dataSnapshot.getValue()+"");
 
@@ -291,7 +317,7 @@ public class CustomContactFragment extends Fragment
                     e.printStackTrace();
                 }
 
-                First_contact_added=ConvertParseString(dataSnapshot.child("First_contact_added").getValue());
+                First_contact_added=String.valueOf(dataSnapshot.child("First_contact_added").getValue());
                 if(First_contact_added.equalsIgnoreCase("false"))
                 {
                     java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
@@ -299,45 +325,34 @@ public class CustomContactFragment extends Fragment
                     String timestamp=String.valueOf(timeStampDate.getTime());
                     Map newcontact = new HashMap();
                     newcontact.put("First_contact_added","true");
+                    try {
+                        obj.put("First_contact_added","true");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     newcontact.put("First_contact_added_date",timestamp);
                     mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
-//
-//                    Achivement_Details frag=new Achivement_Details();
-//                    Bundle bundle=new Bundle();
-//                    bundle.putInt("position",4);
-//                    bundle.putString("data",obj+"");
-//                    frag.setArguments(bundle);
-//                    getActivity().getSupportFragmentManager().beginTransaction().
-//                            replace(R.id.frame_layout,frag).addToBackStack(null).commit();
 
-                    Alert();
+
+
+
+                    Alert(true);
                 }
                 else
                 {
-                    Alert();
+                    Alert(false);
                 }
+
             }
+
             @Override
-            public void onCancelled(FirebaseError error) {
-                Log.e("get data error",error.getMessage()+" data");
+            public void onCancelled(FirebaseError firebaseError) {
+
             }
         });
-    }
-    public static String ConvertParseString(Object obj ) {
-        if(obj==null)
-        {
-            return "";
-        }
-        else {
-            String lastSeen= String.valueOf(obj);
-            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
-                return lastSeen;
-            else
-                return "";
-        }
+
 
     }
-
 
 
 
@@ -345,7 +360,7 @@ public class CustomContactFragment extends Fragment
 //
 //        Log.e("check_goals_call","check_goals_call");
 //
-//        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/users/"+pref.getString("uid","")+"/Goals/");
+//        mref=new Firebase("https://activitymaximizer.firebaseio.com/users/"+pref.getString("uid","")+"/Goals/");
 //        mref.keepSynced(true);
 //
 //        ChildEventListener childEventListener = new ChildEventListener() {

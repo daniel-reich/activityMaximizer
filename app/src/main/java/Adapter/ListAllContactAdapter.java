@@ -63,7 +63,7 @@ public class ListAllContactAdapter extends  RecyclerView.Adapter<RecyclerView.Vi
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listadapter, parent, false);
             pref=c.getSharedPreferences("userpref",0);
             Firebase.setAndroidContext(c);
-            mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+            mref=new Firebase("https://activitymaximizer.firebaseio.com/");
             uid=pref.getString("uid","");
             return new ViewHolder(view);
 

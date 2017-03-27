@@ -65,7 +65,7 @@ public class Register extends Fragment
         Firebase.setAndroidContext(getActivity());
         firebaseAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         pref=getActivity().getSharedPreferences("userpref",0);
 
         Next=(TextView)v.findViewById(R.id.tv_register);

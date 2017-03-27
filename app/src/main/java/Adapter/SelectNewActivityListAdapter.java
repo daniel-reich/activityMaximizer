@@ -248,17 +248,7 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
         String timestamp=String.valueOf(timeStampDate.getTime());
 
         JSONObject json=new JSONObject();
-        try {
-            json.put("name",activity_list[position]);
-            json.put("time",timestamp+"");
 
-            Activity_list_frag.js.put(json);
-            Activity_list_frag.listadapter.notifyDataSetChanged();
-        } catch (Exception e) {
-
-            Log.e("y","e",e);
-            e.printStackTrace();
-        }
 
         pref=context.getSharedPreferences("userpref",0);
         String   uid=pref.getString("uid","");
@@ -268,7 +258,7 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
 //                .child(st_fname).child("notes").child(timestamp)
 //                .setValue(newnote);
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
 
         Map newcontact = new HashMap();
         newcontact.put("contactName", Need_to_Quality.givenName);
@@ -286,6 +276,47 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
         newcontact.put("type",activity_list[position]);
         newcontact.put("userName",pref.getString("givenName","")+" "+pref.getString("familyName",""));
         newcontact.put("userRef",pref.getString("ref",""));
+
+
+        JSONObject newcontact1=new JSONObject();
+
+
+        try {
+
+        newcontact1.put("contactName", Need_to_Quality.givenName);
+        newcontact1.put("contactRef",Need_to_Quality.ref);
+        newcontact1.put("created",timestamp);
+        newcontact1.put("date",timestamp);
+        newcontact1.put("eventKitID","");
+        newcontact1.put("ref",noteref);
+
+        if(amount>0)
+            newcontact1.put("amount",amount);
+        else
+            newcontact1.put("amount",0);
+
+        newcontact1.put("type",activity_list[position]);
+        newcontact1.put("userName",pref.getString("givenName","")+" "+pref.getString("familyName",""));
+
+            newcontact1.put("userRef",pref.getString("ref",""));
+        } catch (JSONException e) {
+
+            Log.e("E","E",e);
+            e.printStackTrace();
+        }
+
+
+        try {
+            Activity_list_frag.jsonArray.put(new JSONObject(newcontact1.toString()));
+            Log.e("aaa",new JSONObject(newcontact1.toString())+"");
+        } catch (JSONException e) {
+
+            Log.e("a","e",e);
+            e.printStackTrace();
+        }
+        Activity_list_frag.listadapter.notifyDataSetChanged();
+
+
 
         Log.e("Aa",newcontact.toString());
 
@@ -368,7 +399,7 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
 
         Log.e("check_goals_call","check_goals_call");
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/users/"+pref.getString("uid","")+"/Goals/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/users/"+pref.getString("uid","")+"/Goals/");
         mref.keepSynced(true);
 
         ChildEventListener childEventListener = new ChildEventListener() {
@@ -383,14 +414,45 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
                 //if (v<key){
 
                 if(!key.equalsIgnoreCase("users")) {
-                    String startdate = (String) dataSnapshot.child("startDate").getValue();
-                    String enddate = (String) dataSnapshot.child("endDate").getValue();
+
+
+
+                    String startdate = null;
+                    String enddate = null;
+
+                    if(String.valueOf(dataSnapshot.child("startDate").getValue()).contains("."))
+                    {
+                        startdate = String.valueOf(dataSnapshot.child("startDate").getValue());
+                        // enddate = dataSnapshot.child("endDate").getValue().toString();
+
+                        String []arr=startdate.split("\\.");
+                        startdate=arr[0];
+
+                    }
+                    else {
+                        startdate = String.valueOf(dataSnapshot.child("startDate").getValue());
+                        //enddate = dataSnapshot.child("endDate").getValue().toString();
+                    }
+                    if(String.valueOf(dataSnapshot.child("endDate").getValue()).contains("."))
+                    {
+                        // startdate = dataSnapshot.child("startDate").getValue().toString();
+                        enddate = String.valueOf(dataSnapshot.child("endDate").getValue());
+
+                        String []arr=enddate.split("\\.");
+                        enddate=arr[0];
+
+                    }
+                    else {
+                        //startdate = dataSnapshot.child("startDate").getValue().toString();
+                        enddate = String.valueOf(dataSnapshot.child("endDate").getValue());
+                    }
                     //04/03/2017 12:46 PM
                     DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
                     String currentDate = formatter.format(new Date());
 
                     try {
 
+                        Log.e("start_date1", "startdate: " + startdate);
                         Log.e("start_date1", "startdate: " + startdate);
                         Log.e("end_date1", "enddate: " + enddate);
                         Log.e("currnet_date1", "Date: " + currentDate);
@@ -511,7 +573,7 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
 
         Log.e("check_goals_call","check_goals_call");
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/users/"+pref.getString("uid","")+"/Goals/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/users/"+pref.getString("uid","")+"/Goals/");
 //        mref.keepSynced(true);
 
         ChildEventListener childEventListener = new ChildEventListener() {
@@ -523,10 +585,14 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
 //                long v=1488570223417l;
 //                int vv=v.compareTo(key);
                 //if (v<key){
-                String startdate = (String) dataSnapshot.child("startDate").getValue();
 
-                String enddate = (String) dataSnapshot.child("endDate").getValue();
-                //04/03/2017 12:46 PM
+
+
+                String startdate = null;
+                String enddate = null;
+
+
+
                 DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
                 String currentDate = formatter.format(new Date());
 
@@ -535,6 +601,37 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
                 Log.e("date_current",currentDate+"");
                 if(!key.equalsIgnoreCase("users")) {
                     try {
+
+
+                        if(String.valueOf(dataSnapshot.child("startDate").getValue()).contains("."))
+                        {
+                            startdate = String.valueOf(dataSnapshot.child("startDate").getValue());
+                            // enddate = dataSnapshot.child("endDate").getValue().toString();
+
+                            String []arr=startdate.split("\\.");
+                            startdate=arr[0];
+
+                        }
+                        else {
+                            startdate = String.valueOf(dataSnapshot.child("startDate").getValue());
+                            //enddate = dataSnapshot.child("endDate").getValue().toString();
+                        }
+                        if(String.valueOf(dataSnapshot.child("endDate").getValue()).contains("."))
+                        {
+                            // startdate = dataSnapshot.child("startDate").getValue().toString();
+                            enddate = String.valueOf(dataSnapshot.child("endDate").getValue());
+
+                            String []arr=enddate.split("\\.");
+                            enddate=arr[0];
+
+                        }
+                        else {
+                            //startdate = dataSnapshot.child("startDate").getValue().toString();
+                            enddate = String.valueOf(dataSnapshot.child("endDate").getValue());
+                        }
+
+
+
                         Date start_d = new Date();
                         Date end_d = new Date();
                         Date current_d = new Date();
@@ -651,7 +748,7 @@ public class SelectNewActivityListAdapter extends RecyclerView.Adapter<SelectNew
 //
 //        Log.e("check_challange_call","check_challange_call");
 //
-//        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/Solution Numbers/"+pref.getString("solution_number","")+"/contests/");
+//        mref=new Firebase("https://activitymaximizer.firebaseio.com/Solution Numbers/"+pref.getString("solution_number","")+"/contests/");
 //        mref.keepSynced(true);
 //
 //        ChildEventListener childEventListener = new ChildEventListener() {

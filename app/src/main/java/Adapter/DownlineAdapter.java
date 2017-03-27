@@ -155,7 +155,7 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
         holder1.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+                mref=new Firebase("https://activitymaximizer.firebaseio.com/");
                 AllDownlines allDownlines = (AllDownlines) holder1.layout.getTag();
                 Deleteitem(allDownlines);
                 //Options(position);
@@ -166,7 +166,7 @@ public class DownlineAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHold
         holder1.addtoitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+                mref=new Firebase("https://activitymaximizer.firebaseio.com/");
                 AllDownlines allDownlines = (AllDownlines) holder1.layout.getTag();
                 AddToTeam(allDownlines);
 

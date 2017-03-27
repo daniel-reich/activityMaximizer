@@ -83,7 +83,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
         navigation_bar.setOnMenuItemClickListener(this);
         Firebase.setAndroidContext(HomeActivity.this);
         storageRef= FirebaseStorage.getInstance().getReference();
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         pref=getSharedPreferences("userpref",0);
        /*GetPartnershipRequest*/
         getPartnershipRequestsfromFirebase();

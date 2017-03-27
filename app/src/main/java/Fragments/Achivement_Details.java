@@ -74,7 +74,7 @@ public class Achivement_Details extends Fragment
         pref=getActivity().getSharedPreferences("userpref",0);
 
         Firebase.setAndroidContext(getActivity());
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
 
         i=getArguments().getInt("position");
 

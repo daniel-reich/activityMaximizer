@@ -75,7 +75,7 @@ public class Goals_tracker_Other extends Fragment {
         Firebase.setAndroidContext(getActivity());
         firebaseAuth = FirebaseAuth.getInstance();
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         pref=getActivity().getSharedPreferences("userpref",0);
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);

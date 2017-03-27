@@ -92,7 +92,7 @@ public class Add_New_PostFragment extends Fragment
 //                .setValue(newnote);
 
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
 
         Map newcontact = new HashMap();
         newcontact.put("content",post.getText().toString());

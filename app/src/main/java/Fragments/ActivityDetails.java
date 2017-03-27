@@ -67,7 +67,7 @@ public class ActivityDetails extends Fragment {
         pref = getActivity().getSharedPreferences("userpref", 0);
         Firebase.setAndroidContext(getActivity());
         uid = pref.getString("uid", "");
-        mref = new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref = new Firebase("https://activitymaximizer.firebaseio.com/");
 
         for(int i=0;i<=13;i++)
         {

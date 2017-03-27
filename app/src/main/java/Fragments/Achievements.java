@@ -57,12 +57,13 @@ public class Achievements extends Fragment
 
         gridView=(GridView)v.findViewById(R.id.gridview);
 
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         Firebase.setAndroidContext(getActivity());
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
 
         firebaseAuth = FirebaseAuth.getInstance();
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         pref=getActivity().getSharedPreferences("userpref",0);
 
 

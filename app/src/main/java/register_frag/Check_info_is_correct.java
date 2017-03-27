@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
@@ -25,6 +26,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -82,9 +84,32 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
         tv_done=(TextView)v.findViewById(R.id.tv_done);
 
         Firebase.setAndroidContext(getActivity());
+
+
         firebaseAuth = FirebaseAuth.getInstance();
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
+
+
+
+        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+
+
+
+
+
+            }
+        });
+
+
+
+
+
+
+
 
         pref=getActivity().getSharedPreferences("userpref",0);
 
@@ -115,11 +140,79 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
 
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                    public void onComplete(@NonNull final Task<AuthResult> task) {
                         //checking if success
                         if(task.isSuccessful()){
-                            //display some message here
-                            writeNewUser(task.getResult().getUser());
+
+
+
+
+
+
+
+
+
+
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+                            FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+                            mUser.getToken(true)
+                                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                        public void onComplete(@NonNull final Task<GetTokenResult> tasks) {
+                                            if (tasks.isSuccessful()) {
+                                                String idToken = tasks.getResult().getToken();
+
+                                                Log.e("aaa",idToken+"");
+
+
+                                                mref.authWithCustomToken(idToken, new Firebase.AuthResultHandler() {
+                                                    @Override
+                                                    public void onAuthenticated(AuthData authData) {
+
+
+
+                                                        writeNewUser(task.getResult().getUser());
+
+
+
+
+
+
+
+
+                                                    }
+
+                                                    @Override
+                                                    public void onAuthenticationError(FirebaseError firebaseError) {
+
+
+                                                        Log.e("aaa",firebaseError.getMessage());
+
+                                                    }
+                                                });
+
+
+                                                // ...
+                                            } else {
+                                                // Handle error -> task.getException();
+                                            }
+                                        }
+                                    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         }else{
                             //display some message here
                             Log.e("error_message",task.getException()+" ex");
@@ -241,11 +334,17 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
         m2.put("trainer_solution_number",pref.getString("trainer_solution_number",""));
         m2.put("upline_solution_number",pref.getString("upline_solution_number",""));
 
+
+
 //        UserInfo userinfo = new UserInfo(pref.getString("givenName"," "), pref.getString("familyName"," "),
 //                pref.getString("phone"," "),pref.getString("email"," "), uid,
 //                m1," "," "," "," "," "," "," "," "," ", pref.getString("rvpsolutionnumber",""),
 //                pref.getString("solutionnumber",""),pref.getString("state",""),pref.getString("trainersolutionnumber",""),
 //                pref.getString("uplinesolutionnumber",""));
+
+
+
+
 
         mref.child("users")
                 .child(uid)
@@ -291,6 +390,8 @@ public class Check_info_is_correct extends Fragment implements View.OnClickListe
                                 dv.put("uid", uid);
                                 mref.child("Solution Numbers").child(uplinesolutionnumber).child("downlines").child(uid).updateChildren(dv);
                             }
+
+                            firebaseAuth.signOut();
                             Toast.makeText(getActivity(),"Successfully registered",Toast.LENGTH_LONG).show();
                             FragmentManager fm = getActivity().getSupportFragmentManager();
                             fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);

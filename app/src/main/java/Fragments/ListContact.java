@@ -66,7 +66,7 @@ public class ListContact extends Fragment implements View.OnClickListener {
         pref=getActivity().getSharedPreferences("userpref",0);
         Firebase.setAndroidContext(getActivity());
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
 
         getallcontactsfromfirebase();
 
@@ -184,9 +184,9 @@ public class ListContact extends Fragment implements View.OnClickListener {
 
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Log.e("child",child+" abc");
-                    allContactArrayList.add(new AllContact(ConvertParseString(child.child("competitive").getValue()),ConvertParseString(child.child("created").getValue()),ConvertParseString(child.child("credible").getValue()),ConvertParseString(child.child("familyName").getValue()),ConvertParseString(child.child("givenName").getValue()),ConvertParseString(child.child("hasKids").getValue()),
-                            ConvertParseString(child.child("homeowner").getValue()),ConvertParseString(child.child("hungry").getValue()),ConvertParseString(child.child("incomeOver40k").getValue()),ConvertParseString(child.child("married").getValue()),ConvertParseString(child.child("motivated").getValue()),ConvertParseString(child.child("ofProperAge").getValue()),ConvertParseString(child.child("peopleSkills").getValue()),
-                            ConvertParseString(child.child("phoneNumber").getValue()),String.valueOf(ConvertParseInteger(child.child("rating").getValue())),String.valueOf(ConvertParseInteger(child.child("recruitRating").getValue())),ConvertParseString(child.child("ref").getValue())));
+                    allContactArrayList.add(new AllContact(String.valueOf(child.child("competitive").getValue()),String.valueOf(child.child("created").getValue()),String.valueOf(child.child("credible").getValue()),String.valueOf(child.child("familyName").getValue()),String.valueOf(child.child("givenName").getValue()),String.valueOf(child.child("hasKids").getValue()),
+                            String.valueOf(child.child("homeowner").getValue()),String.valueOf(child.child("hungry").getValue()),String.valueOf(child.child("incomeOver40k").getValue()),String.valueOf(child.child("married").getValue()),String.valueOf(child.child("motivated").getValue()),String.valueOf(child.child("ofProperAge").getValue()),String.valueOf(child.child("peopleSkills").getValue()),
+                            String.valueOf(child.child("phoneNumber").getValue()),String.valueOf(ConvertParseInteger(child.child("rating").getValue())),String.valueOf(ConvertParseInteger(child.child("recruitRating").getValue())),String.valueOf(child.child("ref").getValue())));
 
                     Log.e("child",child.child("familyName").getValue()+" abc");
                 }
@@ -198,20 +198,6 @@ public class ListContact extends Fragment implements View.OnClickListener {
                 Log.e("get data error",error.getMessage()+" data");
             }
         });
-    }
-    public static String ConvertParseString(Object obj ) {
-        if(obj==null)
-        {
-            return "";
-        }
-        else {
-            String lastSeen= (String) obj;
-            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
-                return lastSeen;
-            else
-                return "";
-        }
-
     }
 
     public static int ConvertParseInteger(Object obj) {

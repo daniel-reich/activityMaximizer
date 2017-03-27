@@ -20,6 +20,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,6 +51,8 @@ public class Rating_info_clients_fram extends Fragment
     Firebase mref;
     SharedPreferences pref;
     String uid="",Ten_five_point_clients="";
+    private JSONObject obj;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,7 +63,7 @@ public class Rating_info_clients_fram extends Fragment
 
         Firebase.setAndroidContext(getActivity());
 //        storageRef= FirebaseStorage.getInstance().getReference();
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         pref=getActivity().getSharedPreferences("userpref",0);
         uid=pref.getString("uid","");
 
@@ -548,6 +553,14 @@ public class Rating_info_clients_fram extends Fragment
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+
+                try {
+                    obj = new JSONObject(dataSnapshot.getValue() + "");
+                }
+                catch (Exception e)
+                {
+
+                }
                 if (str.equals("10"))
                 {
                     Log.e("get data from server", dataSnapshot.getValue() + " data");
@@ -562,6 +575,24 @@ public class Rating_info_clients_fram extends Fragment
                         newcontact.put("Ten_five_point_clients", "true");
                         newcontact.put("Ten_five_point_clients_date", timestamp);
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+
+
+                        Achivement_Details frag = new Achivement_Details();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("position",8);
+
+                        try {
+                            obj.put("Ten_five_point_clients", "true");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        bundle.putString("data", obj + "");
+                        frag.setArguments(bundle);
+
+                        if(getActivity()!=null)
+                            getActivity().getSupportFragmentManager().beginTransaction().
+                                    replace(R.id.frame_layout, frag).addToBackStack(null).commit();
                     }
                 }
             }
@@ -581,7 +612,7 @@ public class Rating_info_clients_fram extends Fragment
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
                     Log.e("get data from server", dataSnapshot.getValue() + " data");
                     Log.e("child", dataSnapshot.child("fivePointClients").getValue() + " abc");
-                   String fivePointClients = ConvertParseString(dataSnapshot.child("fivePointClients").getValue());
+                   String fivePointClients = String.valueOf(dataSnapshot.child("fivePointClients").getValue());
                     if (fivePointClients.equalsIgnoreCase("10"))
                     {
                         puttenfivepointclientsinfirebase("10");
@@ -594,20 +625,6 @@ public class Rating_info_clients_fram extends Fragment
         });
     }
 
-    public static String ConvertParseString(Object obj ) {
-        if(obj==null)
-        {
-            return "";
-        }
-        else {
-            String lastSeen= String.valueOf(obj) ;
-            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
-                return lastSeen;
-            else
-                return "";
-        }
-
-    }
 
 
     public void getcontactdatafromfirebase(String givenname)
@@ -623,9 +640,9 @@ public class Rating_info_clients_fram extends Fragment
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Log.e("child",child+" abc");
                     try {
-                        data.add(new AllRatingContact(ConvertParseString(dataSnapshot.child("competitive").getValue()), ConvertParseString(dataSnapshot.child("created").getValue()), ConvertParseString(dataSnapshot.child("credible").getValue()), ConvertParseString(dataSnapshot.child("familyName").getValue()), ConvertParseString(dataSnapshot.child("givenName").getValue()), ConvertParseString(dataSnapshot.child("hasKids").getValue()),
-                                ConvertParseString(dataSnapshot.child("homeowner").getValue()), ConvertParseString(dataSnapshot.child("hungry").getValue()), ConvertParseString(dataSnapshot.child("incomeOver40k").getValue()), ConvertParseString(dataSnapshot.child("married").getValue()), ConvertParseString(dataSnapshot.child("motivated").getValue()), ConvertParseString(dataSnapshot.child("ofProperAge").getValue()), ConvertParseString(dataSnapshot.child("peopleSkills").getValue()),
-                                ConvertParseString(dataSnapshot.child("phoneNumber").getValue()), ConvertParseInteger(dataSnapshot.child("rating").getValue()),ConvertParseInteger(dataSnapshot.child("recruitRating").getValue()), ConvertParseString(dataSnapshot.child("ref").getValue())));
+                        data.add(new AllRatingContact(String.valueOf(dataSnapshot.child("competitive").getValue()), String.valueOf(dataSnapshot.child("created").getValue()), String.valueOf(dataSnapshot.child("credible").getValue()), String.valueOf(dataSnapshot.child("familyName").getValue()), String.valueOf(dataSnapshot.child("givenName").getValue()), String.valueOf(dataSnapshot.child("hasKids").getValue()),
+                                String.valueOf(dataSnapshot.child("homeowner").getValue()), String.valueOf(dataSnapshot.child("hungry").getValue()), String.valueOf(dataSnapshot.child("incomeOver40k").getValue()), String.valueOf(dataSnapshot.child("married").getValue()), String.valueOf(dataSnapshot.child("motivated").getValue()), String.valueOf(dataSnapshot.child("ofProperAge").getValue()), String.valueOf(dataSnapshot.child("peopleSkills").getValue()),
+                                String.valueOf(dataSnapshot.child("phoneNumber").getValue()), ConvertParseInteger(dataSnapshot.child("rating").getValue()),ConvertParseInteger(dataSnapshot.child("recruitRating").getValue()), String.valueOf(dataSnapshot.child("ref").getValue())));
 
                         Log.e("child", dataSnapshot.child("rating").getValue() + " abc"+dataSnapshot.child("recruitRating").getValue());
                     }
@@ -636,27 +653,34 @@ public class Rating_info_clients_fram extends Fragment
                 }
 
 
-                competitive = data.get(0).getCompetitive();
-                created = data.get(0).getCreated();
-                credible = data.get(0).getCredible();
-                familyName = data.get(0).getFamilyName();
-//                givenName = data.get(0).getGivenName();
-                hasKids = data.get(0).getHasKids();
-                homeowner = data.get(0).getHomeowner();
-                hungry = data.get(0).getHungry();
-                incomeOver40k = data.get(0).getIncomeOver40k();
-                married = data.get(0).getMarried();
-                motivated = data.get(0).getMotivated();
-                ofProperAge = data.get(0).getOfProperAge();
-                peopleSkills = data.get(0).getPeopleSkills();
-                phoneNumber = data.get(0).getPhoneNumber();
 
-                rating = data.get(0).getRating();
-                recruitRating =data.get(0).getRecruitRating();
-                Log.e("ratinggg",competitive+" cccc"+created+married+recruitRating+rating+ref);
+                if(data.size()>0) {
+                    rating = data.get(0).getRating();
+                    recruitRating = data.get(0).getRecruitRating();
+
+                    competitive = data.get(0).getCompetitive();
+                    created = data.get(0).getCreated();
+                    credible = data.get(0).getCredible();
+                    familyName = data.get(0).getFamilyName();
+//                givenName = data.get(0).getGivenName();
+                    hasKids = data.get(0).getHasKids();
+                    homeowner = data.get(0).getHomeowner();
+                    hungry = data.get(0).getHungry();
+                    incomeOver40k = data.get(0).getIncomeOver40k();
+                    married = data.get(0).getMarried();
+                    motivated = data.get(0).getMotivated();
+                    ofProperAge = data.get(0).getOfProperAge();
+                    peopleSkills = data.get(0).getPeopleSkills();
+                    phoneNumber = data.get(0).getPhoneNumber();
+
+                }
+               // Log.e("ratinggg",competitive+" cccc"+created+married+recruitRating+rating+ref);
       //        Toast.makeText(getActivity(), rating+" anc", Toast.LENGTH_SHORT).show();
                 if(rating>0)
                 {
+
+
+
                     a=rating;
                     rate=rating;
                     tv_rating.setText("Rating: " + a);

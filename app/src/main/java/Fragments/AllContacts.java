@@ -29,6 +29,9 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,6 +59,8 @@ public class AllContacts extends Fragment implements View.OnClickListener {
     ArrayList<AllContact> data;
     EditText search_contact;
     String role="client",uid="",uidd="",Ten_new_contacts_added="false",Thirty_new_contacts_added="false",Twenty_new_contacts_added="false";
+    private JSONObject obj;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,7 +81,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
         pref=getActivity().getSharedPreferences("userpref",0);
         Firebase.setAndroidContext(getActivity());
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
 //        try {
 //            uidd = getArguments().getString("uid");
 //            Log.e("beforeuidd",uidd+" abv");
@@ -169,6 +174,10 @@ public class AllContacts extends Fragment implements View.OnClickListener {
 
     public void getdatafromfirebase(final String role)
     {
+
+
+
+
         mref.child("contacts").child(uid).addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -180,9 +189,9 @@ public class AllContacts extends Fragment implements View.OnClickListener {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                    Log.e("child",child+" abc");
                     try {
-                        data.add(new AllContact(ConvertParseString(child.child("competitive").getValue()), ConvertParseString(child.child("created").getValue()), ConvertParseString(child.child("credible").getValue()), ConvertParseString(child.child("familyName").getValue()), ConvertParseString(child.child("givenName").getValue()), ConvertParseString(child.child("hasKids").getValue()),
-                                ConvertParseString(child.child("homeowner").getValue()), ConvertParseString(child.child("hungry").getValue()), ConvertParseString(child.child("incomeOver40k").getValue()), ConvertParseString(child.child("married").getValue()), ConvertParseString(child.child("motivated").getValue()), ConvertParseString(child.child("ofProperAge").getValue()), ConvertParseString(child.child("peopleSkills").getValue()),
-                                ConvertParseString(child.child("phoneNumber").getValue()), String.valueOf(ConvertParseInteger(child.child("rating").getValue())), String.valueOf(ConvertParseInteger(child.child("recruitRating").getValue())), ConvertParseString(child.child("ref").getValue())));
+                        data.add(new AllContact(String.valueOf(child.child("competitive").getValue()), String.valueOf(child.child("created").getValue()), String.valueOf(child.child("credible").getValue()), String.valueOf(child.child("familyName").getValue()), String.valueOf(child.child("givenName").getValue()), String.valueOf(child.child("hasKids").getValue()),
+                                String.valueOf(child.child("homeowner").getValue()), String.valueOf(child.child("hungry").getValue()), String.valueOf(child.child("incomeOver40k").getValue()), String.valueOf(child.child("married").getValue()), String.valueOf(child.child("motivated").getValue()), String.valueOf(child.child("ofProperAge").getValue()), String.valueOf(child.child("peopleSkills").getValue()),
+                                String.valueOf(child.child("phoneNumber").getValue()), String.valueOf(ConvertParseInteger(child.child("rating").getValue())), String.valueOf(ConvertParseInteger(child.child("recruitRating").getValue())), String.valueOf(child.child("ref").getValue())));
 
                         Log.e("child", child.child("familyName").getValue() + " abc");
                     }
@@ -193,15 +202,15 @@ public class AllContacts extends Fragment implements View.OnClickListener {
                 }
                 int size=data.size();
                 Log.e("sizee",size+" abcc");
-                    if(size==10)
+                    if(size>=10 && size<20)
                     {
                         putcontactcountinfirebase("10",role);
                     }
-                    else if(size==20)
+                    else if(size>=20 && size<30)
                     {
                         putcontactcountinfirebase("20",role);
                     }
-                    else if(size==30)
+                    else if(size>=30)
                     {
                         putcontactcountinfirebase("30",role);
                     }
@@ -219,20 +228,7 @@ public class AllContacts extends Fragment implements View.OnClickListener {
             }
         });
     }
-    public static String ConvertParseString(Object obj ) {
-        if(obj==null)
-        {
-            return "";
-        }
-        else {
-            String lastSeen= String.valueOf(obj);
-            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
-                return lastSeen;
-            else
-                return "";
-        }
 
-    }
 
 
     public static int ConvertParseInteger(Object obj) {
@@ -257,6 +253,14 @@ public class AllContacts extends Fragment implements View.OnClickListener {
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+
+                try {
+                    obj = new JSONObject(dataSnapshot.getValue() + "");
+                }
+                catch (Exception e)
+                {
+
+                }
                 if (str.equals("10"))
                 {
                     Log.e("get data from server", dataSnapshot.getValue() + " data");
@@ -264,14 +268,31 @@ public class AllContacts extends Fragment implements View.OnClickListener {
                     Ten_new_contacts_added = dataSnapshot.child("Ten_new_contacts_added").getValue().toString();
                     if (Ten_new_contacts_added.equalsIgnoreCase("false"))
                     {
+
+
                         java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
                         Log.e("Today is ", timeStampDate.getTime() + "");
                         String timestamp = String.valueOf(timeStampDate.getTime());
                         Map newcontact = new HashMap();
                         newcontact.put("Ten_new_contacts_added", "true");
-                        newcontact.put("Ten_new_contacts_added_date", timestamp);
+                        try {
+                            obj.put("Ten_new_contacts_added", "true");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
                         setAdapter(role);
+
+                        Achivement_Details frag = new Achivement_Details();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("position", 12);
+                        newcontact.put("Ten_new_contacts_added_date", timestamp);
+                        bundle.putString("data", obj + "");
+                        frag.setArguments(bundle);
+                        getActivity().getSupportFragmentManager().beginTransaction().
+                                replace(R.id.frame_layout, frag).addToBackStack(null).commit();
+                        
                     }
                     else
                     {
@@ -292,6 +313,21 @@ public class AllContacts extends Fragment implements View.OnClickListener {
                         newcontact.put("Twenty_new_contacts_added", "true");
                         newcontact.put("Twenty_new_contacts_added_date", timestamp);
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+
+
+                        Achivement_Details frag = new Achivement_Details();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("position", 15);
+
+                        try {
+                            obj.put("Twenty_new_contacts_added", "true");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        bundle.putString("data", obj + "");
+                        frag.setArguments(bundle);
+                        getActivity().getSupportFragmentManager().beginTransaction().
+                                replace(R.id.frame_layout, frag).addToBackStack(null).commit();
 
                         setAdapter(role);
                     }
@@ -314,6 +350,20 @@ public class AllContacts extends Fragment implements View.OnClickListener {
                         newcontact.put("Thirty_new_contacts_added", "true");
                         newcontact.put("Thirty_New_contacts_added_date", timestamp);
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+
+                        try {
+                            obj.put("Thirty_new_contacts_added", "true");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Achivement_Details frag = new Achivement_Details();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("position", 13);
+                        newcontact.put("Thirty_new_contacts_added_date", timestamp);
+                        bundle.putString("data", obj + "");
+                        frag.setArguments(bundle);
+                        getActivity().getSupportFragmentManager().beginTransaction().
+                                replace(R.id.frame_layout, frag).addToBackStack(null).commit();
 
                         setAdapter(role);
                     }

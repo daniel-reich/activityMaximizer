@@ -66,7 +66,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
         Firebase.setAndroidContext(getActivity());
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         rView=(RecyclerView)view.findViewById(R.id.list_recycler);
         layoutManager=new LinearLayoutManager(getActivity());
 

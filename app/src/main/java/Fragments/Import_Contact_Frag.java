@@ -76,7 +76,7 @@ public class Import_Contact_Frag extends Fragment {
 //        name= getArguments().getString("givenName");
 
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
 
 //        Log.e("name",name);
 
@@ -223,7 +223,7 @@ public class Import_Contact_Frag extends Fragment {
 //
 //        Log.e("check_goals_call","check_goals_call");
 //
-//        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/users/"+pref.getString("uid","")+"/Goals/");
+//        mref=new Firebase("https://activitymaximizer.firebaseio.com/users/"+pref.getString("uid","")+"/Goals/");
 //        mref.keepSynced(true);
 //
 //        ChildEventListener childEventListener = new ChildEventListener() {

@@ -92,7 +92,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         Firebase.setAndroidContext(getActivity());
         pref=getActivity().getSharedPreferences("userpref",0);
         uid=pref.getString("uid","");
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         puttopspeedinfirebase();
         firebaseAuth = FirebaseAuth.getInstance();
         AskMarshMallowPermissions();
@@ -379,7 +379,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
                 Log.e("get data from server", dataSnapshot.getValue() + " data");
                 Log.e("child", dataSnapshot.child("Top_speed").getValue() + " abc");
-                Top_speed = ConvertParseString(dataSnapshot.child("Top_speed").getValue());
+                Top_speed = String.valueOf(dataSnapshot.child("Top_speed").getValue());
                 if (Top_speed.equalsIgnoreCase("false"))
                 {
                     java.sql.Timestamp timeStampDate = new Timestamp(new Date().getTime());
@@ -398,20 +398,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
     }
 
-    public static String ConvertParseString(Object obj ) {
-        if(obj==null)
-        {
-            return "";
-        }
-        else {
-            String lastSeen= String.valueOf(obj);
-            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
-                return lastSeen;
-            else
-                return "";
-        }
-
-    }
 
 
 }

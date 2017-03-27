@@ -128,7 +128,7 @@ public class TeamDirectDownlineAdapter   extends  RecyclerView.Adapter<RecyclerV
         holder1.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+                mref=new Firebase("https://activitymaximizer.firebaseio.com/");
                 Deleteitem(position);
                 //Options(position);
 
@@ -138,7 +138,7 @@ public class TeamDirectDownlineAdapter   extends  RecyclerView.Adapter<RecyclerV
         holder1.addtoitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+                mref=new Firebase("https://activitymaximizer.firebaseio.com/");
                 AddToTeam(position);
 
             }

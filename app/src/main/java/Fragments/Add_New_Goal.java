@@ -110,7 +110,7 @@ public class Add_New_Goal extends Fragment implements View.OnClickListener {
 
         Firebase.setAndroidContext(getActivity());
 //        storageRef= FirebaseStorage.getInstance().getReference();
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         pref=getActivity().getSharedPreferences("userpref",0);
 
 // textView is the TextView view that should display it

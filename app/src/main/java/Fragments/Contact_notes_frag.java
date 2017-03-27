@@ -76,7 +76,7 @@ public class Contact_notes_frag extends Fragment {
         uid=pref.getString("uid","");
 
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
 
 
         tv_newactivity.setOnClickListener(new View.OnClickListener() {

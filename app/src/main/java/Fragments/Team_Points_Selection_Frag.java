@@ -14,6 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,6 +38,8 @@ public class Team_Points_Selection_Frag extends Fragment
     RecyclerView rview;
     LinearLayoutManager linearManager;
     Team_Point_Adapter adapter;
+
+    JSONArray json;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,9 +55,29 @@ public class Team_Points_Selection_Frag extends Fragment
 
 
 
+
         pref=getActivity().getSharedPreferences("userpref",0);
 
-        adapter=new Team_Point_Adapter();
+        try {
+
+
+            ;
+
+            if(pref.getString("team","").length()>0)
+            json=new JSONArray(pref.getString("team",""));
+            else
+                json=new JSONArray();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            adapter=new Team_Point_Adapter(json);
+        } catch (Exception e) {
+
+
+        }
         rview.setLayoutManager(linearManager);
         rview.setAdapter(adapter);
 
@@ -75,9 +100,15 @@ public class Team_Points_Selection_Frag extends Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
-//            case R.id.menu:
-//                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new SortByFragment()).addToBackStack(null).commit();
-//                break;
+            case R.id.menu:
+
+                SharedPreferences.Editor edit=pref.edit();
+
+                edit.putString("team",json.toString());
+                edit.commit();
+                getFragmentManager().popBackStack();
+
+                break;
 
             case android.R.id.home:
                 getActivity().getSupportFragmentManager().popBackStack();

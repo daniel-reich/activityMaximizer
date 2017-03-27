@@ -90,7 +90,7 @@ public class PostsFragment extends Fragment
     {
         Log.e("getdatafromfir called","getdatafromfirebase called");
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         pref=getActivity().getSharedPreferences("userpref",0);
         
         mref.child("Posts").child(pref.getString("solution_number","")).addValueEventListener(new ValueEventListener() {
@@ -138,7 +138,7 @@ public class PostsFragment extends Fragment
     public JSONArray getChallanges()
     {
         Log.e("getChallanges called","getChallanges called");
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
 //        final JSONArray array=new JSONArray();
         pref=getActivity().getSharedPreferences("userpref",0);
 

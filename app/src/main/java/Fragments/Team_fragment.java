@@ -83,7 +83,7 @@ public class Team_fragment extends Fragment implements IDownloadAdapter{
         pref=getActivity().getSharedPreferences("userpref",0);
         Firebase.setAndroidContext(getActivity());
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
 
         uid=pref.getString("uid","");
 
@@ -239,7 +239,7 @@ public class Team_fragment extends Fragment implements IDownloadAdapter{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("get data from server",dataSnapshot.getValue()+" data");
-                basedata.add(new AllBaseDownlines(ConvertParseString(uid),ConvertParseString(dataSnapshot.child("givenName").getValue()),ConvertParseString(dataSnapshot.child("fivePointClients").getValue()),ConvertParseString(dataSnapshot.child("fivePointRecruits").getValue())));
+                basedata.add(new AllBaseDownlines(String.valueOf(uid),String.valueOf(dataSnapshot.child("givenName").getValue()),String.valueOf(dataSnapshot.child("fivePointClients").getValue()),String.valueOf(dataSnapshot.child("fivePointRecruits").getValue())));
                 baseadapter=new BaseDownlineAdapter(getActivity(),basedata,fm);
                 baseview.setLayoutManager(layoutManager1);
                 baseview.setAdapter(baseadapter);
@@ -293,21 +293,6 @@ public class Team_fragment extends Fragment implements IDownloadAdapter{
         });
     }
 
-
-    public static String ConvertParseString(Object obj ) {
-        if(obj==null)
-        {
-            return "";
-        }
-        else {
-            String lastSeen= (String.valueOf(obj));
-            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
-                return lastSeen;
-            else
-                return "";
-        }
-
-    }
 
     @Override
     public void onRefreshAdapter(AllDownlines allDownlines) {

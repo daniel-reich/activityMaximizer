@@ -282,7 +282,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
                 imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
 
 
-                imageLoader.getInstance().displayImage(ConvertParseString(data.get(0).getProfilePictureURL()), Profile_pic, options, animateFirstListener);
+                imageLoader.getInstance().displayImage(String.valueOf(data.get(0).getProfilePictureURL()), Profile_pic, options, animateFirstListener);
 
                 tv_username.setText(data.get(0).getGivenName());
                 tv_phone.setText(data.get(0).getPhoneNumber());
@@ -296,22 +296,6 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
                 Log.e("get data error",error.getMessage()+" data");
             }
         });
-    }
-    public static String ConvertParseString(Object obj ) {
-        if(obj==null)
-        {
-            return "";
-        }
-        else {
-
-
-            String lastSeen= (String) obj+"";
-            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
-                return lastSeen;
-            else
-                return "";
-        }
-
     }
 
 
@@ -335,7 +319,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
 
                 }
 
-                // achieve_detail = ConvertParseString(dataSnapshot.getValue());
+                // achieve_detail = String.valueOf(dataSnapshot.getValue());
                 // setAch();
 
             }

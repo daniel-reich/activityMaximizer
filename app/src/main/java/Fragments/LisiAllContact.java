@@ -59,7 +59,7 @@ public class LisiAllContact extends Fragment {
         uid=pref.getString("uid","");
         name= getArguments().getString("givenName");
         NoClientsArrayList= (ArrayList<AllContact>) getArguments().getSerializable("NoClientsArrayList");
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         Log.e("name",name);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);

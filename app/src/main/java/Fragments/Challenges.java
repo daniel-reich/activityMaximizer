@@ -175,7 +175,7 @@ public class Challenges extends Fragment
                                     obj.put("includedActivity", includedactivity_obj);
 
                                     Log.e("value", obj + "");
-                                    boolean status = Check_enddate(ConvertParseString(messageSnapshot.child("endDate").getValue()));
+                                    boolean status = Check_enddate(String.valueOf(messageSnapshot.child("endDate").getValue()));
                                     if (status) {
                                         array.put(obj);
                                     } else {
@@ -258,7 +258,7 @@ public class Challenges extends Fragment
                                     obj.put("includedActivity", includedactivity_obj);
 
                                     Log.e("value", obj + "");
-                                    boolean status = Check_enddate(ConvertParseString(messageSnapshot.child("endDate").getValue()));
+                                    boolean status = Check_enddate(String.valueOf(messageSnapshot.child("endDate").getValue()));
                                     if (status) {
                                         array.put(obj);
                                     } else {
@@ -362,20 +362,6 @@ public class Challenges extends Fragment
         return status;
     }
 
-    public static String ConvertParseString(Object obj ) {
-        if(obj==null)
-        {
-            return "";
-        }
-        else {
-            String lastSeen= String.valueOf(obj);
-            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
-                return lastSeen;
-            else
-                return "";
-        }
-
-    }
 
 }
 

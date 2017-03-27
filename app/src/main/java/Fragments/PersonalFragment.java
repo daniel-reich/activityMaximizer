@@ -150,7 +150,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         Firebase.setAndroidContext(getActivity());
         firebaseAuth = FirebaseAuth.getInstance();
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         uid=pref.getString("uid","");
 
         storageRef= FirebaseStorage.getInstance().getReference();
@@ -196,18 +196,21 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 Log.e("get achievements1111", dataSnapshot.getValue() + " data");
                 Log.e("child11111111111", dataSnapshot.getValue() + " abc");
 
+                long value=0;
                 for(com.firebase.client.DataSnapshot child:dataSnapshot.getChildren()){
 
 //                    String key=child.getKey();
 
                   //  int value= Integer.parseInt(child.getValue());
-                    long value=((Long)child.getValue());
+                  value =value+((Long)child.getValue());
                     Log.e("achievementToShow",value+"");
-                    speedview.setTargetValue(value);
+
 
                 }
 
-               // achieve_detail = ConvertParseString(dataSnapshot.getValue());
+                speedview.setTargetValue(value);
+
+               // achieve_detail = String.valueOf(dataSnapshot.getValue());
                // setAch();
 
             }
@@ -228,7 +231,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
                 Log.e("get achievements", dataSnapshot.getValue() + " data");
                 Log.e("child", dataSnapshot.getValue() + " abc");
-                achieve_detail = ConvertParseString(dataSnapshot.getValue());
+                achieve_detail = String.valueOf(dataSnapshot.getValue());
                 setAch();
 
             }
@@ -239,20 +242,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         });
     }
 
-    public static String ConvertParseString(Object obj ) {
-        if(obj==null)
-        {
-            return "";
-        }
-        else {
-            String lastSeen= String.valueOf(obj);
-            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
-                return lastSeen;
-            else
-                return "";
-        }
-
-    }
 
     public void setAch()
     {

@@ -64,7 +64,7 @@ public class RVPRequestFragment extends Fragment
         rView.setLayoutManager(linearLayoutManager);
         Firebase.setAndroidContext(getActivity());
         storageRef= FirebaseStorage.getInstance().getReference();
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         pref=getActivity().getSharedPreferences("userpref",0);
         getRVPRequestsfromFirebase();
 

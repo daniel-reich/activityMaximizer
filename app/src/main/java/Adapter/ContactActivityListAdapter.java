@@ -2,6 +2,7 @@ package Adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -20,6 +21,7 @@ import com.firebase.client.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.sql.Timestamp;
@@ -29,9 +31,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import Fragments.Achivement_Details;
 import Fragments.Activity_list_frag;
 import Fragments.Need_to_Quality;
 import model.AllContact;
+import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 import utils.Constants;
 import utils.NetworkConnection;
@@ -52,12 +56,17 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
     JSONArray array;
     String str="",name="";
+    HomeActivity  activity;
     public static int Went_on_three_KTscount=0,Three_appointments_setcount=0,Closed_three_lifecount=0,Closed_three_IBAscount=0;
+    private JSONObject obj;
+
     public ContactActivityListAdapter(Context context, JSONArray array,String str,String name) {
         this.context = context;
         this.array=array;
         this.str=str;
         this.name=name;
+
+       activity = (HomeActivity) context;
         Log.e("notifydatasetchanged","notifydatasetchanged");
     }
 
@@ -69,7 +78,7 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
         uid=pref.getString("uid","");
         Firebase.setAndroidContext(context);
 
-        mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         return new ViewHolder(view);
     }
 
@@ -98,7 +107,7 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                     viewHolder.timestamp.setText(simpleDateFormat.format(time));
 
                     if (array.getJSONObject(i).getString("name").equals("Went on KT")) {
-                        Went_on_three_KTscount++;
+
                         if (Went_on_three_KTscount == 3) {
                             putthreewentonktinfirebase("3");
                         } else if (Went_on_three_KTscount == 50) {
@@ -108,21 +117,25 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                         } else if (Went_on_three_KTscount == 200) {
                             putthreewentonktinfirebase("200");
                         }
+                        Went_on_three_KTscount++;
                     } else if (array.getJSONObject(i).getString("name").equals("Set Appointment")) {
-                        Three_appointments_setcount++;
+
                         if (Three_appointments_setcount == 3) {
                             putthreeappointmentinfirebase("3");
                         }
+                        Three_appointments_setcount++;
                     } else if (array.getJSONObject(i).getString("name").equals("Closed Life")) {
-                        Closed_three_lifecount++;
+
                         if (Closed_three_lifecount == 3) {
                             putthreeclosedlifeinfirebase("3");
                         }
+                        Closed_three_lifecount++;
                     } else if (array.getJSONObject(i).getString("name").equals("Closed IBA")) {
-                        Closed_three_IBAscount++;
+
                         if (Closed_three_IBAscount == 3) {
                             putthreeclosedibainfirebase("3");
                         }
+                        Closed_three_IBAscount++;
                     }
                     Log.e("inside", "oo");
                     getdatafromfirebase();
@@ -135,7 +148,7 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
                     viewHolder.timestamp.setText(simpleDateFormat.format(time));
                     if (array.getJSONObject(i).getString("type").equals("Went on KT")) {
-                        Went_on_three_KTscount++;
+
                         if (Went_on_three_KTscount == 3) {
                             putthreewentonktinfirebase("3");
                         } else if (Went_on_three_KTscount == 50) {
@@ -145,21 +158,25 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                         } else if (Went_on_three_KTscount == 200) {
                             putthreewentonktinfirebase("200");
                         }
+                        Went_on_three_KTscount++;
                     } else if (array.getJSONObject(i).getString("type").equals("Set Appointment")) {
-                        Three_appointments_setcount++;
+
                         if (Three_appointments_setcount == 3) {
                             putthreeappointmentinfirebase("3");
                         }
+                        Three_appointments_setcount++;
                     } else if (array.getJSONObject(i).getString("type").equals("Closed Life")) {
-                        Closed_three_lifecount++;
+
                         if (Closed_three_lifecount == 3) {
                             putthreeclosedlifeinfirebase("3");
                         }
+                        Closed_three_lifecount++;
                     } else if (array.getJSONObject(i).getString("type").equals("Closed IBA")) {
-                        Closed_three_IBAscount++;
+
                         if (Closed_three_IBAscount == 3) {
                             putthreeclosedibainfirebase("3");
                         }
+                        Closed_three_IBAscount++;
                     }
                     Log.e("inside", "oo");
                     getdatafromfirebase();
@@ -173,7 +190,7 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
         holder1.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+                mref=new Firebase("https://activitymaximizer.firebaseio.com/");
                 try {
                     Deleteitem(i,array.getJSONObject(i).getString("keyid"));
                 } catch (JSONException e) {
@@ -229,6 +246,18 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+
+
+
+
+                try {
+                    obj = new JSONObject(dataSnapshot.getValue() + "");
+                }
+                catch (Exception e)
+                {
+
+                }
+
                 if (str.equals("3"))
                 {
                     Log.e("get data from server", dataSnapshot.getValue() + " data");
@@ -240,9 +269,30 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                         Log.e("Today is ", timeStampDate.getTime() + "");
                         String timestamp = String.valueOf(timeStampDate.getTime());
                         Map newcontact = new HashMap();
+
+
+
                         newcontact.put("Went_on_three_KTs", "true");
                         newcontact.put("Went_on_three_KTs_date", timestamp);
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+
+                        Achivement_Details frag = new Achivement_Details();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("position", 18);
+
+                        try {
+                            obj.put("Went_on_three_KTs", "true");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        bundle.putString("data", obj + "");
+                        frag.setArguments(bundle);
+
+                        if(activity!=null)
+                        activity.getSupportFragmentManager().beginTransaction().
+                                replace(R.id.frame_layout, frag).addToBackStack(null).commit();
+
                     }
                 }
                 else if (str.equals("50"))
@@ -257,8 +307,32 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                         String timestamp = String.valueOf(timeStampDate.getTime());
                         Map newcontact = new HashMap();
                         newcontact.put("Fifty_KTs", "true");
+                        try {
+                            obj.put("Fifty_KTs", "true");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         newcontact.put("Fifty_KTs_date", timestamp);
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+
+                        Achivement_Details frag = new Achivement_Details();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("position", 2);
+
+                        try {
+                            obj.put("Went_on_three_KTs", "true");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        bundle.putString("data", obj + "");
+                        frag.setArguments(bundle);
+
+                        if(activity!=null)
+                            activity.getSupportFragmentManager().beginTransaction().
+                                    replace(R.id.frame_layout, frag).addToBackStack(null).commit();
+
+
                     }
                 }
                 else if (str.equals("100"))
@@ -275,6 +349,27 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                         newcontact.put("One_hundred_KTs", "true");
                         newcontact.put("One_hundred_KTs_date", timestamp);
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+
+
+                        Achivement_Details frag = new Achivement_Details();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("position", 6);
+
+                        try {
+                            obj.put("One_hundred_KTs", "true");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        bundle.putString("data", obj + "");
+                        frag.setArguments(bundle);
+
+                        if(activity!=null)
+                            activity.getSupportFragmentManager().beginTransaction().
+                                    replace(R.id.frame_layout, frag).addToBackStack(null).commit();
+
+
+
                     }
                 }
                 else if (str.equals("200"))
@@ -291,6 +386,27 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                         newcontact.put("Two_hundred_KTs", "true");
                         newcontact.put("Two_hundred_KTs_date", timestamp);
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+
+
+                        Achivement_Details frag = new Achivement_Details();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("position", 16);
+
+                        try {
+                            obj.put("Two_hundred_KTs", "true");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        bundle.putString("data", obj + "");
+                        frag.setArguments(bundle);
+
+                        if(activity!=null)
+                            activity.getSupportFragmentManager().beginTransaction().
+                                    replace(R.id.frame_layout, frag).addToBackStack(null).commit();
+
+
+
                     }
                 }
             }
@@ -307,6 +423,14 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+
+                try {
+                    obj = new JSONObject(dataSnapshot.getValue() + "");
+                }
+                catch (Exception e)
+                {
+
+                }
                 if (str.equals("3"))
                 {
                     Log.e("get data from server", dataSnapshot.getValue() + " data");
@@ -321,6 +445,28 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                         newcontact.put("Three_appointments_set", "true");
                         newcontact.put("Three_appointments_set_date", timestamp);
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+
+
+                        Achivement_Details frag = new Achivement_Details();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("position", 14);
+
+                        try {
+                            obj.put("Three_appointments_set", "true");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        bundle.putString("data", obj + "");
+                        frag.setArguments(bundle);
+
+                        if(activity!=null)
+                            activity.getSupportFragmentManager().beginTransaction().
+                                    replace(R.id.frame_layout, frag).addToBackStack(null).commit();
+
+
+
+
                     }
                 }
             }
@@ -337,6 +483,14 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+
+                try {
+                    obj = new JSONObject(dataSnapshot.getValue() + "");
+                }
+                catch (Exception e)
+                {
+
+                }
                 if (str.equals("3"))
                 {
                     Log.e("get data from server", dataSnapshot.getValue() + " data");
@@ -351,6 +505,26 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                         newcontact.put("Closed_three_life", "true");
                         newcontact.put("Closed_three_life_date", timestamp);
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+
+                        Achivement_Details frag = new Achivement_Details();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("position", 1);
+
+                        try {
+                            obj.put("Closed_three_life", "true");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        bundle.putString("data", obj + "");
+                        frag.setArguments(bundle);
+
+                        if(activity!=null)
+                            activity.getSupportFragmentManager().beginTransaction().
+                                    replace(R.id.frame_layout, frag).addToBackStack(null).commit();
+
+
+
                     }
                 }
             }
@@ -367,6 +541,14 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+
+                try {
+                    obj = new JSONObject(dataSnapshot.getValue() + "");
+                }
+                catch (Exception e)
+                {
+
+                }
                 if (str.equals("3"))
                 {
                     Log.e("get data from server", dataSnapshot.getValue() + " data");
@@ -381,6 +563,24 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                         newcontact.put("Closed_three_IBAs", "true");
                         newcontact.put("Closed_three_IBAs_date", timestamp);
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+
+                        Achivement_Details frag = new Achivement_Details();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("position", 0);
+
+                        try {
+                            obj.put("Closed_three_IBAs", "true");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        bundle.putString("data", obj + "");
+                        frag.setArguments(bundle);
+
+                        if(activity!=null)
+                            activity.getSupportFragmentManager().beginTransaction().
+                                    replace(R.id.frame_layout, frag).addToBackStack(null).commit();
+
                     }
                 }
             }
@@ -404,9 +604,9 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Log.e("child",child+" abc");
                     try {
-                        data.add(new AllContact(ConvertParseString(child.child("competitive").getValue()), ConvertParseString(child.child("created").getValue()), ConvertParseString(child.child("credible").getValue()), ConvertParseString(child.child("familyName").getValue()), ConvertParseString(child.child("givenName").getValue()), ConvertParseString(child.child("hasKids").getValue()),
-                                ConvertParseString(child.child("homeowner").getValue()), ConvertParseString(child.child("hungry").getValue()), ConvertParseString(child.child("incomeOver40k").getValue()), ConvertParseString(child.child("married").getValue()), ConvertParseString(child.child("motivated").getValue()), ConvertParseString(child.child("ofProperAge").getValue()), ConvertParseString(child.child("peopleSkills").getValue()),
-                                ConvertParseString(child.child("phoneNumber").getValue()), String.valueOf(ConvertParseInteger(child.child("rating").getValue())), String.valueOf(ConvertParseInteger(child.child("recruitRating").getValue())), ConvertParseString(child.child("ref").getValue())));
+                        data.add(new AllContact(String.valueOf(child.child("competitive").getValue()), String.valueOf(child.child("created").getValue()), String.valueOf(child.child("credible").getValue()), String.valueOf(child.child("familyName").getValue()), String.valueOf(child.child("givenName").getValue()), String.valueOf(child.child("hasKids").getValue()),
+                                String.valueOf(child.child("homeowner").getValue()), String.valueOf(child.child("hungry").getValue()), String.valueOf(child.child("incomeOver40k").getValue()), String.valueOf(child.child("married").getValue()), String.valueOf(child.child("motivated").getValue()), String.valueOf(child.child("ofProperAge").getValue()), String.valueOf(child.child("peopleSkills").getValue()),
+                                String.valueOf(child.child("phoneNumber").getValue()), String.valueOf(ConvertParseInteger(child.child("rating").getValue())), String.valueOf(ConvertParseInteger(child.child("recruitRating").getValue())), String.valueOf(child.child("ref").getValue())));
 
                         Log.e("child", child.child("familyName").getValue() + " abc");
                     }
@@ -442,20 +642,7 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
         });
     }
 
-    public static String ConvertParseString(Object obj ) {
-        if(obj==null)
-        {
-            return "";
-        }
-        else {
-            String lastSeen= (String) obj;
-            if (lastSeen != null && !TextUtils.isEmpty(lastSeen) && !lastSeen.equalsIgnoreCase("null"))
-                return lastSeen;
-            else
-                return "";
-        }
 
-    }
 
 
     public static int ConvertParseInteger(Object obj) {
@@ -479,6 +666,14 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+
+                try {
+                    obj = new JSONObject(dataSnapshot.getValue() + "");
+                }
+                catch (Exception e)
+                {
+
+                }
                     Log.e("get data from server", dataSnapshot.getValue() + " data");
                     Log.e("child", dataSnapshot.child("One_week_eight_five_three_one").getValue() + " abc");
                 One_week_eight_five_three_one = dataSnapshot.child("One_week_eight_five_three_one").getValue().toString();
@@ -491,6 +686,23 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                         newcontact.put("One_week_eight_five_three_one", "true");
                         newcontact.put("One_week_eight_five_three_one_date", timestamp);
                         mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+
+                        Achivement_Details frag = new Achivement_Details();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("position", 7);
+
+                        try {
+                            obj.put("One_week_eight_five_three_one", "true");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        bundle.putString("data", obj + "");
+                        frag.setArguments(bundle);
+
+                        if(activity!=null)
+                            activity.getSupportFragmentManager().beginTransaction().
+                                    replace(R.id.frame_layout, frag).addToBackStack(null).commit();
                     }
             }
             @Override
@@ -506,6 +718,14 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+
+                try {
+                    obj = new JSONObject(dataSnapshot.getValue() + "");
+                }
+                catch (Exception e)
+                {
+
+                }
                 Log.e("get data from server", dataSnapshot.getValue() + " data");
                 Log.e("child", dataSnapshot.child("Perfect_week").getValue() + " abc");
                 Perfect_week = dataSnapshot.child("Perfect_week").getValue().toString();
@@ -518,6 +738,24 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                     newcontact.put("Perfect_week", "true");
                     newcontact.put("Perfect_week_date", timestamp);
                     mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+                    Achivement_Details frag = new Achivement_Details();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("position", 9);
+
+                    try {
+                        obj.put("Perfect_week", "true");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    bundle.putString("data", obj + "");
+                    frag.setArguments(bundle);
+
+                    if(activity!=null)
+                        activity.getSupportFragmentManager().beginTransaction().
+                                replace(R.id.frame_layout, frag).addToBackStack(null).commit();
+
+
                 }
             }
             @Override
@@ -533,6 +771,14 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+
+                try {
+                    obj = new JSONObject(dataSnapshot.getValue() + "");
+                }
+                catch (Exception e)
+                {
+
+                }
                 Log.e("get data from server", dataSnapshot.getValue() + " data");
                 Log.e("child", dataSnapshot.child("Two_week_eight_five_three_one").getValue() + " abc");
                 Two_week_eight_five_three_one = dataSnapshot.child("Two_week_eight_five_three_one").getValue().toString();
@@ -545,6 +791,23 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                     newcontact.put("Two_week_eight_five_three_one", "true");
                     newcontact.put("Two_week_eight_five_three_one_date", timestamp);
                     mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+                    Achivement_Details frag = new Achivement_Details();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("position", 17);
+
+                    try {
+                        obj.put("Two_week_eight_five_three_one", "true");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    bundle.putString("data", obj + "");
+                    frag.setArguments(bundle);
+
+                    if(activity!=null)
+                        activity.getSupportFragmentManager().beginTransaction().
+                                replace(R.id.frame_layout, frag).addToBackStack(null).commit();
+
                 }
             }
             @Override
@@ -560,6 +823,15 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+
+
+                try {
+                    obj = new JSONObject(dataSnapshot.getValue() + "");
+                }
+                catch (Exception e)
+                {
+
+                }
                 Log.e("get data from server", dataSnapshot.getValue() + " data");
                 Log.e("child", dataSnapshot.child("Perfect_month").getValue() + " abc");
                 Perfect_month = dataSnapshot.child("Perfect_month").getValue().toString();
@@ -572,6 +844,27 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
                     newcontact.put("Perfect_month", "true");
                     newcontact.put("Perfect_month_date", timestamp);
                     mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+
+
+                    Achivement_Details frag = new Achivement_Details();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("position",8);
+
+                    try {
+                        obj.put("Perfect_month", "true");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    bundle.putString("data", obj + "");
+                    frag.setArguments(bundle);
+
+                    if(activity!=null)
+                        activity.getSupportFragmentManager().beginTransaction().
+                                replace(R.id.frame_layout, frag).addToBackStack(null).commit();
+
+
+
                 }
             }
             @Override
@@ -584,8 +877,11 @@ public class ContactActivityListAdapter extends RecyclerView.Adapter<ContactActi
     {
         mref.child("events").child(pref.getString("uid","")).child(keyid).removeValue();
 
-        data.remove(position);
 
-        notifyDataSetChanged();
+
+
+        Activity_list_frag.jsonArray.remove(position);
+
+        Activity_list_frag.listadapter.notifyDataSetChanged();
     }
 }

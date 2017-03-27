@@ -32,6 +32,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,6 +59,7 @@ public class Need_to_Quality extends Fragment {
     FrameLayout frameLayout;
     String uid="",First_call_from_app="";
  public static String competitive,created,credible,familyName,givenName,hasKids,homeowner,hungry,incomeOver40k,married,motivated,ofProperAge,peopleSkills,phoneNumber,ref,rating,recruitRating;
+    private JSONObject obj;
 
     @Nullable
     @Override
@@ -70,7 +74,7 @@ public class Need_to_Quality extends Fragment {
             uid = pref.getString("uid", "");
 
             Firebase.setAndroidContext(getActivity());
-            mref = new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+            mref = new Firebase("https://activitymaximizer.firebaseio.com/");
 
             tv_ratinginfo = (ImageView) v.findViewById(R.id.tv_ratinginfo);
             tv_activitylist = (ImageView) v.findViewById(R.id.tv_activitylist);
@@ -79,6 +83,8 @@ public class Need_to_Quality extends Fragment {
 
             tv_name = (TextView) v.findViewById(R.id.tv_username);
             tv_phone = (TextView) v.findViewById(R.id.tv_phone);
+
+
 
             competitive = getArguments().getString("competitive");
             created = getArguments().getString("created");
@@ -265,7 +271,15 @@ public class Need_to_Quality extends Fragment {
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
                 Log.e("get data from server",dataSnapshot.getValue()+" data");
-                Log.e("child",dataSnapshot.child("First_call_from_app").getValue()+" abc");
+
+                try {
+                    obj = new JSONObject(dataSnapshot.getValue() + "");
+                }
+                catch(Exception e)
+                {
+
+                }
+                    Log.e("child",dataSnapshot.child("First_call_from_app").getValue()+" abc");
                 First_call_from_app=dataSnapshot.child("First_call_from_app").getValue().toString();
                 if(First_call_from_app.equalsIgnoreCase("false"))
                 {
@@ -276,6 +290,21 @@ public class Need_to_Quality extends Fragment {
                     newcontact.put("First_call_from_app","true");
                     newcontact.put("First_call_from_app_date",timestamp);
                     mref.child("users").child(uid).child("achievements").updateChildren(newcontact);
+
+                    Achivement_Details frag = new Achivement_Details();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("position", 3);
+                    try {
+                        obj.put("First_call_from_app","true");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    bundle.putString("data", obj + "");
+                    frag.setArguments(bundle);
+                    getActivity().getSupportFragmentManager().beginTransaction().
+                            replace(R.id.frame_layout, frag).addToBackStack(null).commit();
+
                 }
             }
             @Override

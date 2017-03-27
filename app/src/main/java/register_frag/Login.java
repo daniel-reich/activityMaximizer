@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
@@ -26,6 +27,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -71,7 +73,21 @@ public class Login extends Fragment implements View.OnClickListener {
         Firebase.setAndroidContext(getActivity());
         firebaseAuth = FirebaseAuth.getInstance();
 
-         mref=new Firebase("https://activitymaximizer-d07c2.firebaseio.com/");
+
+
+
+        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+
+            }
+        });
+
+         mref=new Firebase("https://activitymaximizer.firebaseio.com/");
+
+
+
 
         pref=getActivity().getSharedPreferences("userpref",0);
 
@@ -86,6 +102,8 @@ public class Login extends Fragment implements View.OnClickListener {
 
     public void getdatafromfirebase()
     {
+
+
         mref.child("users").child(pref.getString("uid","")).addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -111,6 +129,14 @@ public class Login extends Fragment implements View.OnClickListener {
                 edit.putString("profilePictureURL",dataSnapshot.child("profilePictureURL").getValue()+"");
                 edit.putBoolean("signup",true);
                 edit.commit();
+
+
+
+
+
+
+
+
 
                 try {
                     Intent i = new Intent(getActivity(), HomeActivity.class);
@@ -160,8 +186,8 @@ public class Login extends Fragment implements View.OnClickListener {
         {
             case R.id.tv_login:
                 validation();
-//                Intent i=new Intent(Login.this,HomeActivity.class);
-//                startActivity(i);
+                Intent i=new Intent(getContext(), HomeActivity.class);//was commented out
+                startActivity(i);//was commented out
 //                finish();
                 break;
         }
@@ -192,6 +218,15 @@ public class Login extends Fragment implements View.OnClickListener {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.e("login", "signIn:onComplete:" + task.isSuccessful());
+
+
+
+                     //Log.e("a",FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+
+
+
+
                         // hideProgressDialog();
                         if (task.isSuccessful()) {
                             user = task.getResult().getUser();
@@ -200,8 +235,63 @@ public class Login extends Fragment implements View.OnClickListener {
                             edit.putString("uid",user.getUid().toString());
                             edit.putBoolean("signup",true);
                             edit.commit();
+
+
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+                            FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+                            mUser.getToken(true)
+                                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                            if (task.isSuccessful()) {
+                                                String idToken = task.getResult().getToken();
+
+                                                Log.e("aaa",idToken+"");
+
+
+                                                mref.authWithCustomToken(idToken, new Firebase.AuthResultHandler() {
+                                                    @Override
+                                                    public void onAuthenticated(AuthData authData) {
+
+
+
+                                                        getdatafromfirebase();
+
+
+
+
+
+
+
+
+                                                    }
+
+                                                    @Override
+                                                    public void onAuthenticationError(FirebaseError firebaseError) {
+
+
+                                                        Log.e("aaa",firebaseError.getMessage());
+
+                                                    }
+                                                });
+
+
+                                                // ...
+                                            } else {
+                                                // Handle error -> task.getException();
+                                            }
+                                        }
+                                    });
+
+
+
+
+
+
+
                             Toast.makeText(getActivity(), "Sign In Success",Toast.LENGTH_SHORT).show();
-                            getdatafromfirebase();
+
 
                         } else {
                             Toast.makeText(getActivity(), "Enter Valid Email or Password",
