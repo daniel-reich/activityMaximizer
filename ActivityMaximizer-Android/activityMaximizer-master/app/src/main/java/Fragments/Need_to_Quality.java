@@ -64,7 +64,6 @@ public class Need_to_Quality extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
         if(v==null) {
             setHasOptionsMenu(true);
             v = inflater.inflate(R.layout.need_to_quality, container, false);

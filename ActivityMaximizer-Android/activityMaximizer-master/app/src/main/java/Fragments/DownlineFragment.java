@@ -9,9 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,23 +21,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import Adapter.BaseDownlineAdapter;
-import Adapter.DownlineAdapter;
-import Adapter.ListAdapter;
-import model.AllBaseDownlines;
-import model.AllContact;
-import model.AllDownlines;
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
@@ -87,9 +69,10 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
 
         tv_direct=(TextView)view.findViewById(R.id.tv_direct);
 
-        Team_fragment basic_frag = new Team_fragment();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_layout1,basic_frag).addToBackStack(null).commit();
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout1, new Team_fragment())
+                .commitNow();
 
         showaddtoteam=true;
         showaddtotrainne=false;
@@ -146,8 +129,10 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
                 showaddtotrainne=true;
                 Log.e("showaddtoteam",showaddtoteam+"");
                 Trainee_frag basic_frag1 = new Trainee_frag();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout1,basic_frag1).commit();
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout1,basic_frag1)
+                        .commitNowAllowingStateLoss();
 
                 break;
             case R.id.personal_button:
@@ -156,8 +141,10 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
                 showaddtoteam=true;
                 showaddtotrainne=false;
                 Team_fragment basic_frag = new Team_fragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_layout1,basic_frag).commit();
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout1,basic_frag)
+                        .commitNowAllowingStateLoss();
                 break;
         }
     }

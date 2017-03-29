@@ -5,16 +5,15 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,22 +24,15 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.os.Handler;
+
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.firebase.client.snapshot.DoubleNode;
-import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -73,7 +65,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.fragment_home,container,false);
         setHasOptionsMenu(true);
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame,new PersonalFragment()).addToBackStack(null).commit();
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame,new PersonalFragment())
+                .commit();
+
         team=(TextView)view.findViewById(R.id.team_button);
         personal=(TextView)view.findViewById(R.id.personal_button);
         lay_day=(LinearLayout)view.findViewById(R.id.days_lyt);
@@ -278,12 +274,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             case R.id.team_button:
                 personal.setSelected(false);
                 team.setSelected(true);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame,new TeamFragment()).addToBackStack(null).commit();
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame,new TeamFragment())
+                        .commit();
                 break;
             case R.id.personal_button:
                 team.setSelected(false);
                 personal.setSelected(true);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame,new PersonalFragment()).addToBackStack(null).commit();
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame,new PersonalFragment())
+                        .commit();
                 break;
         }
 

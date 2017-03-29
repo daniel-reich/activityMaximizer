@@ -28,11 +28,9 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -77,8 +75,13 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         frame=(FrameLayout)findViewById(R.id.frame_layout);
-        HomeFragment homeFragment = new HomeFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,homeFragment).addToBackStack(null).commit();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_layout, new HomeFragment())
+                    .commit();
+        }
+
         navigation_bar=(BottomNavigation)findViewById(R.id.BottomNavigation);
         navigation_bar.setOnMenuItemClickListener(this);
         Firebase.setAndroidContext(HomeActivity.this);
@@ -87,17 +90,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
         pref=getSharedPreferences("userpref",0);
        /*GetPartnershipRequest*/
         getPartnershipRequestsfromFirebase();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
     }
 
     private void getPartnershipRequestsfromFirebase() {
@@ -245,10 +237,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
 
     }
 
-
-
-
-
     private void showFloatingMenus() {
 
         Fragments.FloatingMenusDialog dialog=new FloatingMenusDialog();
@@ -282,43 +270,29 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        int fragments = getSupportFragmentManager().getBackStackEntryCount();
-        Log.e("count",fragments+"");
-        if (fragments >=1) {
-
-            getSupportFragmentManager().popBackStack();
-
-        }
-        else {
-            finish();
-
-        }
-        //finish();
-
-    }
-
-    @Override
     public void onMenuItemReselect(@IdRes int i, int i1, boolean b) {
-        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Log.d("test", "" + fragmentManager.getBackStackEntryCount());
+        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        Log.d("test", "" + fragmentManager.getBackStackEntryCount());
+
         switch (i)
         {
 
             case R.id.home:
                 //Log.e("eft","eft");
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new HomeFragment()).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(R.id.frame_layout,new HomeFragment()).addToBackStack(null).commit();
                 break;
             case R.id.contact:
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ContactFragment()).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(R.id.frame_layout,new ContactFragment()).addToBackStack(null).commit();
                 break;
             case R.id.downline:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new DownlineFragment()).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(R.id.frame_layout,new DownlineFragment()).addToBackStack(null).commit();
                 break;
             case R.id.activity:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ActivityFragments()).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(R.id.frame_layout,new ActivityFragments()).addToBackStack(null).commit();
                 break;
         }
     }
