@@ -17,30 +17,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.MutableData;
-import com.firebase.client.Transaction;
 
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import Adapter.Import_Contact_Adapter;
-import Adapter.ListAllContactAdapter;
-import model.AllContact;
-import model.AllList;
 import model.AllPhoneContact;
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 import utils.Constants;
 
@@ -80,12 +65,11 @@ public class Import_Contact_Frag extends Fragment {
 
 //        Log.e("name",name);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        HomeActivity.title.setText("Import Contacts");
-
-
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle("Import Contacts");
 
 
 

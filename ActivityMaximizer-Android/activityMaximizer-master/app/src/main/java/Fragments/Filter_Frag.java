@@ -1,18 +1,12 @@
 package Fragments;
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -29,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aigestudio.wheelpicker.IWheelPicker;
-import com.aigestudio.wheelpicker.WheelPicker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,11 +32,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
-import Adapter.ActivitiesAdapter;
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
@@ -78,9 +67,10 @@ public class Filter_Frag extends Fragment {
         setHasOptionsMenu(true);
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.backarrow);
-        HomeActivity.title.setText("Filters1");
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.backarrow);
+        activity.setTitle("Filters1");
 
         pref=getActivity().getSharedPreferences("userpref",0);
 

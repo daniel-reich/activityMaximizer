@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -16,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
@@ -26,23 +24,16 @@ import com.firebase.client.ValueEventListener;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
-import Adapter.Achivement_Adap;
-import Adapter.ContactActivityListAdapter;
-import Adapter.Current_Goals_adap;
 import Adapter.Current_challanges;
 import Adapter.Past_challanges;
-import model.AllActivity;
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 import utils.Constants;
 
@@ -66,10 +57,11 @@ public class Challenges extends Fragment
 
         view=inflater.inflate(R.layout.challanges,container,false);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        HomeActivity.title.setText("");
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle("");
 
         setHasOptionsMenu(true);
 

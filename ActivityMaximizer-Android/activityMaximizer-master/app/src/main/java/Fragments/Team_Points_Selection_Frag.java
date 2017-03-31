@@ -17,15 +17,7 @@ import android.view.ViewGroup;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
-import Adapter.ListAllContactAdapter;
 import Adapter.Team_Point_Adapter;
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
@@ -48,12 +40,11 @@ public class Team_Points_Selection_Frag extends Fragment
         rview=(RecyclerView)v.findViewById(R.id.rview);
         linearManager=new LinearLayoutManager(getActivity());
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        HomeActivity.title.setText("");
-
-
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle("");
 
 
         pref=getActivity().getSharedPreferences("userpref",0);

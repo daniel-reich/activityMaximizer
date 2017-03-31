@@ -30,7 +30,6 @@ import java.util.Map;
 
 import Adapter.RVPRequestAdapter;
 import model.RVPRequest;
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
@@ -54,10 +53,12 @@ public class RVPRequestFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.rvp_requests,container,false);
         setHasOptionsMenu(true);
-        HomeActivity.title.setText("Pending Requests");
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle("Pending Requests");
 
         rView=(RecyclerView)view.findViewById(R.id.rview);
         linearLayoutManager=new LinearLayoutManager(getActivity());

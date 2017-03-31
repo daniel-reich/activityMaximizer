@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
@@ -27,10 +26,12 @@ public class SortByFragment extends Fragment
          setHasOptionsMenu(true);
          // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame,new PersonalFragment()).addToBackStack(null).commit();
 
-         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
-         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-         HomeActivity.title.setText("Sort By");
+         AppCompatActivity activity = (AppCompatActivity) getActivity();
+         activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
+         activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+         activity.setTitle("Sort By");
+
 //         AllContacts=(TextView)view.findViewById(R.id.tv_all_contacts);
 //         AllContacts.setOnClickListener(this);
          return view;

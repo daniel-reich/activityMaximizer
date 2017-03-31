@@ -26,8 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import u.activitymanager.R;
-import u.activitymanager.SplashActivity;
-import u.activitymanager.utils;
+import u.activitymanager.StringUtils;
 
 /**
  * Created by Surbhi on 15-02-2017.
@@ -55,11 +54,13 @@ public class Register extends Fragment
 
         v=inflater.inflate(R.layout.activity_register,container,false);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        SplashActivity.title.setText("Registration");
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().show();
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle("Registration");
+
         setHasOptionsMenu(true);
 
         Firebase.setAndroidContext(getActivity());
@@ -89,8 +90,8 @@ public class Register extends Fragment
                 st_pass=et_password.getText().toString();
                 st_conf_pass=et_conf_pass.getText().toString();
 
-                if(!utils.isValidEmail(st_email)){
-                    Toast.makeText(getActivity(),"Please Enter Valid Emil Address",Toast.LENGTH_LONG).show();
+                if(!StringUtils.isValidEmail(st_email)){
+                    Toast.makeText(getActivity(),"Please Enter Valid Email Address",Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (st_pass.length()<8){
@@ -105,7 +106,7 @@ public class Register extends Fragment
                     Toast.makeText(getActivity(),"name length should be between 4 and 15 charaters ",Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (st_phone.length()!=10){
+                if (!StringUtils.isValidPhone(st_phone)){
                     Toast.makeText(getActivity(),"Please enter valid phone no.",Toast.LENGTH_LONG).show();
                     return;
                 }

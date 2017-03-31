@@ -1,9 +1,7 @@
 package Fragments;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -14,12 +12,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,22 +25,16 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.github.anastr.speedviewlib.DeluxeSpeedView;
-import com.github.anastr.speedviewlib.PointerSpeedometer;
-import com.github.anastr.speedviewlib.SpeedView;
 import com.github.siyamed.shapeimageview.DiamondImageView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -53,7 +43,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.ntt.customgaugeview.library.GaugeView;
-
 import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
@@ -69,8 +58,8 @@ import java.util.Map;
 import Adapter.adapter;
 import Adapter.personal_list_adapter;
 import model.Activity_breakdown_getset;
-
 import u.activitymanager.R;
+import u.activitymanager.StringUtils;
 import utils.AnimateFirstDisplayListener;
 
 /**
@@ -202,13 +191,14 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 //                    String key=child.getKey();
 
                   //  int value= Integer.parseInt(child.getValue());
-                  value =value+((Long)child.getValue());
+                  value =value+((Long) child.getValue());
                     Log.e("achievementToShow",value+"");
 
 
                 }
 
-                speedview.setTargetValue(value);
+                Log.v("Target ", "" + value);
+                speedview.setTargetValue(StringUtils.clamp(value, 0, 100));
 
                // achieve_detail = String.valueOf(dataSnapshot.getValue());
                // setAch();

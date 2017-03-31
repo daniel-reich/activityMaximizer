@@ -4,9 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,15 +16,11 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
-import org.json.JSONObject;
-
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import Adapter.PostsAdapter;
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 import utils.Constants;
 
@@ -51,7 +44,7 @@ public class Add_New_PostFragment extends Fragment
         post=(EditText)view.findViewById(R.id.post);
 
         share=(TextView)view.findViewById(R.id.share);
-        HomeActivity.title.setText("Posts");
+        getActivity().setTitle("Posts");
 
 
 

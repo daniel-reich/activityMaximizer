@@ -1,6 +1,5 @@
 package Fragments;
 
-import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,20 +14,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 
-import Adapter.ClientAdapter;
 import Adapter.ListAllContactAdapter;
 import model.AllContact;
 import model.AllList;
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
@@ -61,10 +54,13 @@ public class LisiAllContact extends Fragment {
         NoClientsArrayList= (ArrayList<AllContact>) getArguments().getSerializable("NoClientsArrayList");
         mref=new Firebase("https://activitymaximizer.firebaseio.com/");
         Log.e("name",name);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        HomeActivity.title.setText(name);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle(name);
+
         adapter=new ListAllContactAdapter(getActivity(),NoClientsArrayList,name,getActivity().getSupportFragmentManager());
         rView.setLayoutManager(layoutManager);
         rView.setAdapter(adapter);

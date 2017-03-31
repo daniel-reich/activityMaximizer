@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import u.activitymanager.R;
-import u.activitymanager.SplashActivity;
 
 /**
  * Created by Surbhi on 15-02-2017.
@@ -53,11 +52,13 @@ public class RegisterationDetail extends Fragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v=inflater.inflate(R.layout.registration_detail,container,false);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        SplashActivity.title.setText("Registration");
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().show();
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle("Registration");
+
         setHasOptionsMenu(true);
 
         Next=(TextView)v.findViewById(R.id.tv_register);

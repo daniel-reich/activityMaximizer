@@ -69,6 +69,7 @@ import Adapter.personal_list_adapter;
 import model.AllContact;
 import model.userinfoo;
 import u.activitymanager.R;
+import u.activitymanager.StringUtils;
 import utils.AnimateFirstDisplayListener;
 import utils.Constants;
 
@@ -315,7 +316,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
                     //  int value= Integer.parseInt(child.getValue());
                     long value=((Long)child.getValue());
                     Log.e("achievementToShow",value+"");
-                    speedview.setTargetValue(value);
+                    speedview.setTargetValue(StringUtils.clamp((int) value, 0, 100));
 
                 }
 

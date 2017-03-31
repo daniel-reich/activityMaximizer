@@ -1,6 +1,5 @@
 package Fragments;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,7 +16,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -29,7 +27,6 @@ import com.aigestudio.wheelpicker.WheelPicker;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
@@ -65,13 +62,17 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         v=inflater.inflate(R.layout.saving_calculator,container,false);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Tools");
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setTitle("Tools");
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle("Saving Calculator");
+
         // lay_calculator=(LinearLayout)view.findViewById(R.id.ly_calculator);
         setHasOptionsMenu(true);
-        HomeActivity.title.setText("Saving Calculator");
+
         wheel1=(IWheelPicker)v.findViewById(R.id.main_wheel1);
         wheel2=(IWheelPicker)v.findViewById(R.id.main_wheel2);
         wheel3=(IWheelPicker)v.findViewById(R.id.main_wheel3);

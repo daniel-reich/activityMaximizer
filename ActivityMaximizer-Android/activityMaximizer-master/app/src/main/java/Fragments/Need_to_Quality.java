@@ -1,18 +1,13 @@
 package Fragments;
 
 import android.app.Dialog;
-import android.content.ContentProviderOperation;
 import android.content.Intent;
-import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.RemoteException;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
-
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
@@ -36,14 +31,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
-import utils.NetworkConnection;
 
 /**
  * Created by surender on 2/17/2017.
@@ -67,7 +59,7 @@ public class Need_to_Quality extends Fragment {
         if(v==null) {
             setHasOptionsMenu(true);
             v = inflater.inflate(R.layout.need_to_quality, container, false);
-            HomeActivity.title.setText("");
+            getActivity().setTitle("");
 
             pref = getActivity().getSharedPreferences("userpref", 0);
             uid = pref.getString("uid", "");

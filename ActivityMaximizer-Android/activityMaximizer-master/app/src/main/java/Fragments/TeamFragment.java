@@ -31,7 +31,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.github.anastr.speedviewlib.SpeedView;
 import com.github.siyamed.shapeimageview.DiamondImageView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,12 +56,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import Adapter.BaseDownlineAdapter;
 import Adapter.adapter;
 import Adapter.personal_list_adapter;
 import model.Activity_breakdown_getset;
-import model.AllBaseDownlines;
 import u.activitymanager.R;
+import u.activitymanager.StringUtils;
 import utils.AnimateFirstDisplayListener;
 
 /**
@@ -788,7 +786,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
 //                    String key=child.getKey();
 
                     //  int value= Integer.parseInt(child.getValue());
-                    value =value+((Long)child.getValue());
+                    value =value+((Long) child.getValue());
 
                     val=val+ (Long)child.getValue();
                     Log.e("achievementToShow",value+"");
@@ -814,7 +812,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
 
                 else
 
-                    speedview.setTargetValue(value);
+                    speedview.setTargetValue(StringUtils.clamp(value, 0, 100));
 
 
 

@@ -55,9 +55,9 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
     Toolbar toolbar;
     TextView menu;
     BottomNavigation navigation_bar;
-    public static   TextView title,tv_back;
+    TextView titleTv;
     Dialog helpdialog;
-    HashMap<String,String> partner_request;
+    HashMap<String, String> partner_request;
     StorageReference storageRef;
     ArrayList<JSONObject> data;
     Firebase mref;
@@ -68,13 +68,13 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
-        toolbar=(Toolbar)findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        title=(TextView)findViewById(R.id.headertextid);
+        titleTv = (TextView) findViewById(R.id.headertextid);
         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        frame=(FrameLayout)findViewById(R.id.frame_layout);
+        frame = (FrameLayout) findViewById(R.id.frame_layout);
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -82,22 +82,31 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
                     .commit();
         }
 
-        navigation_bar=(BottomNavigation)findViewById(R.id.BottomNavigation);
+        navigation_bar = (BottomNavigation) findViewById(R.id.BottomNavigation);
         navigation_bar.setOnMenuItemClickListener(this);
         Firebase.setAndroidContext(HomeActivity.this);
-        storageRef= FirebaseStorage.getInstance().getReference();
-        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
-        pref=getSharedPreferences("userpref",0);
+        storageRef = FirebaseStorage.getInstance().getReference();
+        mref = new Firebase("https://activitymaximizer.firebaseio.com/");
+        pref = getSharedPreferences("userpref", 0);
        /*GetPartnershipRequest*/
         getPartnershipRequestsfromFirebase();
     }
 
+    @Override
+    public void setTitle(int titleId) {
+        titleTv.setText(titleId);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        titleTv.setText(title);
+    }
+
     private void getPartnershipRequestsfromFirebase() {
 
-        Log.e("solution number",pref.getString("solution_number",""));
+        Log.e("solution number", pref.getString("solution_number", ""));
 
-        mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("PartnerShip Request").addValueEventListener(new ValueEventListener()
-        {
+        mref.child("Solution Numbers").child(pref.getString("solution_number", "")).child("PartnerShip Request").addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -117,20 +126,20 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
                 }
             }
 
-            private void showPartnershipRequestDialog(final HashMap<String,String> request)
+            private void showPartnershipRequestDialog(final HashMap<String, String> request)
 
             {
-                Log.e("entery","enter2");
-                final Dialog PartnershipDialog=new Dialog(HomeActivity.this);
+                Log.e("entery", "enter2");
+                final Dialog PartnershipDialog = new Dialog(HomeActivity.this);
                 PartnershipDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 PartnershipDialog.setContentView(R.layout.partnershiprequestdialog);
                 Window window = PartnershipDialog.getWindow();
-                TextView tv_yes=(TextView)PartnershipDialog.findViewById(R.id.tv_send);
-                TextView tv_no=(TextView)PartnershipDialog.findViewById(R.id.cancel);
-                TextView tv_request=(TextView)PartnershipDialog.findViewById(R.id.tv_request);
-                EditText et_sol= (EditText) PartnershipDialog.findViewById(R.id.et_partner_solution_number);
+                TextView tv_yes = (TextView) PartnershipDialog.findViewById(R.id.tv_send);
+                TextView tv_no = (TextView) PartnershipDialog.findViewById(R.id.cancel);
+                TextView tv_request = (TextView) PartnershipDialog.findViewById(R.id.tv_request);
+                EditText et_sol = (EditText) PartnershipDialog.findViewById(R.id.et_partner_solution_number);
                 et_sol.setVisibility(View.GONE);
-                tv_request.setText(request.get("name")+" has request a partnership with you, do you accept?");
+                tv_request.setText(request.get("name") + " has request a partnership with you, do you accept?");
                 tv_yes.setText("YES");
                 tv_no.setText("NO");
                 PartnershipDialog.setCanceledOnTouchOutside(false);
@@ -144,21 +153,21 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
                 tv_yes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.e("enter","enter1");
+                        Log.e("enter", "enter1");
                         PartnershipDialog.dismiss();
  /* Update PartnerSolutionNumber*/
                         Map sendRequest = new HashMap();
-                        sendRequest.put("partner_solution_number",request.get("solutionNumber"));
-                        mref.child("users").child(pref.getString("uid","")).updateChildren(sendRequest);
-                        Log.e("receiver",pref.getString("uid","")+","+request.get("solutionNumber"));
+                        sendRequest.put("partner_solution_number", request.get("solutionNumber"));
+                        mref.child("users").child(pref.getString("uid", "")).updateChildren(sendRequest);
+                        Log.e("receiver", pref.getString("uid", "") + "," + request.get("solutionNumber"));
 
-                        Map sendRequest1=new HashMap();
-                        sendRequest1.put("partner_solution_number",pref.getString("solution_number",""));
+                        Map sendRequest1 = new HashMap();
+                        sendRequest1.put("partner_solution_number", pref.getString("solution_number", ""));
                         mref.child("users").child(request.get("uid")).updateChildren(sendRequest1);
-                        Log.e("sender",pref.getString("solution_number","")+","+request.get("uid"));
+                        Log.e("sender", pref.getString("solution_number", "") + "," + request.get("uid"));
 
                         /*Remove Partnership Request*/
-                        mref.child("Solution Numbers").child(pref.getString("solution_number","")).child("PartnerShip Request").removeValue();
+                        mref.child("Solution Numbers").child(pref.getString("solution_number", "")).child("PartnerShip Request").removeValue();
 
 
                     }
@@ -173,23 +182,24 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
 
             @Override
             public void onCancelled(FirebaseError error) {
-                Log.e("get data error",error.getMessage()+" data");
+                Log.e("get data error", error.getMessage() + " data");
             }
         });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home,menu);
+        getMenuInflater().inflate(R.menu.home, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
-                if(fragment instanceof HomeFragment || fragment instanceof Team_fragment || fragment instanceof Trainee_frag||
-                        fragment instanceof DownlineFragment){
+                if (fragment instanceof HomeFragment || fragment instanceof Team_fragment || fragment instanceof Trainee_frag ||
+                        fragment instanceof DownlineFragment) {
                     showHelpDialog();
                 }
 
@@ -199,7 +209,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
     }
 
     private void showHelpDialog() {
-        helpdialog=new Dialog(HomeActivity.this);
+        helpdialog = new Dialog(HomeActivity.this);
         helpdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         helpdialog.setContentView(R.layout.help_dialog);
         Window window = helpdialog.getWindow();
@@ -209,9 +219,9 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
         window.setAttributes(wlp);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        TextView tv_cancel=(TextView)helpdialog.findViewById(R.id.tv_cancel);
-        TextView tv_report=(TextView)helpdialog.findViewById(R.id.tv_report);
-        TextView tv_tutorial=(TextView)helpdialog.findViewById(R.id.tv_tutorial);
+        TextView tv_cancel = (TextView) helpdialog.findViewById(R.id.tv_cancel);
+        TextView tv_report = (TextView) helpdialog.findViewById(R.id.tv_report);
+        TextView tv_tutorial = (TextView) helpdialog.findViewById(R.id.tv_tutorial);
 
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,7 +233,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
         tv_report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String URI="mailto:activitymaximizerapp@gmail.com";
+                String URI = "mailto:activitymaximizerapp@gmail.com";
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 Uri data = Uri.parse(URI);
                 intent.setData(data);
@@ -233,67 +243,71 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
         });
 
         helpdialog.show();
-
-
     }
 
     private void showFloatingMenus() {
-
-        Fragments.FloatingMenusDialog dialog=new FloatingMenusDialog();
+        Fragments.FloatingMenusDialog dialog = new FloatingMenusDialog();
         dialog.show(getSupportFragmentManager().beginTransaction(), "");
         dialog.setCancelable(true);
     }
 
     @Override
     public void onMenuItemSelect(@IdRes int i, int i1, boolean b) {
-
-        switch (i)
-        {
-
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = null;
+        switch (i) {
             case R.id.home:
-                //Log.e("eft","eft");
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new HomeFragment()).addToBackStack(null).commit();
+                fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 break;
             case R.id.contact:
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ContactFragment()).addToBackStack(null).commit();
+                fragment = new ContactFragment();
                 break;
             case R.id.downline:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new DownlineFragment()).addToBackStack(null).commit();
+                fragment = new DownlineFragment();
                 break;
             case R.id.activity:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,new ActivityFragments()).addToBackStack(null).commit();
+                fragment = new ActivityFragments();
                 break;
         }
-
+        if (fragment != null) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_layout, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     @Override
     public void onMenuItemReselect(@IdRes int i, int i1, boolean b) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Log.d("test", "" + fragmentManager.getBackStackEntryCount());
-        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        Log.d("test", "" + fragmentManager.getBackStackEntryCount());
 
-        switch (i)
-        {
-
+        Fragment newFragment = null;
+        switch (i) {
             case R.id.home:
-                //Log.e("eft","eft");
-
-                fragmentManager.beginTransaction().replace(R.id.frame_layout,new HomeFragment()).addToBackStack(null).commit();
+                Fragment currentFragment = fragmentManager.findFragmentById(R.id.frame_layout);
+                fragmentManager.beginTransaction()
+                        .remove(currentFragment)
+                        .add(R.id.frame_layout, new HomeFragment())
+                        .commitNow();
                 break;
             case R.id.contact:
-
-                fragmentManager.beginTransaction().replace(R.id.frame_layout,new ContactFragment()).addToBackStack(null).commit();
+                newFragment = new ContactFragment();
                 break;
             case R.id.downline:
-                fragmentManager.beginTransaction().replace(R.id.frame_layout,new DownlineFragment()).addToBackStack(null).commit();
+                newFragment = new DownlineFragment();
                 break;
             case R.id.activity:
-                fragmentManager.beginTransaction().replace(R.id.frame_layout,new ActivityFragments()).addToBackStack(null).commit();
+                newFragment = new ActivityFragments();
                 break;
+        }
+
+        if (newFragment != null) {
+            fragmentManager.popBackStackImmediate();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_layout, newFragment)
+                    .addToBackStack(null)
+                    .commit();
+            fragmentManager.executePendingTransactions();
         }
     }
 }

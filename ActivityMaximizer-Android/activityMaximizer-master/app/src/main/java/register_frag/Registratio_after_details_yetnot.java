@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import u.activitymanager.R;
-import u.activitymanager.SplashActivity;
 
 /**
  * Created by Surbhi on 15-02-2017.
@@ -33,10 +32,12 @@ public class Registratio_after_details_yetnot extends Fragment implements View.O
 
         v=inflater.inflate(R.layout.registration_after_detail_yetnot,container,false);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        SplashActivity.title.setText("Registration");
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle("Registration");
+
         setHasOptionsMenu(true);
 
         pref=getActivity().getSharedPreferences("userpref",0);

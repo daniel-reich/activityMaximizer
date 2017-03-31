@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
@@ -61,11 +60,11 @@ public class DownlineFragment extends Fragment implements View.OnClickListener {
         uid=pref.getString("uid","");
 
 
-
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        HomeActivity.title.setText("Downline");
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle("Downline");
 
         tv_direct=(TextView)view.findViewById(R.id.tv_direct);
 

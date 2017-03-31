@@ -38,7 +38,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
@@ -81,10 +80,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         tvHour=(TextView)view.findViewById(R.id.hours);
         tvMinute=(TextView)view.findViewById(R.id.min);
         tvSecond=(TextView)view.findViewById(R.id.sec);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        HomeActivity.title.setText("Home");
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle("Home");
+
         Firebase.setAndroidContext(getActivity());
         pref=getActivity().getSharedPreferences("userpref",0);
         uid=pref.getString("uid","");

@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,14 +32,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import Adapter.ClientAdapter;
 import Adapter.ListAdapter;
-import model.AllContact;
 import model.AllList;
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 import utils.Constants;
-import utils.NetworkConnection;
 
 /**
  * Created by Surbhi on 16-02-2017.
@@ -70,10 +65,12 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         rView=(RecyclerView)view.findViewById(R.id.list_recycler);
         layoutManager=new LinearLayoutManager(getActivity());
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        HomeActivity.title.setText("Contacts");
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle("Contacts");
+
         AllContacts=(TextView)view.findViewById(R.id.tv_all_contacts);
         tv_need_to_qualify=(TextView)view.findViewById(R.id.tv_need_to_qualify);
         tv_list=(TextView)view.findViewById(R.id.list_txt);

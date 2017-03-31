@@ -1,7 +1,6 @@
 package Fragments;
 
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -33,18 +32,14 @@ import com.firebase.client.FirebaseError;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.Format;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 import utils.Constants;
-import utils.NetworkConnection;
 
 /**
  * Created by surender on 2/17/2017.
@@ -67,10 +62,12 @@ public class Add_New_Goal extends Fragment implements View.OnClickListener {
         super.onCreateView(inflater, container, savedInstanceState);
         v=inflater.inflate(R.layout.add_new_goals,container,false);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        HomeActivity.title.setText("");
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle("");
+
         tv_goalname=(TextView)v.findViewById(R.id.tv_goalname);
         tv_totalprem=(TextView)v.findViewById(R.id.tv_totalpremium);
         tv_contactsadded=(TextView)v.findViewById(R.id.tv_contactadded);

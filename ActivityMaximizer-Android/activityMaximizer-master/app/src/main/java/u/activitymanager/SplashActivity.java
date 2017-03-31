@@ -6,21 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Locale;
-
-import model.Activities;
 import register_frag.Splash;
 
 /**
@@ -30,7 +18,7 @@ public class SplashActivity extends AppCompatActivity {
 
     FrameLayout frameLayout;
     Toolbar toolbar;
-    public static TextView title;
+    TextView titleTv;
     SharedPreferences pref;
 
     @Override
@@ -38,37 +26,40 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splashactivity);
 
-        pref=getSharedPreferences("userpref",0);
-
-
-
-
-
-        if(pref.getBoolean("signup",false)) {
-            Intent in = new Intent(SplashActivity.this,HomeActivity.class);
+        pref = getSharedPreferences("userpref", 0);
+        if (pref.getBoolean("signup", false)) {
+            Intent in = new Intent(this, HomeActivity.class);
             startActivity(in);
             finish();
             return;
         }
 
 
-        toolbar=(Toolbar)findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        title=(TextView)findViewById(R.id.headertextid);
-        title.setText("Registration");
+        titleTv = (TextView) findViewById(R.id.headertextid);
+        titleTv.setText("Registration");
         getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         getSupportActionBar().hide();
+        frameLayout = (FrameLayout) findViewById(R.id.splash_layout);
 
-
-
-        frameLayout=(FrameLayout)findViewById(R.id.splash_layout);
-        getSupportFragmentManager().beginTransaction().replace(R.id.splash_layout,new Splash()).addToBackStack(null).commit();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.splash_layout, new Splash())
+                    .commit();
+        }
     }
 
+    @Override
+    public void setTitle(CharSequence title) {
+        titleTv.setText(title);
+    }
 
-
-
+    @Override
+    public void setTitle(int titleId) {
+        titleTv.setText(titleId);
+    }
 }

@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -44,10 +42,8 @@ import java.util.List;
 import java.util.Locale;
 
 import Adapter.ActivitiesAdapter;
-import Adapter.PostsAdapter;
 import model.Activities;
 import model.AllDownlines;
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
@@ -80,12 +76,11 @@ public class ActivityFragments  extends Fragment
         linearLayoutManager=new LinearLayoutManager(getActivity());
         activities.setLayoutManager(linearLayoutManager);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        HomeActivity.title.setText("Activity");
-
-
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle("Activity");
 
         pref=getActivity().getSharedPreferences("userpref",0);
         uid=pref.getString("uid","");

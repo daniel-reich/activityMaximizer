@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
@@ -27,16 +26,18 @@ public class Tools extends Fragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
          super.onCreateView(inflater, container, savedInstanceState);
         view=inflater.inflate(R.layout.toolsfragment,container,false);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Tools");
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setTitle("Tools");
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_prev);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle("Tools");
 
         lay_calculator=(LinearLayout)view.findViewById(R.id.ly_calculator);
         lay_goaltracker=(LinearLayout)view.findViewById(R.id.lay_goaltracker);
 
         setHasOptionsMenu(true);
-        HomeActivity.title.setText("Tools");
 
         lay_calculator.setOnClickListener(new View.OnClickListener() {
             @Override

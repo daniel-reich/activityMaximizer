@@ -29,10 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import Adapter.ActivityDetailAdapter;
-import Adapter.ContactActivityListAdapter;
-import model.AllActivity;
 import model.Table;
-import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
 /**
@@ -58,9 +55,11 @@ public class ActivityDetails extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_detail, container, false);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.mipmap.help);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle("Activity");
         setHasOptionsMenu(true);
 
 
@@ -82,7 +81,6 @@ public class ActivityDetails extends Fragment {
         rview.setLayoutManager(layoutManager);
 
         rview.setAdapter(adapter);
-        HomeActivity.title.setText("Activity");
 
         getnotefromfirebase();
         return view;
