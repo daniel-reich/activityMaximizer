@@ -302,7 +302,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigation.
         }
 
         if (newFragment != null) {
-            fragmentManager.popBackStackImmediate();
+            fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_layout, newFragment)
                     .addToBackStack(null)
