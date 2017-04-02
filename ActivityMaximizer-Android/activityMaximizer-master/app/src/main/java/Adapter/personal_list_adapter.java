@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import u.activitymanager.R;
 
@@ -16,49 +16,51 @@ import u.activitymanager.R;
  * Created by Surbhi on 14-02-2017.
  */
 public class personal_list_adapter extends RecyclerView.Adapter<personal_list_adapter.ViewHolder> {
-  //  private ArrayList<AndroidVersion> android;
-    private Context context;
 
-    int count[];
+    Context mContext;
+    LayoutInflater mInflater;
+    LinkedHashMap<String, Integer> mMap;
 
-    String activity_list[]={"Kitchen Table Set","Kitchen Tables Done","Apps Closed","Recruits","Total Premium","Upcoming Appointments",
-            "Confirmed Invites","New Shows"};
+    public personal_list_adapter(Context context) {
+        mContext = context;
+        mInflater = LayoutInflater.from(mContext);
+    }
 
-    public personal_list_adapter(Context context,int count[]) {
-        this.context = context;
-        this.count=count;
+    public personal_list_adapter(Context context, int[] count) {
+        this(context);
+    }
+
+    public void setData(LinkedHashMap<String, Integer> data) {
+        mMap = data;
+        notifyDataSetChanged();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.personal_list_adapter, viewGroup, false);
-        return new ViewHolder(view);
+        return new ViewHolder(mInflater.inflate(R.layout.personal_list_adapter, viewGroup, false));
     }
-
 
     @Override
     public void onBindViewHolder(personal_list_adapter.ViewHolder viewHolder, int position) {
-//
-       viewHolder.reward.setText(activity_list[position]);
-
-        viewHolder.current_leader.setText(count[position]+"");
-
+        String key = (String) (mMap.keySet().toArray())[position];
+        viewHolder.reward.setText(key);
+        viewHolder.current_leader.setText(String.valueOf(mMap.get(key)));
     }
 
     @Override
-    public int getItemCount()
-    {
-        Log.e("count","count");
-        return activity_list.length;
+    public int getItemCount() {
+        Log.e("count", "count");
+        return mMap != null ? mMap.size() : 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView reward;
         private TextView current_leader;
+
         public ViewHolder(View view) {
             super(view);
 
-            reward = (TextView)view.findViewById(R.id.name);
+            reward = (TextView) view.findViewById(R.id.name);
             current_leader = (TextView) view.findViewById(R.id.value);
         }
     }

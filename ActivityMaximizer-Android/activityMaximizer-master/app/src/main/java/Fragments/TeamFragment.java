@@ -655,18 +655,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
                     public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
                         Log.e("get data from server",dataSnapshot.getValue()+" data");
 
-
-
-
-
-
-
-
-                        JSONArray jsonArray =  new JSONArray();
                         for (com.firebase.client.DataSnapshot child : dataSnapshot.getChildren()) {
-                            JSONObject jGroup = new JSONObject();
-                            Log.e("childddd",child.child("contactName").getKey()+" abc");
-                            //alue().toString(),child.child("created").getValue().toString(),child.child("date").getValue().toString(),child.child("eventKitID").getValue().toString(),child.child("ref").getValue().toString(),child.child("type").getValue().toString(),child.child("userName").getValue().toString(),child.child("userRef").getValue().toString()));
                             try {
 
 
@@ -746,16 +735,6 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
 
                         if(find_json_state(uid))
                         getinfirebasedailipoint(uid);
-
-
-                        Log.e("jsonarray",jsonArray+" abc");
-
-
-
-
-
-
-
 
                     }
                     @Override

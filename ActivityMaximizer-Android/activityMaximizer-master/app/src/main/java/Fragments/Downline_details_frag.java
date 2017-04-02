@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.GenericTypeIndicator;
 import com.firebase.client.ValueEventListener;
 import com.github.siyamed.shapeimageview.DiamondImageView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,13 +30,15 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.ntt.customgaugeview.library.GaugeView;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import Adapter.personal_list_adapter;
+import model.Event;
 import model.User;
 import u.activitymanager.R;
-import u.activitymanager.StringUtils;
+import utils.ActivityComputeUtils;
 import utils.AnimateFirstDisplayListener;
 import utils.Constants;
 
@@ -61,7 +64,6 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
     TextView tv_phone,tv_username,tv_email,tv_solutionnumber;
     String uidd="";
     User user;
-    int count[]={0,0,0,0,0,0,0,0};
     private GaugeView speedview;
 
     @Override
@@ -124,9 +126,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
         storageRef= FirebaseStorage.getInstance().getReference();
 
         getdatafromfirebase();
-
         getnotefromfirebase();
-        getinfirebasedailipoint();
 
         return view;
     }
@@ -208,6 +208,8 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                if (getActivity()==null) return;
+
                 Log.e("get data from server",dataSnapshot.getValue()+" data");
                 user = dataSnapshot.getValue(User.class);
 
@@ -218,16 +220,8 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
                         .cacheInMemory(false)
                         .cacheOnDisk(true)
                         .build();
-
-
-
-
-                if(getActivity()==null)
-                    return;
                 ImageLoader imageLoader = ImageLoader.getInstance();
                 imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
-
-
                 imageLoader.getInstance().displayImage(String.valueOf(user.profilePictureURL), Profile_pic, options, animateFirstListener);
 
                 tv_username.setText(user.givenName);
@@ -243,113 +237,22 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
         });
     }
 
-
-    public void getinfirebasedailipoint()
-    {
-        mref.child("users").child(uidd).child("dailyPointAverages").addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                Log.e("get achievements1111", dataSnapshot.getValue() + " data");
-                Log.e("child11111111111", dataSnapshot.getValue() + " abc");
-
-                for(com.firebase.client.DataSnapshot child:dataSnapshot.getChildren()){
-
-//                    String key=child.getKey();
-
-                    //  int value= Integer.parseInt(child.getValue());
-                    long value=((Long)child.getValue());
-                    Log.e("achievementToShow",value+"");
-                    speedview.setTargetValue(StringUtils.clamp((int) value, 0, 100));
-
-                }
-
-                // achieve_detail = String.valueOf(dataSnapshot.getValue());
-                // setAch();
-
-            }
-            @Override
-            public void onCancelled(FirebaseError error) {
-                Log.e("get data error",error.getMessage()+" data");
-            }
-        });
-    }
     public void getnotefromfirebase()
     {
-        mref.child("events")
-                .child(uidd)
+        mref.child("events").child(uidd)
                 .addValueEventListener(new ValueEventListener() {
 
                     @Override
                     public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                        Log.e("get data from server",dataSnapshot.getValue()+" data");
+                        if (getActivity() == null) return;
 
-                        JSONArray jsonArray =  new JSONArray();
-                        for (com.firebase.client.DataSnapshot child : dataSnapshot.getChildren()) {
-                            JSONObject jGroup = new JSONObject();
-                            Log.e("childddd",child.child("contactName").getKey()+" abc");
-                            //alue().toString(),child.child("created").getValue().toString(),child.child("date").getValue().toString(),child.child("eventKitID").getValue().toString(),child.child("ref").getValue().toString(),child.child("type").getValue().toString(),child.child("userName").getValue().toString(),child.child("userRef").getValue().toString()));
-                            try {
-
-                                Log.e ("oo",child.child("type").getValue().toString());
-
-                                String activity_list[]={"Set Appointment","Went on KT","Closed Life","closed IBA","Closed Other Business","Appt Set To Closed Life",
-                                        "Appt Set To Closed IBA","Invite to Opportunity Meeting","Went To Opportunity Meeting","Call Back","Dark House","Not Interested"};
-
-
-                                switch(child.child("type").getValue().toString())
-
-                                {
-                                    case "Invited to Opportunity Meeting":
-
-                                        count[7]++;
-
-                                        break;
-
-
-                                    case "Went to Opportunity Meeting":
-
-                                        count[8]++;
-
-                                        break;
-
-                                    case "Set Appointment":
-
-                                        count[0]++;
-                                        break;
-
-                                    case "Went on KT":
-
-                                        count[1]++;
-                                        break;
-
-                                    case "Closed IBA":
-
-                                        count[3]++;
-                                        break;
-
-                                }
-
-                            }
-                            catch (Exception e)
-                            {
-                                Log.e("Exception",e+"");
-                            }
-                        }
-
-
-
-                        adapter=new personal_list_adapter(getActivity(),count);
+                        Log.e("get notes",dataSnapshot.getValue()+" data");
+                        Map<String, Event> events = dataSnapshot.getValue(new GenericTypeIndicator<Map<String, Event>>(){});
+                        LinkedHashMap<String, Integer> activityCount = ActivityComputeUtils.computeActivityCount(events.values(), new Date());
+                        adapter = new personal_list_adapter(getActivity());
+                        adapter.setData(activityCount);
                         rview.setAdapter(adapter);
-                        Log.e("jsonarray",jsonArray+" abc");
-
-
-
-
-
-
-
-
+                        speedview.setTargetValue(ActivityComputeUtils.computeWeeklyTotal(activityCount));
                     }
                     @Override
                     public void onCancelled(FirebaseError error) {
@@ -357,8 +260,6 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
                     }
                 });
     }
-
-
 }
 
 

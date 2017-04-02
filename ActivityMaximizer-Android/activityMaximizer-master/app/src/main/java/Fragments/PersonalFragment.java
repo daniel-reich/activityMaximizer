@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.GenericTypeIndicator;
 import com.firebase.client.ValueEventListener;
 import com.github.siyamed.shapeimageview.DiamondImageView;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,21 +46,22 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.ntt.customgaugeview.library.GaugeView;
 import com.soundcloud.android.crop.Crop;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import Adapter.adapter;
 import Adapter.personal_list_adapter;
 import model.Activity_breakdown_getset;
+import model.Event;
+import model.User;
 import u.activitymanager.R;
-import u.activitymanager.StringUtils;
+import utils.ActivityComputeUtils;
 import utils.AnimateFirstDisplayListener;
 
 /**
@@ -90,8 +92,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     ImageView iv;
     ArrayList<Activity_breakdown_getset> table_data;
     GaugeView speedview;
-    String achieve_detail="";
-    int count[]={0,0,0,0,0,0,0,0};
+    User user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -168,60 +169,17 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
         getinfirebase();
 
-        getinfirebasedailipoint();
-
         return view;
     }
 
-
-
-
-    public void getinfirebasedailipoint()
-    {
-        mref.child("users").child(uid).child("dailyPointAverages").addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                Log.e("get achievements1111", dataSnapshot.getValue() + " data");
-                Log.e("child11111111111", dataSnapshot.getValue() + " abc");
-
-                long value=0;
-                for(com.firebase.client.DataSnapshot child:dataSnapshot.getChildren()){
-
-//                    String key=child.getKey();
-
-                  //  int value= Integer.parseInt(child.getValue());
-                  value =value+((Long) child.getValue());
-                    Log.e("achievementToShow",value+"");
-
-
-                }
-
-                Log.v("Target ", "" + value);
-                speedview.setTargetValue(StringUtils.clamp(value, 0, 100));
-
-               // achieve_detail = String.valueOf(dataSnapshot.getValue());
-               // setAch();
-
-            }
-            @Override
-            public void onCancelled(FirebaseError error) {
-                Log.e("get data error",error.getMessage()+" data");
-            }
-        });
-    }
-
-
-
     public void getinfirebase()
     {
-        mref.child("users").child(uid).child("achievementToShow").addValueEventListener(new ValueEventListener() {
+        mref.child("users").child(uid).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                Log.e("get achievements", dataSnapshot.getValue() + " data");
-                Log.e("child", dataSnapshot.getValue() + " abc");
-                achieve_detail = String.valueOf(dataSnapshot.getValue());
+                Log.e("user", dataSnapshot.getValue() + " data");
+                user = dataSnapshot.getValue(User.class);
                 setAch();
 
             }
@@ -235,7 +193,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
     public void setAch()
     {
-
+        String achieve_detail = user.achievementToShow != null ? user.achievementToShow : "";
         if(achieve_detail.equalsIgnoreCase("Closed_three_IBAs"))
             iv.setImageResource(R.drawable.closed_three_ibas);
 
@@ -458,6 +416,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 StorageReference filepath= storageRef.child("Images").child(uri.getLastPathSegment());
 
                 filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @SuppressWarnings("VisibleForTests")
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Log.e("onSuccess iamge",taskSnapshot.getDownloadUrl()+" uri");
@@ -506,6 +465,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                     Log.e("Image load fail","Image load Fail");
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @SuppressWarnings("VisibleForTests")
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
@@ -597,70 +557,22 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
     public void getnotefromfirebase()
     {
+        Log.d("test uid", "" + uid);
         mref.child("events")
                 .child(uid)
                 .addValueEventListener(new ValueEventListener() {
 
                     @Override
                     public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                        if (getActivity() == null) return;
+
                         Log.e("get notes",dataSnapshot.getValue()+" data");
-
-                        JSONArray jsonArray =  new JSONArray();
-                        for (com.firebase.client.DataSnapshot child : dataSnapshot.getChildren()) {
-                            JSONObject jGroup = new JSONObject();
-                            Log.e("childddd",child.child("contactName").getKey()+" abc");
-                            //alue().toString(),child.child("created").getValue().toString(),child.child("date").getValue().toString(),child.child("eventKitID").getValue().toString(),child.child("ref").getValue().toString(),child.child("type").getValue().toString(),child.child("userName").getValue().toString(),child.child("userRef").getValue().toString()));
-                            try {
-
-                                Log.e ("oo",child.child("type").getValue().toString());
-
-                                String activity_list[]={"Set Appointment","Went on KT","Closed Life","closed IBA","Closed Other Business","Appt Set To Closed Life",
-                                        "Appt Set To Closed IBA","Invite to Opportunity Meeting","Went To Opportunity Meeting","Call Back","Dark House","Not Interested"};
-
-
-                                switch(child.child("type").getValue().toString())
-
-                                {
-                                    case "Invited to Opportunity Meeting":
-
-                                        count[6]++;
-
-                                        break;
-
-
-                                    case "Went to Opportunity Meeting":
-
-                                        count[7]++;
-
-                                        break;
-
-                                    case "Set Appointment":
-
-                                        count[0]++;
-                                        break;
-
-                                    case "Went on KT":
-
-                                        count[1]++;
-                                        break;
-
-                                    case "Closed IBA":
-
-                                        count[3]++;
-                                        break;
-
-                                }
-
-                            }
-                            catch (Exception e)
-                            {
-                                Log.e("Exception",e+"");
-                            }
-                        }
-
-                        adapter=new personal_list_adapter(getActivity(),count);
+                        Map<String, Event> events = dataSnapshot.getValue(new GenericTypeIndicator<Map<String, Event>>(){});
+                        LinkedHashMap<String, Integer> activityCount = ActivityComputeUtils.computeActivityCount(events.values(), new Date());
+                        adapter=new personal_list_adapter(getActivity());
+                        adapter.setData(activityCount);
                         rview.setAdapter(adapter);
-                        Log.e("jsonarray",jsonArray+" abc");
+                        speedview.setTargetValue(ActivityComputeUtils.computeWeeklyTotal(activityCount));
                     }
                     @Override
                     public void onCancelled(FirebaseError error) {

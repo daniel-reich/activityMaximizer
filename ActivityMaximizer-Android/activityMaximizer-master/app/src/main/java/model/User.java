@@ -18,6 +18,9 @@ public class User {
     public String phoneNumber;
     public String email;
     public String uid;
+    public String state;
+    public String achievementToShow;
+    public String ref;
 
     public String profilePictureURL;
     public String solution_number;
