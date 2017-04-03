@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="11dp"
+        android:textColor="#fff"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:background="@color/bluedark"
+        android:text="Is this information correct?"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight=".1">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="#e7e7e7"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/gray"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Name"/>
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:fontFamily="sans-serif-light"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="normal"
+        android:text=""/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="#e7e7e7"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/gray"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Email Address"/>
+        <TextView
+            android:id="@+id/tv_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:fontFamily="sans-serif-light"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="normal"
+            android:text=""/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="#e7e7e7"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/gray"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="State or Province"/>
+        <TextView
+            android:id="@+id/tv_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:fontFamily="sans-serif-light"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="normal"
+            android:text=""/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="#e7e7e7"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/gray"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Phone Number"/>
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:fontFamily="sans-serif-light"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="normal"
+            android:text=""/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="#e7e7e7"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/gray"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Solution Number"/>
+        <TextView
+            android:id="@+id/tv_solutionnumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:fontFamily="sans-serif-light"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="normal"
+            android:text=""/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="#e7e7e7"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/gray"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Upline Solution Number"/>
+        <TextView
+            android:id="@+id/tv_uplinesolutionnumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:fontFamily="sans-serif-light"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="normal"
+            android:text=""/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="#e7e7e7"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/gray"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="RVP Solution Number"/>
+        <TextView
+            android:id="@+id/tv_rvpsolutionnumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:fontFamily="sans-serif-light"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="normal"
+            android:text=""/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="#e7e7e7"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/gray"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Trainer Solution Number"/>
+        <TextView
+            android:id="@+id/tv_trainersolutionnumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:fontFamily="sans-serif-light"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="normal"
+            android:text=""/>
+
+    </LinearLayout>
+    </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@color/bluedark">
+
+        <TextView
+            android:id="@+id/tv_done"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Done"
+            android:gravity="center"
+            android:padding="7dp"
+            android:fontFamily="sans-serif"
+            android:background="@drawable/register_button_bgnd"
+            android:layout_margin="25dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#fff"/>
+
+    </LinearLayout>
+
+</LinearLayout>

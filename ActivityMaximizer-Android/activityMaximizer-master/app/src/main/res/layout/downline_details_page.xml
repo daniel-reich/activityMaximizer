@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:gauge="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/am_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:orientation="horizontal">
+        <com.ntt.customgaugeview.library.GaugeView
+            android:id="@+id/meter"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:layout_margin="16dp"
+            gauge:divisions="10"
+            gauge:subdivisions="1"
+            gauge:scaleStartValue="0"
+            gauge:scaleEndValue="100"
+            gauge:showInnerRim="true"
+            gauge:showNeedle="true"
+            gauge:rangeValues="@array/speedTestRangeValues"
+            gauge:showOuterBorder="false"
+            android:background="@android:color/transparent"
+            gauge:showOuterRim="false"
+            gauge:showOuterShadow="false"
+            gauge:showRangeText="true"
+            gauge:showRanges="true"
+            gauge:showScale="true"
+            gauge:textUnit=""
+            gauge:textUnitSize="0.06"
+            gauge:textValueSize="0.15" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <com.github.siyamed.shapeimageview.DiamondImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/userprofile"
+            app:siBorderWidth="2dp"
+            app:siStrokeCap="round"
+            app:siStrokeJoin="round"
+            app:siBorderColor="@color/white"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_username"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="#fff"
+                android:gravity="center"
+                android:text="username"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_solutionnumber"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="#fff"
+                android:gravity="center"
+                android:text="0000000000"
+                android:textSize="18sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_phone"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#fff"
+                android:gravity="center"
+                android:text="username"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_email"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#fff"
+                android:gravity="center"
+                android:text="username"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/top_speed"/>
+    </LinearLayout>
+
+
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginLeft="15dp"
+            android:orientation="vertical">
+
+            <ImageView
+            android:id="@+id/iv_contact"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/contact_d"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:layout_marginTop="3dp"
+                android:text="Contacts"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_activity"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/activity_d"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:layout_marginTop="3dp"
+                android:text="Activity"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_achivement"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/achivement_d"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:layout_marginTop="3dp"
+                android:text="Achivements"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginRight="15dp"
+            android:orientation="vertical">
+
+            <ImageView
+            android:id="@+id/iv_goals"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/goals_d"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:layout_marginTop="3dp"
+                android:text="Goals"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>

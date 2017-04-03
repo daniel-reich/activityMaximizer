@@ -1,0 +1,42 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+
+    </style>
+
+
+    <style name="green">
+
+        <item name="fab_colorNormal">#0F6E67</item>
+        <item name="fab_colorPressed">#0F6E67</item>
+        <item name="fab_colorRipple">#0F6E67</item>
+    </style>
+    <style name="purple">
+
+        <item name="fab_colorNormal">#810BA8</item>
+        <item name="fab_colorPressed">#810BA8</item>
+        <item name="fab_colorRipple">#810BA8</item>
+    </style>
+    <style name="blue">
+
+        <item name="fab_colorNormal">#005BA5</item>
+        <item name="fab_colorPressed">#005BA5</item>
+        <item name="fab_colorRipple">#005BA5</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="checkBoxStyle" parent="Base.Theme.AppCompat">
+        <item name="colorAccent">#039cd8</item>
+        <item name="android:textColorSecondary">#ffffff</item>
+    </style>
+    <style name="TabLayoutStyle" parent="Base.Widget.Design.TabLayout">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+</resources>

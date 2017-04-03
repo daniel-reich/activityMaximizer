@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.chauthai.swipereveallayout.SwipeRevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:mode="same_level"
+    android:id="@+id/swipeview"
+    app:dragEdge="right">
+
+    <!-- Your secondary layout here -->
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="80dp"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/holo_orange_dark"
+                android:textColor="@android:color/white"
+                android:paddingRight="5dp"
+                android:id="@+id/addtoteam"
+                android:text="Add to team"/>
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="80dp"
+                android:gravity="center"
+                android:id="@+id/delete"
+
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/holo_red_dark"
+                android:textColor="@android:color/white"
+                android:text="Delete"/>
+
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Your main layout here -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/layout"
+            android:background="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_minus"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:visibility="gone"
+                    android:src="@drawable/minus"/>
+                <ImageView
+                    android:id="@+id/iv_userimage"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/user"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight=".1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Username"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_pointclients"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13dp"
+                            android:layout_weight=".1"
+                            android:fontFamily="sans-serif-light"
+                            android:text="4 &amp; 5 Point Clients:"/>
+
+                        <TextView
+                            android:id="@+id/tv_pointclients_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="13dp"
+                            android:fontFamily="sans-serif-light"
+                            android:text="0"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_pointrecuirters"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="13dp"
+                            android:layout_weight=".1"
+                            android:fontFamily="sans-serif-light"
+                            android:text="4 &amp; 5 Point Recruiter:"/>
+
+                        <TextView
+                            android:id="@+id/tv_pointrecuirters_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="13dp"
+                            android:fontFamily="sans-serif-light"
+                            android:text="0"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iv_speed_meter"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/speedo"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_forwardimage"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+
+                    android:src="@drawable/forward_icon"/>
+
+            </LinearLayout>
+
+        </LinearLayout>/>
+    </FrameLayout>
+
+</com.chauthai.swipereveallayout.SwipeRevealLayout>

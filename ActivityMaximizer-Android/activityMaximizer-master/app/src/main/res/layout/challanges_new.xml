@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:background="#ccc"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:text="Challange Name"/>
+        <TextView
+            android:id="@+id/tv_settitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:hint="Set Title"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="normal"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:background="#ccc"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:text="Reward"/>
+
+        <TextView
+            android:id="@+id/tv_setreward"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="normal"
+            android:hint="Set a Reward"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:background="#ccc"
+            android:text="Time Limit"/>
+
+        <TextView
+            android:id="@+id/tv_timelimit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="normal"
+            android:text="None"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/lay_date"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/lay_startdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:paddingBottom="9dp"
+                android:paddingTop="9dp"
+                >
+
+
+                <TextView
+                    android:id="@+id/textview9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start Date"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_centerVertical="true"/>
+
+                <TextView
+                    android:id="@+id/tv_startdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12/03/2017"
+                    android:textSize="16sp"
+                    android:singleLine="true"
+                    android:gravity="right"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_marginRight="4dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/tv_starttime"
+                    android:layout_toStartOf="@+id/tv_starttime" />
+
+                <TextView
+                    android:id="@+id/tv_starttime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="03:00 PM"
+                    android:textSize="16sp"
+                    android:singleLine="true"
+                    android:gravity="right"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_alignTop="@+id/tv_startdate"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ddd"
+
+                />
+
+            <RelativeLayout
+                android:id="@+id/lay_enddate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:paddingBottom="9dp"
+                android:paddingTop="9dp"
+                >
+
+
+                <TextView
+                    android:id="@+id/textview8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="End Date"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_centerVertical="true"/>
+
+                <TextView
+                    android:id="@+id/tv_enddate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12/03/2017"
+                    android:textSize="16sp"
+                    android:singleLine="true"
+                    android:gravity="right"
+                    android:layout_marginRight="4dp"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/tv_endtime"
+                    android:layout_toStartOf="@+id/tv_endtime" />
+
+
+                <TextView
+                    android:id="@+id/tv_endtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="03:00 PM"
+                    android:textSize="16sp"
+                    android:singleLine="true"
+                    android:gravity="right"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:background="#ccc"
+            android:text="Included Activity Types"/>
+
+        <LinearLayout
+            android:id="@+id/lay_hastimefalse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="10dp">
+
+            <LinearLayout
+                android:id="@+id/lay_totalprem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_totalpremium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Total Premium"
+                    android:textSize="16sp"
+                    android:layout_weight=".1"
+                    android:padding="10dp"
+                    android:button="@null"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/tv_totalpremium1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="0" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ddd" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_contactadded"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Contact Added"
+                    android:textSize="16sp"
+                    android:layout_weight=".1"
+                    android:padding="10dp"
+                    android:button="@null"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/tv_contactadded1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="0" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ddd"
+
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_appointmentset"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Appointment Set"
+                    android:textSize="16sp"
+                    android:layout_weight=".1"
+                    android:padding="10dp"
+                    android:button="@null"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/tv_appointmentset1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="0" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ddd"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_wenton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Went on KT"
+                    android:textSize="16sp"
+                    android:layout_weight=".1"
+                    android:padding="10dp"
+                    android:button="@null"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/tv_wenton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="0" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ddd"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_closelife"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Close Life"
+                    android:textSize="16sp"
+                    android:layout_weight=".1"
+                    android:padding="10dp"
+                    android:button="@null"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/tv_closelife1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="0" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ddd"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_closeiba"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Close IBA"
+                    android:textSize="16sp"
+                    android:layout_weight=".1"
+                    android:padding="10dp"
+                    android:button="@null"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/tv_closeiba1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="0" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ddd"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_closeotherbusiness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Close other Business"
+                    android:textSize="16sp"
+                    android:layout_weight=".1"
+                    android:padding="10dp"
+                    android:button="@null"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="#606060"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/tv_closeotherbusiness1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="0" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ddd"
+                />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lay_hastimetrue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_marginRight="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_totalpremium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#606060"
+                android:padding="12dp"
+                android:button="@null"
+                android:checked="false"
+                android:layout_weight=".1"
+                android:text="Total Premium"/>
+
+            <ImageView
+                android:id="@+id/iv_totalpremium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:src="@drawable/checkmark_bl24"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_contactadded"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#606060"
+                android:padding="12dp"
+                android:button="@null"
+                android:checked="false"
+                android:layout_weight=".1"
+                android:text="Contact Added"/>
+
+            <ImageView
+                android:id="@+id/iv_contactadded"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:src="@drawable/checkmark_bl24"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_appointmentset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#606060"
+                android:padding="12dp"
+                android:button="@null"
+                android:checked="false"
+                android:layout_weight=".1"
+                android:text="Appointment Set"/>
+
+            <ImageView
+                android:id="@+id/iv_appointmentset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:src="@drawable/checkmark_bl24"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_wenton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#606060"
+                android:padding="12dp"
+                android:button="@null"
+                android:checked="false"
+                android:layout_weight=".1"
+                android:text="Went on KT"/>
+
+            <ImageView
+                android:id="@+id/iv_wenton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:src="@drawable/checkmark_bl24"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_closelife"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#606060"
+                android:padding="12dp"
+                android:button="@null"
+                android:checked="false"
+                android:layout_weight=".1"
+                android:text="Close Life"/>
+
+            <ImageView
+                android:id="@+id/iv_closelife"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:src="@drawable/checkmark_bl24"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_closeiba"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#606060"
+                android:padding="12dp"
+                android:button="@null"
+                android:checked="false"
+                android:layout_weight=".1"
+                android:text="Close IBA"/>
+
+            <ImageView
+                android:id="@+id/iv_closeiba"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:src="@drawable/checkmark_bl24"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cb_closeotherbusiness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="#606060"
+                android:padding="12dp"
+                android:button="@null"
+                android:checked="false"
+                android:layout_weight=".1"
+                android:text="Close Other Business"/>
+
+            <ImageView
+                android:id="@+id/iv_closeotherbusiness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:src="@drawable/checkmark_bl24"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd"
+            />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="right"
+
+    >
+
+
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_marginTop="65dp"
+    android:layout_height="wrap_content">
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/chalenges"
+
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:theme="@style/green"
+
+           />
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="Challenges"
+        android:fontFamily="sans-serif"
+        android:textSize="20sp"
+        android:textColor="#fff"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/menu_item"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_item2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/achievements"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:theme="@style/purple"
+
+
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Achievements"
+            android:fontFamily="sans-serif"
+            android:textSize="20sp"
+            android:textColor="#fff"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/menu_item2"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content">
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_item3"
+            android:layout_width="wrap_content"
+
+            android:theme="@style/blue"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/tools"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Tools"
+            android:fontFamily="sans-serif"
+            android:textSize="20sp"
+            android:textColor="#fff"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/menu_item3"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content">
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_item4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/profile"
+
+          android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:theme="@style/purple"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Profile"
+            android:fontFamily="sans-serif"
+            android:textSize="20sp"
+            android:textColor="#fff"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/menu_item4"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_item5"
+
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:src="@drawable/posts"
+            android:theme="@style/green"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Posts"
+            android:fontFamily="sans-serif"
+            android:textSize="20sp"
+            android:textColor="#fff"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/menu_item5"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/pending_request_layout">
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_item6"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:src="@drawable/rvp"
+            android:theme="@style/purple"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Pending Requests"
+            android:fontFamily="sans-serif"
+            android:textSize="20sp"
+            android:textColor="#fff"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/menu_item6"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</LinearLayout>

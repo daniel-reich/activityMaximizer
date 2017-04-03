@@ -1,0 +1,73 @@
+<resources>
+    <string name="app_name">Activity Maximizer</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    // Strings for home fragment
+    <string name="time_left">TIME LEFT UNTIL  MONTH END</string>
+    <string name="personal">Personal</string>
+    <string-array name="speedTestRangeValues">
+        <item>0</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+        <item>110</item>
+    </string-array>
+    <string name="team">Team</string>
+    <string name="home">Home</string>
+    <string name="contacts">Contacts</string>
+    <string name="downline">Downline</string>
+    <string name="activity">Activity</string>
+    <string name="days">DAYS</string>
+    <string name="hours">Hours</string>
+    <string name="min">MINTUTES</string>
+    <string name="sec">SECONDS</string>
+    <string name="kitchen_table_set">Kitchen Table Set</string>
+    <string name="kitchen_table_done">Kitchen Table Done</string>
+    <string name="closed_life_app">Closed Life App</string>
+    <string name="closed_iba">Closed IBA</string>
+    <string name="comfired_invites">Comfired invites</string>
+    <string name="new_showes">New Shows</string>
+    <string name="new_contact">New Contacts</string>
+    <string name="bouns_for">Bouns For</string>
+    <string name="point">Points</string>
+    <string name="hash">#</string>
+    <string name="total">Total</string>
+    <string name="cancel">Cancel</string>
+    <string name="lists">Lists</string>
+    <string name="all_contacts">All Contacts</string>
+    <string name="need_to_quality">Need To Qualify</string>
+    <string name="save">Save</string>
+    <string name="trainees">Trainees</string>
+    <string name="help">Help</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="report_a_bug">Report a Bug</string>
+    <string name="new_list">New List</string>
+    <string name="add_a_contact">Add a Contact</string>
+    <string name="custom">Custom</string>
+    <string name="import_txt">Import</string>
+
+
+    <string-array name="items">
+        <item>Kitchen Tables Set</item>
+        <item>Kitchen Tables Done</item>
+
+        <item>Apps Closed</item>
+
+        <item>Recruits</item>
+        <item>Total Premium</item>
+        <item>Upcoming Appointments </item>
+
+    </string-array>
+
+
+</resources>

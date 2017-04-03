@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_challanges"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <!--<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/toolbar"-->
+        <!--android:background="@color/colorPrimary"-->
+        <!--android:theme="@style/ThemeOverlay.AppCompat.Dark">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="New"-->
+            <!--android:textColor="#ddd"-->
+            <!--android:textSize="20sp"-->
+            <!--android:fontFamily="sans-serif-medium"-->
+            <!--android:layout_gravity="right"-->
+            <!--android:paddingRight="10dp"-->
+            <!--android:id="@+id/toolbar_new"/>-->
+
+    <!--</android.support.v7.widget.Toolbar>-->
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#d3d3d3">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Current Challenges"
+        android:paddingLeft="15dp"
+        android:textColor="#000"
+        android:layout_gravity="center"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif"
+        />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/current_recycle">
+
+    </android.support.v7.widget.RecyclerView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#d3d3d3">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Past Challenges"
+            android:paddingLeft="15dp"
+            android:textColor="#000"
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif"
+            />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/past_recyle">
+
+    </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
+</LinearLayout>

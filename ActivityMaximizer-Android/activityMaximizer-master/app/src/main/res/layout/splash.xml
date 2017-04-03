@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/am_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_above="@+id/bottom_layout"
+        >
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/hca"
+
+        />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome to the"
+            android:fontFamily="sans-serif-light"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activity Maximizer"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="27sp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/white"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="15dp"
+        android:layout_above="@+id/terms_layout" >
+
+        <TextView
+            android:id="@+id/tv_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/register_button_bgnd"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingTop="8dp"
+            android:textColor="@color/white"
+            android:text="Register"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <TextView
+            android:id="@+id/tv_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/login_button_bgnd"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:layout_marginRight="10dp"
+            android:paddingTop="8dp"
+            android:textColor="@color/green"
+            android:text="Login"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-medium"/>
+
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:id="@+id/terms_layout"
+    android:layout_alignParentBottom="true"
+    android:layout_marginBottom="15dp"
+    android:orientation="horizontal"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BY CONTINUING I AGREE TO "
+        android:fontFamily="sans-serif-light"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="THE TERMS"
+        android:fontFamily="sans-serif-light"
+        android:textSize="15sp"
+        android:textColor="@color/green"
+        />
+</LinearLayout>
+</RelativeLayout>
