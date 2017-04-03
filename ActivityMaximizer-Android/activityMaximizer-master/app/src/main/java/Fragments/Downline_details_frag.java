@@ -18,8 +18,6 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.GenericTypeIndicator;
-import com.firebase.client.ValueEventListener;
 import com.github.siyamed.shapeimageview.DiamondImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
@@ -32,15 +30,14 @@ import com.ntt.customgaugeview.library.GaugeView;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 import Adapter.personal_list_adapter;
-import model.Event;
-import model.User;
+import model.UserData;
 import u.activitymanager.R;
 import utils.ActivityComputeUtils;
 import utils.AnimateFirstDisplayListener;
 import utils.Constants;
+import utils.UserTask;
 
 /**
  * Created by Surbhi on 14-02-2017.
@@ -63,8 +60,10 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
     private DisplayImageOptions options;
     TextView tv_phone,tv_username,tv_email,tv_solutionnumber;
     String uidd="";
-    User user;
-    private GaugeView speedview;
+    GaugeView speedview;
+
+    UserTask userTask;
+    UserData mData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -125,10 +124,15 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
 
         storageRef= FirebaseStorage.getInstance().getReference();
 
-        getdatafromfirebase();
-        getnotefromfirebase();
+        getUserData();
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        userTask.cancel();
     }
 
     @Override
@@ -146,10 +150,10 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
                 break;
 
             case R.id.iv_activity:
-                if (user == null) return;
+                if (mData == null) return;
                 Activity_list_other_frag basic_frag1 = new Activity_list_other_frag();
                 Bundle args1 = new Bundle();
-                args1.putString("givenName", user.givenName);
+                args1.putString("givenName", mData.user.givenName);
                 args1.putString("uid", uidd);
                 basic_frag1.setArguments(args1);
 
@@ -201,68 +205,43 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
+    public void showUser() {
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.userprofile)
+                .showImageOnFail(R.drawable.userprofile)
+                .showImageForEmptyUri(R.drawable.userprofile)
+                .cacheInMemory(false)
+                .cacheOnDisk(true)
+                .build();
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
+        imageLoader.displayImage(String.valueOf(mData.user.profilePictureURL), Profile_pic, options, animateFirstListener);
+        tv_username.setText(mData.user.givenName);
+        tv_phone.setText(mData.user.phoneNumber);
+        tv_email.setText(mData.user.email);
+        tv_solutionnumber.setText(mData.user.solution_number);
 
-    public void getdatafromfirebase()
-    {
-        mref.child("users").child(uidd).addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                if (getActivity()==null) return;
-
-                Log.e("get data from server",dataSnapshot.getValue()+" data");
-                user = dataSnapshot.getValue(User.class);
-
-                options = new DisplayImageOptions.Builder()
-                        .showImageOnLoading(R.drawable.userprofile)
-                        .showImageOnFail(R.drawable.userprofile)
-                        .showImageForEmptyUri(R.drawable.userprofile)
-                        .cacheInMemory(false)
-                        .cacheOnDisk(true)
-                        .build();
-                ImageLoader imageLoader = ImageLoader.getInstance();
-                imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
-                imageLoader.getInstance().displayImage(String.valueOf(user.profilePictureURL), Profile_pic, options, animateFirstListener);
-
-                tv_username.setText(user.givenName);
-                tv_phone.setText(user.phoneNumber);
-                tv_email.setText(user.email);
-                tv_solutionnumber.setText(user.solution_number);
-
-            }
-            @Override
-            public void onCancelled(FirebaseError error) {
-                Log.e("get data error",error.getMessage()+" data");
-            }
-        });
+        LinkedHashMap<String, Integer> activityCount = ActivityComputeUtils.computeActivityCount(mData, new Date());
+        adapter = new personal_list_adapter(getActivity());
+        adapter.setData(activityCount);
+        rview.setAdapter(adapter);
+        speedview.setTargetValue(ActivityComputeUtils.computeWeeklyTotal(activityCount));
     }
 
-    public void getnotefromfirebase()
-    {
-        mref.child("events").child(uidd)
-                .addValueEventListener(new ValueEventListener() {
-
+    private void getUserData() {
+        userTask = new UserTask(mref, uidd)
+                .withListener(new UserTask.Listener() {
                     @Override
-                    public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                        if (getActivity() == null) return;
-
-                        Log.e("get notes",dataSnapshot.getValue()+" data");
-                        Map<String, Event> events = dataSnapshot.getValue(new GenericTypeIndicator<Map<String, Event>>(){});
-                        LinkedHashMap<String, Integer> activityCount = ActivityComputeUtils.computeActivityCount(events.values(), new Date());
-                        adapter = new personal_list_adapter(getActivity());
-                        adapter.setData(activityCount);
-                        rview.setAdapter(adapter);
-                        speedview.setTargetValue(ActivityComputeUtils.computeWeeklyTotal(activityCount));
+                    public void onChanged(UserData data) {
+                        mData = data;
+                        showUser();
                     }
+
                     @Override
-                    public void onCancelled(FirebaseError error) {
-                        Log.e("get data error",error.getMessage()+" data");
+                    public void onError(FirebaseError error) {
+                        Log.e("get data error", error.getMessage() + " data");
                     }
                 });
+        userTask.start();
     }
 }
-
-
-
-
-//String givenName, String familyName, String phoneNumber, String email, String uid, String contactsAdded, String created, String dailyPointAverages, String fivePointClients, String fivePointRecruits, String partner_solution_number, String partnerUID, String profilePictureURL, String ref, String rvp_solution_number, String solution_number, String state, String trainer_solution_number, String upline_solution_number

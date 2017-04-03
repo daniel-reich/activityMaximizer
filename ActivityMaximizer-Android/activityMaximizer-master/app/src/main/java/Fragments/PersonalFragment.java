@@ -30,8 +30,6 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.GenericTypeIndicator;
-import com.firebase.client.ValueEventListener;
 import com.github.siyamed.shapeimageview.DiamondImageView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -58,11 +56,11 @@ import java.util.Map;
 import Adapter.adapter;
 import Adapter.personal_list_adapter;
 import model.Activity_breakdown_getset;
-import model.Event;
-import model.User;
+import model.UserData;
 import u.activitymanager.R;
 import utils.ActivityComputeUtils;
 import utils.AnimateFirstDisplayListener;
+import utils.UserTask;
 
 /**
  * Created by Surbhi on 14-02-2017.
@@ -73,12 +71,12 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     LinearLayoutManager linearLayoutManager;
     personal_list_adapter adapter;
     ImageView meter;
-    Dialog selectViewdialog,selectPicdialog;
+    Dialog selectViewdialog, selectPicdialog;
     DiamondImageView Profile_pic;
 
     static final int CAMERA_CAPTURE = 1;
     final int PIC_CROP = 3;
-    final int GALLAY_IMAGE= 2;
+    final int GALLAY_IMAGE = 2;
     private Uri picUri;
     StorageReference storageRef;
     FirebaseAuth firebaseAuth;
@@ -87,32 +85,34 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     SharedPreferences.Editor edit;
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
     private DisplayImageOptions options;
-    TextView tv_phone,tv_username;
+    TextView tv_phone, tv_username;
     private String uid;
     ImageView iv;
     ArrayList<Activity_breakdown_getset> table_data;
     GaugeView speedview;
-    User user;
+
+    UserTask userTask;
+    UserData mData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.personal_frag,container,false);
+        view = inflater.inflate(R.layout.personal_frag, container, false);
         setHasOptionsMenu(true);
-        Log.e("check","check");
+        Log.e("check", "check");
 
-        rview=(RecyclerView)view.findViewById(R.id.rview);
-        Profile_pic=(DiamondImageView)view.findViewById(R.id.profile_pic);
+        rview = (RecyclerView) view.findViewById(R.id.rview);
+        Profile_pic = (DiamondImageView) view.findViewById(R.id.profile_pic);
 
-        tv_username=(TextView) view.findViewById(R.id.tv_username);
-        tv_phone=(TextView)view.findViewById(R.id.tv_phone);
-        iv=(ImageView)view.findViewById(R.id.im_achievement);
+        tv_username = (TextView) view.findViewById(R.id.tv_username);
+        tv_phone = (TextView) view.findViewById(R.id.tv_phone);
+        iv = (ImageView) view.findViewById(R.id.im_achievement);
 
-        speedview=(GaugeView) view.findViewById(R.id.meter);
-      //  speedview.setShowRangeValues(true);
+        speedview = (GaugeView) view.findViewById(R.id.meter);
+        //  speedview.setShowRangeValues(true);
 
 //        speedview.setPointerColor(getActivity().getResources().getColor(android.R.color.white));
 //        speedview.setSpeedometerColor(getActivity().getResources().getColor(android.R.color.transparent));
-         // speedview.setSpeedBackgroundColor(getActivity().getResources().getColor(android.R.color.transparent));
+        // speedview.setSpeedBackgroundColor(getActivity().getResources().getColor(android.R.color.transparent));
         speedview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,29 +123,26 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         });
 
 
-
 // change MAX speed to 320
-      //  speedview.setMaxSpeed(100);
+        //  speedview.setMaxSpeed(100);
 // change speed to 140 Km/h
 
-        linearLayoutManager=new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getActivity());
         rview.setLayoutManager(linearLayoutManager);
 
         Profile_pic.setOnClickListener(this);
         speedview.setOnClickListener(this);
 
 
-        pref=getActivity().getSharedPreferences("userpref",0);
+        pref = getActivity().getSharedPreferences("userpref", 0);
 
         Firebase.setAndroidContext(getActivity());
         firebaseAuth = FirebaseAuth.getInstance();
 
-        mref=new Firebase("https://activitymaximizer.firebaseio.com/");
-        uid=pref.getString("uid","");
+        mref = new Firebase("https://activitymaximizer.firebaseio.com/");
+        uid = pref.getString("uid", "");
 
-        storageRef= FirebaseStorage.getInstance().getReference();
-
-        getnotefromfirebase();
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.userprofile)
@@ -155,116 +152,80 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 .cacheOnDisk(true)
                 .build();
 
-        Log.e("profilepic",pref.getString("profilePictureURL","null image path"));
+        Log.e("profilepic", pref.getString("profilePictureURL", "null image path"));
 
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
-        imageLoader.getInstance().displayImage(pref.getString("profilePictureURL",""), Profile_pic, options, animateFirstListener);
-        if (pref.getString("givenName","") != null && !TextUtils.isEmpty(pref.getString("givenName","")) && !pref.getString("givenName","").equalsIgnoreCase("null"))
-        {
-            tv_username.setText(pref.getString("givenName", "") );
+        imageLoader.getInstance().displayImage(pref.getString("profilePictureURL", ""), Profile_pic, options, animateFirstListener);
+        if (pref.getString("givenName", "") != null && !TextUtils.isEmpty(pref.getString("givenName", "")) && !pref.getString("givenName", "").equalsIgnoreCase("null")) {
+            tv_username.setText(pref.getString("givenName", ""));
         }
-      //  tv_username.setText(pref.getString("givenName","")+" "+pref.getString("familyName",""));
-        tv_phone.setText(pref.getString("solution_number",""));
+        //  tv_username.setText(pref.getString("givenName","")+" "+pref.getString("familyName",""));
+        tv_phone.setText(pref.getString("solution_number", ""));
 
-        getinfirebase();
+        getUserData();
 
         return view;
     }
 
-    public void getinfirebase()
-    {
-        mref.child("users").child(uid).addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                Log.e("user", dataSnapshot.getValue() + " data");
-                user = dataSnapshot.getValue(User.class);
-                setAch();
-
-            }
-            @Override
-            public void onCancelled(FirebaseError error) {
-                Log.e("get data error",error.getMessage()+" data");
-            }
-        });
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        userTask.cancel();
     }
 
-
-    public void setAch()
-    {
-        String achieve_detail = user.achievementToShow != null ? user.achievementToShow : "";
-        if(achieve_detail.equalsIgnoreCase("Closed_three_IBAs"))
+    public void setAch() {
+        String achieve_detail = mData.user.achievementToShow != null ? mData.user.achievementToShow : "";
+        if (achieve_detail.equalsIgnoreCase("Closed_three_IBAs"))
             iv.setImageResource(R.drawable.closed_three_ibas);
 
-        else
-        if(achieve_detail.equalsIgnoreCase("Closed_three_life"))
+        else if (achieve_detail.equalsIgnoreCase("Closed_three_life"))
             iv.setImageResource(R.drawable.closed_three_life);
-        else
-        if(achieve_detail.equalsIgnoreCase("Fifty_KTs"))
+        else if (achieve_detail.equalsIgnoreCase("Fifty_KTs"))
             iv.setImageResource(R.drawable.fifty_kts);
-        else
-        if(achieve_detail.equalsIgnoreCase("First_call_from_app"))
+        else if (achieve_detail.equalsIgnoreCase("First_call_from_app"))
             iv.setImageResource(R.drawable.first_call_from_app);
-        else
-        if(achieve_detail.equalsIgnoreCase("First_contact_added"))
+        else if (achieve_detail.equalsIgnoreCase("First_contact_added"))
             iv.setImageResource(R.drawable.first_contact_added);
 
-        else
-        if(achieve_detail.equalsIgnoreCase("First_downline"))
+        else if (achieve_detail.equalsIgnoreCase("First_downline"))
             iv.setImageResource(R.drawable.first_downline);
-        else
-        if(achieve_detail.equalsIgnoreCase("One_hundred_KTs"))
+        else if (achieve_detail.equalsIgnoreCase("One_hundred_KTs"))
             iv.setImageResource(R.drawable.one_hundred_kts);
-        else
-        if(achieve_detail.equalsIgnoreCase("One_week_eight_five_three_one"))
+        else if (achieve_detail.equalsIgnoreCase("One_week_eight_five_three_one"))
             iv.setImageResource(R.drawable.one_week_eight_five_three_one);
-        else
-        if(achieve_detail.equalsIgnoreCase("Perfect_month"))
+        else if (achieve_detail.equalsIgnoreCase("Perfect_month"))
             iv.setImageResource(R.drawable.perfect_month);
-        else
-        if(achieve_detail.equalsIgnoreCase("Perfect_week"))
+        else if (achieve_detail.equalsIgnoreCase("Perfect_week"))
             iv.setImageResource(R.drawable.perfect_week);
-        else
-        if(achieve_detail.equalsIgnoreCase("Ten_five_point_clients"))
+        else if (achieve_detail.equalsIgnoreCase("Ten_five_point_clients"))
             iv.setImageResource(R.drawable.ten_five_point_clients);
-        else
-        if(achieve_detail.equalsIgnoreCase("Ten_five_point_recruits"))
+        else if (achieve_detail.equalsIgnoreCase("Ten_five_point_recruits"))
             iv.setImageResource(R.drawable.ten_five_point_recruits);
-        else
-        if(achieve_detail.equalsIgnoreCase("Ten_new_contacts_added"))
+        else if (achieve_detail.equalsIgnoreCase("Ten_new_contacts_added"))
             iv.setImageResource(R.drawable.ten_new_contacts_added);
-        else
-        if(achieve_detail.equalsIgnoreCase("Thirty_new_contacts_added"))
+        else if (achieve_detail.equalsIgnoreCase("Thirty_new_contacts_added"))
             iv.setImageResource(R.drawable.thirty_new_contacts_added);
-        else
-        if(achieve_detail.equalsIgnoreCase("Three_appointments_set"))
+        else if (achieve_detail.equalsIgnoreCase("Three_appointments_set"))
             iv.setImageResource(R.drawable.three_appointments_set);
-        else
-        if(achieve_detail.equalsIgnoreCase("Twenty_new_contacts_added"))
+        else if (achieve_detail.equalsIgnoreCase("Twenty_new_contacts_added"))
             iv.setImageResource(R.drawable.twenty_new_contacts_added);
-        else
-        if(achieve_detail.equalsIgnoreCase("Two_hundred_KTs"))
+        else if (achieve_detail.equalsIgnoreCase("Two_hundred_KTs"))
             iv.setImageResource(R.drawable.two_hundred_kts);
-        else
-        if(achieve_detail.equalsIgnoreCase("Two_week_eight_five_three_one"))
+        else if (achieve_detail.equalsIgnoreCase("Two_week_eight_five_three_one"))
             iv.setImageResource(R.drawable.two_week_eight_five_three_one);
-        else
-        if(achieve_detail.equalsIgnoreCase("Went_on_three_KTs"))
+        else if (achieve_detail.equalsIgnoreCase("Went_on_three_KTs"))
             iv.setImageResource(R.drawable.went_on_three_kts);
-        else
-        if(achieve_detail.equalsIgnoreCase("Top_speed"))
+        else if (achieve_detail.equalsIgnoreCase("Top_speed"))
             iv.setImageResource(R.drawable.top_speed);
 
 
     }
 
 
-
     @Override
     public void onClick(View view) {
-        switch (view.getId())
-        {
+        switch (view.getId()) {
             case R.id.meter:
                 selectViewDialog();
                 break;
@@ -275,10 +236,10 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
             case R.id.tv_graph:
 
                 selectViewdialog.dismiss();
-                if(getActivity()==null)
+                if (getActivity() == null)
                     return;
                 getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.frame_layout,new ChartFragment()).addToBackStack(null).commit();
+                        replace(R.id.frame_layout, new ChartFragment()).addToBackStack(null).commit();
 
                 break;
             case R.id.profile_pic:
@@ -290,8 +251,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 //getActivity().getSupportFragmentManager().popBackStack();
                 break;
@@ -299,23 +259,23 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
-    public ArrayList<Activity_breakdown_getset> setData(){
+    public ArrayList<Activity_breakdown_getset> setData() {
 
-        table_data=new ArrayList<>();
-        table_data.add(new Activity_breakdown_getset("Kitchen Table Set",2,8,16));
-        table_data.add(new Activity_breakdown_getset("Kitchen Table Done",3,5,15));
-        table_data.add(new Activity_breakdown_getset("Closed Life App",5,3,15));
-        table_data.add(new Activity_breakdown_getset("Closed IBA",5,1,5));
-        table_data.add(new Activity_breakdown_getset("Confirmed Invites",1,10,10));
-        table_data.add(new Activity_breakdown_getset("New Shows",3,3,9));
-        table_data.add(new Activity_breakdown_getset("New Contacts",1,20,20));
-        table_data.add(new Activity_breakdown_getset("Bonus for 8-5-3-1",0,0,10));
+        table_data = new ArrayList<>();
+        table_data.add(new Activity_breakdown_getset("Kitchen Table Set", 2, 8, 16));
+        table_data.add(new Activity_breakdown_getset("Kitchen Table Done", 3, 5, 15));
+        table_data.add(new Activity_breakdown_getset("Closed Life App", 5, 3, 15));
+        table_data.add(new Activity_breakdown_getset("Closed IBA", 5, 1, 5));
+        table_data.add(new Activity_breakdown_getset("Confirmed Invites", 1, 10, 10));
+        table_data.add(new Activity_breakdown_getset("New Shows", 3, 3, 9));
+        table_data.add(new Activity_breakdown_getset("New Contacts", 1, 20, 20));
+        table_data.add(new Activity_breakdown_getset("Bonus for 8-5-3-1", 0, 0, 10));
 
         return table_data;
     }
 
     private void selectViewDialog() {
-        selectViewdialog=new Dialog(getActivity());
+        selectViewdialog = new Dialog(getActivity());
         selectViewdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         selectViewdialog.setContentView(R.layout.graphviewdialog);
         Window window = selectViewdialog.getWindow();
@@ -324,23 +284,22 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         window.setAttributes(wlp);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        TextView Activity_value_breakdown=(TextView)selectViewdialog.findViewById(R.id.tv_breakdown);
-        TextView Graph=(TextView)selectViewdialog.findViewById(R.id.tv_graph);
+        TextView Activity_value_breakdown = (TextView) selectViewdialog.findViewById(R.id.tv_breakdown);
+        TextView Graph = (TextView) selectViewdialog.findViewById(R.id.tv_graph);
         Activity_value_breakdown.setOnClickListener(this);
         Graph.setOnClickListener(this);
         selectViewdialog.show();
     }
 
-    private void showDialog()
-    {
-        Dialog dialog=new Dialog(getActivity());
+    private void showDialog() {
+        Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.points);
-        RecyclerView rview=(RecyclerView)dialog.findViewById(R.id.recyclerview);
-        LinearLayoutManager lManager=new LinearLayoutManager(getActivity());
+        RecyclerView rview = (RecyclerView) dialog.findViewById(R.id.recyclerview);
+        LinearLayoutManager lManager = new LinearLayoutManager(getActivity());
         rview.setLayoutManager(lManager);
         rview.setNestedScrollingEnabled(false);
-        adapter adap=new adapter(getActivity(),setData());
+        adapter adap = new adapter(getActivity(), setData());
         rview.setAdapter(adap);
         dialog.show();
 
@@ -348,7 +307,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
     //  Select Image  statrt
     private void selectPicDialog() {
-        selectPicdialog=new Dialog(getActivity());
+        selectPicdialog = new Dialog(getActivity());
         selectPicdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         selectPicdialog.setContentView(R.layout.pick_image_dialog);
         Window window = selectPicdialog.getWindow();
@@ -358,9 +317,9 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         window.setAttributes(wlp);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        TextView tv_camera=(TextView)selectPicdialog.findViewById(R.id.tv_camera);
-        TextView tv_gallary=(TextView)selectPicdialog.findViewById(R.id.tv_gallery);
-        TextView tv_cancel=(TextView)selectPicdialog.findViewById(R.id.tv_cancel);
+        TextView tv_camera = (TextView) selectPicdialog.findViewById(R.id.tv_camera);
+        TextView tv_gallary = (TextView) selectPicdialog.findViewById(R.id.tv_gallery);
+        TextView tv_cancel = (TextView) selectPicdialog.findViewById(R.id.tv_cancel);
 
         tv_gallary.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -382,10 +341,10 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                     String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/picture.jpg";
                     File imageFile = new File(imageFilePath);
                     picUri = Uri.fromFile(imageFile); // convert path to Uri
-                    takePictureIntent.putExtra( MediaStore.EXTRA_OUTPUT,  picUri );
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
                     startActivityForResult(takePictureIntent, CAMERA_CAPTURE);
 
-                } catch(ActivityNotFoundException anfe){
+                } catch (ActivityNotFoundException anfe) {
                     //display an error message
                     String errorMessage = "Whoops - your device doesn't support capturing images!";
                     Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
@@ -402,6 +361,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
         selectPicdialog.show();
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent result) {
         if (requestCode == GALLAY_IMAGE && resultCode == getActivity().RESULT_OK) {
@@ -413,22 +373,22 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 // Log.d(TAG, String.valueOf(bitmap));
                 Profile_pic.setImageBitmap(bitmap);
 
-                StorageReference filepath= storageRef.child("Images").child(uri.getLastPathSegment());
+                StorageReference filepath = storageRef.child("Images").child(uri.getLastPathSegment());
 
                 filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @SuppressWarnings("VisibleForTests")
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Log.e("onSuccess iamge",taskSnapshot.getDownloadUrl()+" uri");
+                        Log.e("onSuccess iamge", taskSnapshot.getDownloadUrl() + " uri");
 
-                        String usr= String.valueOf(taskSnapshot.getDownloadUrl());
+                        String usr = String.valueOf(taskSnapshot.getDownloadUrl());
                         updateimageurl(usr);
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.e("onFailure iamge","e",e);
+                        Log.e("onFailure iamge", "e", e);
                     }
                 });
 
@@ -436,15 +396,13 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        else if(resultCode == getActivity().RESULT_OK&&requestCode == CAMERA_CAPTURE){
+        } else if (resultCode == getActivity().RESULT_OK && requestCode == CAMERA_CAPTURE) {
             //get the Uri for the captured image
             Uri uri = picUri;
             //carry out the crop operation
             performCrop();
             Log.d("picUri", uri.toString());
-        }
-        else if(resultCode == getActivity().RESULT_OK&&requestCode == PIC_CROP){
+        } else if (resultCode == getActivity().RESULT_OK && requestCode == PIC_CROP) {
             //get the returned data
             Bundle extras = result.getExtras();
             //get the cropped bitmap
@@ -453,28 +411,28 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
             Profile_pic.setImageBitmap(thePic);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             thePic.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray = byteArrayOutputStream .toByteArray();
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
 
-            StorageReference mountainsRef= storageRef.child("Images").child(pref.getString("uid",""));
+            StorageReference mountainsRef = storageRef.child("Images").child(pref.getString("uid", ""));
 
             UploadTask uploadTask = mountainsRef.putBytes(byteArray);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Handle unsuccessful uploads
-                    Log.e("Image load fail","Image load Fail");
+                    Log.e("Image load fail", "Image load Fail");
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @SuppressWarnings("VisibleForTests")
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    Log.e("Image load success","Image load success");
+                    Log.e("Image load success", "Image load success");
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
 //
-                    Log.e("Image load success","Image load success "+downloadUrl);
-                    String usr= String.valueOf(downloadUrl);
+                    Log.e("Image load success", "Image load success " + downloadUrl);
+                    String usr = String.valueOf(downloadUrl);
                     updateimageurl(usr);
                 }
             });
@@ -482,22 +440,22 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void updateimageurl(String url){
+    public void updateimageurl(String url) {
 
-        edit=pref.edit();
-        edit.putString("profilePictureURL",url+"");
+        edit = pref.edit();
+        edit.putString("profilePictureURL", url + "");
         edit.commit();
 
-        Log.e("Image load success","Image load success "+url);
+        Log.e("Image load success", "Image load success " + url);
 
         Map newUserData = new HashMap();
 //                    newUserData.put("solution_number","qwe");
         newUserData.put("profilePictureURL", url);
-        mref.child("users").child(pref.getString("uid","")).updateChildren(newUserData);
+        mref.child("users").child(pref.getString("uid", "")).updateChildren(newUserData);
 
     }
 
-    private void performCrop(){
+    private void performCrop() {
         try {
             //call the standard crop action intent (the user device may not support it)
             Intent cropIntent = new Intent("com.android.camera.action.CROP");
@@ -515,8 +473,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
             cropIntent.putExtra("return-data", true);
             //start the activity - we handle returning in onActivityResult
             startActivityForResult(cropIntent, PIC_CROP);
-        }
-        catch(ActivityNotFoundException anfe){
+        } catch (ActivityNotFoundException anfe) {
             //display an error message
             String errorMessage = "Whoops - your device doesn't support the crop action!";
             Toast toast = Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT);
@@ -531,12 +488,12 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == getActivity().RESULT_OK) {
-            Log.e("uri",Crop.getOutput(result)+"");
+            Log.e("uri", Crop.getOutput(result) + "");
             Profile_pic.setImageURI(Crop.getOutput(result));
 
             try {
 
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver() ,Crop.getOutput(result) );
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Crop.getOutput(result));
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 int nh = (int) (bitmap.getHeight() * (512.0 / bitmap.getWidth()));
                 Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 512, nh, true);
@@ -544,7 +501,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 byte[] b = baos.toByteArray();
 
             } catch (Exception e) {
-                Log.e("e","e",e);
+                Log.e("e", "e", e);
                 e.printStackTrace();
             }
 
@@ -555,30 +512,30 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
     // select image end
 
-    public void getnotefromfirebase()
-    {
-        Log.d("test uid", "" + uid);
-        mref.child("events")
-                .child(uid)
-                .addValueEventListener(new ValueEventListener() {
+    public void showUser() {
+        setAch();
 
-                    @Override
-                    public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                        if (getActivity() == null) return;
-
-                        Log.e("get notes",dataSnapshot.getValue()+" data");
-                        Map<String, Event> events = dataSnapshot.getValue(new GenericTypeIndicator<Map<String, Event>>(){});
-                        LinkedHashMap<String, Integer> activityCount = ActivityComputeUtils.computeActivityCount(events.values(), new Date());
-                        adapter=new personal_list_adapter(getActivity());
-                        adapter.setData(activityCount);
-                        rview.setAdapter(adapter);
-                        speedview.setTargetValue(ActivityComputeUtils.computeWeeklyTotal(activityCount));
-                    }
-                    @Override
-                    public void onCancelled(FirebaseError error) {
-                        Log.e("get data error",error.getMessage()+" data");
-                    }
-                });
+        LinkedHashMap<String, Integer> activityCount = ActivityComputeUtils.computeActivityCount(mData, new Date());
+        adapter = new personal_list_adapter(getActivity());
+        adapter.setData(activityCount);
+        rview.setAdapter(adapter);
+        speedview.setTargetValue(ActivityComputeUtils.computeWeeklyTotal(activityCount));
     }
 
+    private void getUserData() {
+        userTask = new UserTask(mref, uid)
+                .withListener(new UserTask.Listener() {
+                    @Override
+                    public void onChanged(UserData data) {
+                        mData = data;
+                        showUser();
+                    }
+
+                    @Override
+                    public void onError(FirebaseError error) {
+                        Log.e("get data error", error.getMessage() + " data");
+                    }
+                });
+        userTask.start();
+    }
 }

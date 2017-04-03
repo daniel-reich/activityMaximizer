@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import model.Event;
+import model.UserContact;
+import model.UserData;
 import u.activitymanager.StringUtils;
 
 /**
@@ -14,8 +16,7 @@ import u.activitymanager.StringUtils;
  */
 public class ActivityComputeUtils {
 
-    public static LinkedHashMap<String, Integer> computeActivityCount(Collection<Event> events, Date date) {
-
+    public static LinkedHashMap<String, Integer> computeActivityCount(UserData userData, Date date) {
         int appointmentsSetCount = 0;
         int ktDoneCount = 0;
         int interviewCount = 0;
@@ -32,33 +33,35 @@ public class ActivityComputeUtils {
         c.add(Calendar.DATE, -7);
         Date start = c.getTime();
 
-        for (Event event : events) {
-            if (event.type == null) continue;
-            Date eventDate = event.getDate();
-            if (eventDate.before(start) || eventDate.after(date)) continue;
+        if (userData.events != null) {
+            for (Event event : userData.events) {
+                if (event.type == null) continue;
+                Date eventDate = event.getDate();
+                if (eventDate.before(start) || eventDate.after(date)) continue;
 
-            switch (event.type) {
-                case "Set Appointment":
-                    appointmentsSetCount++;
-                    break;
-                case "Conducted Interview":
-                    interviewCount++;
-                    break;
-                case "Went on KT":
-                    ktDoneCount++;
-                    break;
-                case "Closed Life":
-                    closedLifeCount++;
-                    break;
-                case "Closed IBA":
-                    closedIBACount++;
-                    break;
-                case "Invited To Opportunity Meeting":
-                    inviteCount++;
-                    break;
-                case "Went To Opportunity Meeting":
-                    newShowCount++;
-                    break;
+                switch (event.type) {
+                    case "Set Appointment":
+                        appointmentsSetCount++;
+                        break;
+                    case "Conducted Interview":
+                        interviewCount++;
+                        break;
+                    case "Went on KT":
+                        ktDoneCount++;
+                        break;
+                    case "Closed Life":
+                        closedLifeCount++;
+                        break;
+                    case "Closed IBA":
+                        closedIBACount++;
+                        break;
+                    case "Invited To Opportunity Meeting":
+                        inviteCount++;
+                        break;
+                    case "Went To Opportunity Meeting":
+                        newShowCount++;
+                        break;
+                }
             }
         }
 
@@ -70,13 +73,15 @@ public class ActivityComputeUtils {
         result.put("Recruits", closedIBACount);
         result.put("Confirmed Invites", inviteCount);
         result.put("New Shows", newShowCount);
-        result.put("Upcoming Appointments", computeUpcomingAppointments(events));
-        result.put("Monthly Premium", computeMonthlySalesTotal(events));
-        result.put("Contacts Added", 0);
+        result.put("Upcoming Appointments", computeUpcomingAppointments(userData.events));
+        result.put("Monthly Premium", computeMonthlySalesTotal(userData.events));
+        result.put("Contacts Added", computeTotalContactsForTimePeriod(userData.contacts, start, date));
         return result;
     }
 
     public static int computeUpcomingAppointments(Collection<Event> events) {
+        if (events == null || events.size() == 0) return 0;
+
         int upcomingAppointmentsCount = 0;
 
         Date now = new Date();
@@ -113,9 +118,20 @@ public class ActivityComputeUtils {
         return total;
     }
 
-    public static int computeWeeklyTotal(Map<String, Integer> activityCount) {
+    public static int computeTotalContactsForTimePeriod(Collection<UserContact> contacts, Date start, Date end) {
+        if (contacts == null || contacts.size() == 0) return 0;
         int total = 0;
+        for (UserContact contact : contacts) {
+            long added = contact.getCreated().getTime();
+            if (added >= start.getTime() && added <= end.getTime()) total++;
+        }
+        return total;
+    }
 
+    public static int computeWeeklyTotal(Map<String, Integer> activityCount) {
+        if (activityCount == null || activityCount.size() == 0) return 0;
+
+        int total = 0;
         for (Map.Entry<String, Integer> entry : activityCount.entrySet()) {
             String type = entry.getKey();
             Integer value = entry.getValue();

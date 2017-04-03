@@ -3,9 +3,6 @@ package model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by surender on 2/22/2017.
  */
@@ -24,5 +21,4 @@ public class User {
 
     public String profilePictureURL;
     public String solution_number;
-
 }
