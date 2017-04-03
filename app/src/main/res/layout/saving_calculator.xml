@@ -50,7 +50,6 @@
                 android:textSize="20sp"
                 android:maxLength="9"
                 android:text=""
-                android:hint="123"
                 android:textColorHint="@color/yellow"
                 android:gravity="center"
                 android:background="@null"
@@ -86,7 +85,6 @@
                     android:textSize="20sp"
                     android:gravity="center"
                     android:text=""
-                    android:hint="123"
                     android:textColorHint="@color/yellow"
                     android:background="@null"
                     android:textStyle="bold" />
@@ -369,11 +367,11 @@
                         android:background="@null"
                         android:gravity="center_vertical"
                         android:textSize="20sp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
                         android:layout_below="@+id/tv_text5"
                         android:textStyle="bold"
-                        android:text="$0.00%"
+                        android:text="$ 0"
                         android:layout_above="@+id/textView" />
 
                     <LinearLayout
@@ -462,7 +460,7 @@
                     android:layout_height="match_parent"
                     android:textColor="@color/yellow"
                     android:textSize="20sp"
-                    android:text="$0.00"
+                    android:text="$ 0"
                     android:id="@+id/amount_saved"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
@@ -475,55 +473,116 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:background="@color/yellow"
+        android:id="@+id/bottom_line" />
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:background="@color/graylight"
+        android:background="@color/gray"
         android:orientation="horizontal">
 
-        <com.aigestudio.wheelpicker.WheelPicker
-            android:id="@+id/main_wheel1"
-            android:layout_width="100dp"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="#E5DEEB"
-            aigestudio:wheel_atmospheric="true"
-            aigestudio:wheel_curved="true"
-            aigestudio:wheel_cyclic="true"
-            aigestudio:wheel_item_align="center"
-            aigestudio:wheel_item_text_color="#A7A7DB"
-            aigestudio:wheel_item_text_size="20sp"
-            aigestudio:wheel_item_space="2sp"
-            aigestudio:wheel_selected_item_text_color="#536D8A" />
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <com.aigestudio.wheelpicker.WheelPicker
-            android:id="@+id/main_wheel2"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:background="#E5DEEB"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            aigestudio:wheel_atmospheric="true"
-            aigestudio:wheel_curved="true"
-            aigestudio:wheel_cyclic="true"
-            aigestudio:wheel_item_text_color="#A7A7DB"
-            aigestudio:wheel_item_text_size="20sp"
-            aigestudio:wheel_item_space="2sp"
-            aigestudio:wheel_selected_item_text_color="#536D8A" />
+            <TextView
+                android:id="@+id/year_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/graylight"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Years"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
 
-        <com.aigestudio.wheelpicker.WheelPicker
-            android:id="@+id/main_wheel3"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:background="#E5DEEB"
-            aigestudio:wheel_atmospheric="true"
-            aigestudio:wheel_curved="true"
-            aigestudio:wheel_cyclic="true"
-            aigestudio:wheel_item_align="center"
-            aigestudio:wheel_item_text_color="#A7A7DB"
-            aigestudio:wheel_item_text_size="20sp"
-            aigestudio:wheel_item_space="2sp"
-            aigestudio:wheel_selected_item_text_color="#536D8A" />
+            <com.aigestudio.wheelpicker.WheelPicker
+                android:id="@+id/main_wheel1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#E5DEEB"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                aigestudio:wheel_atmospheric="true"
+                aigestudio:wheel_curved="true"
+                aigestudio:wheel_cyclic="true"
+                aigestudio:wheel_item_align="center"
+                aigestudio:wheel_item_space="2sp"
+                aigestudio:wheel_item_text_color="#A7A7DB"
+                aigestudio:wheel_item_text_size="20sp"
+                aigestudio:wheel_selected_item_text_color="#536D8A" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/interest_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/graylight"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Interest Rate"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <com.aigestudio.wheelpicker.WheelPicker
+                    android:id="@+id/main_wheel2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
+                    android:background="#E5DEEB"
+                    aigestudio:wheel_atmospheric="true"
+                    aigestudio:wheel_curved="true"
+                    aigestudio:wheel_cyclic="true"
+                    aigestudio:wheel_item_space="2sp"
+                    aigestudio:wheel_item_text_color="#A7A7DB"
+                    aigestudio:wheel_item_text_size="20sp"
+                    aigestudio:wheel_selected_item_text_color="#536D8A" />
+
+                <com.aigestudio.wheelpicker.WheelPicker
+                    android:id="@+id/main_wheel3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#E5DEEB"
+                    aigestudio:wheel_atmospheric="true"
+                    aigestudio:wheel_curved="true"
+                    aigestudio:wheel_cyclic="true"
+                    aigestudio:wheel_item_align="center"
+                    aigestudio:wheel_item_space="2sp"
+                    aigestudio:wheel_item_text_color="#A7A7DB"
+                    aigestudio:wheel_item_text_size="20sp"
+                    aigestudio:wheel_selected_item_text_color="#536D8A" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

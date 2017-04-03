@@ -32,7 +32,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.github.anastr.speedviewlib.SpeedView;
-import com.github.siyamed.shapeimageview.DiamondImageView;
+import com.github.siyamed.shapeimageview.CircularImageView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -75,7 +75,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
     personal_list_adapter adapter;
     ImageView meter;
     Dialog selectViewdialog,selectPicdialog;
-    DiamondImageView Profile_pic;
+    CircularImageView Profile_pic;
 
     static final int CAMERA_CAPTURE = 1;
     final int PIC_CROP = 3;
@@ -91,7 +91,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
     TextView tv_phone,tv_username;
     private String uid,solutionnumber;
 
-    DiamondImageView profile;
+    CircularImageView profile;
     ImageView image;
     GaugeView speedview;
     int count[]={0,0,0,0,0,0,0,0};
@@ -107,7 +107,7 @@ public class TeamFragment extends Fragment implements View.OnClickListener {
         Log.e("check","check");
 
         rview=(RecyclerView)view.findViewById(R.id.rview);
-        Profile_pic=(DiamondImageView)view.findViewById(R.id.profile_pic);
+        Profile_pic=(CircularImageView)view.findViewById(R.id.profile_pic);
         Profile_pic.setVisibility(View.GONE);
         image=(ImageView) view.findViewById(R.id.im_achievement);
         image.setVisibility(View.GONE);

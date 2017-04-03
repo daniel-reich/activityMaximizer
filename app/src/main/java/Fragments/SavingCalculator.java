@@ -32,14 +32,11 @@ import java.util.ArrayList;
 import u.activitymanager.HomeActivity;
 import u.activitymanager.R;
 
-/**
- * Created by surender on 2/16/2017.
- */
-
 public class SavingCalculator extends Fragment implements WheelPicker.OnItemSelectedListener {
 
-    Boolean b=false;
-    Boolean a=false;
+    //Boolean a = false;   replaced with hasDecimal
+    Boolean hasDecimal=false;
+    boolean decimalPlace1=false,decimalPlace2=false;
     IWheelPicker wheel1,wheel2,wheel3;
     LinearLayout initiall,monthlyl;
     Button one,two,three,four,five,six,seven,eight,nine,zero,dot,delete;
@@ -54,8 +51,8 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
     String str1="1",str2=".00%";
     double initialamount=0,annualinterest=0,monthly_deposit=0;
     int year=1;
-    boolean value1=false,value2=false;
-    String check_editText;
+
+    String check_editText="1";
 
     //  calculations(1,100.0,2.00,10.0);
     // EditText et_initial_amount,et_monthly_deposit;
@@ -263,6 +260,8 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
                         break;
                 }
 
+
+
 //                one.setOnClickListener(new View.OnClickListener() {
 //                    @Override
 //                    public void onClick(View v) {
@@ -372,6 +371,7 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
             }
         });
 
+
         initiall.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -401,22 +401,22 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
 //
 //                        if(a){
 //
-//                            if(value1&value2){
+//                            if(decimalPlace1&decimalPlace2){
 //                                String[] arr=text.split(".");
 //                                arr[1]="10";
 //                                text=arr[0]+"."+arr[1];
 //                                initial.setText(text);
-//                                value1=false;
+//                                decimalPlace1=false;
 //                            }
-//                            else if(value2){
+//                            else if(decimalPlace2){
 ////                                String text=initial.getText().toString();
 //                                String[] arr=text.split(".");
 //                                arr[1] = arr[1].substring(0,arr[1].length()-1) + "1";
 //                                text=arr[0]+"."+arr[1];
 //                                initial.setText(text);
-//                                value2=false;
+//                                decimalPlace2=false;
 //                            }
-//                            else if(value1==false&value2==false){
+//                            else if(decimalPlace1==false&decimalPlace2==false){
 //                                initial.setText(text+"1");
 //                            }
 //                        }
@@ -506,8 +506,8 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
 //
 //                                initial.setText(initial.getText() + ".00");
 //
-//                            value1=true;
-//                            value2=true;
+//                            decimalPlace1=true;
+//                            decimalPlace2=true;
 //
 //                            dot.setClickable(false);
 //                            a=true;
@@ -774,22 +774,22 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
 //
 //                            Log.e("textvalue",text);
 //
-//                            if(value1&value2){
+//                            if(decimalPlace1&decimalPlace2){
 //                                String[] arr=text.split("\\.");
 //                                arr[1]="10";
 //                                text=arr[0]+"."+arr[1];
 ////                                initial.setText(text);
-//                                value1=false;
+//                                decimalPlace1=false;
 //                            }
-//                            else if(value2){
+//                            else if(decimalPlace2){
 ////                                String text=initial.getText().toString();
 //                                String[] arr=text.split("\\.");
 //                                arr[1] = arr[1].substring(0,arr[1].length()-1) + "1";
 //                                text=arr[0]+"."+arr[1];
 ////                                initial.setText(text);
-//                                value2=false;
+//                                decimalPlace2=false;
 //                            }
-//                            else if(value1==false&value2==false){
+//                            else if(decimalPlace1==false&decimalPlace2==false){
 ////                                text=text+"1";
 ////                                initial.setText(text+"1");
 //                            }
@@ -887,21 +887,23 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
 
                         Log.e("dot click initial","dot click initial");
 
-                        if(a)
-                        {
+                        if(hasDecimal) {
                             Log.e("initial2","initial");
-                        }
-                        else
-                        {
-                                if(check_editText.equalsIgnoreCase("1"))
-                                initial.setText(initial.getText() + ".00");
-                            else
-                                monthly.setText(monthly.getText()+".00");
 
-                            value1=true;
-                            value2=true;
+                        } else {
+
+                            if (check_editText.equalsIgnoreCase("1")) {
+                                initial.setText(initial.getText() + ".00");
+
+                            } else {
+                                monthly.setText(monthly.getText() + ".00");
+                            }
+
+                            decimalPlace1=true;
+                            decimalPlace2=true;
                             dot.setClickable(false);
-                            a=true;
+                            hasDecimal=true;
+
                         }
                     }
                 });
@@ -909,21 +911,49 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //delete appropriate box
+                        if(check_editText.equalsIgnoreCase("1")) {
+                            initial.setText("");
+                        } else {
+                            monthly.setText("");
+                        }
 
-                        if(check_editText.equalsIgnoreCase("1"))
-                        initial.setText("");
-                        else
-                        monthly.setText("");
-
-                        tv_yeartosave.setText("1");
-                        tv_annualinterest.setText("1.00%");
-                        tv_interestearned.setText("0.00");
-                        tv_amountsaved.setText("0.00");
-
-                        a=false;
-                        value1=false;
-                        value2=false;
+                        //reset box's decimal stuff
+                        hasDecimal=false;
+                        decimalPlace1=false;
+                        decimalPlace2=false;
                         dot.setClickable(true);
+
+
+                        //recalculate
+                        if (TextUtils.isEmpty(initial.getText().toString())){
+                            initialamount = 0;
+                        } else {
+                            initialamount = Double.parseDouble(initial.getText().toString());
+                        }
+
+                        if (TextUtils.isEmpty(monthly.getText().toString())) {
+                            monthly_deposit = 0;
+                        } else {
+                            monthly_deposit = Double.parseDouble(monthly.getText().toString());
+                        }
+
+                        year = Integer.parseInt(tv_yeartosave.getText().toString());
+                        annualinterest = Double.parseDouble(tv_annualinterest.getText().toString().replace("%", ""));
+
+                        calculations(year,
+                                initialamount,
+                                annualinterest,
+                                monthly_deposit);
+
+/*
+                            tv_yeartosave.setText("1");
+                            tv_annualinterest.setText("1.00%");
+                            tv_interestearned.setText("0.00");
+                            tv_amountsaved.setText("0.00");
+*/
+
+
                     }
                 });
 
@@ -941,19 +971,20 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
             String[] arr=text.split("\\.");
 
             if(arr[1].equalsIgnoreCase("00")){
-                value1=true;
-                value2=true;
+                decimalPlace1=true;
+                decimalPlace2=true;
             }
             else {
-                value1 = false;
-                value2=false;
+                decimalPlace1 = false;
+                decimalPlace2=false;
             }
 
             dot.setClickable(true);
+            hasDecimal = true;
 
         }
         else {
-            a = false;
+            hasDecimal = false;
             dot.setClickable(true);
         }
 
@@ -969,32 +1000,34 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
         else
             text=monthly.getText().toString();
 
-        if(a){
+        if(hasDecimal){
 
             Log.e("textvalue",text);
 
-            if(value1&value2){
+            if(decimalPlace1&decimalPlace2){
                 String[] arr=text.split("\\.");
                 arr[1]=s+"0";
                 text=arr[0]+"."+arr[1];
 //                                initial.setText(text);
-                value1=false;
-            }
-            else if(value2){
+                decimalPlace1=false;
+            } else if(decimalPlace2){
 //                                String text=initial.getText().toString();
                 String[] arr=text.split("\\.");
                 arr[1] = arr[1].substring(0,arr[1].length()-1) + s;
                 text=arr[0]+"."+arr[1];
 //                                initial.setText(text);
-                value2=false;
-            }
-            else if(value1==false&value2==false){
+                decimalPlace2=false;
+            } else if(decimalPlace1==false&decimalPlace2==false){
 //                                text=text+"1";
 //                                initial.setText(text+"1");
             }
+        } else if (s.equals("0") & text.equals("0")) {
+            //Do nothing
+        } else if (text.equals("0") & !s.equals("0")){
+            text = s;
+        } else {
+            text = text + s;
         }
-        else
-            text=text+s;
 
 
         if(check_editText.equalsIgnoreCase("1"))
@@ -1015,52 +1048,89 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
     public void onItemSelected(WheelPicker picker, Object data, int position) {
 
         if(picker.getId()==R.id.main_wheel1) {
+            //update the year box with the spinner value
+            tv_yeartosave.setText(list.get(position));
 
-            if(!TextUtils.isEmpty(initial.getText().toString())  & !TextUtils.isEmpty(monthly.getText().toString())) {
-                tv_yeartosave.setText(list.get(position));
-                year = Integer.parseInt(tv_yeartosave.getText().toString());
+            //recalculate
+            if (TextUtils.isEmpty(initial.getText().toString())){
+                initialamount = 0;
+            } else {
                 initialamount = Double.parseDouble(initial.getText().toString());
-                annualinterest = Double.parseDouble(tv_annualinterest.getText().toString().replace("%", ""));
-                monthly_deposit = Double.parseDouble(monthly.getText().toString());
-
-                calculations(year,
-                        initialamount,
-                        annualinterest,
-                        monthly_deposit);
             }
+
+            if (TextUtils.isEmpty(monthly.getText().toString())) {
+                monthly_deposit = 0;
+            } else {
+                monthly_deposit = Double.parseDouble(monthly.getText().toString());
+            }
+
+            year = Integer.parseInt(tv_yeartosave.getText().toString());
+            annualinterest = Double.parseDouble(tv_annualinterest.getText().toString().replace("%", ""));
+
+             calculations(year,
+                     initialamount,
+                     annualinterest,
+                     monthly_deposit);
+
         }
         else if(picker.getId()==R.id.main_wheel2) {
             // tv_annualinterest.setText(list.get(position)+list1.get(position));
-            if(!TextUtils.isEmpty(initial.getText().toString()) & !TextUtils.isEmpty(monthly.getText().toString())) {
-                str1 = list.get(position);
-                tv_annualinterest.setText(str1 + str2);
-                year = Integer.parseInt(tv_yeartosave.getText().toString());
-                initialamount = Double.parseDouble(initial.getText().toString());
-                annualinterest = Double.parseDouble(tv_annualinterest.getText().toString().replace("%", ""));
-                monthly_deposit = Double.parseDouble(monthly.getText().toString());
 
-                calculations(year,
-                        initialamount,
-                        annualinterest,
-                        monthly_deposit);
+            //update the interest box with wheel values
+            str1 = list.get(position);
+            tv_annualinterest.setText(str1 + str2);
+
+            //recalculate
+            if (TextUtils.isEmpty(initial.getText().toString())){
+                initialamount = 0;
+            } else {
+                initialamount = Double.parseDouble(initial.getText().toString());
             }
+
+            if (TextUtils.isEmpty(monthly.getText().toString())) {
+                monthly_deposit = 0;
+            } else {
+                monthly_deposit = Double.parseDouble(monthly.getText().toString());
+            }
+            year = Integer.parseInt(tv_yeartosave.getText().toString());
+            annualinterest = Double.parseDouble(tv_annualinterest.getText().toString().replace("%", ""));
+
+
+            calculations(year,
+                    initialamount,
+                    annualinterest,
+                    monthly_deposit);
+
         }
         else if(picker.getId()==R.id.main_wheel3) {
             // tv_interestearned.setText("$0"+list1.get(position));
-            if(!TextUtils.isEmpty(initial.getText().toString())  & !TextUtils.isEmpty(monthly.getText().toString())) {
-                str2 = list1.get(position);
-                tv_annualinterest.setText(str1 + str2);
-                year = Integer.parseInt(tv_yeartosave.getText().toString());
-                initialamount = Double.parseDouble(initial.getText().toString());
-                annualinterest = Double.parseDouble(tv_annualinterest.getText().toString().replace("%", ""));
-                monthly_deposit = Double.parseDouble(monthly.getText().toString());
 
-                calculations(year,
-                        initialamount,
-                        annualinterest,
-                        monthly_deposit);
-                //tv_annualinterest.setText(list.get(position)+list1.get(position));
+            //update the interest box with wheel values
+            str2 = list1.get(position);
+            tv_annualinterest.setText(str1 + str2);
+
+
+            //recalculate
+            if (TextUtils.isEmpty(initial.getText().toString())){
+                initialamount = 0;
+            } else {
+                initialamount = Double.parseDouble(initial.getText().toString());
             }
+
+            if (TextUtils.isEmpty(monthly.getText().toString())) {
+                monthly_deposit = 0;
+            } else {
+                monthly_deposit = Double.parseDouble(monthly.getText().toString());
+            }
+            year = Integer.parseInt(tv_yeartosave.getText().toString());
+            annualinterest = Double.parseDouble(tv_annualinterest.getText().toString().replace("%", ""));
+
+            calculations(year,
+                     initialamount,
+                     annualinterest,
+                     monthly_deposit);
+                //tv_annualinterest.setText(list.get(position)+list1.get(position));
+
         }
 
     }
@@ -1079,23 +1149,65 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
             tv_interestearned.setText("$ "+InterestEarned+" ");
 
             Log.e("interest",amount+","+InterestEarned+"");
-            tv_interestearned.setText("$ "+new DecimalFormat("###,###.##").format(InterestEarned)+" ");
 
+
+            //Size text based on how large the number is
+            if (InterestEarned<10_000_000){
+                tv_interestearned.setTextSize(20);
+            } else if (InterestEarned>=10_000_000 & InterestEarned<100_000_000){
+                tv_interestearned.setTextSize(18);
+            } else if (InterestEarned>=100_000_000 & InterestEarned<1_000_000_000){
+                tv_interestearned.setTextSize(16);
+            } else if (InterestEarned>=1_000_000_000){
+                tv_interestearned.setTextSize(15);
+            }
+
+            if (amount<10_000_000){
+                tv_amountsaved.setTextSize(20);
+            } else if (amount>=10_000_000 & amount<100_000_000){
+                tv_amountsaved.setTextSize(18);
+            } else if (amount>=100_000_000 & amount<1_000_000_000){
+                tv_amountsaved.setTextSize(16);
+            } else if (amount>=1_000_000_000){
+                tv_amountsaved.setTextSize(15);
+            }
+
+
+
+            tv_interestearned.setText("$ "+new DecimalFormat("###,###.##").format(InterestEarned)+" ");
             tv_amountsaved.setText("$ "+new DecimalFormat("###,###.##").format(amount)+" ");
-        }
-        else
-        {
+
+        } else {
+
             double A =principal* Math.pow(( 1 + ( rate /( n*100) )), (n * year));
             double fv =  monthlydeposit * ((Math.pow((1 + rate/(n*100)), (n * year)) - 1) / (rate/(n*100)));
             double interest = (A - principal) + (fv - monthlydeposit * (n * year));
             double saved =  (fv + A);
             Log.e("interest_m",(interest+","+saved+""));
             tv_amountsaved.setText("$ "+saved+" ");
+
+            if (interest<10_000_000){
+                tv_interestearned.setTextSize(20);
+            } else if (interest>=10_000_000 & interest<100_000_000){
+                tv_interestearned.setTextSize(18);
+            } else if (interest>=100_000_000 & interest<1_000_000_000){
+                tv_interestearned.setTextSize(16);
+            } else if (interest>=1_000_000_000){
+                tv_interestearned.setTextSize(15);
+            }
+
+            if (saved<10_000_000){
+                tv_amountsaved.setTextSize(20);
+            } else if (saved>=10_000_000 & saved<100_000_000){
+                tv_amountsaved.setTextSize(18);
+            } else if (saved>=100_000_000 & saved<1_000_000_000){
+                tv_amountsaved.setTextSize(16);
+            } else if (saved>=1_000_000_000){
+                tv_amountsaved.setTextSize(15);
+            }
+
             tv_interestearned.setText("$ "+new DecimalFormat("###,###.##").format(interest)+" ");
-
             tv_amountsaved.setText("$ "+new DecimalFormat("###,###.##").format(saved)+" ");
-
-
         }
 
 
@@ -1146,6 +1258,8 @@ public class SavingCalculator extends Fragment implements WheelPicker.OnItemSele
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
 
 

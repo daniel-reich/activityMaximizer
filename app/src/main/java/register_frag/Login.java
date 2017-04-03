@@ -187,7 +187,7 @@ public class Login extends Fragment implements View.OnClickListener {
             case R.id.tv_login:
                 validation();
                 Intent i=new Intent(getContext(), HomeActivity.class);//was commented out
-                startActivity(i);//was commented out
+                //startActivity(i);//was commented out
 //                finish();
                 break;
         }
@@ -213,7 +213,7 @@ public class Login extends Fragment implements View.OnClickListener {
     private void signIn() {
 
         //showProgressDialog();
-        firebaseAuth.signInWithEmailAndPassword(st_email, st_pass)
+        firebaseAuth.signInWithEmailAndPassword("sean@demo.com", "password")
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -221,7 +221,7 @@ public class Login extends Fragment implements View.OnClickListener {
 
 
 
-                     //Log.e("a",FirebaseAuth.getInstance().getCurrentUser().getUid());
+                     Log.e("a",FirebaseAuth.getInstance().getCurrentUser().getUid());
 
 
 
@@ -291,6 +291,8 @@ public class Login extends Fragment implements View.OnClickListener {
 
 
                             Toast.makeText(getActivity(), "Sign In Success",Toast.LENGTH_SHORT).show();
+
+
 
 
                         } else {

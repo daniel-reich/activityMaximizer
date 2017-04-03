@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "858180431803-irosvc5famenchmk67dpuelhcj4utjmj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.activity.maximizer",
+            "certificate_hash": "9d969a28ffebcfcacc7ece6a4d0d3cb9a726d257"
+          }
+        },
+        {
           "client_id": "858180431803-4ia7ruqso22udr5dkip4bp2nnq71nto7.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,20 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "858180431803-b9tlvh2carjhm8kqu80246igqolb2f5a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.zygy.ActivityMaximizer"
+              }
+            },
+            {
+              "client_id": "858180431803-4ia7ruqso22udr5dkip4bp2nnq71nto7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

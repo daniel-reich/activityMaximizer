@@ -38,7 +38,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.github.siyamed.shapeimageview.DiamondImageView;
+import com.github.siyamed.shapeimageview.CircularImageView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -82,7 +82,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
     LinearLayoutManager linearLayoutManager;
     personal_list_adapter adapter;
 
-    DiamondImageView Profile_pic;
+    CircularImageView Profile_pic;
     StorageReference storageRef;
     FirebaseAuth firebaseAuth;
     Firebase mref;
@@ -121,7 +121,7 @@ public class Downline_details_frag extends Fragment implements View.OnClickListe
 
 
         rview=(RecyclerView)view.findViewById(R.id.rview);
-        Profile_pic=(DiamondImageView)view.findViewById(R.id.profile_pic);
+        Profile_pic=(CircularImageView) view.findViewById(R.id.profile_pic);
 
         contactimg=(ImageView)view.findViewById(R.id.iv_contact);
         activityimg=(ImageView)view.findViewById(R.id.iv_activity);
