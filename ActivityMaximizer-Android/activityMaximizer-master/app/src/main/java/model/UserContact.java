@@ -19,7 +19,7 @@ public class UserContact {
     public float created;
 
     public Date getCreated() {
-        return new Date((long) created * 100);
+        return new Date((long) created * 1000);
     }
 
     @Override

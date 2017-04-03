@@ -1,9 +1,13 @@
 package utils;
 
+import android.util.Log;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import model.Event;
@@ -15,6 +19,8 @@ import u.activitymanager.StringUtils;
  * Created by LucianVictor on 4/1/2017.
  */
 public class ActivityComputeUtils {
+
+    private static final SimpleDateFormat sFormatter = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.US);
 
     public static LinkedHashMap<String, Integer> computeActivityCount(UserData userData, Date date) {
         int appointmentsSetCount = 0;
@@ -36,7 +42,8 @@ public class ActivityComputeUtils {
         if (userData.events != null) {
             for (Event event : userData.events) {
                 if (event.type == null) continue;
-                Date eventDate = event.getDate();
+                Date eventDate = event.getCreated();
+//                Log.d("computeActivityCount", "event " + event + " date " + sFormatter.format(eventDate));
                 if (eventDate.before(start) || eventDate.after(date)) continue;
 
                 switch (event.type) {

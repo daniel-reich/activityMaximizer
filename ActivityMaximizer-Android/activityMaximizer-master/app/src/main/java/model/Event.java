@@ -22,10 +22,24 @@ public class Event {
     public String ref;
 
     public Date getCreated() {
-        return new Date((long) created * 100);
+        return new Date((long) created * 1000);
     }
 
     public Date getDate() {
-        return new Date((long) date * 100);
+        return new Date((long) date * 1000);
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "contactName='" + contactName + '\'' +
+                ", type='" + type + '\'' +
+                ", userName='" + userName + '\'' +
+                ", created=" + created +
+                ", date=" + date +
+                ", amount=" + amount +
+                ", userRef='" + userRef + '\'' +
+                ", ref='" + ref + '\'' +
+                '}';
     }
 }
